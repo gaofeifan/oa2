@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pj.mapper.MessageMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.pojo.Message" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="isread" property="isread" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="applyNumber" property="applyNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, user_id, type, content, title, isread, date,applyNumber
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectMessageByUserIdAndType" parameterType="com.pj.pojo.MessageQuery" resultMap="BaseResultMap">
+	SELECT
+		m.id id,
+		m.type type,
+		m.content content,
+		m.title title,
+		m.date date,
+		m.user_id user_id,
+		m.applyNumber applyNumber,
+		u1.username username,
+		r.isfind isread
+	FROM
+		t_user u,
+		el_message m,
+		message_user mu,
+		el_record r,
+		t_user u1
+	WHERE
+		u.id = mu.user_id
+	AND u1.id = m.user_id
+	AND m.id = mu.message_id
+	AND mu.user_id = r.userid
+	AND m.id = r.messageid
+	AND u.id = #{userId}
+	<if test="type != null">
+		AND m.type = #{type}
+	</if>
+	GROUP BY m.date
+	ORDER BY r.isfind is null DESC ,r.isfind ASC , date DESC
+  
+  </select>
+  <!-- <select id="selectMessageByUserIdAndType" parameterType="com.pj.pojo.MessageQuery" resultMap="BaseResultMap">
+  	SELECT
+		m.id id,
+		m.type type,
+		m.content content,
+		m.title title,
+		m.date date,
+		m.isread isread,
+		m.user_id user_id
+	FROM
+		t_user u,
+		el_message m,
+		message_user mu
+	WHERE
+		u.id = mu.user_id
+	AND m.id = mu.message_id
+	AND u.id = #{userId}
+	<if test="type != null">
+		AND m.type = #{type}
+	</if>
+	ORDER BY isread is null DESC ,isread ASC , date DESC
+  
+  </select> -->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pj.pojo.MessageQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from el_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id,user_id,type,content,title,isread,date
+    from el_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.pj.pojo.Message" >
+    insert into el_message (id, user_id, type, content, 
+      title, isread, date
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{isread,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pj.pojo.Message"  useGeneratedKeys="true" keyProperty="id" >
+    insert into el_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="isread != null" >
+        isread,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="applyNumber != null" >
+        applyNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isread != null" >
+        #{isread,jdbcType=INTEGER},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyNumber != null" >
+        #{applyNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateIsreadByPrimaryKey" parameterType="com.pj.pojo.Message" >
+    update el_message
+    set isread = #{isread,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<script src="res/js/jquery-1.7.2.js"></script>
+<style>
+body, html {
+	height: 100%;
+}
+</style>
+</head>
+<body>
+	<form action="" method="post" name="loginForm">
+		<div>
+			<input type="text" name="username" id="username" value=""
+				placeholder="请输入用户名" />
+		</div>
+		<div>
+			<input type="password" name="password" id="password"
+				placeholder="请输入密码" value="" />
+		</div>
+	<input type="submit" vlaue="登录" >
+		
+	</form>
+</body>
+<script type="text/javascript">
+	//服务器校验
+	
+
+		$.ajax({
+			type : "POST",
+			data:"username:username,password:password",
+			url : "http://localhost:8081/sso/user/doLogin",
+			dataType : 'jsonp',
+			success : function(result) {
+				
+				if ("200" == result.status) {
+					window.location.href = "http://localhost:8080/oa/welcome";
+				}
+			}
+		})
+
+	
+</script>
+</html>

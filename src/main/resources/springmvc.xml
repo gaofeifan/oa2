@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/task
+   		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+   		
+   	<!-- 定时器开关 -->
+	<task:annotation-driven/>
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg index="0" value="UTF-8"></constructor-arg>
+			</bean>
+			<bean
+				class="com.pj.config.web.converter.CallbackMappingJackson2HttpMessageConverter">
+				<property name="callbackName" value="callback"></property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- swagger -->
+	<bean class="com.pj.config.swagger.SwaggerConfig" />
+	<!-- 扫描所有包下的注解 -->
+	<context:component-scan base-package="com.pj.*" />
+	
+	<!-- 注解驱动(包括注解映射器和注解适配器) -->
+	<mvc:annotation-driven  conversion-service="conversionService"/>
+
+	<!-- 静态资源访问配置 -->
+	<mvc:default-servlet-handler/> 
+	 <mvc:resources location="/res/js/" mapping="/res/js/**" />
+	<mvc:resources location="/res/css/" mapping="/res/css/**" />
+	<mvc:resources location="/res/images/" mapping="/res/images/**" />
+	<mvc:resources location="/api-doc/" mapping="/api-doc/**" />
+	
+	<!-- 视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		 <property name="prefix" value="/WEB-INF/jsp/" /> 
+		<!-- <property name="prefix" value="/wabapp/res/" /> -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+   
+    <!-- 全局异常处理 -->
+    <bean id="exceptionResolver" class="com.pj.config.web.exception.ExceptionHandler"/>
+    
+	<!-- 配置转换器 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.pj.config.web.converter.DateConverter" />
+				<bean class="com.pj.config.web.converter.CustomParamsConverter" />
+			</set> 
+			
+		</property>
+	</bean>
+
+	
+	<!-- 配置文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
+		<property name="maxUploadSize">
+			<value>32505856</value><!-- 上传文件大小限制为31M，31*1024*1024 -->
+		</property>
+		<property name="maxInMemorySize" >
+			<value>4096</value>
+		</property>
+	</bean>
+	
+	<bean id="messageTimer" class="com.pj.config.base.timer.MessageTimer"/>
+	
+	<task:scheduled-tasks>
+		<!-- 每天上午十点触发 -->
+        <task:scheduled ref="messageTimer" method="messageDetails" cron=" 0 0 10 * * ?"/>
+     <!--    <task:scheduled ref="messageTimer" method="approveMessageTime" cron="0/10 * * * * ?"/> -->
+        <task:scheduled ref="messageTimer" method="approveMessageTime" cron="0 * 1 * * *"/>
+    </task:scheduled-tasks>
+</beans>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="com.pj.mapper.AccountMapper">
+	  <resultMap id="BaseResultMap" type="com.pj.pojo.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="filenumber" property="filenumber" jdbcType="VARCHAR" />
+    <result column="hiredate" property="hiredate" jdbcType="DATE" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="identityproof" property="identityproof" jdbcType="VARCHAR" />
+    <result column="regularpay" property="regularpay" jdbcType="VARCHAR" />
+    <result column="probationpay" property="probationpay" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="dempid" property="dempid" jdbcType="INTEGER" />
+    <result column="birthdate" property="birthdate" jdbcType="DATE" />
+    <result column="pbspdate" property="pbspdate" jdbcType="DATE" />
+    <result column="comppdate" property="comppdate" jdbcType="DATE" />
+    <result column="iscompact" property="iscompact" jdbcType="INTEGER" />
+    <result column="isnowtarget" property="isnowtarget" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="leavedate" property="leavedate" jdbcType="DATE" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="nativeplace" property="nativeplace" jdbcType="VARCHAR" />
+    <result column="alnature" property="alnature" jdbcType="VARCHAR" />
+    <result column="edubg" property="edubg" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="isfulltime" property="isfulltime" jdbcType="INTEGER" />
+    <result column="depositbank" property="depositbank" jdbcType="VARCHAR" />
+    <result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="rankid" property="rankid" jdbcType="INTEGER" />
+    <result column="positionid" property="positionid" jdbcType="INTEGER" />
+    <result column="postid" property="postid" jdbcType="INTEGER" />
+    <result column="roleid" property="roleid" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="isstatus" property="isstatus" jdbcType="INTEGER" />
+    <result column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="newsecurity" property="newsecurity" jdbcType="INTEGER" />
+    <result column="issecurity" property="issecurity" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+   
+    
+  </resultMap>
+
+	<select id="findId" resultMap="BaseResultMap">
+		select * from t_user
+		where id = #{id}
+	</select>
+	<select id="findById"  resultMap="BaseResultMap">
+		SELECT u.ssoid,u.id,u.password,u.username,u.sex,u.phone,u.dempid,u.email,t_demp.`name` AS dempname,u.companyid,t_company.`name` as companyname from t_user u LEFT JOIN t_demp ON u.dempid = t_demp.id
+		LEFT JOIN t_company ON u.companyid = t_company.id WHERE u.id = #{id}
+	</select> 
+	
+	<select id="findByOne" parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		select * from t_user 
+		 <where>
+			<if test="dempid !=null">
+			 dempid = #{dempid}
+			</if>
+			<if test="companyid !=null" >
+				AND companyid =#{companyid}
+			</if>
+			<if test="username !=null">
+				AND username = #{username}
+			</if>
+		</where> 
+	</select>
+	
+	<update id="updateById"  parameterType="com.pj.pojo.User">
+		update t_user
+	<set>
+		<if test="email != null">
+			email = #{email}
+		</if>
+	</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	
+	<update id="updateByOne" parameterType="com.pj.pojo.User">
+		update t_user
+		<set>
+			<if test="email != null">
+				email = #{email},
+			</if>
+		</set>
+		<where>
+			email = #{email}
+		</where>
+	
+	</update>
+	
+	<update id="updateBatch" parameterType="com.pj.pojo.User" >
+		update t_user
+		<set>
+			password = #{password}		
+		</set>
+		<where>
+			id = #{id}		
+		</where>
+	</update>
+	<update id="updateSet" parameterType="com.pj.pojo.User" >
+		update t_user
+		<set>
+			<if test="phone !=null">
+				phone = #{phone},
+			</if>
+		
+		</set>
+		<where>
+			email = #{email}
+		</where>	
+	</update>
+	
+  	<select id="selctCompany" resultMap="BaseResultMap">
+  		select * from t_company
+  	</select>
+	
+	<select id="selctDept" resultMap="BaseResultMap">
+  		select * from t_demp
+  	</select>
+	
+	<select id="findAll" parameterType="UserQuery" resultMap="BaseResultMap">
+		SELECT u.ssoId,u.id,u.username,u.sex,u.phone,u.dempid,u.email,t_demp.`name` AS dempname,u.companyid,t_company.`name` as companyname from t_user u LEFT JOIN t_demp ON u.dempid = t_demp.id
+		LEFT JOIN t_company ON u.companyid = t_company.id 
+		<where>
+			<if test="companyid !=null">
+				u.companyid = #{companyid}
+			</if>
+			<if test="dempid !=null">
+				and u.dempid = #{dempid}
+			</if>
+			<if test="username">
+				and u.username = #{username}
+			</if>
+		</where>
+			<if test="startRow !=null">
+				limit #{startRow},#{pageSize}
+		</if>
+	</select>
+	<select id="selectCount" parameterType="UserQuery" resultType="Integer">
+			SELECT count(1) from t_user u LEFT JOIN t_demp ON u.dempid = t_demp.id
+			LEFT JOIN t_company ON u.companyid = t_company.id 
+		<where>
+			<if test="companyid !=null">
+				u.companyid = #{companyid}
+			</if>
+			<if test="dempid !=null">
+				and u.dempid = #{dempid}
+			</if>
+			<if test="username">
+				and u.username like "%"#{username}"%"
+			</if>
+		</where>
+		
+	</select>
+	<select id="findByName" resultMap="BaseResultMap">
+		select * from t_user
+		<where>
+			email = #{email}
+		</where>
+	</select>
+
+</mapper>

@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pj.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.pj.pojo.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="number" property="number" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="filenumber" property="filenumber" jdbcType="VARCHAR" />
+		<result column="hiredate" property="hiredate" jdbcType="DATE" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="identityproof" property="identityproof"
+			jdbcType="VARCHAR" />
+		<result column="regularpay" property="regularpay" jdbcType="VARCHAR" />
+		<result column="probationpay" property="probationpay" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="dempid" property="dempid" jdbcType="INTEGER" />
+		<result column="birthdate" property="birthdate" jdbcType="DATE" />
+		<result column="pbspdate" property="pbspdate" jdbcType="DATE" />
+		<result column="comppdate" property="comppdate" jdbcType="DATE" />
+		<result column="iscompact" property="iscompact" jdbcType="INTEGER" />
+		<result column="isnowtarget" property="isnowtarget" jdbcType="INTEGER" />
+		<result column="leavedate" property="leavedate" jdbcType="DATE" />
+		<result column="nation" property="nation" jdbcType="VARCHAR" />
+		<result column="nativeplace" property="nativeplace" jdbcType="VARCHAR" />
+		<result column="alnature" property="alnature" jdbcType="VARCHAR" />
+		<result column="edubg" property="edubg" jdbcType="VARCHAR" />
+		<result column="school" property="school" jdbcType="VARCHAR" />
+		<result column="isfulltime" property="isfulltime" jdbcType="INTEGER" />
+		<result column="depositbank" property="depositbank" jdbcType="VARCHAR" />
+		<result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
+		<result column="contacts" property="contacts" jdbcType="VARCHAR" />
+		<result column="rankid" property="rankid" jdbcType="INTEGER" />
+		<result column="positionid" property="positionid" jdbcType="INTEGER" />
+		<result column="postid" property="postid" jdbcType="INTEGER" />
+		<result column="roleid" property="roleid" jdbcType="INTEGER" />
+		<result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+		<result column="isstatus" property="isstatus" jdbcType="INTEGER" />
+		<result column="companyid" property="companyid" jdbcType="INTEGER" />
+		<result column="newsecurity" property="newsecurity" jdbcType="INTEGER" />
+		<result column="issecurity" property="issecurity" jdbcType="INTEGER" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="labelCompactType" property="labelcompacttype"
+			jdbcType="INTEGER" />
+		<result column="isregular" property="isregular" jdbcType="INTEGER" />
+		<result column="ssoId" property="ssoId" jdbcType="INTEGER" />
+		<result column="worktype" property="worktype" jdbcType="INTEGER" />
+		<result column="openid" property="openid" jdbcType="VARCHAR" />
+		<result column="we_chat_name" property="weChatName" jdbcType="VARCHAR" />
+		<result column="access_token" property="accessToken" jdbcType="VARCHAR" />
+
+		<!-- 查询使用 -->
+		<result column="positionname" property="positionname" />
+		<result column="dempname" property="dempname" />
+		<result column="companyname" property="companyname" />
+		<result column="rankname" property="rankname" />
+		<result column="postname" property="postname" />
+		<result column="leaderid" property="leaderid" />
+		<result column="totalCount" property="totalCount" />
+		<!-- 前台需要数据对应的name -->
+
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column">
+		id,number,username,sex,filenumber,hiredate,phone,address
+		,identityproof,regularpay,probationpay,email,dempid,birthdate,pbspdate,comppdate,iscompact,isnowtarget
+		,leavedate,nation,nativeplace,alnature,edubg,school,isfulltime,depositbank,bankcard,contacts,rankid,positionid,postid,roleid,isdelete
+		,isstatus,companyid,newsecurity,issecurity,labelCompactType,isregular,ssoId,password,worktype,openid
+	</sql>
+
+	<sql id="Base_Column_List">
+		<if test="fields == null">
+			id, number, username, sex, filenumber, hiredate, phone, address,
+			identityproof, regularpay,
+			probationpay, email, dempid, birthdate, pbspdate, comppdate, iscompact,
+			isnowtarget,
+			leavedate, nation, nativeplace, alnature, edubg, school, isfulltime,
+			depositbank,
+			bankcard, contacts, rankid, positionid, postid, roleid, isdelete, isstatus,
+			companyid,
+			newsecurity, issecurity, password,
+			labelCompactType,isregular,ssoId,worktype,openid
+		</if>
+		<if test="fields != null">
+			${fields}
+		</if>
+	</sql>
+	<select id="findUserByDempNameAndCompanyIdAndPositionName"
+		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d,
+		t_position p
+		WHERE
+		u.dempid = d.id
+		<if test="dempname != null">
+			AND d.`name` = #{dempname}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		AND u.positionid = p.id
+		<if test="positionname != null">
+			AND p.`name` = #{positionname}
+		</if>
+		AND u.isstatus = 1
+	</select>
+	<select id="findUserListByCondition" resultMap="BaseResultMap"
+		parameterType="com.pj.pojo.User">
+		SELECT
+		u.*, d. NAME dempname,
+		c. NAME companyname,
+		p. NAME postname,
+		pt.
+		NAME positionname,
+		r.name rankname,
+		role.name rolename
+		FROM
+		t_user u
+		LEFT JOIN t_position pt ON u.positionid = pt.id
+		LEFT JOIN t_post p ON u.postid = p.id
+		LEFT JOIN t_demp d ON u.dempid = d.id
+		LEFT JOIN t_company c ON u.companyid
+		= c.id
+		LEFT JOIN t_rank r ON u.rankid = r.id
+		LEFT JOIN auth_role role ON
+		role.id = u.roleid
+
+		<where>
+			u.isdelete = 0
+			<if test="companyid != null">
+				AND u.companyid = #{companyid}
+			</if>
+			<if test="dempid != null">
+				AND u.dempid = #{dempid}
+			</if>
+			<if test="postid != null">
+				AND u.postid = #{postid}
+			</if>
+			<if test="positionid != null">
+				AND u.positionid = #{positionid}
+			</if>
+			<if test="rankid != null">
+				AND u.rankid = #{rankid}
+			</if>
+			<if test="birthdate != null">
+				AND u.birthdate = #{birthdate}
+			</if>
+			<if test="comppdate != null">
+				AND u.comppdate = #{comppdate}
+			</if>
+			<if test="email != null">
+				AND u.email = #{email}
+			</if>
+			<if test="filenumber != null">
+				AND u.filenumber = #{filenumber}
+			</if>
+			<if test="hiredate != null">
+				AND u.hiredate = #{hiredate}
+			</if>
+			<if test="id != null">
+				AND u.id = #{id}
+			</if>
+			<if test="isregular != null">
+				AND u.isregular = #{isregular}
+			</if>
+			<if test="isstatus != null">
+				AND u.isstatus = #{isstatus}
+			</if>
+			<if test="number != null">
+				AND u.number = #{number}
+			</if>
+			<if test="pbspdate != null">
+				AND u.pbspdate = #{pbspdate}
+			</if>
+			<if test="phone != null">
+				AND u.phone = #{phone}
+			</if>
+			<if test="sex != null">
+				AND u.sex = #{sex}
+			</if>
+			<if test="ssoId != null">
+				AND u.ssoId = #{ssoId}
+			</if>
+			<if test="username != null">
+				AND u.username LIKE CONCAT('%',#{username},'%')
+			</if>
+			<if test="companyname != null">
+				AND c.name LIKE CONCAT('%',#{companyname},'%')
+			</if>
+			<if test="postname != null">
+				AND p.name LIKE CONCAT('%',#{postname},'%')
+			</if>
+			<if test="positionname != null">
+				AND pt.name LIKE CONCAT('%',#{positionname},'%')
+			</if>
+			<if test="dempname != null">
+				AND d.name LIKE CONCAT('%',#{dempname},'%')
+			</if>
+			<if test="rankname != null">
+				AND rank.name LIKE CONCAT('%',#{rankname},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="findUserByCompanyIdAndDempNameAndPositionIdAndPostId"
+		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d,
+		t_position p
+		WHERE
+		u.dempid = d.id
+		<if test="dempname != null">
+			AND d.`name` = #{dempname}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		AND u.positionid = p.id
+		<if test="positionid != null">
+			AND p.`id` = #{positionid}
+		</if>
+		<if test="postid != null">
+			AND u.postid = #{postid}
+		</if>
+		AND u.isstatus = 1
+	</select>
+
+	<select id="findUserByCompanyIdAndDempIdAndPositionId"
+		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d,
+		t_position p
+		WHERE
+		u.dempid = d.id
+		<if test="dempid != null">
+			AND d.`id` = #{dempid}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		AND u.positionid = p.id
+		<if test="positionid != null">
+			AND p.`id` = #{positionid}
+		</if>
+		AND u.isstatus = 1
+	</select>
+	<select id="findUserByCompanyIdAndDempNameAndPositionId"
+		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d,
+		t_position p
+		WHERE
+		u.dempid = d.id
+		<if test="dempname != null">
+			AND d.`name` = #{dempname}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		AND u.positionid = p.id
+		<if test="positionid != null">
+			AND p.`id` = #{positionid}
+		</if>
+		AND u.isstatus = 1
+	</select>
+	<select id="findUserByCompanyAndDempAndPositionAndPost"
+		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d,
+		t_position p
+		WHERE
+		u.dempid = d.id
+		<if test="dempname != null">
+			AND d.`name` = #{dempname}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		AND u.positionid = p.id
+		<if test="positionname != null">
+			AND p.`name` = #{positionname}
+		</if>
+		<if test="postid != null">
+			AND u.postid = #{postid}
+		</if>
+		AND u.isstatus = 1
+	</select>
+
+
+	<select id="findUserByDempNameAndCompanyIdAndPost"
+		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		SELECT
+		u.*
+		FROM
+		t_user u,
+		t_demp d
+		WHERE
+		u.dempid = d.id
+		<if test="dempname != null">
+			AND d.`name` = #{dempname}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+		<if test="postid != null">
+			AND u.postid = #{postid}
+		</if>
+		AND u.isstatus = 1
+		AND u.isdelete = 0
+	</select>
+
+
+	<select id="pageQuery2" parameterType="com.pj.pojo.User"
+		resultMap="BaseResultMap">
+		SELECT
+		u.id id,
+		u.number number,
+		u.username username,
+		u.sex sex,
+		u.filenumber filenumber,
+		u.hiredate hiredate,
+		u.phone phone,
+		u.address
+		address,
+		u.identityproof identityproof,
+		u.regularpay regularpay,
+		u.probationpay probationpay,
+		u.email email,
+		u.dempid dempid,
+		u.birthdate
+		birthdate,
+		u.pbspdate pbspdate,
+		u.comppdate comppdate,
+		u.iscompact
+		iscompact,
+		u.isnowtarget isnowtarget,
+		u.leavedate leavedate,
+		u.nation
+		nation,
+		u.nativeplace nativeplace,
+		u.alnature alnature,
+		u.edubg edubg,
+		u.ssoId ssoId,
+		u.school school,
+		u.isfulltime isfulltime,
+		u.depositbank
+		depositbank,
+		u.bankcard bankcard,
+		u.contacts contacts,
+		u.rankid rankid,
+		u.positionid positionid,
+		u.postid postid,
+		u.roleid roleid,
+		u.worktype
+		worktype,
+		u.isdelete isdelete,
+		u.isstatus isstatus,
+		u.companyid
+		companyid,
+		u.newsecurity newsecurity,
+		u.issecurity issecurity,
+		u.
+		PASSWORD PASSWORD,
+		u.labelCompactType labelCompactType,
+		d.`name`
+		dempname,
+		c.`name` companyname,
+		p.`name` positionname,
+		<if test="terrace != null">
+			sr.roleid systemRoleid,
+			sr.role_name systemRoleName,
+		</if>
+		r.`name` rankname,
+		post.`name` postname
+		FROM
+		t_user u
+		LEFT JOIN t_position p ON u.positionid = p.id
+		LEFT JOIN t_post post ON u.postid = post.id
+		LEFT JOIN t_demp d ON u.dempid = d.id
+		LEFT JOIN t_company c ON u.companyid
+		= c.id
+		LEFT JOIN t_rank r ON u.rankid = r.id
+		<if test="terrace != null">
+			left join t_system_role sr on u.id = sr.userid and sr.terrace =
+			#{terrace}
+
+		</if>
+		WHERE
+		u.isdelete = 0
+		AND u.dempid = d.id
+		AND u.companyid = c.id
+		AND
+		u.positionid = p.id
+		AND u.postid = post.id
+		AND u.username != "admin"
+		<if test="username != null">
+			AND u.username LIKE #{username}#,
+		</if>
+		<if test="isstatus != null">
+			AND u.isstatus = #{isstatus}
+		</if>
+		<if test="dempid != null">
+			AND u.dempid = #{dempid}
+		</if>
+		<if test="companyid != null">
+			AND u.companyid = #{companyid}
+		</if>
+
+		ORDER BY u.id ASC
+		LIMIT #{startRow},#{pageSize}
+	</select>
+
+	<select id="pageQuery" parameterType="com.pj.pojo.User"
+		resultMap="BaseResultMap">
+		SELECT
+		u.id id,
+		u.number number,
+		u.username username,
+		u.sex sex,
+		u.filenumber filenumber,
+		u.hiredate hiredate,
+		u.phone phone,
+		u.address
+		address,
+		u.identityproof identityproof,
+		u.regularpay regularpay,
+		u.probationpay probationpay,
+		u.email email,
+		u.dempid dempid,
+		u.birthdate
+		birthdate,
+		u.pbspdate pbspdate,
+		u.comppdate comppdate,
+		u.iscompact
+		iscompact,
+		u.isnowtarget isnowtarget,
+		u.leavedate leavedate,
+		u.nation
+		nation,
+		u.nativeplace nativeplace,
+		u.alnature alnature,
+		u.edubg edubg,
+		u.ssoId ssoId,
+		u.school school,
+		u.isfulltime isfulltime,
+		u.depositbank
+		depositbank,
+		u.bankcard bankcard,
+		u.contacts contacts,
+		u.rankid rankid,
+		u.positionid positionid,
+		u.postid postid,
+		u.roleid roleid,
+		u.worktype
+		worktype,
+		u.isdelete isdelete,
+		u.isstatus isstatus,
+		u.companyid
+		companyid,
+		u.newsecurity newsecurity,
+		u.issecurity issecurity,
+		u.
+		PASSWORD PASSWORD,
+		u.labelCompactType labelCompactType,
+		d.`name`
+		dempname,
+		c.`name` companyname,
+		p.`name` positionname,
+		<if test="terrace != null">
+			sr.roleid systemRoleid,
+			sr.role_name systemRoleName,
+		</if>
+		post.`name` postname
+		FROM
+		t_user u
+		INNER JOIN t_demp d on u.dempid = d.id
+		INNER JOIN t_company c
+		on u.companyid = c.id
+		INNER JOIN t_position p on u.positionid = p.id
+		INNER JOIN t_post post on u.postid = post.id
+		<if test="terrace != null">
+			left join t_system_role sr on u.id = sr.userid
+			AND sr.terrace = #{terrace}
+
+		</if>
+		<where>
+			u.isdelete = 0
+			<if test="terrace != null">
+				<choose>
+					<when test="systemRoleid != null">
+						<if test="systemRoleid != 0">
+							AND sr.roleid = #{systemRoleid}
+						</if>
+					</when>
+					<otherwise>
+						AND u.id not in(SELECT userid from t_system_role where
+						terrace=#{terrace})
+					</otherwise>
+				</choose>
+			</if>
+			<if test="username != null">
+				AND u.username LIKE #{username}#,
+			</if>
+			<if test="isstatus != null">
+				AND u.isstatus = #{isstatus}
+			</if>
+			<if test="dempid != null">
+				AND u.dempid = #{dempid}
+			</if>
+			<if test="companyid != null">
+				AND u.companyid = #{companyid}
+			</if>
+			ORDER BY u.id ASC
+			LIMIT #{startRow},#{pageSize}
+		</where>
+
+	</select>
+	<select id="selectUserCount" parameterType="com.pj.pojo.User"
+		resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		t_user u
+		INNER JOIN t_demp d on u.dempid = d.id
+		INNER JOIN t_company c
+		on u.companyid = c.id
+		INNER JOIN t_position p on u.positionid = p.id
+		INNER JOIN t_post post on u.postid = post.id
+		<if test="terrace != null">
+			left join t_system_role sr on u.id = sr.userid
+			AND sr.terrace = #{terrace}
+
+		</if>
+		<where>
+			u.isdelete = 0
+			<if test="terrace != null">
+				<choose>
+					<when test="systemRoleid != null">
+						<if test="systemRoleid != 0">
+							AND sr.roleid = #{systemRoleid}
+						</if>
+					</when>
+					<otherwise>
+						AND u.id not in(SELECT userid from t_system_role where
+						terrace=#{terrace})
+					</otherwise>
+				</choose>
+			</if>
+			<if test="username != null">
+				AND u.username LIKE #{username}#,
+			</if>
+			<if test="isstatus != null">
+				AND u.isstatus = #{isstatus}
+			</if>
+			<if test="dempid != null">
+				AND u.dempid = #{dempid}
+			</if>
+			<if test="companyid != null">
+				AND u.companyid = #{companyid}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selectByDate" resultMap="BaseResultMap"
+		parameterType="com.pj.pojo.User">
+		select
+		user.*, puser.id as leaderid, position.name as positionname, demp.name as
+		dempname, company.name as companyname
+		from t_user user
+		left join t_position position on user.positionid = position.id and
+		position.isdelete=0
+		left join t_user puser on puser.positionid = position.pid and
+		puser.isdelete=0 and puser.isstatus=0
+		left join t_company company on user.companyid = company.id and
+		company.isdelete=0
+		left join t_demp demp on user.dempid = demp.id
+		<where>
+			user.isdelete=0 and user.isstatus=1
+			<if test="pbspdate != null">
+				and user.pbspdate = #{pbspdate}
+			</if>
+			<if test="comppdate != null">
+				and user.comppdate = #{comppdate}
+			</if>
+		</where>
+	</select>
+	<!-- 根据公司id多表查询得到人事用户id -->
+	<select id="selectHrByUerId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select id from t_user
+		where companyid = #{companyid,jdbcType=INTEGER} and isdelete=0 and
+		isstatus=1
+		and dempid=(select id from t_demp where name = "人事部" and isdelete=0)
+		and positionid=(select id from t_position where name = "人事部主管" and
+		isdelete=0)
+
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.pj.pojo.User">
+		update t_user
+		set number = #{number,jdbcType=VARCHAR},
+		username = #{username,jdbcType=VARCHAR},
+		sex = #{sex,jdbcType=VARCHAR},
+		filenumber = #{filenumber,jdbcType=VARCHAR},
+		hiredate = #{hiredate,jdbcType=DATE},
+		phone = #{phone,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		identityproof = #{identityproof,jdbcType=VARCHAR},
+		regularpay = #{regularpay,jdbcType=VARCHAR},
+		probationpay = #{probationpay,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		dempid = #{dempid,jdbcType=INTEGER},
+		birthdate = #{birthdate,jdbcType=DATE},
+		pbspdate = #{pbspdate,jdbcType=DATE},
+		comppdate = #{comppdate,jdbcType=DATE},
+		iscompact = #{iscompact,jdbcType=INTEGER},
+		isnowtarget = #{isnowtarget,jdbcType=INTEGER},
+		leavedate = #{leavedate,jdbcType=DATE},
+		nation = #{nation,jdbcType=VARCHAR},
+		nativeplace = #{nativeplace,jdbcType=VARCHAR},
+		alnature = #{alnature,jdbcType=VARCHAR},
+		edubg = #{edubg,jdbcType=VARCHAR},
+		school = #{school,jdbcType=VARCHAR},
+		isfulltime = #{isfulltime,jdbcType=INTEGER},
+		depositbank = #{depositbank,jdbcType=VARCHAR},
+		bankcard = #{bankcard,jdbcType=VARCHAR},
+		contacts = #{contacts,jdbcType=VARCHAR},
+		rankid = #{rankid,jdbcType=INTEGER},
+		positionid = #{positionid,jdbcType=INTEGER},
+		postid = #{postid,jdbcType=INTEGER},
+		roleid = #{roleid,jdbcType=INTEGER},
+		<if test="isdelete != null">
+			isdelete = #{isdelete,jdbcType=INTEGER},
+		</if>
+		<if test="isstatus != null">
+			isstatus = #{isstatus,jdbcType=INTEGER},
+		</if>
+		companyid = #{companyid,jdbcType=INTEGER},
+		newsecurity = #{newsecurity,jdbcType=INTEGER},
+		issecurity = #{issecurity,jdbcType=INTEGER},
+		password = #{password,jdbcType=VARCHAR},
+		labelCompactType = #{labelcompacttype,jdbcType=INTEGER},
+		isregular = #{isregular,jdbcType=INTEGER},
+		ssoId = #{ssoId,jdbcType=INTEGER},
+		worktype = #{worktype,jdbcType=INTEGER},
+		regulardate = #{regularDate,jdbcType=DATE}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

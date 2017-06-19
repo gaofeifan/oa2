@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>民宿景点-中国民宿客栈网</title>
+<link href="css/dxk.css" rel="stylesheet" type="text/css" />
+<link href="css/msjd.css" rel="stylesheet" type="text/css" />
+<script src="./js/jquery.min.js"></script>
+<script src="./js/main.js"></script>
+<script type="text/javascript" src="js/jquery1.42.min.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript">        function collect(id,num){            //向后台发送处理数据            jQuery.ajax({                type: "POST", //用POST方式传输                dataType: "text", //数据格式:JSON                url: 'action_save.php', //目标地址                data: "collect=" + id,                error: function (XMLHttpRequest, textStatus, errorThrown) { alert(textStatus); },                success: function (msg){                    if(msg == 'collect_success'){                       alert("收藏成功！");                        window.location.href='msjd.php';                    }else if(msg == 'delete_success'){                        $('#collect'+id).removeClass('has_favorites');                    }else if(msg == 'no_login'){                        window.location.href='login.php';                    }                }            });        }    </script>
+</head>
+<body>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">	function qwe(){		if ($("#keywords").val()=='请输入关键字'){			alert('搜索不能为空！')			return false;		}	}	</script>
+	<style>
+.city {
+	padding: 5px;
+	width: auto;
+	position: absolute;
+	background: #fff;
+	top: 30px;
+	left: -30px;
+	display: none;
+}
+
+.city li a {
+	display: block;
+	width: 80px;
+	text-align: center;
+}
+
+.city li a:hover {
+	background: #13BF81;
+}
+
+.zixunw_left b {
+	position: relative;
+}
+
+.zixunw_left b:hover .city {
+	display: block;
+}
+</style>
+	<div class="duxk_hearch">
+		<div class="huanyingyu">
+			<div class="zixunw_left">
+				<span>欢迎您来到中国民宿客栈网！</span><b> </b> <b
+					style="margin-left: 10px; color: #E7E7E7;">[切换城市]
+					<ul class="city">
+						<li>
+							<!--<h4>中国</h4>--> <!-- <a href="#">北京</a>		                 <a href="#">上海</a>		                 <a href="#">杭州</a>		                 <a href="#">济南</a>		                 <a href="#">哈尔滨</a>		                 <a href="#">深圳</a>		                 <a href="#">武汉</a>-->
+							<a href="?quyu=180">北京市 <a href="?quyu=279">广东省深圳市 <a
+									href="?quyu=280">广东省广州市 <a href="?quyu=281">上海市 <a
+											href="?quyu=375">广东省韶关市 <a href="?quyu=376">广西省贺州市 <a
+													href="?quyu=377">海南省三亚市 <a href="?quyu=380">湖南省凤凰县
+															<a href="?quyu=381">江西省上饶市 <a href="?quyu=382">江西省婺源县
+																	<a href="?quyu=383">福建省永定市 <a href="?quyu=384">安徽省宏村
+																			<a href="?quyu=385">安徽省黄山市 <a href="?quyu=389">浙江省清凉峰
+																					<a href="?quyu=414">广东省惠州市 <a href="?quyu=415">广西省桂林市
+																							<a href="?quyu=461">云南省 </a>
+																							<div class="clear"></div>
+						</li>
+						</li>
+					</ul>
+				</b>
+				<form action="mskz.php" class="dux_form_001"
+					onsubmit="return qwe();">
+					<input id="keywords" name="keywords" type="text"
+						class="dxk_input_001" value="请输入关键字"
+						onfocus="if(this.value=='请输入关键字'){this.value=''}"
+						onblur="if(this.value==''){this.value='请输入关键字'}"><input
+						name="" type="submit" class="dxk_botton_001" value=" ">
+				</form>
+			</div>
+			<div class="zixunw_right">
+				<span>热线电话：400-0000-000</span> <a href="login.php">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
+					href="reg.php">注册</a> <a href="wjmm.php">找回密码</a><u></u><a href="#"></a>
+			</div>
+		</div>
+	</div>
+	<div class="duxk_top">
+		<span><a href="index.php"><img src="images/logo.png"
+				width="250" height="89" /></a></span>
+		<ul>
+			<li><a href="index.php">首页</a></li>
+			<li><a href="mskz.php">民宿客栈</a></li>
+			<li><a href="msjd.php" class="shouye_dqxg">民宿景点</a></li>
+			<li><a href="special.php">客栈美食</a></li>
+			<li><a href="dftc.php">地方特产</a></li>
+			<li><a href="msyp.php">民宿用品</a></li>
+			<li><a href="farm.php">生态农庄</a></li>
+			<li><a href="rlzy.php">信息发布</a></li>
+		</ul>
+	</div>
+	<div>
+		<a href="http://www.iminsu.com/mskz.php" target="_blank"><img
+			src="uploadfiles/20160329/201603291025092113.jpg " width="100%"></a>
+	</div>
+	<div class="blank12"></div>
+	</div>
+	<div class="bigbox">
+		<div class="position">
+			您现在的位置：<a href="">中国民宿客栈网</a> > <a href="special.php" class="active">民宿景点</a>
+		</div>
+		<div class="search" style="width: 100%; float: none;">
+			<img src="images/images/msjd_sa_03.jpg" />
+			<!--<div class="s_p" id="s_p">       <input type="text" placeholder=" 区域" /><span class="conters a1">       <ul>           <li><h4>中国</h4>                 <a href="#">北京</a>                 <a href="#">上海</a>                 <a href="#">深圳</a>                 <a href="#">武汉</a>                 <div class="clear"></div>           </li>           <li><h4>英国</h4>				 <a href="#">北京</a>                 <a href="#">上海</a>                 <a href="#">深圳</a>                 <a href="#">武汉</a>                 <div class="clear"></div>           </li>           <li><h4>英国</h4>				 <a href="#">北京</a>                 <a href="#">上海</a>                 <a href="#">深圳</a>                 <a href="#">武汉</a>                 <div class="clear"></div>           </li>           <li><h4>英国</h4>				 <a href="#">北京</a>                 <a href="#">上海</a>                 <a href="#">深圳</a>                 <a href="#">武汉</a>                 <div class="clear"></div>           </li>       </ul>     </span>     </div>-->
+			<div class="s_j">
+				<input type="text" placeholder=" 民宿景点" /><span class="conters a2">
+					<ul>
+						<li><h4>浙江省</h4> <a href="?jquyu=366">临安市</a>
+							<div class="clear"></div></li>
+						<li><h4>四川省</h4> <a href="?jquyu=335">九寨沟</a>
+							<div class="clear"></div></li>
+						<li><h4>福建省</h4> <a href="?jquyu=288">龙岩市</a>
+							<div class="clear"></div></li>
+						<li><h4>江西省</h4> <a href="?jquyu=291">婺源县</a> <a
+							href="?jquyu=394">上饶市</a>
+							<div class="clear"></div></li>
+						<li><h4>广东省</h4> <a href="?jquyu=368">广州市</a> <a
+							href="?jquyu=293">韶关市</a> <a href="?jquyu=292">惠州市</a> <a
+							href="?jquyu=294">深圳市</a>
+							<div class="clear"></div></li>
+						<li><h4>广西省</h4> <a href="?jquyu=290">桂林市</a>
+							<div class="clear"></div></li>
+						<li><h4>湖南省</h4> <a href="?jquyu=396">凤凰县</a>
+							<div class="clear"></div></li>
+					</ul>
+				</span>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!--大图轮播-->
+		<div class="falsh" id="falsh">
+			<ul class="list">
+				<li><a href="http://www.iminsu.com/" target="_blank"><img
+						src="uploadfiles/20151114/201511141516087292.jpg" /></a></li>
+				<li><a href="http://www.iminsu.com/" target="_blank"><img
+						src="uploadfiles/20151114/201511141516087292.jpg" /></a></li>
+				<li><a href="http://www.iminsu.com/" target="_blank"><img
+						src="uploadfiles/20151114/201511141516087292.jpg" /></a></li>
+			</ul>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<!--景点展示区-->
+		<div class="center">
+			<h2>
+				热门推荐<small>您想去哪里？</small>
+			</h2>
+			<ul>
+				<li><a href="msjd_xqy.php?id=285" class="a1"><img
+						src="uploadfiles/20160107/201601071113383140.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=285">深圳官湖海岸 
+						</p>
+						<p class="sma">
+							海边拾贝，打渔，海鲜，篝火晚会。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(285)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=367" class="a1"><img
+						src="uploadfiles/20160122/201601221056548106.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=367">永定土楼 
+						</p>
+						<p class="sma">
+							世界遗产名录。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(367)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=310" class="a1"><img
+						src="uploadfiles/20160115/201601151651592933.png" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=310">韶关丹霞山 
+						</p>
+						<p class="sma">
+							红石公园<a class="like"><img src="images/images/mskz_sa_11.jpg"
+								onclick="collect(310)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=309" class="a1"><img
+						src="uploadfiles/20160115/201601151642362506.png" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=309">增城白水寨 
+						</p>
+						<p class="sma">
+							瀑布<a class="like"><img src="images/images/mskz_sa_11.jpg"
+								onclick="collect(309)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=375" class="a1"><img
+						src="uploadfiles/20160122/201601221413348577.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=375">惠州双月湾 
+						</p>
+						<p class="sma">
+							南海渔港风光。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(375)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=373" class="a1"><img
+						src="uploadfiles/20160122/201601221351496114.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=373">凤凰古城 
+						</p>
+						<p class="sma">
+							吊脚木楼<a class="like"><img src="images/images/mskz_sa_11.jpg"
+								onclick="collect(373)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=370" class="a1"><img
+						src="uploadfiles/20160122/201601221145355313.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=370">三清山 
+						</p>
+						<p class="sma">
+							道教名山，风景秀丽。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(370)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=369" class="a1"><img
+						src="uploadfiles/20160122/201601221129417340.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=369">婺源 
+						</p>
+						<p class="sma">
+							古建筑，油菜花，傩舞。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(369)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=366" class="a1"><img
+						src="uploadfiles/20160122/201601221030528695.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=366">浙西大峡谷 
+						</p>
+						<p class="sma">
+							大峡谷漂流<a class="like"><img src="images/images/mskz_sa_11.jpg"
+								onclick="collect(366)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=312" class="a1"><img
+						src="uploadfiles/20160115/201601151723325248.jpg" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=312">桂林阳朔 
+						</p>
+						<p class="sma">
+							阳朔山水甲桂林。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(312)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=297" class="a1"><img
+						src="uploadfiles/20160108/201601081751585621.png" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=297">深圳较场尾 
+						</p>
+						<p class="sma">
+							专对文艺青年的味~<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(297)">喜欢</a>
+						</p>
+					</div></li>
+				<li><a href="msjd_xqy.php?id=311" class="a1"><img
+						src="uploadfiles/20160115/201601151706524459.png" width="371px"
+						height="225px"></a>
+					<div>
+						<p>
+							<a href="msjd_xqy.php?id=311">惠州巽寮湾 
+						</p>
+						<p class="sma">
+							面朝大海，春暖花开。<a class="like"><img
+								src="images/images/mskz_sa_11.jpg" onclick="collect(311)">喜欢</a>
+						</p>
+					</div></li>
+			</ul>
+		</div>
+		<!--翻页-->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<div class="page_box">
+				<div class="page">
+					<ol>
+						<li><a href="?page=1" class="next"><|</a></li>
+						<li><a href="#" class="next"><</a></li>
+						<li><a href="?page=1" class="p_active">1</a></li>
+						<li><a href="?page=2" class="">2</a></li>
+						<form method="get" action="">
+							<input name="page" value="" type="text"><span>/2页</span>
+						</form>
+						<iframe name="tempFrame" id="tempFrame" style="display: none;"></iframe>
+						<li><a href="?page=2" class="next">＞</a></li>
+						<li><a href="?page=2" class="next">＞|</a></li>
+					</ol>
+				</div>
+			</div>
+	</div>
+	<!--footer-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<div class="footer">
+			<div class="footer_wap">
+				<p>
+					<a href="gywm.php">关于我们</a> | <a href="cpyc.php">诚聘英才</a> | <a
+						href="yqlj.php">友情链接</a> | <a href="ggyw.php">广告业务</a> | <a
+						href="mszx.php">民宿资讯</a>
+				</p>
+				<p>地址：深圳市南山区学府路软件产业基地4栋B座511室 | 服务热线：89303865 | 在线QQ：909855954 |
+					E-mail： fangle@duxingke.com</p>
+				<p>
+					备案号：<a href="http://www.miitbeian.gov.cn" target="_blank">粤ICP备15076954号-2</a>
+				</p>
+			</div>
+		</div>
+		</div>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script>function MM_over(mmObj) {	var mSubObj = mmObj.getElementsByTagName("div")[0];	mSubObj.style.display = "block";}function MM_out(mmObj) {	var mSubObj = mmObj.getElementsByTagName("div")[0];	mSubObj.style.display = "none";	}</script>
+		<div class="fuchuang_01">
+			<div class="diyige_001">
+				<a
+					href="http://wpa.qq.com/msgrd?v=3&uin=3330953870&site=qq&menu=yes"><p>在线客服</p></a>
+			</div>
+			<div class="diyige_001" onmouseover="MM_over(this)"
+				onmouseout="MM_out(this)" style="cursor: pointer;">
+				<img src="images/yz_dxk_35.jpg" />
+				<p>扫一扫关注我们</p>
+				<div class="duli_yichu">
+					<img src="uploadfiles/20151130/201511301114007993.jpg"><span>扫一扫有优惠</span>
+				</div>
+			</div>
+			<!--图片轮播-->
+			<script type="text/javascript" src="js/js.js"></script>
+</body>
+</html>

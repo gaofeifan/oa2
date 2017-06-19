@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script src="http://10.0.0.208:8080/oa/res/js/jquery-1.8.3.js" type="text/javascript"></script>
+<script src="http://10.0.0.208:8080/oa/res/common/js/jquery.js" type="text/javascript"></script>
+<script src="http://10.0.0.208:8080/oa/res/js/echarts.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<div style="padding:10px;clear: both;">  
+	    <div id="psLine" style="height:600px;"></div>  
+	</div>  
+</body>
+
+<script type="text/javascript">
+	var myChart = echarts.init(document.getElementById('psLine'));
+/* 	loadDrugs();  */ 
+	var options = myChart.getOption();
+	function loadDrugs() { 
+		myChart.clear();
+		myChart.showLoading({text: '正在努力的读取数据中...'});  
+		$.ajax({
+			type:'get',
+			url:'http://10.0.0.208:8080/oa/echarts/get.do',
+			success:function(data){
+				var obj = eval("("+data+")")
+				var option = obj.options[0];
+			    options.title = option.title;
+			    alert(option.title.text);
+				options.tooltip = option.tooltip;
+				options.legend = option.legend;
+				options.series[0]   = option.series[0];   
+				myChart.hideLoading();
+				myChart.setOption(options,true);
+			}
+		})
+	}
+		
+	/* 	$.get("http://10.0.0.208:8080/oa/echarts/get.do", null,  function(data){
+			var option = eval(data);
+			alert(option);
+				myChart.setOption(data.option,true);
+				myChart.hideLoading();
+		} ); 
+	}
+/*  option = {
+		    title : {
+		        text: '公司男女比例',
+		        subtext: '测试使用',
+		        x:'center'
+		    },
+		    tooltip : {
+		        trigger: 'item',
+		        formatter: "{a} <br/>{b} : {c} ({d}%)"
+		    },
+		    legend: {
+		        orient : 'vertical',
+		        x : 'left',
+		        data:['男','女','其他']
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            mark : {show: true},
+		            dataView : {show: true, readOnly: false},
+		            magicType : {
+		                show: true, 
+		                type: ['pie', 'funnel'],
+		                option: {
+		                    funnel: {
+		                        x: '25%',
+		                        width: '50%',
+		                        funnelAlign: 'left',
+		                        max: 1548
+		                    }
+		                }
+		            },
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    calculable : true,
+		    series : [
+		        {
+		            name:'比例计算',
+		            type:'pie',
+		            radius : '55%',
+		            center: ['50%', '60%'],
+		            data:[
+		                {value:121, name:'男'},
+		                {value:110, name:'女'},
+		                {value:0, name:'其他'}
+		            ]
+		        }
+		    ]
+		};   	alert(option)
+		*/
+		
+		  
+		     option=   {
+		            "title": {
+		                "text": "公司性别比例",
+		                "subtext": "测试",
+		                "x": "center"
+		            },
+		            "tooltip": {
+		                "trigger": "item",
+		                "formatter": "{a} <br/>{b} : {c} ({d}%)"
+		            },
+		            "legend": {
+		                "orient": "vertical",
+		                "data": [
+		                    "男",
+		                    "女",
+		                    "其他"
+		                ],
+		                "left": "left"
+		            },
+		            "series": [
+		                {
+		                    "center": [
+		                        "40%",
+		                        "60%"
+		                    ],
+		                    "radius": "55%",
+		                    "name": "男女比例",
+		                    "type": "pie",
+		                    "itemStyle": {
+		                        "emphasis": {
+		                            "shadowBlur": 10,
+		                            "shadowColor": "rgba(0, 0, 0, 0.5)",
+		                            "shadowOffsetX": 0
+		                        }
+		                    },
+		                    "label": {
+		                        "normal": {}
+		                    },
+		                    "data": [
+		                            {
+		                                "name": "男",
+		                                "value": 155
+		                            },
+		                            {
+		                                "name": "女",
+		                                "value": 99
+		                            },
+		                            {
+		                                "name": "其他",
+		                                "value": 0
+		                            }
+		                    ]
+		                }
+		            ]
+		        }
+		    
+		
+ 		myChart.setOption(option);  
+		
+ 	
+</script>
+</html>
