@@ -1,5 +1,6 @@
 package com.pj.flow.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -21,46 +22,55 @@ public class FlowUserApplication {
 	/**
 	 * 	申请人id
 	 */
+	@Column
 	private Integer userId;
 	
 	/**
 	 * 	申请表id
 	 */
+	@Column
 	private Integer fromId;
 	
 	/**
 	 * 	申请类型
 	 */
+	@Column
 	private Integer applicationId;
 	
 	/**
 	 * 	申请人姓名
 	 */
+	@Column
 	private String applicant;
 	
 	/**
 	 * 	申请人部门
 	 */
+	@Column
 	private String applicantDempName;
 	
 	/**
 	 * 	申请时间
 	 */
+	@Column
 	private String applicationTime;
 	
 	/**
 	 * 	职位名称
 	 */
+	@Column
 	private String applicantPostName;
 
 	/**
 	 * 	表单中具体的人员
 	 */
+	@Column
 	private String username;
 	
 	/**
 	 * 	申请单号
 	 */
+	@Column
 	private String applicantNumber;
 
 	public Integer getId() {
