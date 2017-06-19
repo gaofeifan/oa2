@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.mapper.UserMapper">
-	<resultMap id="BaseResultMap" type="com.pj.pojo.User">
+<mapper namespace="com.pj.system.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.pj.system.pojo.User">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="number" property="number" jdbcType="VARCHAR" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
@@ -151,7 +151,7 @@
 		</if>
 	</sql>
 	<select id="findUserByDempNameAndCompanyIdAndPositionName"
-		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		parameterType="com.pj.system.pojo.User" resultMap="BaseResultMap">
 		SELECT
 		u.*
 		FROM
@@ -173,7 +173,7 @@
 		AND u.isstatus = 1
 	</select>
 	<select id="findUserListByCondition" resultMap="BaseResultMap"
-		parameterType="com.pj.pojo.User">
+		parameterType="com.pj.system.pojo.User">
 		SELECT
 		u.*, d. NAME dempname,
 		c. NAME companyname,
@@ -271,7 +271,7 @@
 	</select>
 
 	<select id="findUserByCompanyIdAndDempNameAndPositionIdAndPostId"
-		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		resultMap="BaseResultMap" parameterType="com.pj.system.pojo.User">
 		SELECT
 		u.*
 		FROM
@@ -297,7 +297,7 @@
 	</select>
 
 	<select id="findUserByCompanyIdAndDempIdAndPositionId"
-		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		resultMap="BaseResultMap" parameterType="com.pj.system.pojo.User">
 		SELECT
 		u.*
 		FROM
@@ -319,7 +319,7 @@
 		AND u.isstatus = 1
 	</select>
 	<select id="findUserByCompanyIdAndDempNameAndPositionId"
-		resultMap="BaseResultMap" parameterType="com.pj.pojo.User">
+		resultMap="BaseResultMap" parameterType="com.pj.system.pojo.User">
 		SELECT
 		u.*
 		FROM
@@ -341,7 +341,7 @@
 		AND u.isstatus = 1
 	</select>
 	<select id="findUserByCompanyAndDempAndPositionAndPost"
-		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		parameterType="com.pj.system.pojo.User" resultMap="BaseResultMap">
 		SELECT
 		u.*
 		FROM
@@ -368,7 +368,7 @@
 
 
 	<select id="findUserByDempNameAndCompanyIdAndPost"
-		parameterType="com.pj.pojo.User" resultMap="BaseResultMap">
+		parameterType="com.pj.system.pojo.User" resultMap="BaseResultMap">
 		SELECT
 		u.*
 		FROM
@@ -390,7 +390,7 @@
 	</select>
 
 
-	<select id="pageQuery2" parameterType="com.pj.pojo.User"
+	<select id="pageQuery2" parameterType="com.pj.system.pojo.User"
 		resultMap="BaseResultMap">
 		SELECT
 		u.id id,
@@ -490,7 +490,7 @@
 		LIMIT #{startRow},#{pageSize}
 	</select>
 
-	<select id="pageQuery" parameterType="com.pj.pojo.User"
+	<select id="pageQuery" parameterType="com.pj.system.pojo.User"
 		resultMap="BaseResultMap">
 		SELECT
 		u.id id,
@@ -595,7 +595,7 @@
 		</where>
 
 	</select>
-	<select id="selectUserCount" parameterType="com.pj.pojo.User"
+	<select id="selectUserCount" parameterType="com.pj.system.pojo.User"
 		resultType="int">
 		SELECT
 		COUNT(*)
@@ -643,7 +643,7 @@
 
 
 	<select id="selectByDate" resultMap="BaseResultMap"
-		parameterType="com.pj.pojo.User">
+		parameterType="com.pj.system.pojo.User">
 		select
 		user.*, puser.id as leaderid, position.name as positionname, demp.name as
 		dempname, company.name as companyname
@@ -677,7 +677,7 @@
 
 	</select>
 
-	<update id="updateByPrimaryKey" parameterType="com.pj.pojo.User">
+	<update id="updateByPrimaryKey" parameterType="com.pj.system.pojo.User">
 		update t_user
 		set number = #{number,jdbcType=VARCHAR},
 		username = #{username,jdbcType=VARCHAR},

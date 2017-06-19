@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.mapper.FindrecordMapper" >
-  <resultMap id="BaseResultMap" type="com.pj.pojo.Findrecord" >
+<mapper namespace="com.pj.system.mapper.FindrecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.system.pojo.Findrecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
   </resultMap>
@@ -71,7 +71,7 @@
       ${fields}
     </if>
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pj.pojo.FindrecordQuery" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.FindrecordQuery" >
     select
     <if test="distinct" >
       distinct
@@ -98,17 +98,17 @@
     delete from tp_findrecord
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.pj.pojo.FindrecordQuery" >
+  <delete id="deleteByExample" parameterType="com.pj.system.pojo.FindrecordQuery" >
     delete from tp_findrecord
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.pj.pojo.Findrecord" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.pj.system.pojo.Findrecord" useGeneratedKeys="true" keyProperty="id">
     insert into tp_findrecord (id, userid)
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.pj.pojo.Findrecord" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.pj.system.pojo.Findrecord" useGeneratedKeys="true" keyProperty="id">
     insert into tp_findrecord
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -127,7 +127,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.pj.pojo.FindrecordQuery" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.pj.system.pojo.FindrecordQuery" resultType="java.lang.Integer" >
     select count(*) from tp_findrecord
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -155,7 +155,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pj.pojo.Findrecord" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pj.system.pojo.Findrecord" >
     update tp_findrecord
     <set >
       <if test="userid != null" >
@@ -164,7 +164,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pj.pojo.Findrecord" >
+  <update id="updateByPrimaryKey" parameterType="com.pj.system.pojo.Findrecord" >
     update tp_findrecord
     set userid = #{userid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

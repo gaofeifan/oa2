@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.mapper.UserApplyMapper" >
-  <resultMap id="BaseResultMap" type="com.pj.pojo.UserApply" >
+<mapper namespace="com.pj.system.mapper.UserApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.system.pojo.UserApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
     <result column="applyid" property="applyid" jdbcType="INTEGER" />
@@ -22,7 +22,7 @@
     id, userid, applyid, type, applyName, username, applyDempName, applyDate, applyPositionName
   </sql>
   <!-- 查询用户请假意见为驳回到申请人 -->
-  <select id="findUserLeaveRejected" parameterType="com.pj.pojo.UserApply" resultType="com.pj.pojo.UserApply">
+  <select id="findUserLeaveRejected" parameterType="com.pj.system.pojo.UserApply" resultType="com.pj.system.pojo.UserApply">
 	SELECT
 			ua.id,
 			appgroup.applynumber,
@@ -75,7 +75,7 @@
   </select>
 
 
-  <select id="selectMyApplyByQuery" resultMap="BaseResultMap" parameterType="com.pj.pojo.UserApply" >
+  <select id="selectMyApplyByQuery" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.UserApply" >
 	SELECT
 		app.id,
 		app.applynumber,
@@ -149,7 +149,7 @@
 		ORDER BY app.checkstatus DESC,ua.applyDate DESC,ua.applynumber DESC
 	</where>
   </select>
-  <select id="selectCountInfo" resultMap="BaseResultMap" parameterType="com.pj.pojo.UserApply" >
+  <select id="selectCountInfo" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.UserApply" >
 		SELECT 
 			tpa.applynumber applynumber
 		FROM
@@ -185,14 +185,14 @@
     delete from user_apply
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.pj.pojo.UserApply" >
+  <insert id="insert" parameterType="com.pj.system.pojo.UserApply" >
     insert into user_apply (id, userid, applyid, 
       type, applyName, username, applyDempName, applyDate, applyPositionName)
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, 
       #{type,jdbcType=VARCHAR}, #{applyName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{applyDempName,jdbcType=VARCHAR}, 
       #{applyDate,jdbcType=TIMESTAMP}, #{applyPositionName,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pj.pojo.UserApply" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.pj.system.pojo.UserApply" useGeneratedKeys="true" keyProperty="id" >
     insert into user_apply
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -259,7 +259,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pj.pojo.UserApply" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pj.system.pojo.UserApply" >
     update user_apply
     <set >
       <if test="userid != null" >
@@ -289,7 +289,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pj.pojo.UserApply" >
+  <update id="updateByPrimaryKey" parameterType="com.pj.system.pojo.UserApply" >
       update user_apply
     set userid = #{userid,jdbcType=INTEGER},
       applyid = #{applyid,jdbcType=INTEGER},

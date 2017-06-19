@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.mapper.RecordMapper" >
-  <resultMap id="BaseResultMap" type="com.pj.pojo.Record" >
+<mapper namespace="com.pj.system.mapper.SystemRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.system.pojo.SystemRole" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="handledate" property="handledate" jdbcType="DATE" />
-    <result column="messageid" property="messageid" jdbcType="INTEGER" />
+    <result column="roleid" property="roleid" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
-    <result column="isfind" property="isfind" jdbcType="INTEGER" />
+    <result column="terrace" property="terrace" jdbcType="VARCHAR" />
+    <result column="role_name" property="rolename" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,22 +68,19 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, name, content, handledate, messageid, userid, isfind
+      id, roleid, userid, terrace, role_name
     </if>
     <if test="fields != null" >
       ${fields}
     </if>
   </sql>
-  <select id="findRecordsBymessageId" resultMap="BaseResultMap" parameterType="int">
-  	SELECT  id, name, content, handledate, messageid, userid, isfind from el_record where messageid = #{messageid}
-  </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pj.pojo.RecordQuery" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.SystemRoleQuery" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from el_record
+    from t_system_role
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -98,106 +93,86 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    id,name,content,handledate,messageid,userid,isfind
-    from el_record
+    id,roleid,userid,terrace,role_name
+    from t_system_role
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from el_record
+    delete from t_system_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.pj.pojo.RecordQuery" >
-    delete from el_record
+  <delete id="deleteByExample" parameterType="com.pj.system.pojo.SystemRoleQuery" >
+    delete from t_system_role
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.pj.pojo.Record" >
-    insert into el_record (id, name, content, 
-      handledate, messageid, userid, 
-      isfind)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{handledate,jdbcType=DATE}, #{messageid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
-      #{isfind,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.pj.system.pojo.SystemRole" >
+    insert into t_system_role (id, roleid, userid, 
+      terrace, role_name)
+    values (#{id,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{terrace,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pj.pojo.Record" >
-    insert into el_record
+  <insert id="insertSelective" parameterType="com.pj.system.pojo.SystemRole" >
+    insert into t_system_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="handledate != null" >
-        handledate,
-      </if>
-      <if test="messageid != null" >
-        messageid,
+      <if test="roleid != null" >
+        roleid,
       </if>
       <if test="userid != null" >
         userid,
       </if>
-      <if test="isfind != null" >
-        isfind,
+      <if test="terrace != null" >
+        terrace,
+      </if>
+      <if test="rolename != null" >
+        role_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="handledate != null" >
-        #{handledate,jdbcType=DATE},
-      </if>
-      <if test="messageid != null" >
-        #{messageid,jdbcType=INTEGER},
+      <if test="roleid != null" >
+        #{roleid,jdbcType=INTEGER},
       </if>
       <if test="userid != null" >
         #{userid,jdbcType=INTEGER},
       </if>
-      <if test="isfind != null" >
-        #{isfind,jdbcType=INTEGER},
+      <if test="terrace != null" >
+        #{terrace,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.pj.pojo.RecordQuery" resultType="java.lang.Integer" >
-    select count(*) from el_record
+  <select id="countByExample" parameterType="com.pj.system.pojo.SystemRoleQuery" resultType="java.lang.Integer" >
+    select count(*) from t_system_role
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update el_record
+    update t_system_role
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.handledate != null" >
-        handledate = #{record.handledate,jdbcType=DATE},
-      </if>
-      <if test="record.messageid != null" >
-        messageid = #{record.messageid,jdbcType=INTEGER},
+      <if test="record.roleid != null" >
+        roleid = #{record.roleid,jdbcType=INTEGER},
       </if>
       <if test="record.userid != null" >
         userid = #{record.userid,jdbcType=INTEGER},
       </if>
-      <if test="record.isfind != null" >
-        isfind = #{record.isfind,jdbcType=INTEGER},
+      <if test="record.terrace != null" >
+        terrace = #{record.terrace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rolename != null" >
+        role_name = #{record.rolename,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -205,50 +180,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update el_record
+    update t_system_role
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
-      handledate = #{record.handledate,jdbcType=DATE},
-      messageid = #{record.messageid,jdbcType=INTEGER},
+      roleid = #{record.roleid,jdbcType=INTEGER},
       userid = #{record.userid,jdbcType=INTEGER},
-      isfind = #{record.isfind,jdbcType=INTEGER}
+      terrace = #{record.terrace,jdbcType=VARCHAR},
+      role_name = #{record.rolename,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pj.pojo.Record" >
-    update el_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.pj.system.pojo.SystemRole" >
+    update t_system_role
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="handledate != null" >
-        handledate = #{handledate,jdbcType=DATE},
-      </if>
-      <if test="messageid != null" >
-        messageid = #{messageid,jdbcType=INTEGER},
+      <if test="roleid != null" >
+        roleid = #{roleid,jdbcType=INTEGER},
       </if>
       <if test="userid != null" >
         userid = #{userid,jdbcType=INTEGER},
       </if>
-      <if test="isfind != null" >
-        isfind = #{isfind,jdbcType=INTEGER},
+      <if test="terrace != null" >
+        terrace = #{terrace,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        role_name = #{rolename,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pj.pojo.Record" >
-    update el_record
-    set name = #{name,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      handledate = #{handledate,jdbcType=DATE},
-      messageid = #{messageid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.pj.system.pojo.SystemRole" >
+    update t_system_role
+    set roleid = #{roleid,jdbcType=INTEGER},
       userid = #{userid,jdbcType=INTEGER},
-      isfind = #{isfind,jdbcType=INTEGER}
+      terrace = #{terrace,jdbcType=VARCHAR},
+      role_name = #{rolename,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

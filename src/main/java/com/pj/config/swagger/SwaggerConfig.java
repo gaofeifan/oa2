@@ -13,12 +13,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableWebMvc  
 @EnableSwagger2
-@Component
 public class SwaggerConfig {
 	   @Bean  
 	   public Docket customDocket(){  
 	      return new Docket(DocumentationType.SWAGGER_2).select()
-		            .apis(RequestHandlerSelectors.basePackage("com.pj.controller"))
+		            .apis(RequestHandlerSelectors.basePackage("com.pj.*.controller"))
 		            .build();  
 	  
 	   }  
