@@ -12,10 +12,8 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PositionMapper;
 import com.pj.system.pojo.Position;
-import com.pj.system.pojo.Post;
 import com.pj.system.pojo.User;
 import com.pj.system.service.PositionService;
-import com.pj.system.service.PostService;
 import com.pj.system.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;

@@ -37,7 +37,7 @@ import net.sf.json.JSONObject;
 public class HttpClienTool {
 
 	private static final Logger logger = LoggerFactory.getLogger(HttpClienTool.class);
-	public static JSONObject doPost(String url,Object obj){
+	public static JSONObject doPostToBase(String url,Object obj){
 	    CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 	    HttpPost post = new HttpPost(url);
 	    JSONObject response = null;
@@ -80,6 +80,50 @@ public class HttpClienTool {
 			}
 		}
 	    return response;
+	}
+	
+	public static JSONObject doPostToMap(String url,Map<String,Object> map){
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		HttpPost post = new HttpPost(url);
+		JSONObject response = null;
+		CloseableHttpResponse res = null;
+		try {
+			// 构建请求配置信息
+			RequestConfig config = RequestConfig.custom().setConnectTimeout(10000) // 创建连接的最长时间
+					.setConnectionRequestTimeout(10000) // 从连接池中获取到连接的最长时间
+					.setSocketTimeout(10 * 10000) // 数据传输的最长时间
+					.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
+					.build();
+			// 设置请求配置信息
+			post.setConfig(config);
+			// 模拟浏览器访问，加入浏览器的信息到header
+			post.setHeader(
+					"User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+			List<NameValuePair> params = getUrlParams(map);
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(params, "UTF-8");
+			post.setEntity(formEntity);
+			res = httpclient.execute(post);
+			if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+				String result = EntityUtils.toString(res.getEntity());// 返回json格式：
+				response = JSONObject.fromObject(result);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		} finally {
+			// 关闭连接 ,释放资源
+			try {
+				if(httpclient != null){
+					httpclient.close();
+				}
+				if(res != null){
+					res.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return response;
 	}
 
 	public static JSONObject doGet(String url, Map<String, Object> map) {

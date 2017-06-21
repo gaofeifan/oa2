@@ -455,8 +455,7 @@ public class User implements Serializable {
 	 */
 	@Transient
 	private List<WorkExperience> workExperiences;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}

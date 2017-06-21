@@ -3,6 +3,7 @@ package com.pj.system.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
-import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.PostService;
