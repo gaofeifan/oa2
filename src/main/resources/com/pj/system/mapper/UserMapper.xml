@@ -27,7 +27,6 @@
 		<result column="contract_period" property="contractPeriod" jdbcType="INTEGER" />
 		<result column="leavedate" property="leavedate" jdbcType="DATE" />
 		<result column="probation" property="probation" jdbcType="INTEGER" />
-		<result column="regulardate" property="regulardate" jdbcType="DATE" />
 		<result column="apply_regular_date" property="applyRegularDate" jdbcType="DATE" />
 		<result column="contract_start_time" property="contractStartTime" jdbcType="DATE" />
 		<result column="contract_stop_time" property="contractStopTime" jdbcType="DATE" />
@@ -85,7 +84,6 @@
 		<result column="u.contract_period" property="contractPeriod" jdbcType="INTEGER" />
 		<result column="u.leavedate" property="leavedate" jdbcType="DATE" />
 		<result column="u.probation" property="probation" jdbcType="INTEGER" />
-		<result column="u.regulardate" property="regulardate" jdbcType="DATE" />
 		<result column="u.apply_regular_date" property="applyRegularDate" jdbcType="DATE" />
 		<result column="u.contract_start_time" property="contractStartTime" jdbcType="DATE" />
 		<result column="u.contract_stop_time" property="contractStopTime" jdbcType="DATE" />

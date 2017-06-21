@@ -3,31 +3,19 @@
 <mapper  namespace="com.pj.system.mapper.AccountMapper">
 	  <resultMap id="BaseResultMap" type="com.pj.system.pojo.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="VARCHAR" />
     <result column="filenumber" property="filenumber" jdbcType="VARCHAR" />
     <result column="hiredate" property="hiredate" jdbcType="DATE" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="identityproof" property="identityproof" jdbcType="VARCHAR" />
-    <result column="regularpay" property="regularpay" jdbcType="VARCHAR" />
-    <result column="probationpay" property="probationpay" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="dempid" property="dempid" jdbcType="INTEGER" />
     <result column="birthdate" property="birthdate" jdbcType="DATE" />
-    <result column="pbspdate" property="pbspdate" jdbcType="DATE" />
-    <result column="comppdate" property="comppdate" jdbcType="DATE" />
-    <result column="iscompact" property="iscompact" jdbcType="INTEGER" />
-    <result column="isnowtarget" property="isnowtarget" jdbcType="INTEGER" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="leavedate" property="leavedate" jdbcType="DATE" />
     <result column="nation" property="nation" jdbcType="VARCHAR" />
     <result column="nativeplace" property="nativeplace" jdbcType="VARCHAR" />
     <result column="alnature" property="alnature" jdbcType="VARCHAR" />
-    <result column="edubg" property="edubg" jdbcType="VARCHAR" />
     <result column="school" property="school" jdbcType="VARCHAR" />
-    <result column="isfulltime" property="isfulltime" jdbcType="INTEGER" />
-    <result column="depositbank" property="depositbank" jdbcType="VARCHAR" />
     <result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
     <result column="contacts" property="contacts" jdbcType="VARCHAR" />
     <result column="rankid" property="rankid" jdbcType="INTEGER" />
@@ -35,11 +23,8 @@
     <result column="postid" property="postid" jdbcType="INTEGER" />
     <result column="roleid" property="roleid" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
-    <result column="isstatus" property="isstatus" jdbcType="INTEGER" />
     <result column="companyid" property="companyid" jdbcType="INTEGER" />
     <result column="newsecurity" property="newsecurity" jdbcType="INTEGER" />
-    <result column="issecurity" property="issecurity" jdbcType="INTEGER" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
    
     
   </resultMap>
