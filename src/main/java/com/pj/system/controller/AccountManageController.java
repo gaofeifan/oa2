@@ -110,10 +110,5 @@ public class AccountManageController  extends BaseController{
 		map.put("user", user);
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
-	
-
-
-
-
 
 }

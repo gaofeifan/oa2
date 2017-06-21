@@ -1,7 +1,9 @@
 
 package com.pj.system.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,15 +15,23 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.pojo.page.Pagination;
+import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.config.base.tool.HttpClienTool;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
 import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.FamilyMember;
 import com.pj.system.pojo.User;
+import com.pj.system.pojo.WorkExperience;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
+import com.pj.system.service.FamilyMemberService;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.UserService;
+import com.pj.system.service.WorkExperienceService;
+
+import net.sf.json.JSONObject;
 
 @Transactional
 @Service
@@ -39,12 +49,58 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private CompanyService companyService;
 	@Resource
 	private DempService dempService;
-	
+	@Resource
+	private ManageProperties manageProperties;
+	@Resource 
+	private FamilyMemberService familyMemberService;
+	@Resource
+	private WorkExperienceService workExperienceService;
 	@Override
 	public MyMapper<User> getMapper() {
 		return userMapper;
 	}
 	
+	
+	
+	@Override
+	public int insertSelective(User t) {
+		Integer ssoId = saveSSOSystem(t);
+		if(ssoId != null){
+			int i = insertSelective(updateUserByEntryFrom(t));
+			//	保存家庭成员
+			List<FamilyMember> members = t.getFamilyMembers();
+			members.stream().forEach(member -> member.setUserId(t.getId()));
+			members.stream().forEach(familyMember -> this.familyMemberService.insertSelective(familyMember));
+			//	保存工作经历
+			List<WorkExperience> workExperiences = t.getWorkExperiences();
+			workExperiences.stream().forEach(workExperience -> workExperience.setUserId(t.getId()));
+			workExperiences.stream().forEach(workExperience -> this.workExperienceService.insertSelective(workExperience));
+			//	关联薪资
+			
+			return i;
+		}
+		return 0;
+	}
+
+
+	@Override
+	public int updateByPrimaryKeySelective(User user) {
+		//	更新家庭成员
+		user.getFamilyMembers().stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
+		//	更新工作经历
+		user.getWorkExperiences().stream().forEach(workExperience -> this.workExperienceService.updateByPrimaryKeySelective(workExperience));
+		User u = this.selectByPrimaryKey(user.getId());
+		if(!user.getUsername().equals(u.getUsername()) ||  
+		   !user.getCompanyEmail().equals(u.getCompanyEmail()) ||
+		   !user.getOpenid().equals(u.getOpenid()) ||
+		   !user.getPhone().equals(u.getPhone())){
+			updateSSOSystem(user);
+		}
+		return super.updateByPrimaryKeySelective(user);
+	}
+
+
+
 	/**
 	 * 	更新(报价系统)
 	 */
@@ -52,7 +108,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	public void updateUserBJ(User user) {
 		this.userMapper.updateByPrimaryKeySelective(user);
 	}
-
 	
 	/**
 	 * 	通过条件查询用户
@@ -118,7 +173,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		}
 		Page<User> page = PageHelper.startPage(Pagination.cpn(pageNo), 10, true);
 		List<User> pageQuery = this.userMapper.pageQuery(user);
-		List<User> result = page.getResult();
 		return new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), pageQuery);
 	}
 
@@ -136,4 +190,43 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		}
 		return user;
 	}
+	
+	/**
+	 * 	同步到sso系统并返回ssoid
+	 *	@author 	GFF
+	 *	@date		2017年6月21日上午9:48:51	
+	 * 	@param t
+	 * 	@return
+	 */
+	private Integer saveSSOSystem(User t) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("username", t.getUsername());
+		map.put("email", t.getCompanyEmail());
+		map.put("phone", t.getPhone());
+		JSONObject doGet = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
+		if(doGet.isEmpty()){
+			return null;
+		}
+		return Integer.decode(doGet.getString("id"));
+	}
+
+	/**
+	 * 	更新sso系统
+	 *	@author 	GFF
+	 *	@date		2017年6月21日上午11:04:29	
+	 * 	@param user
+	 */
+	private void updateSSOSystem(User user) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("username", user.getUsername());
+		map.put("email", user.getCompanyEmail());
+		map.put("phone", user.getPhone());
+		map.put("id", user.getSsoId());
+		map.put("openid", user.getOpenid());
+		JSONObject jsonObject = HttpClienTool.doPostToMap(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
+	}
+	private User updateUserByEntryFrom(User t) {
+		return t;
+	}
+
 }
