@@ -15,12 +15,4 @@ public interface PostMapper extends MyMapper<Post>{
 	 */
 	List<Post> selectALL(Post post);
 
-	/**
-	 * 	根据职位查询岗位
-	 *	@author 	GFF
-	 *	@date		2017年4月11日下午3:24:47	
-	 * 	@param positionId
-	 * 	@return
-	 */
-	List<Post> selectByPositionId(Integer positionId);
 }

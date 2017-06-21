@@ -3,6 +3,7 @@ package com.pj.system.pojo;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -45,6 +46,7 @@ public class Demp implements Serializable {
      * id
      */
 	@Id
+	@GeneratedValue(generator = "JDBC")
 	@ApiModelProperty(value = "id", required = false)
     private Integer id;
 

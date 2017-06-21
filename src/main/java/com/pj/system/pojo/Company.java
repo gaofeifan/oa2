@@ -3,6 +3,7 @@ package com.pj.system.pojo;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Table(name = "t_company")
 public class Company implements Serializable {
     @Id
+    @GeneratedValue(generator = "JDBC")
 	private Integer id;
 
     /**

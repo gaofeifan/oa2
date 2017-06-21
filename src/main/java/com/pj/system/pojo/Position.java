@@ -3,6 +3,7 @@ package com.pj.system.pojo;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,6 +14,7 @@ public class Position implements Serializable {
      * 职位id
      */
 	@Id
+	@GeneratedValue(generator = "JDBC")
 	@ApiModelProperty(value = "职位id", required = false)
     private Integer id;
 

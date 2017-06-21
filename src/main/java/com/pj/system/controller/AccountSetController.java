@@ -51,7 +51,7 @@ public class AccountSetController {
 		
 		User user = accountService.findByName(email);
 		map.put("phone", user.getPhone());
-		map.put("email", user.getEmail());
+		map.put("email", user.getCompanyEmail());
 		map.put("id", user.getId().toString());
 		MappingJacksonValue mjv = new MappingJacksonValue(map);
 		mjv.setJsonpFunction(callback);

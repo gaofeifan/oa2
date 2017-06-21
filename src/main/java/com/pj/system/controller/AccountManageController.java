@@ -1,4 +1,3 @@
-
 package com.pj.system.controller;
 
 import java.util.HashMap;
@@ -22,6 +21,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.AccountService;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
+import com.pj.system.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +39,8 @@ public class AccountManageController  extends BaseController{
 	private DempService dempService;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private UserService userService;
 	
 	//与sso进行邮箱更新
 	@ApiOperation(value="同步sso邮箱" ,httpMethod="GET")
@@ -48,8 +50,8 @@ public class AccountManageController  extends BaseController{
 			@ApiParam(value = "id") @RequestParam Integer id,
 			@ApiParam(value = "newEmail") @RequestParam  String newEmail){
 		//查找用户
-		User user = accountService.findById(id);
-		user.setEmail(newEmail);
+		User user = userService.selectByPrimaryKey(id);
+		user.setCompanyEmail((newEmail));
 		//更新数据
 		accountService.SyncUpdateEmail(user);
 		return "200";
@@ -84,7 +86,7 @@ public class AccountManageController  extends BaseController{
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		Map<String, Object> map2 = new HashMap<String, Object>();
-		Pagination list = accountService.findAll(pageNo, username, dempid, companyid);
+		Pagination list = userService.selectByQuery(pageNo, username, null, dempid, companyid, null, null);
 		if(list !=null){
 			map.put("userpage",list);
 			map2 = this.success(map);
@@ -104,7 +106,7 @@ public class AccountManageController  extends BaseController{
 	@ResponseBody
 	public ResponseEntity<Map> SelectById(@RequestParam Integer id){
 		Map<String,Object> map = new HashMap<String,Object>();
-		User user = accountService.findById(id);
+		User user = userService.selectByPrimaryKey(id);
 		map.put("user", user);
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}

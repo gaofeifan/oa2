@@ -1,32 +1,6 @@
-package com.pj.system.controller;
+package com.pj.weChat.controller;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.pj.config.base.timer.MessageTimer;
-import com.pj.config.base.tool.JedisTool;
-import com.pj.config.web.controller.BaseController;
-import com.pj.system.pojo.User;
-import com.pj.system.service.UserService;
-import com.pj.utils.QRCodeUtil;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-@Api(value="accesstoken",description="微信公众平台")
-@Controller
-@RequestMapping("/weiXin")
-public class WeiXinController extends BaseController {
+/*public class WeiXinController extends BaseController {
 //	@Resource
 //	private WeiXinService weiXinService;
 	
@@ -120,4 +94,4 @@ public class WeiXinController extends BaseController {
 		}
 		return success;
 	}
-}
+}*/

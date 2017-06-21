@@ -123,40 +123,6 @@
   		select * from t_demp
   	</select>
 	
-	<select id="findAll" parameterType="com.pj.system.pojo.UserQuery" resultMap="BaseResultMap">
-		SELECT u.ssoId,u.id,u.username,u.sex,u.phone,u.dempid,u.email,t_demp.`name` AS dempname,u.companyid,t_company.`name` as companyname from t_user u LEFT JOIN t_demp ON u.dempid = t_demp.id
-		LEFT JOIN t_company ON u.companyid = t_company.id 
-		<where>
-			<if test="companyid !=null">
-				u.companyid = #{companyid}
-			</if>
-			<if test="dempid !=null">
-				and u.dempid = #{dempid}
-			</if>
-			<if test="username">
-				and u.username = #{username}
-			</if>
-		</where>
-			<if test="startRow !=null">
-				limit #{startRow},#{pageSize}
-		</if>
-	</select>
-	<select id="selectCount" parameterType="com.pj.system.pojo.UserQuery" resultType="Integer">
-			SELECT count(1) from t_user u LEFT JOIN t_demp ON u.dempid = t_demp.id
-			LEFT JOIN t_company ON u.companyid = t_company.id 
-		<where>
-			<if test="companyid !=null">
-				u.companyid = #{companyid}
-			</if>
-			<if test="dempid !=null">
-				and u.dempid = #{dempid}
-			</if>
-			<if test="username">
-				and u.username like "%"#{username}"%"
-			</if>
-		</where>
-		
-	</select>
 	<select id="findByName" resultMap="BaseResultMap">
 		select * from t_user
 		<where>

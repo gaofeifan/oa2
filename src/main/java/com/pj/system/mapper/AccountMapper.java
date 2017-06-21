@@ -5,12 +5,9 @@ import java.util.List;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.User;
-import com.pj.system.pojo.UserQuery;
 
 public interface AccountMapper {
 
-	//查询所有用户信息
-	List<User> findAll();
 	//条件查询
 	List<User> findByOne(User user);
 	//用户管理批里更新用户
@@ -25,10 +22,6 @@ public interface AccountMapper {
 	List<Company> selctCompany();
 	//查询所有部门
 	List<Demp> selectDept();
-	//查询所有用户带分页
-	List<User> findAll(UserQuery userQuery); 
-	//查询总条数
-	Integer selectCount(UserQuery userQuery);
 	//根据用户名查找用户
 	User findByName(String username);
 	//只是查询用户

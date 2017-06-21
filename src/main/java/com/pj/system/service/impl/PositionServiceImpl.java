@@ -13,8 +13,10 @@ import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PositionMapper;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Post;
+import com.pj.system.pojo.User;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.PostService;
+import com.pj.system.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -24,9 +26,8 @@ public class PositionServiceImpl extends AbstractBaseServiceImpl<Position, Integ
 
 	@Resource
 	private PositionMapper positionMapper;
-
 	@Resource
-	private PostService postService;
+	private UserService userService;
 
 
 	/**
@@ -61,8 +62,11 @@ public class PositionServiceImpl extends AbstractBaseServiceImpl<Position, Integ
 	 */
 	@Override
 	public Boolean isDeletePosition(Integer positionId) {
-		List<Post> posts = this.postService.selectByPositionId(positionId);
-		return posts.size() == 0 ? true:false;
+		User record = new User();
+		record.setPositionid(positionId);
+		record.setIsdelete(1);
+		List<User> list = userService.select(record );
+		return list.size() == 0 ? true:false;
 	}
 
 

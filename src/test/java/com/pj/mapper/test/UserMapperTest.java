@@ -3,7 +3,6 @@ package com.pj.mapper.test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.User;
-import com.pj.system.pojo.UserQuery;
-import com.pj.system.pojo.UserQuery.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-config.xml"})
@@ -32,23 +29,10 @@ public class UserMapperTest {
 
 	@Test
 	public void test1() {
-		UserQuery example = new UserQuery();
-		example.createCriteria().andIdIsNotNull();
-		List<User> list = this.userMapper.selectByExample(example );
-		for (User user : list) {
-			System.out.println(user);
-		}
 	}
 	
 	@Test
 	public void test2(){
-		UserQuery example = new UserQuery();
-		Criteria criteria = example.createCriteria();
-		criteria.andUsernameEqualTo("tom");
-		List<User> list = this.userMapper.selectByExample(example );
-		for (User user : list) {
-			System.out.println(user);
-		}
 	}
 	
 	@Test

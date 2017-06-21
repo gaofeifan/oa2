@@ -136,9 +136,7 @@ public class PostController extends SystemManageController {
 		try {
 			Map<String, Object> hashMap = new HashMap<>();
 			List<Post> posts = this.postService.selectALL(post);
-			List<Position> positios = this.positionService.selectNotDeleteALL();
 			hashMap.put("posts", posts);
-			hashMap.put("positios", positios);
 			map = this.success(hashMap);
 		} catch (Exception e) {
 			logger.error("查询所有的岗位信息异常" + e.getMessage());

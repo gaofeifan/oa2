@@ -1,13 +1,9 @@
 package com.pj.utils.enums;
 
 public enum MessageType {
-	//审批状态1,入职，4，转正，5，异动，2，离职，6，续签  3  请假
-		ENTRY_MES("1","入职"),
-		REGULAR_MES("4","转正"),
-		CHANGE_MES("5","异动"),
-		DIMISSION_MES("2","离职"),
-		LEAVE_MES("3","请假"),
-		RENEW_MES("6","续签");
+	//审批状态1 招聘，2 入职
+		ENTRY_MES("2","入职申请"),
+		RECRUITMENT_MES("1","招聘申请");
 		
 		private String value;
 		private String desc;

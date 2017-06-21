@@ -2,6 +2,7 @@ package com.pj.flow.pojo;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  *  @since		1.8
  */
 @Table(name="flow_action_log")
-public class flowActionLog {
+public class FlowActionLog {
 
 	@Id
 	@GeneratedValue(generator = "JDBC")
@@ -23,16 +24,19 @@ public class flowActionLog {
 	/**
 	 * 	状态
 	 */
+	@Column
 	private String status;
 	
 	/**
 	 * 	操作时间
 	 */
+	@Column
 	private Date operationTime;
 	
 	/**
 	 * 	申请单号
 	 */
+	@Column
 	private String applicationNumber;
 	
 	/**
@@ -43,6 +47,7 @@ public class flowActionLog {
 	/**
 	 * 	处理意见
 	 */
+	@Column
 	private String handlingSuggestion;
 
 	public Integer getId() {

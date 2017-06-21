@@ -1,5 +1,6 @@
 package com.pj.system.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -25,6 +26,7 @@ public class Salary {
 	 * 试用总额
 	 */
 	@AES
+	@Column
 	private String totalSalary;
 
 	/**
@@ -37,18 +39,21 @@ public class Salary {
 	 * 试用基本工资
 	 */
 	@AES
+	@Column
 	private String baseSalary;
 
 	/**
 	 * 试用岗位工资
 	 */
 	@AES
+	@Column
 	private String postSalary;
 
 	/**
 	 * 试用绩效工资
 	 */
 	@AES
+	@Column
 	private String performanceSalary;
 
 	/**
@@ -61,27 +66,32 @@ public class Salary {
 	 * 试用通讯补贴
 	 */
 	@AES
+	@Column
 	private String communicationAllowance;
 
 	/**
 	 * 试用全勤
 	 */
 	@AES
+	@Column
 	private String fullHours;
 
 	/**
 	 * 用户id
 	 */
+	@Column
 	private Integer userId;
 
 	/**
 	 * 入职申请单id
 	 */
+	@Column
 	private Integer entryId;
 
 	/**
 	 * 薪资类型 0 试用 1转正 2 实习
 	 */
+	@Column
 	private Integer salaryType;
 
 	public Integer getId() {

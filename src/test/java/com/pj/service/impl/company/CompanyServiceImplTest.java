@@ -44,8 +44,8 @@ public class CompanyServiceImplTest {
 	}
 	@Test
 	public void test2(){
-		Date date = this.userService.selectByemail("gaofeifan@pj-l.com").getHiredate();
-		System.out.println(DateUtils.convert(date, null));
+//		Date date = this.userService.selectByemail("gaofeifan@pj-l.com").getHiredate();
+//		System.out.println(DateUtils.convert(date, null));
 	}
 	@Test
 	public void test3(){

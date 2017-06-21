@@ -1,17 +1,14 @@
 package com.pj.config.template;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.pj.system.pojo.Message;
-import com.pj.system.pojo.MessageUser;
-import com.pj.system.pojo.User;
-import com.pj.system.service.MessageService;
-import com.pj.system.service.MessageUserService;
-import com.pj.utils.enums.MessageType;
+import com.pj.message.pojo.MessageContent;
+import com.pj.message.pojo.MessageContentUser;
+import com.pj.message.service.MessageContentService;
+import com.pj.message.service.MessageContentUserService;
 
 
 /**
@@ -25,56 +22,25 @@ import com.pj.utils.enums.MessageType;
 public abstract class MessageTemplate {
 	
 	@Autowired
-	private MessageService messageService;
+	private MessageContentService messageContentService;
+	
 	@Autowired
-	private MessageUserService messageUserService;
-	
-	protected List<User> staffList;
-	
-	protected String messageContent;
-	
-	protected MessageType messageType;
-	
-	protected int userId;
-	
-	private MessageUser messageUser;
-	
+	private MessageContentUserService messageContentUserService;
+		
 	public final void messageNotification(){
-		//	添加通知员工
-		addInformStaff();
-		//	添加通知内容
-		addMessageContentAndType(); 
-		//	添加记录的用户
-		addUser();
-		//	保存消息
-		insertMessage();
+		inserMessage(addMessageContent());
 	}
 
-	protected abstract void addUser();
-
-	protected abstract void addMessageContentAndType();
-
-	private void insertMessage() {
-		Message message = new Message();
-		message.setContent(messageContent);
-		message.setDate(new Date());
-		message.setTitle("【"+messageType.getDesc()+"】");
-		message.setType(messageType.getValue());
-		message.setUserId(userId);
-		for (User user : staffList) {
-			//	保存通知人员
-			addUsers(user,message.getId());
+	private void inserMessage(MessageContent messageContent) {
+		messageContentService.insertSelective(messageContent);
+		for (Integer userId : addMessageViewer()) {
+			messageContentUserService.insertSelective(new MessageContentUser(userId, messageContent.getId(), 0));
 		}
 	}
 
-	private void addUsers(User user , int messageId) {
-		messageUser = new MessageUser();
-		messageUser.setMessageId(messageId);
-		messageUser.setUserId(user.getId());
-		this.messageUserService.insertMessageUser(messageUser);
-	}
+	protected abstract MessageContent addMessageContent();
 
-	protected abstract void addInformStaff();
+	protected abstract List<Integer> addMessageViewer();
 	
 	
 	

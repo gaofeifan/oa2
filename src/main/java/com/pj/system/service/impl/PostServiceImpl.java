@@ -53,14 +53,6 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 		return list.size() != 0 ?list.get(0).getId():null;
 	}
 
-	/**
-	 * 	根据职级查询岗位
-	 */
-	@Override
-	public List<Post> selectByPositionId(Integer positionId) {
-		List<Post> list = this.postMapper.selectByPositionId(positionId);
-		return list;
-	}
 
 	/**
 	 * 	查询是否可以删除
@@ -68,12 +60,6 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	@Override
 	public Boolean isDeleteDemp(Integer id) {
 		Boolean flag = false;
-//		User user = this.userService.findUserByCompanyAndDempAndPost(null, "", id);
-//		if(user == null){
-//			flag = true;
-//		}else{
-//			flag = false;
-//		}
 		return flag;
 	}
 

@@ -2,7 +2,6 @@ package com.pj.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -17,7 +16,9 @@ public class SwaggerConfig {
 	   @Bean  
 	   public Docket customDocket(){  
 	      return new Docket(DocumentationType.SWAGGER_2).select()
-		            .apis(RequestHandlerSelectors.basePackage("com.pj.*.controller"))
+//		            .apis(RequestHandlerSelectors.basePackage("com.pj.flow.controller"))
+//		            .apis(RequestHandlerSelectors.basePackage("com.pj.auth.controller"))
+		            .apis(RequestHandlerSelectors.basePackage("com.pj.system.controller"))
 		            .build();  
 	  
 	   }  

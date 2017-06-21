@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,6 +20,7 @@ public class Post implements Serializable {
 	 */
 	@ApiModelProperty(value = "岗位序号", required = false)
 	@Id
+	@GeneratedValue(generator = "JDBC")
 	private Integer id;
 
 	/**
@@ -57,13 +59,6 @@ public class Post implements Serializable {
 	private String description;
 
 	/**
-	 * 职位id
-	 */
-	@Column(name = "positionid")
-	@ApiModelProperty(value = " 职位id", required = false)
-	private Integer positionid;
-
-	/**
 	 * 是否删除 0未删除 1已删除
 	 */
 	@Column(name = "isdelete")
@@ -95,15 +90,6 @@ public class Post implements Serializable {
 		this.id = id;
 		this.isdelete = isdelete;
 	}
-
-
-	public Post(String name, Integer positionid, Integer isdelete) {
-		super();
-		this.name = name;
-		this.positionid = positionid;
-		this.isdelete = isdelete;
-	}
-
 
 	public Integer getId() {
 		return id;
@@ -161,9 +147,6 @@ public class Post implements Serializable {
 		this.description = description == null ? null : description.trim();
 	}
 
-	public Integer getPositionid() {
-		return positionid;
-	}
 
 	public Integer getDempId() {
 		return dempId;
@@ -173,9 +156,6 @@ public class Post implements Serializable {
 		this.dempId = dempId;
 	}
 
-	public void setPositionid(Integer positionid) {
-		this.positionid = positionid;
-	}
 
 	public Integer getIsdelete() {
 		return isdelete;
@@ -200,21 +180,5 @@ public class Post implements Serializable {
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().getSimpleName());
-		sb.append(" [");
-		sb.append("Hash = ").append(hashCode());
-		sb.append(", id=").append(id);
-		sb.append(", number=").append(number);
-		sb.append(", name=").append(name);
-		sb.append(", description=").append(description);
-		sb.append(", positionid=").append(positionid);
-		sb.append(", isdelete=").append(isdelete);
-		sb.append(", serialVersionUID=").append(serialVersionUID);
-		sb.append("]");
-		return sb.toString();
-	}
 }
+

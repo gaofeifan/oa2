@@ -83,10 +83,9 @@
 	
 	<bean id="messageTimer" class="com.pj.config.base.timer.MessageTimer"/>
 	
-	<task:scheduled-tasks>
 		<!-- 每天上午十点触发 -->
+<!-- 	<task:scheduled-tasks>
         <task:scheduled ref="messageTimer" method="messageDetails" cron=" 0 0 10 * * ?"/>
-     <!--    <task:scheduled ref="messageTimer" method="approveMessageTime" cron="0/10 * * * * ?"/> -->
         <task:scheduled ref="messageTimer" method="approveMessageTime" cron="0 * 1 * * *"/>
-    </task:scheduled-tasks>
+    </task:scheduled-tasks> -->
 </beans>

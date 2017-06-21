@@ -27,15 +27,6 @@ public interface PostService extends BaseService<Post, Integer> {
 	Integer selectByName(String postName);
 	
 	/**
-	 * 	根据职级查询岗位
-	 *	@author 	GFF
-	 *	@date		2017年4月10日下午6:02:02	
-	 * 	@param positionId
-	 * 	@return
-	 */
-	List<Post> selectByPositionId(Integer positionId);
-
-	/**
 	 * 	查询是否可以删除
 	 *	@author 	GFF
 	 *	@date		2017年4月10日下午6:02:11	
