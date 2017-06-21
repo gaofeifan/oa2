@@ -1,5 +1,6 @@
 package com.pj.flow.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -7,8 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name="flow_recruit")
-public class FlowRecruit {
-	
+public class FlowRecruit implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
@@ -35,7 +38,11 @@ public class FlowRecruit {
 
     private String workAddress;
 
-    private Integer applyReason;
+    private Integer applyReasonType;
+    
+    private String applyReason;
+    
+    private Integer replaceId;
 
     private Integer channel;
 
@@ -169,15 +176,32 @@ public class FlowRecruit {
         this.workAddress = workAddress == null ? null : workAddress.trim();
     }
 
-    public Integer getApplyReason() {
-        return applyReason;
-    }
 
-    public void setApplyReason(Integer applyReason) {
-        this.applyReason = applyReason;
-    }
+    public Integer getApplyReasonType() {
+		return applyReasonType;
+	}
 
-    public Integer getChannel() {
+	public void setApplyReasonType(Integer applyReasonType) {
+		this.applyReasonType = applyReasonType;
+	}
+
+	public String getApplyReason() {
+		return applyReason;
+	}
+
+	public void setApplyReason(String applyReason) {
+		this.applyReason = applyReason;
+	}
+
+	public Integer getReplaceId() {
+		return replaceId;
+	}
+
+	public void setReplaceId(Integer replaceId) {
+		this.replaceId = replaceId;
+	}
+
+	public Integer getChannel() {
         return channel;
     }
 

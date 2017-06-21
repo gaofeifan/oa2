@@ -14,7 +14,9 @@
     <result column="is_company_leader" property="isCompanyLeader" jdbcType="INTEGER" />
     <result column="need_num" property="needNum" jdbcType="INTEGER" />
     <result column="work_address" property="workAddress" jdbcType="VARCHAR" />
-    <result column="apply_reason" property="applyReason" jdbcType="INTEGER" />
+    <result column="apply_reason_type" property="applyReasonType" jdbcType="INTEGER" />
+    <result column="apply_reason" property="applyReason" jdbcType="VARCHAR" />
+    <result column="replace_id" property="replaceId" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="INTEGER" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="age" property="age" jdbcType="VARCHAR" />
@@ -36,7 +38,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, number, apply_id, apply_date, company_id, post_id, demp_id, position_id, is_demp_leader, 
-    is_company_leader, need_num, work_address, apply_reason, channel, sex, age, education, 
+    is_company_leader, need_num, work_address, apply_reason_type, apply_reason, replace_id, channel, sex, age, education, 
     duty, technology, knowledge, business_ability, special_ability, experience, other_demand, 
     state, result, entry_num, leader_id, offer_range, is_check, status
   </sql>
