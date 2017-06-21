@@ -1,5 +1,6 @@
 package com.pj.flow.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -7,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name="flow_entry")
-public class FlowEntry {
+public class FlowEntry implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
