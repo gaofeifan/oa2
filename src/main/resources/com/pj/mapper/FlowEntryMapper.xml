@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pj.flow.mapper.FlowEntryMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowEntry" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="entry_date" property="entryDate" jdbcType="DATE" />
+    <result column="probation" property="probation" jdbcType="VARCHAR" />
+    <result column="service_years" property="serviceYears" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="check_url" property="checkUrl" jdbcType="VARCHAR" />
+    <result column="resume_url" property="resumeUrl" jdbcType="VARCHAR" />
+    <result column="register_url" property="registerUrl" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, number, recruit_id, name, sex, phone, email, entry_date, probation, service_years, 
+    remark, check_url, resume_url, register_url, state, status
+  </sql>
+  
+</mapper>
