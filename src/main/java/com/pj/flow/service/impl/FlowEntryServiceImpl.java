@@ -8,11 +8,11 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.pojo.FlowEntry;
-import com.pj.flow.service.EntryService;
+import com.pj.flow.service.FlowEntryService;
 
 @Transactional
 @Service
-public class EntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Integer> implements EntryService {
+public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Integer> implements FlowEntryService {
 
 	@Autowired
 	private FlowEntryMapper flowEntryMapper;

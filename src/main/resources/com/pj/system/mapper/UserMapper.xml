@@ -190,5 +190,33 @@
 			ORDER BY u.id ASC
 		</where>
 	</select>
+	<select id="getCompanyLeader" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT u.* FROM t_user u
+		where u.dempid in 
+		(select d.id from t_demp d where d.companyid = #{companyid} and d.isdelete = 0)
+		and u.is_company_boss = 1 and u.isdelete = 0
+		
+	</select>
+	<select id="getDempLeader" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT * FROM t_user
+		where dempid = #{dempid} and is_department_head = 1 and isdelete = 0
+		
+	</select>
+	<select id="selectByNameAndDempId"
+		resultMap="BaseResultMap">
+		SELECT * FROM t_user
+		where dempid = #{dempid} and username = #{username} and isdelete = 0
+		
+	</select>
+	<select id="selectByNameAndCompanyId"
+		resultMap="BaseResultMap">
+		SELECT u.* FROM t_user u
+		where u.dempid in 
+		(select d.id from t_demp d where d.companyid = #{companyid} and d.isdelete = 0)
+		and and u.isdelete = 0
+		
+	</select>
 </mapper>
 

@@ -40,6 +40,8 @@ public class FlowRecruit implements Serializable {
 
     private Integer applyReasonType;
     
+    private Integer applyReasonChildType;
+    
     private String applyReason;
     
     private Integer replaceId;
@@ -183,6 +185,14 @@ public class FlowRecruit implements Serializable {
 
 	public void setApplyReasonType(Integer applyReasonType) {
 		this.applyReasonType = applyReasonType;
+	}
+
+	public Integer getApplyReasonChildType() {
+		return applyReasonChildType;
+	}
+
+	public void setApplyReasonChildType(Integer applyReasonChildType) {
+		this.applyReasonChildType = applyReasonChildType;
 	}
 
 	public String getApplyReason() {
