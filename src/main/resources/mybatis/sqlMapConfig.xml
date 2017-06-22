@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 		<!-- 批量别名的配置 -->
 	<typeAliases>
-		<package name="com.pj.pojo"/>
+		<package name="com.pj.*.pojo"/>
 	</typeAliases>
 
 	<plugins>

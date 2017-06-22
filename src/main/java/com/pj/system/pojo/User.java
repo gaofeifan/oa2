@@ -86,13 +86,6 @@ public class User implements Serializable {
     private Integer dempid;
 
     /**
-     * 出生时间
-     */
-	@Column(name="birthdate")
-	@ApiModelProperty(value = "出生时间", required = false)
-    private Date birthdate;
-
-    /**
      * 试用期
      */
 	@Column(name="probation")
@@ -142,13 +135,6 @@ public class User implements Serializable {
     private String nation;
 
     /**
-     * 籍贯
-     */
-	@Column(name="nativeplace")
-	@ApiModelProperty(value = "籍贯", required = false)
-    private String nativeplace;
-
-    /**
      * 户口性质
      */
 	@Column(name="alnature")
@@ -191,13 +177,6 @@ public class User implements Serializable {
     private String contacts;
 
     /**
-     * 职级id
-     */
-	@Column(name="rankid")
-	@ApiModelProperty(value = "职级id", required = false)
-    private Integer rankid;
-
-    /**
      * 职位id
      */
 	@Column(name="positionid")
@@ -210,13 +189,6 @@ public class User implements Serializable {
 	@Column(name="postid")
 	@ApiModelProperty(value = "岗位序号", required = false)
     private Integer postid;
-
-    /**
-     * 角色编号
-     */
-	@Column(name="roleid")
-	@ApiModelProperty(value = "角色编号", required = false)
-    private Integer roleid;
 
     /**
      * 是否删除 0未删除  1已删除
@@ -246,13 +218,6 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "是否为新参保 1 是 0否", required = false)
 	private Integer isNewGinseng;
 
-	/**
-     * 是否为新社保 1 是 0否
-     */
-	@Column(name="newsecurity")
-	@ApiModelProperty(value = "是否为新社保 1 是 0否", required = false)
-    private Integer newsecurity;
-
     /**
      * 是否有社保卡   1 是 0否
      */
@@ -267,20 +232,6 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "合同类型		1劳动合同  0  实习合同", required = false)
     private Integer contractType;
 
-	/**
-	 * 	用工性质 0 试用 1 实习 2正式
-	 */
-	@Column(name="worktype")
-	@ApiModelProperty(value = "用工性质 0 试用 1 实习 2正式", required = false)
-	private Integer worktype;
-
-	/**
-	 * 	是否转正 0 为   1以
-	 */
-	@ApiModelProperty(value = "是否转正 0 为   1以", required = false)
-	@Column(name="isregular")
-	private Integer isregular;
-	
 	/**
 	 * 	微信token
 	 */
@@ -314,13 +265,6 @@ public class User implements Serializable {
 	@Column(name="education")
 	@ApiModelProperty(value = "学历", required = false)
 	private String education;
-	
-	/**
-	 * 	异动内容 0 调动 1 晋升 2 薪资
-	 */
-	@Column(name="change_content")
-	@ApiModelProperty(value = "异动内容 0 调动 1 晋升 2 薪资", required = false)
-	private String changeContent;
 	
 	/**
 	 * 	申请转正时间
@@ -536,14 +480,6 @@ public class User implements Serializable {
 		this.dempid = dempid;
 	}
 
-	public Date getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
-
 	public Date getProbation() {
 		return probation;
 	}
@@ -600,14 +536,6 @@ public class User implements Serializable {
 		this.nation = nation;
 	}
 
-	public String getNativeplace() {
-		return nativeplace;
-	}
-
-	public void setNativeplace(String nativeplace) {
-		this.nativeplace = nativeplace;
-	}
-
 	public String getAlnature() {
 		return alnature;
 	}
@@ -657,14 +585,6 @@ public class User implements Serializable {
 		this.contacts = contacts;
 	}
 
-	public Integer getRankid() {
-		return rankid;
-	}
-
-	public void setRankid(Integer rankid) {
-		this.rankid = rankid;
-	}
-
 	public Integer getPositionid() {
 		return positionid;
 	}
@@ -679,14 +599,6 @@ public class User implements Serializable {
 
 	public void setPostid(Integer postid) {
 		this.postid = postid;
-	}
-
-	public Integer getRoleid() {
-		return roleid;
-	}
-
-	public void setRoleid(Integer roleid) {
-		this.roleid = roleid;
 	}
 
 	public Integer getIsdelete() {
@@ -721,14 +633,6 @@ public class User implements Serializable {
 		this.isNewGinseng = isNewGinseng;
 	}
 
-	public Integer getNewsecurity() {
-		return newsecurity;
-	}
-
-	public void setNewsecurity(Integer newsecurity) {
-		this.newsecurity = newsecurity;
-	}
-
 	public Integer getIsSocialSecurityCards() {
 		return isSocialSecurityCards;
 	}
@@ -743,22 +647,6 @@ public class User implements Serializable {
 
 	public void setContractType(Integer contractType) {
 		this.contractType = contractType;
-	}
-
-	public Integer getWorktype() {
-		return worktype;
-	}
-
-	public void setWorktype(Integer worktype) {
-		this.worktype = worktype;
-	}
-
-	public Integer getIsregular() {
-		return isregular;
-	}
-
-	public void setIsregular(Integer isregular) {
-		this.isregular = isregular;
 	}
 
 	public String getAccessToken() {
@@ -799,14 +687,6 @@ public class User implements Serializable {
 
 	public void setEducation(String education) {
 		this.education = education;
-	}
-
-	public String getChangeContent() {
-		return changeContent;
-	}
-
-	public void setChangeContent(String changeContent) {
-		this.changeContent = changeContent;
 	}
 
 	public Date getApplyRegularDate() {

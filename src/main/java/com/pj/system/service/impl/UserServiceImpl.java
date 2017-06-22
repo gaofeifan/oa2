@@ -1,4 +1,3 @@
-
 package com.pj.system.service.impl;
 
 import java.util.HashMap;
@@ -21,17 +20,13 @@ import com.pj.config.base.tool.HttpClienTool;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
 import com.pj.system.mapper.UserMapper;
-import com.pj.system.pojo.FamilyMember;
 import com.pj.system.pojo.User;
-import com.pj.system.pojo.WorkExperience;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.FamilyMemberService;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.UserService;
 import com.pj.system.service.WorkExperienceService;
-
-import net.sf.json.JSONObject;
 
 @Transactional
 @Service
@@ -60,21 +55,19 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		return userMapper;
 	}
 	
-	
-	
 	@Override
 	public int insertSelective(User t) {
 		Integer ssoId = saveSSOSystem(t);
 		if(ssoId != null){
 			int i = insertSelective(updateUserByEntryFrom(t));
 			//	保存家庭成员
-			List<FamilyMember> members = t.getFamilyMembers();
-			members.stream().forEach(member -> member.setUserId(t.getId()));
-			members.stream().forEach(familyMember -> this.familyMemberService.insertSelective(familyMember));
+//			List<FamilyMember> members = t.getFamilyMembers();
+//			members.stream().forEach(member -> member.setUserId(t.getId()));
+//			members.stream().forEach(familyMember -> this.familyMemberService.insertSelective(familyMember));
 			//	保存工作经历
-			List<WorkExperience> workExperiences = t.getWorkExperiences();
-			workExperiences.stream().forEach(workExperience -> workExperience.setUserId(t.getId()));
-			workExperiences.stream().forEach(workExperience -> this.workExperienceService.insertSelective(workExperience));
+//			List<WorkExperience> workExperiences = t.getWorkExperiences();
+//			workExperiences.stream().forEach(workExperience -> workExperience.setUserId(t.getId()));
+//			workExperiences.stream().forEach(workExperience -> this.workExperienceService.insertSelective(workExperience));
 			//	关联薪资
 			
 			return i;
@@ -90,13 +83,17 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		//	更新工作经历
 		user.getWorkExperiences().stream().forEach(workExperience -> this.workExperienceService.updateByPrimaryKeySelective(workExperience));
 		User u = this.selectByPrimaryKey(user.getId());
-		if(!user.getUsername().equals(u.getUsername()) ||  
-		   !user.getCompanyEmail().equals(u.getCompanyEmail()) ||
-		   !user.getOpenid().equals(u.getOpenid()) ||
-		   !user.getPhone().equals(u.getPhone())){
-			updateSSOSystem(user);
+		if(
+		   (StringUtils.isNoneBlank(user.getUsername()) ? !user.getUsername().equals(u.getUsername()) :true) ||  
+		   (StringUtils.isNoneBlank(user.getCompanyEmail()) ? !user.getCompanyEmail().equals(u.getCompanyEmail()) : true) ||
+		   (StringUtils.isNoneBlank(user.getOpenid()) ? !user.getOpenid().equals(u.getOpenid()) : true) ||
+		   (StringUtils.isNoneBlank(user.getPhone()) ? !user.getPhone().equals(u.getPhone()) : true)){
+			String stauts = updateSSOSystem(user);
+			if(StringUtils.isNoneBlank(stauts)){
+				return super.updateByPrimaryKeySelective(user);
+			}
 		}
-		return super.updateByPrimaryKeySelective(user);
+		return 0;
 	}
 
 
@@ -186,13 +183,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private Integer saveSSOSystem(User t) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("username", t.getUsername());
+		
 		map.put("email", t.getCompanyEmail());
 		map.put("phone", t.getPhone());
-		JSONObject doGet = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
-		if(doGet.isEmpty()){
-			return null;
-		}
-		return Integer.decode(doGet.getString("id"));
+		String id = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
+		return StringUtils.isNoneBlank(id) ? Integer.decode(id) : null;
 	}
 
 	/**
@@ -201,14 +196,15 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 *	@date		2017年6月21日上午11:04:29	
 	 * 	@param user
 	 */
-	private void updateSSOSystem(User user) {
+	private String updateSSOSystem(User user) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", user.getUsername());
 		map.put("email", user.getCompanyEmail());
 		map.put("phone", user.getPhone());
 		map.put("id", user.getSsoId());
 		map.put("openid", user.getOpenid());
-		JSONObject jsonObject = HttpClienTool.doPostToMap(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
+		return HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
+		
 	}
 	private User updateUserByEntryFrom(User t) {
 		return t;

@@ -15,7 +15,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -37,24 +38,13 @@ import net.sf.json.JSONObject;
 public class HttpClienTool {
 
 	private static final Logger logger = LoggerFactory.getLogger(HttpClienTool.class);
+
 	public static JSONObject doPostToBase(String url,Object obj){
-	    CloseableHttpClient httpclient = HttpClientBuilder.create().build();
-	    HttpPost post = new HttpPost(url);
+	    CloseableHttpClient httpclient = getHttpClient();
 	    JSONObject response = null;
 	    CloseableHttpResponse res = null;
 	    try {
-	    	// 构建请求配置信息
-			RequestConfig config = RequestConfig.custom().setConnectTimeout(10000) // 创建连接的最长时间
-	                .setConnectionRequestTimeout(10000) // 从连接池中获取到连接的最长时间
-	                .setSocketTimeout(10 * 10000) // 数据传输的最长时间
-	                .setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
-	                .build();
-	        // 设置请求配置信息
-	        post.setConfig(config);
-	        // 模拟浏览器访问，加入浏览器的信息到header
-	        post.setHeader(
-	                "User-Agent",
-	                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+	    	HttpPost post = (HttpPost)addRequestContent(new HttpPost(url));
 	        Map<String, Object> map = TypeConversionUtils.objectToMap(obj);
 	        List<NameValuePair> params = getUrlParams(map);
 	        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(params, "UTF-8");
@@ -82,31 +72,17 @@ public class HttpClienTool {
 	    return response;
 	}
 	
-	public static JSONObject doPostToMap(String url,Map<String,Object> map){
-		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost(url);
-		JSONObject response = null;
+	public static String doGetToBase(String url,Object obj){
+		CloseableHttpClient httpclient = getHttpClient();
 		CloseableHttpResponse res = null;
 		try {
-			// 构建请求配置信息
-			RequestConfig config = RequestConfig.custom().setConnectTimeout(10000) // 创建连接的最长时间
-					.setConnectionRequestTimeout(10000) // 从连接池中获取到连接的最长时间
-					.setSocketTimeout(10 * 10000) // 数据传输的最长时间
-					.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
-					.build();
-			// 设置请求配置信息
-			post.setConfig(config);
-			// 模拟浏览器访问，加入浏览器的信息到header
-			post.setHeader(
-					"User-Agent",
-					"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+			Map<String, Object> map = TypeConversionUtils.objectToMap(obj);
 			List<NameValuePair> params = getUrlParams(map);
-			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(params, "UTF-8");
-			post.setEntity(formEntity);
-			res = httpclient.execute(post);
+			HttpGet get = new HttpGet(new URIBuilder(url).addParameters(params).build());
+			res = httpclient.execute((HttpGet) addRequestContent(get));
 			if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
 				String result = EntityUtils.toString(res.getEntity());// 返回json格式：
-				response = JSONObject.fromObject(result);
+				return result;
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -123,23 +99,22 @@ public class HttpClienTool {
 				e.printStackTrace();
 			}
 		}
-		return response;
+		return null;
 	}
 
-	public static JSONObject doGet(String url, Map<String, Object> map) {
+	public static String doGet(String uri, Map<String, Object> map) {
 		List<NameValuePair> params = getUrlParams(map);
 		CloseableHttpResponse res = null;
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
-		HttpGet get = new HttpGet(url + (params != null ? "?" + URLEncodedUtils.format(params, "UTF-8"): ""));
 		try {
+			HttpGet get = new HttpGet(new URIBuilder(uri).addParameters(params).build());
 			res = httpclient.execute(get);
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				String result = EntityUtils.toString(res.getEntity());
-				return JSONObject.fromObject(result);
+				EntityUtils.toString(res.getEntity());
+				return "200";
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
-
+			logger.error(e.getMessage());
 		} finally {
 			// 关闭连接 ,释放资源
 			try {
@@ -171,4 +146,24 @@ public class HttpClienTool {
 		}
 		return pairs;
 	}
+	
+	 private static CloseableHttpClient getHttpClient(){
+		 return HttpClientBuilder.create().build();
+	 }
+	 
+	 private static HttpRequestBase addRequestContent(HttpRequestBase base){
+			// 构建请求配置信息
+			RequestConfig config = RequestConfig.custom().setConnectTimeout(10000) // 创建连接的最长时间
+	                .setConnectionRequestTimeout(10000) // 从连接池中获取到连接的最长时间
+	                .setSocketTimeout(10 * 10000) // 数据传输的最长时间
+	                .setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
+	                .build();
+	        // 设置请求配置信息
+			base.setConfig(config);
+	        // 模拟浏览器访问，加入浏览器的信息到header
+			base.setHeader(
+	                "User-Agent",
+	                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+			return base;
+	 }
 }

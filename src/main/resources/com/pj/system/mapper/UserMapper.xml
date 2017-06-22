@@ -19,7 +19,6 @@
 		<result column="work_address" property="workAddress" jdbcType="VARCHAR" />
 		<result column="identityproof" property="identityproof" jdbcType="VARCHAR" />
 		<result column="identityproof_address" property="identityproofAddress" jdbcType="VARCHAR" />
-		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="residential_address" property="residentialAddress" jdbcType="VARCHAR" />
 		<result column="is_ding_talk" property="isDingTalk" jdbcType="INTEGER" />
 		<result column="is_status" property="isStatus" jdbcType="INTEGER" />
@@ -60,71 +59,72 @@
 	</resultMap>
 	
 	<resultMap id="User_Relevance_Select" type="com.pj.system.pojo.User">
-		    <id column="u.id" property="id" jdbcType="INTEGER" />
-		<result column="u.username" property="username" jdbcType="VARCHAR" />
-		<result column="u.sex" property="sex" jdbcType="VARCHAR" />
-		<result column="u.filenumber" property="filenumber" jdbcType="VARCHAR" />
-		<result column="u.hiredate" property="hiredate" jdbcType="DATE" />
-		<result column="u.phone" property="phone" jdbcType="VARCHAR" />
-		<result column="u.company_email" property="companyEmail" jdbcType="VARCHAR" />
-		<result column="u.i_email" property="iEmail" jdbcType="VARCHAR" />
-		<result column="u.dempid" property="dempid" jdbcType="INTEGER" />
-		<result column="u.positionid" property="positionid" jdbcType="INTEGER" />
-		<result column="u.postid" property="postid" jdbcType="INTEGER" />
-		<result column="u.pid" property="pid" jdbcType="INTEGER" />
-		<result column="u.nation" property="nation" jdbcType="VARCHAR" />
-		<result column="u.work_address" property="workAddress" jdbcType="VARCHAR" />
-		<result column="u.identityproof" property="identityproof" jdbcType="VARCHAR" />
-		<result column="u.identityproof_address" property="identityproofAddress" jdbcType="VARCHAR" />
-		<result column="u.phone" property="phone" jdbcType="VARCHAR" />
-		<result column="u.residential_address" property="residentialAddress" jdbcType="VARCHAR" />
-		<result column="u.is_ding_talk" property="isDingTalk" jdbcType="INTEGER" />
-		<result column="u.is_status" property="isStatus" jdbcType="INTEGER" />
-		<result column="u.contract_type" property="contractType" jdbcType="INTEGER" />
-		<result column="u.contract_period" property="contractPeriod" jdbcType="INTEGER" />
-		<result column="u.leavedate" property="leavedate" jdbcType="DATE" />
-		<result column="u.probation" property="probation" jdbcType="INTEGER" />
-		<result column="u.apply_regular_date" property="applyRegularDate" jdbcType="DATE" />
-		<result column="u.contract_start_time" property="contractStartTime" jdbcType="DATE" />
-		<result column="u.contract_stop_time" property="contractStopTime" jdbcType="DATE" />
-		<result column="u.contacts" property="contacts" jdbcType="VARCHAR" />
-		<result column="u.marital_status" property="maritalStatus" jdbcType="INTEGER" />
-		<result column="u.child_status" property="childStatus" jdbcType="INTEGER" />
-		<result column="u.education" property="education" jdbcType="VARCHAR" />
-		<result column="u.school" property="school" jdbcType="VARCHAR" />
-		<result column="u.is_fulltime" property="isFulltime" jdbcType="INTEGER" />
-		<result column="u.is_new_ginseng" property="isNewGinseng" jdbcType="INTEGER" />
-		<result column="u.is_social_security_cards" property="isSocialSecurityCards" jdbcType="INTEGER" />
-		<result column="u.is_accumulation_fund" property="isAccumulationFund" jdbcType="INTEGER" />
-		<result column="u.alnature" property="alnature" jdbcType="INTEGER" />
-		<result column="u.social_security_cardinal_number" property="socialSecurityCardinalNumber" jdbcType="VARCHAR" />
-		<result column="u.accumulation_fund_cardinal_number" property="accumulationFundCardinalNumber" jdbcType="VARCHAR" />
-		<result column="u.social_security_payment_address" property="socialSecurityPaymentAddress" jdbcType="VARCHAR" />
-		<result column="u.deposit_bank" property="depositBank" jdbcType="VARCHAR" />
-		<result column="u.bankcard" property="bankcard" jdbcType="VARCHAR" />
-		<result column="u.isdelete" property="isdelete" jdbcType="INTEGER" />
-		<result column="u.ssoId" property="ssoId" jdbcType="INTEGER" />
-		<result column="u.openid" property="openid" jdbcType="VARCHAR" />
-		<result column="u.is_department_head" property="isDepartmentHead" jdbcType="INTEGER" />
-		<result column="u.is_company_boss" property="isCompanyBoss" jdbcType="INTEGER" />
-		<result column="u.we_chat_name" property="weChatName" jdbcType="VARCHAR" />
+		    <id column="id" property="id" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="filenumber" property="filenumber" jdbcType="VARCHAR" />
+		<result column="hiredate" property="hiredate" jdbcType="DATE" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="company_email" property="companyEmail" jdbcType="VARCHAR" />
+		<result column="i_email" property="iEmail" jdbcType="VARCHAR" />
+		<result column="dempid" property="dempid" jdbcType="INTEGER" />
+		<result column="positionid" property="positionid" jdbcType="INTEGER" />
+		<result column="postid" property="postid" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="nation" property="nation" jdbcType="VARCHAR" />
+		<result column="work_address" property="workAddress" jdbcType="VARCHAR" />
+		<result column="identityproof" property="identityproof" jdbcType="VARCHAR" />
+		<result column="identityproof_address" property="identityproofAddress" jdbcType="VARCHAR" />
+		<result column="residential_address" property="residentialAddress" jdbcType="VARCHAR" />
+		<result column="is_ding_talk" property="isDingTalk" jdbcType="INTEGER" />
+		<result column="is_status" property="isStatus" jdbcType="INTEGER" />
+		<result column="contract_type" property="contractType" jdbcType="INTEGER" />
+		<result column="contract_period" property="contractPeriod" jdbcType="INTEGER" />
+		<result column="leavedate" property="leavedate" jdbcType="DATE" />
+		<result column="probation" property="probation" jdbcType="INTEGER" />
+		<result column="apply_regular_date" property="applyRegularDate" jdbcType="DATE" />
+		<result column="contract_start_time" property="contractStartTime" jdbcType="DATE" />
+		<result column="contract_stop_time" property="contractStopTime" jdbcType="DATE" />
+		<result column="contacts" property="contacts" jdbcType="VARCHAR" />
+		<result column="marital_status" property="maritalStatus" jdbcType="INTEGER" />
+		<result column="child_status" property="childStatus" jdbcType="INTEGER" />
+		<result column="education" property="education" jdbcType="VARCHAR" />
+		<result column="school" property="school" jdbcType="VARCHAR" />
+		<result column="is_fulltime" property="isFulltime" jdbcType="INTEGER" />
+		<result column="is_new_ginseng" property="isNewGinseng" jdbcType="INTEGER" />
+		<result column="is_social_security_cards" property="isSocialSecurityCards" jdbcType="INTEGER" />
+		<result column="is_accumulation_fund" property="isAccumulationFund" jdbcType="INTEGER" />
+		<result column="alnature" property="alnature" jdbcType="INTEGER" />
+		<result column="social_security_cardinal_number" property="socialSecurityCardinalNumber" jdbcType="VARCHAR" />
+		<result column="accumulation_fund_cardinal_number" property="accumulationFundCardinalNumber" jdbcType="VARCHAR" />
+		<result column="social_security_payment_address" property="socialSecurityPaymentAddress" jdbcType="VARCHAR" />
+		<result column="deposit_bank" property="depositBank" jdbcType="VARCHAR" />
+		<result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
+		<result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+		<result column="ssoId" property="ssoId" jdbcType="INTEGER" />
+		<result column="openid" property="openid" jdbcType="VARCHAR" />
+		<result column="is_department_head" property="isDepartmentHead" jdbcType="INTEGER" />
+		<result column="is_company_boss" property="isCompanyBoss" jdbcType="INTEGER" />
+		<result column="we_chat_name" property="weChatName" jdbcType="VARCHAR" />
 		
 		<!-- 查询使用 -->
-		<result column="demp.companyid" property="companyid" jdbcType="INTEGER" />
-		<result column="position.name" property="positionname" />
-		<result column="demp.name" property="dempname" />
-		<result column="company.name" property="companyname" />
-		<result column="post.name" property="postname" />
+		<result column="companyid" property="companyid" jdbcType="INTEGER" />
+		<result column="positionname" property="positionname" jdbcType="VARCHAR" />
+		<result column="dempname" property="dempname" jdbcType="VARCHAR" />
+		<result column="companyname" property="companyname" jdbcType="VARCHAR" />
+		<result column="postname" property="postname" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<sql id="Base_Column">
 		u.id,u.username,u.sex,u.filenumber,u.hiredate,u.phone,u.company_email,u.i_email,u.dempid
-		,u.positionid,u.postid,demp.companyid,u.pid,u.nation,u.work_address,u.identityproof,u.identityproof_address,u.phone,u.residential_address
+		,u.positionid,u.postid,demp.companyid companyid,u.pid,u.nation,u.work_address,u.identityproof,u.identityproof_address,u.residential_address
 		,u.is_ding_talk,u.is_status,u.contract_type,u.contract_period,u.leavedate,u.probation,u.regulardate,u.apply_regular_date,u.contract_start_time
 		,u.contract_stop_time,u.contacts,u.marital_status,u.child_status,u.education,u.school,u.is_fulltime,u.is_new_ginseng,u.is_social_security_cards
 		,u.is_accumulation_fund,u.alnature,u.social_security_cardinal_number,u.accumulation_fund_cardinal_number
-		,u.social_security_payment_address,u.deposit_bank,u.bankcard,position.name,demp.name,company.name,post.name
+		,u.social_security_payment_address,u.deposit_bank,u.bankcard,position.name positionname,demp.name dempname,company.name companyname,post.name postname
 	</sql>
+	
+	
 	<select id="selectUsersByCondition" parameterType="com.pj.system.pojo.User" resultMap="User_Relevance_Select">
 		select 
 			<include refid="Base_Column"/>
@@ -132,8 +132,9 @@
 		left join t_demp demp on u.dempid = demp.id 
 		left join t_company company on company.id = demp.companyid
 		left join t_position position on u.positionid = position.id
+		left join t_post post on u.postid = post.id
 		<where>
-			isdelete = 0
+			u.isdelete = 0
 			<if test="companyEmail != null">
 				AND u.company_email = #{companyEmail}
 			</if>
@@ -176,7 +177,7 @@
 				</choose>
 			</if>
 			<if test="username != null">
-				AND u.username LIKE #{username}#,
+				AND u.username LIKE #{username},
 			</if>
 			<if test="isStatus != null">
 				AND u.is_status = #{isStatus}

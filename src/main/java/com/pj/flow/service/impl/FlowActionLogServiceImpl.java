@@ -1,7 +1,6 @@
 package com.pj.flow.service.impl;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +8,7 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.pojo.FlowActionLog;
+import com.pj.flow.service.FlowActionLogService;
 
 /**
  *	@author		GFF
@@ -19,7 +19,7 @@ import com.pj.flow.pojo.FlowActionLog;
  */
 @Service
 @Transactional
-public class FlowActionLogServiceImpl extends AbstractBaseServiceImpl<FlowActionLog, Integer> {
+public class FlowActionLogServiceImpl extends AbstractBaseServiceImpl<FlowActionLog, Integer> implements FlowActionLogService {
 
 	@Resource
 	private FlowActionLogMapper flowActionLogMapper;
