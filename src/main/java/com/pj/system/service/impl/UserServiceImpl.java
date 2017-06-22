@@ -172,6 +172,21 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		List<User> pageQuery = this.userMapper.pageQuery(user);
 		return new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), pageQuery);
 	}
+
+	@Override
+	public User getReplaceUser(Integer companyId, Integer dempId, String username) {
+		User user = new User();
+		/**
+		 * 如果dempId!=null,查找部门内的用户
+		 * 否则查找公司内的
+		 */
+		if(dempId != null){
+			user = userMapper.selectByNameAndDempId(dempId, username);
+		}else{
+			user = userMapper.selectByNameAndCompanyId(companyId, username);
+		}
+		return user;
+	}
 	
 	/**
 	 * 	同步到sso系统并返回ssoid

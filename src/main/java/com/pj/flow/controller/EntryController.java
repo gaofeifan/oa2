@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowEntry;
-import com.pj.flow.service.EntryService;
+import com.pj.flow.service.FlowEntryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ public class EntryController extends BaseController{
 	//	日志对象
 	private static final Logger logger = LoggerFactory.getLogger(EntryController.class); 
 	@Resource
-	private EntryService entryService;
+	private FlowEntryService flowEntryService;
 	
 	/**
 	 * 	提交申请

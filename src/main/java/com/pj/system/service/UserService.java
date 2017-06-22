@@ -71,5 +71,15 @@ public interface UserService extends BaseService<User, Integer> {
 	 */
 	User selectUserByCondition(User user);
 
+	/**
+	 * 根据替代人员姓名查询用户
+	 * @author limr
+	 * @param companyId
+	 * @param dempId
+	 * @param username
+	 * @return
+	 */
+	User getReplaceUser(Integer companyId, Integer dempId, String username);
+
 	
 }
