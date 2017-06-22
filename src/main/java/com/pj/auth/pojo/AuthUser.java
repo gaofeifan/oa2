@@ -14,8 +14,8 @@ import io.swagger.annotations.ApiModelProperty;
  *	@parameter	
  *  @since		1.8
  */
-@Table(name= "auth_menu")
-public class AuthMenu {
+@Table(name= "auth_user")
+public class AuthUser {
 
 	@Id
 	@GeneratedValue(generator = "JDBC")
@@ -23,12 +23,14 @@ public class AuthMenu {
 	private Integer id;
 	
 	@Column
-	private String smid;
+	private Integer userid;
 	
 	@Column
-	private String name;
+	private Integer menuid;
 	
-
+	@Column
+	private Integer postid;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -37,13 +39,28 @@ public class AuthMenu {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Integer getUserid() {
+		return userid;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserid(Integer userid) {
+		this.userid = userid;
 	}
 
+	public Integer getMenuid() {
+		return menuid;
+	}
+
+	public void setMenuid(Integer menuid) {
+		this.menuid = menuid;
+	}
+	
+	public Integer getPostid() {
+		return postid;
+	}
+
+	public void setPostid(Integer postid) {
+		this.postid = postid;
+	}
 	
 }
