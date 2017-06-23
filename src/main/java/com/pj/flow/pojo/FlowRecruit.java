@@ -54,10 +54,10 @@ public class FlowRecruit implements Serializable {
 	@ApiModelProperty(value = "工作地点", required = false)
     private String workAddress;
 
-	@ApiModelProperty(value = "招聘原因类型", required = false)
+	@ApiModelProperty(value = "招聘原因类型(1:战略类, 2:业务类, 3:替代类)", required = false)
     private Integer applyReasonType;
-    
-	@ApiModelProperty(value = "招聘原因子类型", required = false)
+   
+	@ApiModelProperty(value = "招聘原因子类型(11:业务板块增加,12:储备人力; 21:业务扩大,22:职能增加,23:业务类其他; 31:离职补充,32:现有人员替换,33:替换类补充)", required = false)
     private Integer applyReasonChildType;
     
 	@ApiModelProperty(value = "招聘原因", required = false)
@@ -66,16 +66,16 @@ public class FlowRecruit implements Serializable {
 	@ApiModelProperty(value = "替换人员id", required = false)
     private Integer replaceId;
 
-	@ApiModelProperty(value = "招聘渠道", required = false)
+	@ApiModelProperty(value = "招聘渠道(1:外部招聘, 2:内部竞聘, 3:内部推荐, 4:猎头)", required = false)
     private Integer channel;
 
-	@ApiModelProperty(value = "性别", required = false)
+	@ApiModelProperty(value = "性别（0:不限, 1:男, 2:女）", required = false)
     private Integer sex;
 
 	@ApiModelProperty(value = "年龄", required = false)
     private String age;
 
-	@ApiModelProperty(value = "学历", required = false)
+	@ApiModelProperty(value = "学历(0:不限, 1:高中及以上, 2:专科及以上, 3:本科及以上, 4:硕士及以上, 5:博士及以上, )", required = false)
     private String education;
 
 	@ApiModelProperty(value = "岗位职责", required = false)
@@ -99,10 +99,10 @@ public class FlowRecruit implements Serializable {
 	@ApiModelProperty(value = "其他需求", required = false)
     private String otherDemand;
 
-	@ApiModelProperty(value = "申请状态", required = false)
+	@ApiModelProperty(value = "申请状态(1:招聘审批中,2:招聘已审批,3:入职审批中,4:入职已审批,5:已发offer,6:已建档)", required = false)
     private String state;
 
-	@ApiModelProperty(value = "申请结果", required = false)
+	@ApiModelProperty(value = "申请结果(1:招聘同意,2:招聘不同意,3:招聘暂停,4:招聘取消,5:入职同意,6:入职不同意,7:入职完结)", required = false)
     private String result;
 
 	@ApiModelProperty(value = "入职人数", required = false)
