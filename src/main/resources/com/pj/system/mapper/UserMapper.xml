@@ -216,7 +216,7 @@
 		SELECT u.* FROM t_user u
 		where u.dempid in 
 		(select d.id from t_demp d where d.companyid = #{companyid} and d.isdelete = 0)
-		and and u.isdelete = 0
+		and u.username = #{username} and u.isdelete = 0
 		
 	</select>
 </mapper>

@@ -7,82 +7,118 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Table(name="flow_recruit")
+@ApiModel
 public class FlowRecruit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(generator = "JDBC")
+	@ApiModelProperty(hidden=true)
     private Integer id;
 
+	@ApiModelProperty(value = "单号", required = false)
     private String number;
 
+	@ApiModelProperty(value = "申请人id", required = false)
     private Integer applyId;
 
+	@ApiModelProperty(value = "申请日期", required = false)
     private Date applyDate;
 
+	@ApiModelProperty(value = "所属公司", required = false)
     private Integer companyId;
 
+	@ApiModelProperty(value = "岗位id", required = false)
     private Integer postId;
 
+	@ApiModelProperty(value = "部门id", required = false)
     private Integer dempId;
 
+	@ApiModelProperty(value = "职位id", required = false)
     private Integer positionId;
 
+	@ApiModelProperty(value = "是否是部门负责人(0:否,1:是)", required = false)
     private Integer isDempLeader;
 
+	@ApiModelProperty(value = "是否是公司负责人(0:否,1:是)", required = false)
     private Integer isCompanyLeader;
 
+	@ApiModelProperty(value = "招聘人数", required = false)
     private Integer needNum;
 
+	@ApiModelProperty(value = "工作地点", required = false)
     private String workAddress;
 
+	@ApiModelProperty(value = "招聘原因类型", required = false)
     private Integer applyReasonType;
     
+	@ApiModelProperty(value = "招聘原因子类型", required = false)
     private Integer applyReasonChildType;
     
+	@ApiModelProperty(value = "招聘原因", required = false)
     private String applyReason;
     
+	@ApiModelProperty(value = "替换人员id", required = false)
     private Integer replaceId;
 
+	@ApiModelProperty(value = "招聘渠道", required = false)
     private Integer channel;
 
+	@ApiModelProperty(value = "性别", required = false)
     private Integer sex;
 
+	@ApiModelProperty(value = "年龄", required = false)
     private String age;
 
+	@ApiModelProperty(value = "学历", required = false)
     private String education;
 
+	@ApiModelProperty(value = "岗位职责", required = false)
     private String duty;
 
+	@ApiModelProperty(value = "技术资格", required = false)
     private String technology;
 
+	@ApiModelProperty(value = "专业知识", required = false)
     private String knowledge;
 
+	@ApiModelProperty(value = "业务能力", required = false)
     private String businessAbility;
 
+	@ApiModelProperty(value = "特殊能力", required = false)
     private String specialAbility;
 
+	@ApiModelProperty(value = "工作经历", required = false)
     private String experience;
 
+	@ApiModelProperty(value = "其他需求", required = false)
     private String otherDemand;
 
+	@ApiModelProperty(value = "申请状态", required = false)
     private String state;
 
+	@ApiModelProperty(value = "申请结果", required = false)
     private String result;
 
+	@ApiModelProperty(value = "入职人数", required = false)
     private Integer entryNum;
 
+	@ApiModelProperty(value = "直属领导id", required = false)
     private Integer leaderId;
 
+	@ApiModelProperty(value = "薪资范围", required = false)
     private String offerRange;
 
+	@ApiModelProperty(value = "是否需要调查(是否背景调查(0:否，1:是))", required = false)
     private Integer isCheck;
 
+	@ApiModelProperty(value = "删除状态(0:未删除,1:已删除)", required = false)
     private Integer status;
-    
-    
     
     //查询使用
     private String username;
