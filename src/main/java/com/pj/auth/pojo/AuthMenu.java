@@ -23,12 +23,27 @@ public class AuthMenu {
 	private Integer id;
 	
 	@Column
-	private String smid;
-	
-	@Column
 	private String name;
 	
-
+	@Column
+	private String img;
+	
+	@Column
+	private String href;
+	
+	@Column
+	private Integer fid;
+	
+	@Column
+	private Integer grade;
+	
+	@Column
+	private Integer auth;
+	
+	@Column
+	private Integer post;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -45,5 +60,54 @@ public class AuthMenu {
 		this.name = name;
 	}
 
+	public String getImg() {
+		return img;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
+	}
+	
+	public Integer getFid() {
+		return fid;
+	}
+	
+	public void setFid(Integer fid) {
+		this.fid = fid;
+	}
+	
+	public Integer getGrade() {
+		return grade;
+	}
+	
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+	
+	public Integer getAuth() {
+		return auth;
+	}
+	
+	public void setAuth(Integer auth) {
+		this.auth = auth;
+	}
+	public Integer getPost() {
+		return post;
+	}
+	
+	public void setPost(Integer post) {
+		this.post = post;
+	}
+	
+	
+	
 	
 }
