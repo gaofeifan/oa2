@@ -81,8 +81,84 @@ public class FlowRecruit implements Serializable {
     private Integer isCheck;
 
     private Integer status;
+    
+    
+    
+    //查询使用
+    private String username;
+    private String replaceName;
+    private String replaceOffer;
+    private String leaderName;
+    private String companyName;
+    private String dempName;
+    private String postName;
+    private String positionName;
 
-    public Integer getId() {
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getReplaceName() {
+		return replaceName;
+	}
+
+	public void setReplaceName(String replaceName) {
+		this.replaceName = replaceName;
+	}
+
+	public String getReplaceOffer() {
+		return replaceOffer;
+	}
+
+	public void setReplaceOffer(String replaceOffer) {
+		this.replaceOffer = replaceOffer;
+	}
+
+	public String getLeaderName() {
+		return leaderName;
+	}
+
+	public void setLeaderName(String leaderName) {
+		this.leaderName = leaderName;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getDempName() {
+		return dempName;
+	}
+
+	public void setDempName(String dempName) {
+		this.dempName = dempName;
+	}
+
+	public String getPostName() {
+		return postName;
+	}
+
+	public void setPostName(String postName) {
+		this.postName = postName;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	public Integer getId() {
         return id;
     }
 

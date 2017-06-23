@@ -16,9 +16,9 @@ public class SwaggerConfig {
 	   @Bean  
 	   public Docket customDocket(){  
 	      return new Docket(DocumentationType.SWAGGER_2).select()
-//		            .apis(RequestHandlerSelectors.basePackage("com.pj.flow.controller"))
+		            .apis(RequestHandlerSelectors.basePackage("com.pj.flow.controller"))
 //		            .apis(RequestHandlerSelectors.basePackage("com.pj.auth.controller"))
-		            .apis(RequestHandlerSelectors.basePackage("com.pj.system.controller"))
+//		            .apis(RequestHandlerSelectors.basePackage("com.pj.system.controller"))
 		            .build();  
 	  
 	   }  

@@ -16,4 +16,11 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 	 */
 	User getLeader(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader);
 
+	/**
+	 * 根据主键得到组合数据
+	 * @param recruitId
+	 * @return
+	 */
+	FlowRecruit selectById(Integer recruitId);
+
 }

@@ -128,4 +128,25 @@ public class RecruitController extends BaseController{
 		model.addAttribute(user);
 		return new ModelAndView("recruit/add");
 	}
+	
+	/**
+	 * 	申请单详情
+	 */
+	@ApiOperation(value = "申请单详情", httpMethod = "GET", response=Map.class, notes ="申请单详情")
+	@RequestMapping(value = "/showApply.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String , Object> showApply(
+			@ApiParam(value = "招聘申请单id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
+			map = this.success(recruit);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("申请单详情");
+		}
+		return map;
+	}
+	
+	
 }
