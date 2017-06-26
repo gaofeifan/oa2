@@ -12,23 +12,23 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum ApplyReasonConstant {
+public enum RecruitApplyReasonConstant {
 
 	STRAT("新增战略类需求", 1),
 		STRAT_ADD("业务板块增加", 11),
 		STRAT_STORE("储备人力", 12),
-	BUSSNESS("新增战略类需求", 2),
+	BUSSNESS("新增业务类需求", 2),
 		BUSSNESS_EXPAND("业务扩大", 21),
 		BUSSNESS_ADD("职能增加", 22),
-		BUSSNESS_OTHER("other", 23),
-	REPLACE("新增战略类需求", 3),
+		BUSSNESS_OTHER("其他", 23),
+	REPLACE("新增替代类需求", 3),
 		REPLACE_LEAVE("离职补充", 31),
 		REPLACE_EXIST("现有人员替换", 32),
 		REPLACE_OTHER("其他", 33);
 	
 	private String reasonName ;
 	private int reason;
-	private ApplyReasonConstant(String reasonName, int reason) {
+	private RecruitApplyReasonConstant(String reasonName, int reason) {
 		this.reason = reason;
 		this.reasonName = reasonName;
 	}

@@ -44,7 +44,7 @@ import io.swagger.annotations.ApiParam;
  */
 @Controller
 @RequestMapping("/recruit")
-@Api(value="recruit", description="入职申请", position=1)
+@Api(value="recruit", description="招聘申请", position=1)
 public class RecruitController extends BaseController{
 
 	//	日志对象
@@ -78,13 +78,13 @@ public class RecruitController extends BaseController{
 	 * 	得到直属领导
 	 */
 	@ApiOperation(value = "得到直属领导", httpMethod = "GET", response=Map.class, notes ="得到直属领导")
-	@RequestMapping(value = "/commitEntry.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/getLeader.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String , Object> getLeader(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
 			@ApiParam(value = "部门id")@RequestParam(value = "dempId")Integer dempId, 
-			@ApiParam(value = "是否是公司领导", defaultValue = "0")@RequestParam(value = "isCompanyLeader", defaultValue = "0")Integer isCompanyLeader, 
-			@ApiParam(value = "是否是部门领导", defaultValue = "0")@RequestParam(value = "isDempLeader", defaultValue = "0")Integer isDempLeader){
+			@ApiParam(value = "是否是公司领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isCompanyLeader", defaultValue = "0")Integer isCompanyLeader, 
+			@ApiParam(value = "是否是部门领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isDempLeader", defaultValue = "0")Integer isDempLeader){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			User user = flowRecruitService.getLeader(companyId, dempId, isCompanyLeader, isDempLeader);
@@ -103,7 +103,7 @@ public class RecruitController extends BaseController{
 	@ResponseBody
 	public Map<String , Object> getReplaceUser(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
-			@ApiParam(value = "部门id")@RequestParam(value = "dempId")Integer dempId, 
+			@ApiParam(value = "部门id", required = false)@RequestParam(value = "dempId", required = false)Integer dempId, 
 			@ApiParam(value = "姓名", required = true)@RequestParam(value = "username", required = true)String username){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -128,4 +128,25 @@ public class RecruitController extends BaseController{
 		model.addAttribute(user);
 		return new ModelAndView("recruit/add");
 	}
+	
+	/**
+	 * 	申请单详情
+	 */
+	@ApiOperation(value = "申请单详情", httpMethod = "GET", response=Map.class, notes ="申请单详情")
+	@RequestMapping(value = "/showApply.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String , Object> showApply(
+			@ApiParam(value = "招聘申请单id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
+			map = this.success(recruit);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("申请单详情");
+		}
+		return map;
+	}
+	
+	
 }

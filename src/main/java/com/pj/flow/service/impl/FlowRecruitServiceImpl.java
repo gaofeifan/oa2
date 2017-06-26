@@ -69,5 +69,9 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		
 		return user;
 	}
+	@Override
+	public FlowRecruit selectById(Integer recruitId) {
+		return flowRecruitMapper.selectById(recruitId);
+	}
 
 }

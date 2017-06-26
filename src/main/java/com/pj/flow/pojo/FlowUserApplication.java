@@ -1,156 +1,102 @@
 package com.pj.flow.pojo;
 
-import javax.persistence.Column;
+import java.util.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- *	@author		GFF
- *	@date		2017年6月19日上午11:51:37
- *	@version	1.0.0
- *	@parameter	
- *  @since		1.8
- */
-@Table(name="flow_user_application")
+@Table(name = "flow_user_application")
 public class FlowUserApplication {
-
 	@Id
 	@GeneratedValue(generator = "JDBC")
-	private Integer id;
-	
-	/**
-	 * 	申请人id
-	 */
-	@Column
-	private Integer userId;
-	
-	/**
-	 * 	申请表id
-	 */
-	@Column
-	private Integer fromId;
-	
-	/**
-	 * 	申请类型
-	 */
-	@Column
-	private Integer applicationId;
-	
-	/**
-	 * 	申请人姓名
-	 */
-	@Column
-	private String applicant;
-	
-	/**
-	 * 	申请人部门
-	 */
-	@Column
-	private String applicantDempName;
-	
-	/**
-	 * 	申请时间
-	 */
-	@Column
-	private String applicationTime;
-	
-	/**
-	 * 	职位名称
-	 */
-	@Column
-	private String applicantPostName;
+    private Integer id;
 
-	/**
-	 * 	表单中具体的人员
-	 */
-	@Column
-	private String username;
-	
-	/**
-	 * 	申请单号
-	 */
-	@Column
-	private String applicantNumber;
+    private Integer userId;
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer fromId;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String applyType;
 
-	public Integer getUserId() {
-		return userId;
-	}
+    private String applyName;
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    private String applyDempName;
 
-	public Integer getFromId() {
-		return fromId;
-	}
+    private Date applyTime;
 
-	public void setFromId(Integer fromId) {
-		this.fromId = fromId;
-	}
+    private String applyPostName;
 
-	public Integer getApplicationId() {
-		return applicationId;
-	}
+    private String username;
 
-	public void setApplicationId(Integer applicationId) {
-		this.applicationId = applicationId;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getApplicant() {
-		return applicant;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setApplicant(String applicant) {
-		this.applicant = applicant;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public String getApplicantDempName() {
-		return applicantDempName;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public void setApplicantDempName(String applicantDempName) {
-		this.applicantDempName = applicantDempName;
-	}
+    public Integer getFromId() {
+        return fromId;
+    }
 
-	public String getApplicationTime() {
-		return applicationTime;
-	}
+    public void setFromId(Integer fromId) {
+        this.fromId = fromId;
+    }
 
-	public void setApplicationTime(String applicationTime) {
-		this.applicationTime = applicationTime;
-	}
+    public String getApplyType() {
+        return applyType;
+    }
 
-	public String getApplicantPostName() {
-		return applicantPostName;
-	}
+    public void setApplyType(String applyType) {
+        this.applyType = applyType == null ? null : applyType.trim();
+    }
 
-	public void setApplicantPostName(String applicantPostName) {
-		this.applicantPostName = applicantPostName;
-	}
+    public String getApplyName() {
+        return applyName;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setApplyName(String applyName) {
+        this.applyName = applyName == null ? null : applyName.trim();
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getApplyDempName() {
+        return applyDempName;
+    }
 
-	public String getApplicantNumber() {
-		return applicantNumber;
-	}
+    public void setApplyDempName(String applyDempName) {
+        this.applyDempName = applyDempName == null ? null : applyDempName.trim();
+    }
 
-	public void setApplicantNumber(String applicantNumber) {
-		this.applicantNumber = applicantNumber;
-	}
-	
+    public Date getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(Date applyTime) {
+        this.applyTime = applyTime;
+    }
+
+    public String getApplyPostName() {
+        return applyPostName;
+    }
+
+    public void setApplyPostName(String applyPostName) {
+        this.applyPostName = applyPostName == null ? null : applyPostName.trim();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
+    }
 }

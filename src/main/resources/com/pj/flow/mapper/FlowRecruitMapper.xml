@@ -36,6 +36,15 @@
     <result column="offer_range" property="offerRange" jdbcType="VARCHAR" />
     <result column="is_check" property="isCheck" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <!-- 查询使用 -->
+	<result column="username" property="username" jdbcType="VARCHAR" />
+	<result column="replaceName" property="replaceName" jdbcType="VARCHAR" />
+	<result column="replaceOffer" property="replaceOffer" jdbcType="VARCHAR" />
+	<result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
+	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
+	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
+	<result column="postName" property="postName" jdbcType="VARCHAR" />
+	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, number, apply_id, apply_date, company_id, post_id, demp_id, position_id, is_demp_leader, 
@@ -43,5 +52,18 @@
     duty, technology, knowledge, business_ability, special_ability, experience, other_demand, 
     state, result, entry_num, leader_id, offer_range, is_check, status
   </sql>
-  
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT r.*, u.username AS username, pn.name AS positionName, c.name AS companyName,
+		d.name AS dempName, p.name AS postName, ul.username AS leaderName, 
+		ur.username AS replaceName, s.total_salary AS replaceOffer FROM flow_recruit r
+		LEFT JOIN t_user u ON r.apply_id = u.id
+		LEFT JOIN t_user ur ON r.replace_id = ur.id
+		LEFT JOIN t_salary s ON s.user_id = ur.id AND s.salary_type = 3
+		LEFT JOIN t_user ul ON r.leader_id = ul.id
+		LEFT JOIN t_company c ON c.id = r.company_id
+		LEFT JOIN t_demp d ON d.id = r.demp_id
+		LEFT JOIN t_post p ON p.id = r.post_id
+		LEFT JOIN t_position pn ON pn.id = r.position_id
+		where r.id = #{id} and status = 0
+	</select>
 </mapper>

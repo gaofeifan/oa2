@@ -1,0 +1,66 @@
+package com.pj.auth.pojo;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import io.swagger.annotations.ApiModelProperty;
+
+/**
+ *	@author		GFF
+ *	@date		2017年6月19日上午10:30:30
+ *	@version	1.0.0
+ *	@parameter	
+ *  @since		1.8
+ */
+@Table(name= "auth_user")
+public class AuthUser {
+
+	@Id
+	@GeneratedValue(generator = "JDBC")
+	@ApiModelProperty(value = "id", required = false)
+	private Integer id;
+	
+	@Column
+	private Integer userid;
+	
+	@Column
+	private Integer menuid;
+	
+	@Column
+	private Integer postid;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+
+	public Integer getMenuid() {
+		return menuid;
+	}
+
+	public void setMenuid(Integer menuid) {
+		this.menuid = menuid;
+	}
+	
+	public Integer getPostid() {
+		return postid;
+	}
+
+	public void setPostid(Integer postid) {
+		this.postid = postid;
+	}
+	
+}
