@@ -6,8 +6,8 @@
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="companyId" property="companyId" jdbcType="INTEGER" />
-    <result column="dempId" property="dempId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="demp_id" property="dempId" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     
     <!-- 查询使用 -->
@@ -21,8 +21,8 @@
 		d.`name` dempname
 	FROM
 	t_post p 
-	left join t_company c on p.companyId = c.id
-	left join t_demp d on p.dempId = d.id
+	left join t_company c on p.company_id = c.id
+	left join t_demp d on p.demp_id = d.id
 	<where>
 		p.isdelete = 0
 		<if test="companyname != null">
@@ -35,10 +35,10 @@
 			AND p.name like CONCAT(#{name},'%') 
 		</if>
 		<if test="companyId != null">
-			AND p.companyId = #{companyId}
+			AND p.company_id = #{companyId}
 		</if>
 		<if test="dempId != null">
-			AND p.dempId = #{dempId}
+			AND p.demp_id = #{dempId}
 		</if>
 	</where>	
 	ORDER BY p.id

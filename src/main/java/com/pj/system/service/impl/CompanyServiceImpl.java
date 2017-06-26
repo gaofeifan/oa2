@@ -66,4 +66,10 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 		return flag;
 	}
 
+	@Override
+	public List<Company> getByAuthUser(Integer userId) {
+		
+		return companyMapper.getByAuthUser(userId);
+	}
+
 }

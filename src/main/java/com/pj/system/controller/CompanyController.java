@@ -1,9 +1,12 @@
 package com.pj.system.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
+import com.pj.system.service.SessionProvider;
+import com.pj.system.service.UserService;
+import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +44,12 @@ public class CompanyController extends SystemManageController{
 	
 	@Resource
 	private NumberTool numberUtils;
+	
+	@Resource
+	private UserService userService;
+	
+	@Resource
+	private SessionProvider sessionProvider;
 	/**
 	 * 	获取公司number
 	 */
@@ -168,5 +181,33 @@ public class CompanyController extends SystemManageController{
 		throw new RuntimeException("查询是否是否可以删除");
 	}
 	return map;
+	}
+	
+	/******************** 招聘待办 ******************/
+	/**
+	 * 根据用户权限查询所负责公司信息
+	 * @author limr
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@ApiOperation(value = "根据用户权限查询所负责公司信息", httpMethod = "GET", response=String.class, notes ="根据用户权限查询所负责公司信息")
+	@RequestMapping(value = "/getCompanysByAuth.do",method=RequestMethod.GET)
+	public Map<String, Object> findCompanyList(HttpServletResponse response,
+			HttpServletRequest request){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			List<Company> companys = companyService.getByAuthUser(user.getId());
+			map = this.success(companys);
+		} catch (Exception e) {
+			logger.error("根据用户权限查询所负责公司信息" + e.getMessage());
+			throw new RuntimeException("根据用户权限查询所负责公司信息");			
+		}
+    	return map;
 	}
 }

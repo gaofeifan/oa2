@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum RecruitApplyResultConstant {
+public enum RecruitApplyResult {
 
 	RECRUIT_AGREE("招聘同意", 1),
 	RECRUIT_DISAGREE("招聘不同意", 2),
@@ -22,7 +22,7 @@ public enum RecruitApplyResultConstant {
 	ENTRY_DISAGREE("入职不同意", 6),
 	ENTRY_SUCCESS("入职完结", 7);	
 	
-	private RecruitApplyResultConstant(String resultName, int result) {
+	private RecruitApplyResult(String resultName, int result) {
 		this.resultName = resultName;
 		this.result = result;
 	}

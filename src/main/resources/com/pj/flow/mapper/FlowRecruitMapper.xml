@@ -3,8 +3,8 @@
 <mapper namespace="com.pj.flow.mapper.FlowRecruitMapper" >
   <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowRecruit" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="apply_date" property="applyDate" jdbcType="DATE" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="post_id" property="postId" jdbcType="INTEGER" />
@@ -47,16 +47,16 @@
 	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, number, apply_id, apply_date, company_id, post_id, demp_id, position_id, is_demp_leader, 
+    id, apply_id, username, apply_date, company_id, post_id, demp_id, position_id, is_demp_leader, 
     is_company_leader, need_num, work_address, apply_reason_type, apply_reason_child_type, apply_reason, replace_id, channel, sex, age, education, 
     duty, technology, knowledge, business_ability, special_ability, experience, other_demand, 
     state, result, entry_num, leader_id, offer_range, is_check, status
   </sql>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-		SELECT r.*, u.username AS username, pn.name AS positionName, c.name AS companyName,
+		SELECT r.*, pn.name AS positionName, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName, 
 		ur.username AS replaceName, s.total_salary AS replaceOffer FROM flow_recruit r
-		LEFT JOIN t_user u ON r.apply_id = u.id
+		<!-- LEFT JOIN t_user u ON r.apply_id = u.id -->
 		LEFT JOIN t_user ur ON r.replace_id = ur.id
 		LEFT JOIN t_salary s ON s.user_id = ur.id AND s.salary_type = 3
 		LEFT JOIN t_user ul ON r.leader_id = ul.id
@@ -66,4 +66,26 @@
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where r.id = #{id} and status = 0
 	</select>
+	<select id="selectByQuery" resultMap="BaseResultMap">
+		select r.*, COALESCE (pd.name + "-", d.name) as dempName, pn.name as positionName from flow_recruit r
+		LEFT JOIN t_demp d ON d.id = r.demp_id
+		LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId
+		LEFT JOIN t_position pn ON pn.id = r.position_id
+		where r.status = 0
+		and r.post_id in 
+	  		(select au.postid from auth_user au where au.userid = #{userId})
+		<if test="companyId != null" >
+	        and r.company_id = #{companyId}
+	    </if>
+		<if test="username != null and username != ''" >
+	        and r.username = #{username}
+	    </if>
+		and r.id in 
+			(select rt.recruit_id from flow_recruit_todo rt 
+			where rt.state = #{state})
+	
+	</select>
+	<update id="updateStatus" parameterType="java.lang.Integer">
+	 update flow_recruit set status = 1 where id = #{id}
+	</update>
 </mapper>

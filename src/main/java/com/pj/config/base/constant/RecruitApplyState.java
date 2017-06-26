@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum RecruitApplyStateConstant {
+public enum RecruitApplyState {
 
 	IN_RECRUIT_APPROVAL("招聘审批中", 1),
 	RECRUIT_APPROVED("招聘已审批", 2),
@@ -21,7 +21,7 @@ public enum RecruitApplyStateConstant {
 	IN_OFFER("已发offer", 5),
 	FILING("已建档", 6);	
 	
-	private RecruitApplyStateConstant(String stateName, int state) {
+	private RecruitApplyState(String stateName, int state) {
 		this.stateName = stateName;
 		this.state = state;
 	}

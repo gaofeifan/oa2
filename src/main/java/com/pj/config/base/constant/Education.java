@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum EducationConstant {
+public enum Education {
 
 	HIGH("高中及以上", 1),
 	ZK("专科及以上", 2),
@@ -23,7 +23,7 @@ public enum EducationConstant {
 	private String educationName ;
 	private int education;
 	
-	private EducationConstant(String educationName, int education) {
+	private Education(String educationName, int education) {
 		this.educationName = educationName;
 		this.education = education;
 	}

@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum RecruitApplyReasonConstant {
+public enum RecruitApplyReason {
 
 	STRAT("新增战略类需求", 1),
 		STRAT_ADD("业务板块增加", 11),
@@ -28,7 +28,7 @@ public enum RecruitApplyReasonConstant {
 	
 	private String reasonName ;
 	private int reason;
-	private RecruitApplyReasonConstant(String reasonName, int reason) {
+	private RecruitApplyReason(String reasonName, int reason) {
 		this.reason = reason;
 		this.reasonName = reasonName;
 	}

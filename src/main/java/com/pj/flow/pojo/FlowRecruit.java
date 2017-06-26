@@ -21,12 +21,12 @@ public class FlowRecruit implements Serializable {
 	@ApiModelProperty(hidden=true)
     private Integer id;
 
-	@ApiModelProperty(value = "单号", required = false)
-    private String number;
-
 	@ApiModelProperty(value = "申请人id", required = false)
     private Integer applyId;
 
+	@ApiModelProperty(value = "申请人姓名", required = false)
+	private String username;
+	
 	@ApiModelProperty(value = "申请日期", required = false)
     private Date applyDate;
 
@@ -119,9 +119,11 @@ public class FlowRecruit implements Serializable {
 
 	@ApiModelProperty(value = "删除状态(0:未删除,1:已删除)", required = false)
     private Integer status;
+	
+	//招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）
+	private Integer todoState;
     
     //查询使用
-    private String username;
     private String replaceName;
     private String replaceOffer;
     private String leaderName;
@@ -130,7 +132,16 @@ public class FlowRecruit implements Serializable {
     private String postName;
     private String positionName;
 
-    public String getUsername() {
+    
+    public Integer getTodoState() {
+		return todoState;
+	}
+
+	public void setTodoState(Integer todoState) {
+		this.todoState = todoState;
+	}
+
+	public String getUsername() {
 		return username;
 	}
 
@@ -200,14 +211,6 @@ public class FlowRecruit implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
     }
 
     public Integer getApplyId() {

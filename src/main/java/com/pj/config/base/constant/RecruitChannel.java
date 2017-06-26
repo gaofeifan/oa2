@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum RecruitChannelConstant {
+public enum RecruitChannel {
 
 	OUTSIDE("外部招聘", 1),
 	INSIDE("内部竞聘", 2),
@@ -21,7 +21,7 @@ public enum RecruitChannelConstant {
 	
 	private String channelName ;
 	private int channel;
-	private RecruitChannelConstant(String channelName, int channel) {
+	private RecruitChannel(String channelName, int channel) {
 		this.channel = channel;
 		this.channelName = channelName;
 	}
