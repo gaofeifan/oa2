@@ -198,7 +198,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private Integer saveSSOSystem(User t) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("username", t.getUsername());
-		
 		map.put("email", t.getCompanyEmail());
 		map.put("phone", t.getPhone());
 		String id = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
@@ -224,6 +223,16 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	
 	private User updateUserByEntryFrom(User t) {
 		return t;
+	}
+
+	/**
+	 * 	根据用户名称查询
+	 */
+	@Override
+	public List<User> selectUserByUsername(String username) {
+		User user = new User();
+		user.setUsername(username);
+		return this.selectUsersByCondition(user);
 	}
 	
 	

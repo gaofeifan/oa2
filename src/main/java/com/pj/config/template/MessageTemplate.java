@@ -33,15 +33,14 @@ public abstract class MessageTemplate {
 
 	private void inserMessage(MessageContent messageContent) {
 		messageContentService.insertSelective(messageContent);
-		for (Integer userId : addMessageViewer()) {
+		for (Integer userId : addMessageViewers()) {
 			messageContentUserService.insertSelective(new MessageContentUser(userId, messageContent.getId(), 0));
 		}
 	}
 
 	protected abstract MessageContent addMessageContent();
 
-	protected abstract List<Integer> addMessageViewer();
-	
-	
+	protected abstract List<Integer> addMessageViewers();
+
 	
 }

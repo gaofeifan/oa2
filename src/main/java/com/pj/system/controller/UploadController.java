@@ -44,7 +44,6 @@ public class UploadController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class); 
 	@Resource
 	private SessionProvider sessionProvider;
-	
 	@Autowired
 	private ManageProperties manageProperties;
 	
@@ -62,10 +61,8 @@ public class UploadController extends BaseController {
 		Map<String, Object> success = null;
 		List<String> pics = new ArrayList<>();
 		try {
-			// 通过将当前登录的email设置为第一级目录
 			for (MultipartFile myfile : filePic) {
 				if (myfile.isEmpty()) {
-					System.out.println("文件未上传");
 				} else {
 					DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 					String picName = df.format(new Date());
@@ -74,20 +71,14 @@ public class UploadController extends BaseController {
 					for (int i = 0; i < 3; i++) {
 						picName += r.nextInt(10);
 					}
-
 					// 重置文件名
 					long time = System.currentTimeMillis();
 					String timeStr = String.valueOf(time);
 					String[] originalFileName = myfile.getOriginalFilename().split("\\.");
 					@SuppressWarnings("unused")
 					String fileName = timeStr + "." + originalFileName[1];
-
-					String url = "139.129.236.180";
-					String username = "ftp";
-					String password = "pj!@#123oa";
-					int port = 2221;
-					String picPath = FtpUtils.uploadFile(url, port, username, password, picName,
-							myfile.getOriginalFilename(), myfile.getInputStream());
+					String picPath = FtpUtils.uploadFile(picName,
+							myfile.getOriginalFilename(), myfile.getInputStream(),manageProperties.ftpProperties);
 					if (picPath != null) {
 						if(filePic.length == 1){
 							success = this.success(picPath);
@@ -111,17 +102,12 @@ public class UploadController extends BaseController {
 		String[] strings = downloadName.split("-------");
 		String path = strings[0];
 		String fileName = strings[1];
-		String url = "139.129.236.180";
-		String username = "ftp";
-		String password = "pj!@#123oa";
-		int port = 2221;
 		if(path == null){
 			path = "";
 		}
          try {
         	 fileName = StringUtils.toUtf8String(request, fileName, response);
-        	 FtpUtils.downloadFile(url, port, username, password, path, fileName,new BufferedOutputStream( response.getOutputStream()));
-
+        	 FtpUtils.downloadFile(path, fileName,new BufferedOutputStream( response.getOutputStream()) , manageProperties.ftpProperties);
         	 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         	 response.setContentType("application/x-msdownload;");  
 			response.setHeader("Content-disposition", "attachment; filename="  

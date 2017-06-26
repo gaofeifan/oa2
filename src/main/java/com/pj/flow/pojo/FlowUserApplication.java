@@ -2,6 +2,7 @@ package com.pj.flow.pojo;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,20 +13,28 @@ public class FlowUserApplication {
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
 
+	@Column
     private Integer userId;
 
-    private Integer fromId;
+	@Column
+    private Integer formId;
 
+	@Column
     private String applyType;
 
+	@Column
     private String applyName;
 
+	@Column
     private String applyDempName;
 
+	@Column
     private Date applyTime;
 
+	@Column
     private String applyPostName;
 
+	@Column
     private String username;
 
     public Integer getId() {
@@ -44,15 +53,15 @@ public class FlowUserApplication {
         this.userId = userId;
     }
 
-    public Integer getFromId() {
-        return fromId;
-    }
+    public Integer getFormId() {
+		return formId;
+	}
 
-    public void setFromId(Integer fromId) {
-        this.fromId = fromId;
-    }
+	public void setFormId(Integer formId) {
+		this.formId = formId;
+	}
 
-    public String getApplyType() {
+	public String getApplyType() {
         return applyType;
     }
 

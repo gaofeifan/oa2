@@ -43,7 +43,7 @@ public class MessageContent {
 	private String applicatDemp;
 
 	@Column
-	private String notificationType;
+	private Integer notificationType;
 
 	public Integer getId() {
 		return id;
@@ -109,11 +109,11 @@ public class MessageContent {
 		this.applicatDemp = applicatDemp;
 	}
 
-	public String getNotificationType() {
+	public Integer getNotificationType() {
 		return notificationType;
 	}
 
-	public void setNotificationType(String notificationType) {
+	public void setNotificationType(Integer notificationType) {
 		this.notificationType = notificationType;
 	}
 	

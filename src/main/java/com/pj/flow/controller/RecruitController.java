@@ -74,6 +74,8 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
+	
+	
 	/**
 	 * 	得到直属领导
 	 */
@@ -116,6 +118,7 @@ public class RecruitController extends BaseController{
 		return map;
 	}
 	
+	
 	/**
 	 * 跳转申请表页面
 	 */
@@ -128,6 +131,7 @@ public class RecruitController extends BaseController{
 		model.addAttribute(user);
 		return new ModelAndView("recruit/add");
 	}
+	
 	
 	/**
 	 * 	申请单详情
@@ -147,6 +151,4 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
-	
-	
 }

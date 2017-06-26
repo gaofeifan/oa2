@@ -65,6 +65,26 @@ public class BaseController extends AdvanceControllerSupport{
 		return data;
 	}
 	
+	public MappingJacksonValue errorToJsonp(){
+		Map<String,Object> data = new HashMap<String, Object>();
+		data.put("status",false);
+		data.put("msg","操作失败！");
+		data.put("code","400");
+		MappingJacksonValue mjv = new MappingJacksonValue(data);
+		mjv.setJsonpFunction(getCallBack());
+		return mjv;
+	}
+
+	public MappingJacksonValue errorToJsonp(Object data){
+		Map<String,Object> map =new HashMap<String, Object>();
+		map.put("status",false);
+		map.put("msg",data);
+		map.put("code","400");
+		MappingJacksonValue mjv = new MappingJacksonValue(map);
+		mjv.setJsonpFunction(getCallBack());
+		return mjv;
+	}
+	
 	public Map<String,Object> error(Object data){
 		Map<String,Object> datas=new HashMap<String, Object>();
 		datas.put("status",false);
@@ -83,12 +103,13 @@ public class BaseController extends AdvanceControllerSupport{
 	public String getSession(){
 		String ua  = buildPipelineContent().getRequest().getHeader("user-agent").toLowerCase();
 		String key = buildPipelineContent().getRequest().getParameter("key");
-		if(StringUtils.isNotBlank(key) && ua.indexOf("micromessenger")>0){
+		if(StringUtils.isNotBlank(key) && ua.indexOf("micromessenger") > 0){
 			String emailKey = key.split(":")[0];
 			return sessionProvider.getAttibute(emailKey);
 		}
 		return sessionProvider.getAttibute(RequestUtils.getCSESSIONID(buildPipelineContent().getRequest(), buildPipelineContent().getResponse()));
 	}
+	
 	/**
 	 * 	获取当前callback
 	 *	@author 	GFF

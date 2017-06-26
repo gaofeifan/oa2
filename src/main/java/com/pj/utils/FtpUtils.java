@@ -14,6 +14,8 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 
+import com.pj.config.base.properties.FtpProperties;
+
 public class FtpUtils {
 	private static Logger logger = Logger.getLogger(FtpUtils.class);
 
@@ -35,16 +37,15 @@ public class FtpUtils {
 	 *            输入流
 	 * @return 成功返回true，否则返回false
 	 */
-	public static String uploadFile(String url, int port, String username, String password, String path,
-			String filename, InputStream input) throws Exception {
-		boolean success = false;
+	public static String uploadFile( String path,
+			String filename, InputStream input , FtpProperties ftpPro) throws Exception {
 		try {
 			FTPClient ftp = new FTPClient();
 			ftp.setControlEncoding("UTF-8");
-			ftp.connect(url, port);// 连接FTP服务器
+			ftp.connect(ftpPro.getUrl(), Integer.decode(ftpPro.getPort()));
 			int reply;
 			// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
-			ftp.login(username, password);// 登录
+			ftp.login(ftpPro.getUsername(), ftpPro.getPassword());// 登录
 			// 设置PassiveMode传输
 			ftp.enterLocalPassiveMode();
 			// 设置以二进制流的方式传输
@@ -62,13 +63,12 @@ public class FtpUtils {
 			if (!isChangeWork) {
 				boolean isMade = ftp.makeDirectory(path);
 				if (!isMade) {
-					throw new IOException("ftp 上传文件穿件目录失败");
+					throw new IOException("ftp 上传文件创建目录失败");
 				}
 				isChangeWork = ftp.changeWorkingDirectory(path);
 			}
 			ftp.storeFile(filename, input);
 			ftp.logout();
-			success = true;
 			logger.info("----------->>>文件上传成功");
 			if (ftp.isConnected()) {
 				try {
@@ -77,12 +77,7 @@ public class FtpUtils {
 					logger.error("----------->>>ftp连接关闭失败 " + ioe.getMessage());
 				}
 			}
-			if (success) {
-				return /*
-						 * "http://10.0.0.18:8084/tupian/"
-						 * +MyApplyUtils.PARTITION+
-						 */ path + "-------" + filename;
-			}
+			return new StringBuilder(ftpPro.getUrl()+"/"+ path + "/" + filename).toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -184,17 +179,17 @@ public class FtpUtils {
 		logger.info("----------->>>文件下载成功");
 	}
 
-	public static boolean downloadFile(String url, int port, String username, String password, String path,
-			String filename, OutputStream out) throws Exception {
+	public static boolean downloadFile(String path,
+			String filename, OutputStream out,FtpProperties ftpPro) throws Exception {
 		boolean success = false;
 		InputStream input = null;
 		try {
 			FTPClient ftp = new FTPClient();
 			ftp.setControlEncoding("UTF-8");
-			ftp.connect(url, port);// 连接FTP服务器
+			ftp.connect(ftpPro.getUrl(), Integer.decode(ftpPro.getPort()));// 连接FTP服务器
 			int reply;
 			// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
-			ftp.login(username, password);// 登录
+			ftp.login(ftpPro.getUsername(), ftpPro.getPassword());// 登录
 			// 设置PassiveMode传输
 			ftp.enterLocalPassiveMode();
 			// 设置以二进制流的方式传输

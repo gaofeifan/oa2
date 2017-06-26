@@ -2,38 +2,50 @@ package com.pj.flow.pojo;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "t_approve")
+@Table(name = "flow_approve")
 public class FlowApprove {
 	
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
 
+	@Column
     private Integer recordid;
 
+	@Column
     private Integer userid;
 
+	@Column
     private Integer positionid;
 
+	@Column
     private Date handledate;
 
+	@Column
     private String handleidea;
 
+	@Column
     private Integer checkstatus;
 
+	@Column
     private Integer applyId;
 
-    private Integer isapprove;
+	@Column
+    private Integer isApprove;
 
-    private Integer applyuserid;
+	@Column
+    private Integer applyUserId;
 
+	@Column
     private Date startTime;
 
-    private Integer ismessaging;
+	@Column
+    private Integer is_Messaging;
 
     public Integer getId() {
         return id;
@@ -99,22 +111,6 @@ public class FlowApprove {
         this.applyId = applyId;
     }
 
-    public Integer getIsapprove() {
-        return isapprove;
-    }
-
-    public void setIsapprove(Integer isapprove) {
-        this.isapprove = isapprove;
-    }
-
-    public Integer getApplyuserid() {
-        return applyuserid;
-    }
-
-    public void setApplyuserid(Integer applyuserid) {
-        this.applyuserid = applyuserid;
-    }
-
     public Date getStartTime() {
         return startTime;
     }
@@ -123,11 +119,29 @@ public class FlowApprove {
         this.startTime = startTime;
     }
 
-    public Integer getIsmessaging() {
-        return ismessaging;
-    }
+	public Integer getIsApprove() {
+		return isApprove;
+	}
 
-    public void setIsmessaging(Integer ismessaging) {
-        this.ismessaging = ismessaging;
-    }
+	public void setIsApprove(Integer isApprove) {
+		this.isApprove = isApprove;
+	}
+
+	public Integer getApplyUserId() {
+		return applyUserId;
+	}
+
+	public void setApplyUserId(Integer applyUserId) {
+		this.applyUserId = applyUserId;
+	}
+
+	public Integer getIs_Messaging() {
+		return is_Messaging;
+	}
+
+	public void setIs_Messaging(Integer is_Messaging) {
+		this.is_Messaging = is_Messaging;
+	}
+
+
 }

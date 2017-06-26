@@ -40,14 +40,14 @@ public class Post implements Serializable {
 	/**
 	 * 公司id
 	 */
-	@Column(name = "companyId")
+	@Column(name = "company_id")
 	@ApiModelProperty(value = "公司id", required = false)
 	private Integer companyId;
 
 	/**
 	 * 部门id
 	 */
-	@Column(name = "dempId")
+	@Column(name = "demp_id")
 	@ApiModelProperty(value = "部门id", required = false)
 	private Integer dempId;
 

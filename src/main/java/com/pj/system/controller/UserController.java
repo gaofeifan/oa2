@@ -83,7 +83,6 @@ public class UserController extends BaseController {
 			map = this.error();
 		}
 		return map;
-
 	}
 
 	/**
@@ -106,6 +105,18 @@ public class UserController extends BaseController {
 		return map;
 	}
 
+	@ApiOperation(value = "根据用户名称查询", httpMethod = "GET", response = MappingJacksonValue.class)
+	@RequestMapping(value = "/selectUserByUsername.do", method = RequestMethod.GET)
+	public @ResponseBody MappingJacksonValue selectUserByUsername(@ApiParam("用户名称") @RequestParam("username") String username){
+		try {
+			List<User> users = this.userService.selectUserByUsername(username);
+			return this.successJsonp(users);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp("查询异常"+e.getMessage());
+		}
+	}
+	
 	/**
 	 * 根据当前登录用户获取用户信息
 	 */

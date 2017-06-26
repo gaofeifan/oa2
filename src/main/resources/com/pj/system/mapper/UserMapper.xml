@@ -141,6 +141,9 @@
 			<if test="id != null">
 				AND u.id = #{id}
 			</if>
+			<if test="username !=  null">
+				AND u.username=#{username}
+			</if>
 		</where>
 	</select>
 	

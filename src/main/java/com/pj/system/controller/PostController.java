@@ -66,15 +66,6 @@ public class PostController extends SystemManageController {
 	}
 	
 	/**
-	 *	去往添加页面
-	 */
-	@ApiIgnore
-	@RequestMapping("/add.do")
-	public String add(){
-		return "post/add";
-	}
-	
-	/**
 	 *	添加岗位
 	 */
 	@ResponseBody

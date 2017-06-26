@@ -36,7 +36,7 @@ public class CompanyController extends SystemManageController{
 	private CompanyService companyService;
 	
 	@Resource
-	private NumberTool numberUtils;
+	private NumberTool numberTool;
 	/**
 	 * 	获取公司number
 	 */
@@ -44,15 +44,15 @@ public class CompanyController extends SystemManageController{
 	@RequestMapping("/getCompanyNumber.do")
 	@ResponseBody
 	public Map<String , Object> getCompanyNumber(){
-		Map<String, Object> map;
+		Map<String, Object> success = null;
 		try {
-			String number = this.numberUtils.getSingleNumber(companyService, four);
-			map = this.success(number);
+			String number = this.numberTool.getSingleNumber(companyService, four);
+			success = this.success(number);
 		} catch (Exception e) {
 			logger.error("获取公司单号异常" + e.getMessage());
-			throw new RuntimeException("获取公司number");
+			success = this.error();
 		}
-		return map;
+		return success;
 	}
 	
 	/**
