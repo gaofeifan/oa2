@@ -11,5 +11,12 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
   </resultMap>
+	<select id="getByAuthUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select c.* from t_company c
+			where c.id in 
+				(select p.company_id from t_post p 
+					where p.id in 
+						(select au.postid from auth_user au where au.userid = #{userId}))
+	</select>
 
 </mapper>

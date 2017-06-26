@@ -1,5 +1,7 @@
 package com.pj.flow.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowRecruitMapper;
+import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.system.mapper.CompanyMapper;
@@ -20,6 +23,9 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 
 	@Autowired
 	private FlowRecruitMapper flowRecruitMapper;
+	
+	@Autowired
+	private FlowRecruitTodoMapper flowRecruitTodoMapper;
 	
 	@Autowired
 	private UserMapper userMapper;
@@ -72,6 +78,21 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	@Override
 	public FlowRecruit selectById(Integer recruitId) {
 		return flowRecruitMapper.selectById(recruitId);
+	}
+	@Override
+	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
+		return flowRecruitMapper.selectByQuery(userId, companyId, username, state);
+	}
+	@Override
+	public void updateState(Integer recruitId, String reason, Integer state) {
+			
+		//0:终止,1:开始,2:提交,3:暂停
+		if(state == 0){
+			//删除
+			flowRecruitMapper.updateStatus(recruitId);
+		}
+		flowRecruitTodoMapper.updateState(recruitId, state, reason);
+		
 	}
 
 }

@@ -12,7 +12,7 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum ApplyTypeConstant {
+public enum RecruitApplyType {
 
 	RECRUIT("招聘申请", "recruit"),
 	ENTRY("入职申请", "entry"),
@@ -25,7 +25,7 @@ public enum ApplyTypeConstant {
 	private String applyName ;
 	private String applyType;
 	
-	private ApplyTypeConstant(String applyName, String applyType) {
+	private RecruitApplyType(String applyName, String applyType) {
 		this.applyName = applyName;
 		this.applyType = applyType;
 	}

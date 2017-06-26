@@ -1,6 +1,6 @@
 package com.pj.flow.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowRecruitService;
+import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
@@ -29,6 +32,7 @@ import com.pj.utils.RequestUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 项目名称：oa   
@@ -52,6 +56,8 @@ public class RecruitController extends BaseController{
 	@Resource
 	private FlowRecruitService flowRecruitService;
 	@Resource
+	private FlowRecruitTodoService flowRecruitTodoService;
+	@Resource
 	private UserService userService;
 	@Resource
 	private SessionProvider sessionProvider;
@@ -59,15 +65,15 @@ public class RecruitController extends BaseController{
 	/**
 	 * 	提交申请
 	 */
-	@ApiOperation(value = "提交招聘申请", httpMethod = "POST", response=Map.class, notes ="提交招聘申请")
-	@RequestMapping(value = "/insertRecruit.do", method = RequestMethod.POST)
+	@ApiOperation(value = "提交招聘申请", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交招聘申请")
+	@RequestMapping(value = "/insertRecruit.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String , Object> insertRecruit(@ModelAttribute("flowRecruit")FlowRecruit flowRecruit){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public MappingJacksonValue insertRecruit(@ModelAttribute("flowRecruit")FlowRecruit flowRecruit){
+		MappingJacksonValue map;
 		try {
 			flowRecruitService.insertSelective(flowRecruit);
 			
-			map = this.success("提交成功");
+			map = this.successJsonp("提交成功");
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("提交招聘申请");
@@ -79,18 +85,18 @@ public class RecruitController extends BaseController{
 	/**
 	 * 	得到直属领导
 	 */
-	@ApiOperation(value = "得到直属领导", httpMethod = "GET", response=Map.class, notes ="得到直属领导")
+	@ApiOperation(value = "得到直属领导", httpMethod = "GET", response=MappingJacksonValue.class, notes ="得到直属领导")
 	@RequestMapping(value = "/getLeader.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String , Object> getLeader(
+	public MappingJacksonValue getLeader(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
 			@ApiParam(value = "部门id")@RequestParam(value = "dempId")Integer dempId, 
 			@ApiParam(value = "是否是公司领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isCompanyLeader", defaultValue = "0")Integer isCompanyLeader, 
 			@ApiParam(value = "是否是部门领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isDempLeader", defaultValue = "0")Integer isDempLeader){
-		Map<String, Object> map = new HashMap<String, Object>();
+		MappingJacksonValue map;
 		try {
 			User user = flowRecruitService.getLeader(companyId, dempId, isCompanyLeader, isDempLeader);
-			map = this.success(user);
+			map = this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("得到直属领导");
@@ -100,17 +106,17 @@ public class RecruitController extends BaseController{
 	/**
 	 * 	根据替代人员姓名查询用户
 	 */
-	@ApiOperation(value = "根据替代人员姓名查询用户", httpMethod = "GET", response=Map.class, notes ="根据替代人员姓名查询用户")
+	@ApiOperation(value = "根据替代人员姓名查询用户", httpMethod = "GET", response=MappingJacksonValue.class, notes ="根据替代人员姓名查询用户")
 	@RequestMapping(value = "/getReplaceUser.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String , Object> getReplaceUser(
+	public MappingJacksonValue getReplaceUser(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
 			@ApiParam(value = "部门id", required = false)@RequestParam(value = "dempId", required = false)Integer dempId, 
-			@ApiParam(value = "姓名", required = true)@RequestParam(value = "username", required = true)String username){
-		Map<String, Object> map = new HashMap<String, Object>();
+			@ApiParam(value = "姓名", required = true)@RequestParam(value = "replaceName", required = true)String replaceName){
+		MappingJacksonValue map;
 		try {
-			User user = userService.getReplaceUser(companyId, dempId, username);
-			map = this.success(user);
+			User user = userService.getReplaceUser(companyId, dempId, replaceName);
+			map = this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("替代用户");
@@ -122,6 +128,7 @@ public class RecruitController extends BaseController{
 	/**
 	 * 跳转申请表页面
 	 */
+	@ApiIgnore
 	@RequestMapping(value = "/toRecruit.do", method = RequestMethod.GET)
 	@ApiOperation(value = "跳转申请表页面", httpMethod = "GET", response=ModelAndView.class, notes ="跳转申请表页面")
 	public ModelAndView toRecruit(HttpServletResponse response, HttpServletRequest request, Model model){
@@ -139,16 +146,94 @@ public class RecruitController extends BaseController{
 	@ApiOperation(value = "申请单详情", httpMethod = "GET", response=Map.class, notes ="申请单详情")
 	@RequestMapping(value = "/showApply.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String , Object> showApply(
+	public MappingJacksonValue showApply(
 			@ApiParam(value = "招聘申请单id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
-		Map<String, Object> map = new HashMap<String, Object>();
+		MappingJacksonValue map;
 		try {
 			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
-			map = this.success(recruit);
+			map = this.successJsonp(recruit);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("申请单详情");
 		}
 		return map;
 	}
+	
+	
+	/**********************招聘待办**********************/
+	
+	/**
+	 * 	招聘待办提示,得到待办个数
+	 */
+	@ApiOperation(value = "招聘待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办提示,得到待办个数")
+	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue todoTips(
+			HttpServletResponse response, HttpServletRequest request){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
+			int number = flowRecruitTodoService.getNumByState(user.getId(), RecruitTodoState.IN_RECRUIT.getState());
+			
+			map = this.successJsonp(number);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("招聘待办提示");
+		}
+		return map;
+	}
+	/**
+	 * 	招聘待办查询
+	 */
+	@ApiOperation(value = "招聘待办查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办查询")
+	@RequestMapping(value = "/listecruitTodo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue listecruitTodo(
+			HttpServletResponse response,
+			HttpServletRequest request,
+			@ApiParam(value = "招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）", required = true)@RequestParam(value = "state", required = true)Integer state,
+			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
+			@ApiParam(value = "username", required = false)@RequestParam(value = "username", required = false)String username){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+
+			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
+			map = this.successJsonp(recruits);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("招聘待办查询");
+		}
+		return map;
+	}
+	/**
+	 * 	招聘待办状态改变
+	 */
+	@ApiOperation(value = "招聘待办状态改变", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办状态改变")
+	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue changeState(
+			HttpServletResponse response,
+			HttpServletRequest request,
+			@ApiParam(value = "招聘待办状态（0:终止,1:开始,2:提交,3:暂停）", required = true)@RequestParam(value = "state", required = true)Integer state,
+			@ApiParam(value = "理由", required = false)@RequestParam(value = "reason", required = false)String reason,
+			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
+		MappingJacksonValue map;
+		try {
+			flowRecruitService.updateState(recruitId, reason, state);
+			map = this.successJsonp(null);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("招聘待办状态改变");
+		}
+		return map;
+	}
+	
+	
 }

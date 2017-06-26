@@ -1,6 +1,8 @@
 
 package com.pj.system.service;
 
+import java.util.List;
+
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Company;
 
@@ -23,6 +25,14 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 * 	@return
 	 */
 	Boolean isDeleteCompany(Integer companyId);
+
+	/**
+	 * 根据用户权限查询所负责公司信息
+	 * @author limr
+	 * @param userId
+	 * @return
+	 */
+	List<Company> getByAuthUser(Integer userId);
 
 
 }
