@@ -189,6 +189,7 @@ public class DempController extends SystemManageController{
 		return map;
 		
 	}
+	
 	/**
 	 * 获取公司下面的所有部门（排除该部门下面的所有子集）
 	 *	@author 	GFF
@@ -203,6 +204,23 @@ public class DempController extends SystemManageController{
 		List<Demp> demps = this.dempService.selectEliminateSubset(id);
 		Map<String, Object> map = this.success(demps);
 		return map;
-		
 	}
+	
+	/**
+	 * 获取公司下面的所有部门（排除该部门下面的所有子集）
+	 *	@author 	GFF
+	 *	@date		2017年1月24日下午4:19:20	
+	 * 	@param id
+	 * 	@return
+	 */
+	@ApiOperation(value = "查询是否可以删除", httpMethod = "GET", response=Map.class, notes ="查询是否可以删除")
+	@RequestMapping(value="/findDempsANDParentNode.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> findDempsAnd(@ApiParam("id") @RequestParam("id")Integer id){
+		List<Demp> demps = this.dempService.selectEliminateSubset(id);
+		Map<String, Object> map = this.success(demps);
+		return map;
+	}
+	
+	
 }

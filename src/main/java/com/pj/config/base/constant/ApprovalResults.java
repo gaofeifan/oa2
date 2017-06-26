@@ -1,18 +1,16 @@
-package com.pj.utils.enums;
+package com.pj.config.base.constant;
 
-public enum CheckStatus {
-	//审批状态1、同意；2、审批中；3、不同意  4 未处理
-		AGREE(1,"同意"),
-		IN_APPROVE(2,"审批中"),
-		NO_AGREE(3,"不同意"),
-		NO_HANDLE(4,"未处理"),
-		BACK(5,"驳回");
+public enum ApprovalResults {
+	//审批状态0、审批中  1 不同意   2同意
+		UNTREATED(0,"审批中"),
+		NO_AGREE(1,"不同意"),
+		AGREE(2,"同意");
 		
 		private int value;
 		private String desc;
 		
-		public static CheckStatus getEnum(int value){
-			for(CheckStatus orderType:values() ){
+		public static ApprovalResults getEnum(int value){
+			for(ApprovalResults orderType:values() ){
 				if(orderType.value == value){
 					return orderType;
 				}
@@ -20,7 +18,7 @@ public enum CheckStatus {
 			return null;
 		}
 		
-		private CheckStatus(int value, String desc) {
+		private ApprovalResults(int value, String desc) {
 			this.value = value;
 			this.desc = desc;
 		}

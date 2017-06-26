@@ -30,5 +30,6 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		return messageContentMapper;
 	}
 
+	
 
 }

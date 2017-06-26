@@ -1,4 +1,4 @@
-package com.pj.utils.enums;
+package com.pj.config.base.constant;
 
 /**
  *  请假类型
@@ -9,12 +9,12 @@ package com.pj.utils.enums;
  *  @since		1.8
  */
 public enum SalaryType {
-	SY("0","试用"),ZZ("1","转正"),SX("2","实习");
+	SY(0,"试用"),ZZ(1,"转正"),SX(2,"实习");
 
-	private String index;
+	private Integer index;
 	private String name;
 	
-	private SalaryType(String index, String name) {
+	private SalaryType(Integer index, String name) {
 		this.index = index;
 		this.name = name;
 	}
@@ -28,10 +28,10 @@ public enum SalaryType {
     	return null;
     }  
 	
-	public String getIndex() {
+	public Integer getIndex() {
 		return index;
 	}
-	public void setIndex(String index) {
+	public void setIndex(Integer index) {
 		this.index = index;
 	}
 	public String getName() {

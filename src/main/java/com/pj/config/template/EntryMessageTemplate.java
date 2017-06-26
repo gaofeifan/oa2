@@ -13,7 +13,7 @@ import com.pj.message.pojo.MessageContent;
  *	@parameter	
  *  @since		1.8
  */
-public class RecruitmentMessageTemplate extends MessageTemplate {
+public class EntryMessageTemplate extends MessageTemplate {
 
 	private MessageContent messageContent;
 	
@@ -21,8 +21,8 @@ public class RecruitmentMessageTemplate extends MessageTemplate {
 	
 	@Override
 	protected MessageContent addMessageContent() {
-		messageContent.setTitle(MessageType.RECRUITMENT_MES.getDesc());
-		messageContent.setType(MessageType.RECRUITMENT_MES.getValue());
+		messageContent.setTitle(MessageType.ENTRY_MES.getDesc());
+		messageContent.setType(MessageType.ENTRY_MES.getValue());
 		return messageContent;
 	}
 

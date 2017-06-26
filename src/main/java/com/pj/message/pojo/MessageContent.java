@@ -42,6 +42,9 @@ public class MessageContent {
 	@Column
 	private String applicatDemp;
 
+	@Column
+	private String notificationType;
+
 	public Integer getId() {
 		return id;
 	}
@@ -105,4 +108,13 @@ public class MessageContent {
 	public void setApplicatDemp(String applicatDemp) {
 		this.applicatDemp = applicatDemp;
 	}
+
+	public String getNotificationType() {
+		return notificationType;
+	}
+
+	public void setNotificationType(String notificationType) {
+		this.notificationType = notificationType;
+	}
+	
 }

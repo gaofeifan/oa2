@@ -409,7 +409,25 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 			<artifactId>jsoup</artifactId>
 			<version>1.8.3</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>io.takari.orchestra.plugins</groupId>
+			<artifactId>smtp</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
 	</dependencies>
+
 
 
 	<!--配置参数 -->

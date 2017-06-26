@@ -221,8 +221,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		return HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
 		
 	}
+	
 	private User updateUserByEntryFrom(User t) {
 		return t;
 	}
+	
+	
 
 }

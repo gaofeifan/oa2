@@ -1,4 +1,4 @@
-package com.pj.utils.enums;
+package com.pj.config.base.constant;
 
 public enum MessageType {
 	//审批状态1 招聘，2 入职

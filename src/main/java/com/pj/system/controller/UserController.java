@@ -58,7 +58,6 @@ public class UserController extends BaseController {
 	@Resource
 	private PositionService positionService;
 
-
 	@Resource
 	private SessionProvider sessionProvider;
 
@@ -70,12 +69,10 @@ public class UserController extends BaseController {
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
-
 	@ApiOperation(value = "添加用户", httpMethod = "POST", response = String.class, notes = "添加用户")
 	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
 	@ResponseBody()
-	public Map<String, Object> saveUser(@ModelAttribute("user") User user)
-			throws ClientProtocolException, IOException, URISyntaxException {
+	public Map<String, Object> saveUser(@ModelAttribute("user") User user){
 		Map<String, Object> map;
 		try {
 			this.userService.insertSelective(user);
