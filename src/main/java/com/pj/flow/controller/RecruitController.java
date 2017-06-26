@@ -111,10 +111,10 @@ public class RecruitController extends BaseController{
 	public MappingJacksonValue getReplaceUser(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
 			@ApiParam(value = "部门id", required = false)@RequestParam(value = "dempId", required = false)Integer dempId, 
-			@ApiParam(value = "姓名", required = true)@RequestParam(value = "username", required = true)String username){
+			@ApiParam(value = "姓名", required = true)@RequestParam(value = "replaceName", required = true)String replaceName){
 		MappingJacksonValue map;
 		try {
-			User user = userService.getReplaceUser(companyId, dempId, username);
+			User user = userService.getReplaceUser(companyId, dempId, replaceName);
 			map = this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
