@@ -20,8 +20,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/post")
-@Api(value="post", description="菜单", position=12)
+@RequestMapping("/authMenu")
+@Api(value="authMenu", description="菜单", position=12)
 public class AuthMenuController  extends SystemManageController{
 	
 	@Resource
