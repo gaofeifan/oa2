@@ -21,8 +21,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/authuser")
-@Api(value="authuser", description="权限", position=12)
+@RequestMapping("/auth/user")
+@Api(value="authuser", description="权限")
 public class AuthUserController extends SystemManageController{
 	@Resource
 	private AuthUserService authuserService;
@@ -36,9 +36,9 @@ public class AuthUserController extends SystemManageController{
 	 */
 
 	@ApiOperation(value = "添加权限", httpMethod = "POST", response = String.class, notes = "添加权限")
-	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
-	@ResponseBody()
-	public Map<String, Object> saveauth(@ModelAttribute("AuthUser") AuthUser authuser)
+	@RequestMapping(value = "/saveauth.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveauth(@ModelAttribute("SaveAuthUser") AuthUser authuser)
 			throws ClientProtocolException, IOException, URISyntaxException {
 		Map<String, Object> map;
 		try {
@@ -62,9 +62,9 @@ public class AuthUserController extends SystemManageController{
 	 */
 
 	@ApiOperation(value = "删除权限", httpMethod = "POST", response = String.class, notes = "删除权限")
-	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
-	@ResponseBody()
-	public Map<String, Object> DeleteAuth(@ModelAttribute("AuthUser") AuthUser authuser)
+	@RequestMapping(value = "/DeleteAuth.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> DeleteAuth(@ModelAttribute("DeleteAuthUser") AuthUser authuser)
 			throws ClientProtocolException, IOException, URISyntaxException {
 		Map<String, Object> map;
 		try {

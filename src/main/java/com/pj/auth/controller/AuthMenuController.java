@@ -20,8 +20,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/authMenu")
-@Api(value="authMenu", description="菜单", position=12)
+@RequestMapping("/auth/Menu")
+@Api(value="authMenu", description="菜单")
 public class AuthMenuController  extends SystemManageController{
 	
 	@Resource
@@ -34,7 +34,7 @@ public class AuthMenuController  extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response=String.class, notes ="查询菜单信息")
 	@RequestMapping(value="/list.do", method =RequestMethod.GET)
-	public Map<String, Object> findAllPost(@ModelAttribute("AuthMenu")AuthMenu authmenu){
+	public Map<String, Object> GetMenu(@ModelAttribute("authMenu")AuthMenu authmenu){
 		Map<String, Object> map;
 		try {
 			Map<String, Object> hashMap = new HashMap<>();
