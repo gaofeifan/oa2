@@ -9,7 +9,7 @@ package com.pj.config.base.constant;
  *  @since		1.8
  */
 public enum SalaryType {
-	SY(0,"试用"),ZZ(1,"转正"),SX(2,"实习");
+	SY(2,"试用"),ZZ(3,"转正"),SX(1,"实习");
 
 	private Integer index;
 	private String name;

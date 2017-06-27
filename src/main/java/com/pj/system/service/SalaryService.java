@@ -30,5 +30,5 @@ public interface SalaryService extends BaseService<Salary, Integer> {
 	 * 	@param userId
 	 * 	@return
 	 */
-	public List<Salary> selectSalaryByEntryId(Integer userId);
+	public List<Salary> selectSalaryByEntryId(Integer entryId);
 }

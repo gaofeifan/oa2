@@ -43,6 +43,28 @@
 	    <result column="salary_type" property="salaryType" jdbcType="INTEGER" />
     </collection>  
   </resultMap>
+  <resultMap id="BaseResultMap_Offer" type="com.pj.flow.pojo.FlowOffer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
+    <result column="name" property="username" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="entry_date" property="hiredate" jdbcType="DATE" />
+    <result column="probation" property="probation" jdbcType="VARCHAR" />
+    <result column="service_years" property="serviceHours" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="companyName" property="company" jdbcType="VARCHAR" />
+    <result column="dempName" property="dempName" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, number, recruit_id, name, sex, phone, email, entry_date, probation, service_years, 
+    remark, check_url, resume_url, register_url, state, status
+  </sql>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName
@@ -54,5 +76,33 @@
 	LEFT JOIN t_demp d ON d.id = r.demp_id
 	LEFT JOIN t_post p ON p.id = r.post_id
 	where e.status = 0 and e.id = #{id}
+  </select>
+  <select id="selectOfferDetailsByApplyId" parameterType="int" resultMap="BaseResultMap_Offer">
+  	select 
+  		entry.id ,
+  		entry.number ,
+  		entry.recruit_id ,
+  		entry.name ,
+  		entry.sex ,
+  		entry.phone ,
+  		entry.email ,
+  		entry.entry_date ,
+  		entry.probation ,
+  		entry.service_years ,
+  		entry.remark ,
+  		entry.state ,
+  		entry.status ,
+  		company.name companyName,
+  		demp.name dempName,
+  		post.name postName
+  	from flow_entry entry 
+  	inner join t_company company on entry.compant_id = company.id
+  	inner join t_demp demp on entry.demp_id = demp.id
+  	inner join t_post post on post.id = entry.post_id
+  	<where>
+  		<if test="id != null">
+  			AND entry.id = #{id}
+  		</if>
+  	</where>
   </select>
 </mapper>
