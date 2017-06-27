@@ -10,8 +10,11 @@
   <sql id="Base_Column_List" >
     id, userid, menuid, postid
   </sql>
-	<select id="findId" resultMap="BaseResultMap">
-		select * from auth_user
-		where id = #{id}
-	</select>
+  <insert id="insertAuthUser" parameterType="com.pj.auth.pojo.AuthUser" >
+    insert into auth_user (userid, menuid, postid)
+    values ( #{userid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, #{postid,jdbcType=INTEGER})
+  </insert>
+    <delete id="deleteByUserid" parameterType="java.lang.Integer" >
+    delete from auth_user where userid = #{userid,jdbcType=INTEGER}
+  </delete>
 </mapper>
