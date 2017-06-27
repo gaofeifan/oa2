@@ -383,6 +383,13 @@ public class User implements Serializable {
 	private Integer isCompanyBoss;
 
 	/**
+	 *  公司邮箱密码
+	 */
+	@ApiModelProperty(value = "公司邮箱密码", required = false)
+	@Column(name="company_email_password")
+	private String companyEmailPassword;
+
+	/**
 	 * 	薪资
 	 */
 	@Transient
@@ -872,6 +879,13 @@ public class User implements Serializable {
 	public void setWorkExperiences(List<WorkExperience> workExperiences) {
 		this.workExperiences = workExperiences;
 	}
+
+	public String getCompanyEmailPassword() {
+		return companyEmailPassword;
+	}
+
+	public void setCompanyEmailPassword(String companyEmailPassword) {
+		this.companyEmailPassword = companyEmailPassword;
+	}
 	
-    
 }

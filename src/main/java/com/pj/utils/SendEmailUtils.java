@@ -1,4 +1,4 @@
-package com.pj.email;
+package com.pj.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import javax.mail.internet.MimeMessage;
  * @parameter
  * @since 1.8
  */
-public class sendMailTest {
+public class SendEmailUtils {
 	private static final String HOST = "smtp.pj-l.com";
 	
 	public static void sendMessage(String sendEmail ,String sendPassword , String recipientEmail , String title , String content , String[] Cc){
@@ -57,7 +57,7 @@ public class sendMailTest {
 	}
 
 	public static String getResourceTemp(String path) {
-		InputStream is = sendMailTest.class.getResourceAsStream(path);
+		InputStream is = SendEmailUtils.class.getResourceAsStream(path);
 		InputStreamReader iReader;
 		try {
 			iReader = new InputStreamReader(is, "UTF-8");

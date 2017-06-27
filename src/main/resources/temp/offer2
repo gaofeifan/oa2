@@ -8,11 +8,11 @@
 五、薪资福利，具体条款如下：
 （一）预期现金收入为税前人民币
 1、基本工资：试用期内每月税前为(basePretaxSalaryForTrialPeriod)元整（人民币大写：(basePretaxSalaryForTrialPeriodUpper)）。
-             转正后每月税前为(Pre-taxSalary)元整（人民币大写：(Pre-taxSalaryUpper)）。
+             转正后每月税前为(pre_taxSalary)元整（人民币大写：(pre_taxSalaryUpper)）。
 2、岗位工资：试用期内每月税前为(theSalaryOfTheUsePeriod)元整（人民币大写： (theSalaryOfTheUsePeriodUpper)）。
-             转正后每月税前为(PostAPostSalary)元整（人民币大写：(PostAPostSalaryUpper)）。
-3、绩效工资：试用期每月税前为(ProbationPerformanceSalary)元整（人民币大写：(ProbationPerformanceSalaryUpper)）。
-             转正后每月税前为(TransferPerformancePay)元整（人民币大写：(TransferPerformancePayUpper)）。
+             转正后每月税前为(postAPostSalary)元整（人民币大写：(postAPostSalaryUpper)）。
+3、绩效工资：试用期每月税前为(probationPerformanceSalary)元整（人民币大写：(probationPerformanceSalaryUpper)）。
+             转正后每月税前为(transferPerformancePay)元整（人民币大写：(transferPerformancePayUpper)）。
  根据员工每月工作任务完成情况，部门核定并计算员工当月绩效工资金额。具体工作目标由您的主管领导确定。
 4、业绩提成（仅限有业绩提成员工填写）：根据每月业绩完成情况部门核定并计算员工当月业绩提成金额。
 5、每月各种补贴：午餐补贴(lunchAllowance)元整；通讯补贴(phoneAllowance)元整，考勤工资(presentAtDutyEveryDay)元整。
@@ -21,7 +21,7 @@
 （三）个人所得税
       根据国家规定，个人所得税应由个人承担，并由公司代扣代缴。
 六、服务年限
-    预期入职时 (ExpectedTimeOfArrivalYear) ，试用期为 (probation) 个月，服务期限 (serviceHours) 年，根据国家法律规定，公司可以与您商议延长或终止劳动合同等相关事项。
+    预期入职时 (expectedTimeOfArrivalYear) ，试用期为 (probation) 个月，服务期限 (serviceHours) 年，根据国家法律规定，公司可以与您商议延长或终止劳动合同等相关事项。
 七、入职
 根据双方友好协商，请于 (hiredate) 上午 (timeDivision) 到公司办理入职手续，需携带以下资料：
 （1）身份证原件；
@@ -43,7 +43,7 @@
      如果您确认并同意上述条款，请在2个工作日内与我公司人力资源部邮件或电话确认，若超过时限则该聘用意向书自动失效。
   祝您事业成功，工作愉快！
 (company)              
-本人知悉并同意以上条款，并确认到岗时间为：(hiredate)     
+本人知悉并同意以上条款，并确认到岗时间为： (hiredate)     
 注：如您有任何疑问，请与人力资源部联系                                                               
 联系人：   (contacts)           姓名：	  (username)
 联系电话：(contactsPhone)     身份证号：

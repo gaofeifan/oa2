@@ -6,17 +6,21 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowEntry;
+import com.pj.flow.pojo.FlowOffer;
 import com.pj.flow.service.FlowEntryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
@@ -54,4 +58,55 @@ public class EntryController extends BaseController{
 	public String add(){
 		return "entry/add";
 	}
+	
+	
+	/**
+	 * 	查询offer信息详情
+	 *	@author 	GFF
+	 *	@date		2017年6月26日下午6:49:59	
+	 * 	@param applyId
+	 * @return 
+	 */
+	@ApiOperation(value = "查询offer信息详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="查询offer信息详情")
+	@RequestMapping("/selectOfferDetails.do")
+	public @ResponseBody MappingJacksonValue selectOfferDetails(@ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
+		MappingJacksonValue successJsonp = null;
+		try {
+			String email = getSession();
+			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , email);
+			successJsonp = this.successJsonp(flowOffer);
+		} catch (Exception e) {
+			logger.error("【EntryController.selectOfferDetails】:" + e.getMessage());
+			successJsonp = this.errorToJsonp(e.getMessage());
+		}
+		return successJsonp;
+	}
+	
+	
+	/**
+	 * 	发送offer
+	 *	@author 	GFF
+	 *	@date		2017年6月27日上午10:58:14	
+	 * 	@param iEamil
+	 * 	@param CC
+	 * 	@param hour
+	 * 	@return
+	 */
+	@ApiOperation(value = "发送offer", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
+	@RequestMapping("/sendOffer.do")
+	public @ResponseBody MappingJacksonValue sendOffer(@ApiParam(value = "个人邮箱", required = true)@RequestParam(value = "iEamil", required = true)String iEamil ,
+			 							 @ApiParam(value = "抄送人", required = false)@RequestParam(value = "usernames", required = true)String usernames ,
+			 							 @ApiParam(value = "时", required = true)@RequestParam(value = "hour", required = true)String  hour,
+			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
+		MappingJacksonValue success = null;
+		try {
+			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,getSession());
+			success = this.successJsonp(null);
+		} catch (Exception e) {
+			success = this.errorToJsonp(e.getMessage());
+		}
+		return success;
+	}
+	
+	
 }
