@@ -37,7 +37,6 @@
     <result column="is_check" property="isCheck" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <!-- 查询使用 -->
-	<result column="username" property="username" jdbcType="VARCHAR" />
 	<result column="replaceName" property="replaceName" jdbcType="VARCHAR" />
 	<result column="replaceOffer" property="replaceOffer" jdbcType="VARCHAR" />
 	<result column="leaderName" property="leaderName" jdbcType="VARCHAR" />

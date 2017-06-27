@@ -49,7 +49,7 @@ public interface UserMapper extends MyMapper<User> {
 	 * @param username
 	 * @return
 	 */
-	User selectByNameAndDempId(@Param(value="dempid") Integer dempid, @Param(value="username") String username);
+	List<User> selectByNameAndDempId(@Param(value="dempid") Integer dempid, @Param(value="username") String username);
 
 	/**
 	 * 根据公司id和姓名查找用户
@@ -58,5 +58,5 @@ public interface UserMapper extends MyMapper<User> {
 	 * @param username
 	 * @return
 	 */
-	User selectByNameAndCompanyId(@Param(value="companyid") Integer companyid, @Param(value="username") String username);
+	List<User> selectByNameAndCompanyId(@Param(value="companyid") Integer companyid, @Param(value="username") String username);
 }

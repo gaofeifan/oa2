@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pj.system.mapper.SalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.system.pojo.Salary" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="total_salary" property="totalSalary" jdbcType="VARCHAR" />
+    <result column="reimbursement" property="reimbursement" jdbcType="VARCHAR" />
+    <result column="base_salary" property="baseSalary" jdbcType="VARCHAR" />
+    <result column="post_salary" property="postSalary" jdbcType="VARCHAR" />
+    <result column="performance_salary" property="performanceSalary" jdbcType="VARCHAR" />
+    <result column="lunch_allowance" property="lunchAllowance" jdbcType="VARCHAR" />
+    <result column="communication_allowance" property="communicationAllowance" jdbcType="VARCHAR" />
+    <result column="full_hours" property="fullHours" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="entry_id" property="entryId" jdbcType="INTEGER" />
+    <result column="salary_type" property="salaryType" jdbcType="INTEGER" />
+  </resultMap>
+  
+</mapper>

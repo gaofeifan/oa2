@@ -19,9 +19,40 @@
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, number, recruit_id, name, sex, phone, email, entry_date, probation, service_years, 
-    remark, check_url, resume_url, register_url, state, status
-  </sql>
-  
+
+  <resultMap id="EntrySalaryResultMap" type="com.pj.flow.pojo.FlowEntry" extends="BaseResultMap">
+    
+    <!-- 查询使用 -->
+    <result column="offerRange" property="offerRange" jdbcType="VARCHAR" />
+    <result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
+	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
+	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
+	<result column="postName" property="postName" jdbcType="VARCHAR" />
+    <collection property="salarys" ofType="com.pj.system.pojo.Salary" >
+    	<id column="s_id" property="id" jdbcType="INTEGER" />  
+	    <result column="total_salary" property="totalSalary" jdbcType="VARCHAR" />
+	    <result column="reimbursement" property="reimbursement" jdbcType="VARCHAR" />
+	    <result column="base_salary" property="baseSalary" jdbcType="VARCHAR" />
+	    <result column="post_salary" property="postSalary" jdbcType="VARCHAR" />
+	    <result column="performance_salary" property="performanceSalary" jdbcType="VARCHAR" />
+	    <result column="lunch_allowance" property="lunchAllowance" jdbcType="VARCHAR" />
+	    <result column="communication_allowance" property="communicationAllowance" jdbcType="VARCHAR" />
+	    <result column="full_hours" property="fullHours" jdbcType="VARCHAR" />
+	    <result column="s_user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="entry_id" property="entryId" jdbcType="INTEGER" />
+	    <result column="salary_type" property="salaryType" jdbcType="INTEGER" />
+    </collection>  
+  </resultMap>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
+  	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
+		d.name AS dempName, p.name AS postName, ul.username AS leaderName
+  	from flow_entry e
+  	left join t_salary s on s.entry_id = e.id
+  	left join flow_recruit r on e.recruit_id = r.id
+	LEFT JOIN t_user ul ON r.leader_id = ul.id
+	LEFT JOIN t_company c ON c.id = r.company_id
+	LEFT JOIN t_demp d ON d.id = r.demp_id
+	LEFT JOIN t_post p ON p.id = r.post_id
+	where e.status = 0 and e.id = #{id}
+  </select>
 </mapper>
