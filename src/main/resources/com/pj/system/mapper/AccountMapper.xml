@@ -10,21 +10,16 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="identityproof" property="identityproof" jdbcType="VARCHAR" />
     <result column="dempid" property="dempid" jdbcType="INTEGER" />
-    <result column="birthdate" property="birthdate" jdbcType="DATE" />
     <result column="leavedate" property="leavedate" jdbcType="DATE" />
     <result column="nation" property="nation" jdbcType="VARCHAR" />
-    <result column="nativeplace" property="nativeplace" jdbcType="VARCHAR" />
     <result column="alnature" property="alnature" jdbcType="VARCHAR" />
     <result column="school" property="school" jdbcType="VARCHAR" />
     <result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
     <result column="contacts" property="contacts" jdbcType="VARCHAR" />
-    <result column="rankid" property="rankid" jdbcType="INTEGER" />
     <result column="positionid" property="positionid" jdbcType="INTEGER" />
     <result column="postid" property="postid" jdbcType="INTEGER" />
-    <result column="roleid" property="roleid" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="companyid" property="companyid" jdbcType="INTEGER" />
-    <result column="newsecurity" property="newsecurity" jdbcType="INTEGER" />
    
     
   </resultMap>

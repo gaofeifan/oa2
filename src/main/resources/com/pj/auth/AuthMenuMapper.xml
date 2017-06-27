@@ -4,7 +4,7 @@
 	  <resultMap id="BaseResultMap" type="com.pj.auth.pojo.AuthMenu" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="img" property="menuid" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
     <result column="href" property="href" jdbcType="VARCHAR" />
     <result column="fid" property="fid" jdbcType="INTEGER" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
@@ -14,8 +14,17 @@
   <sql id="Base_Column_List" >
     id, name, img, href, fid, grade, auth, post
   </sql>
-	<select id="findId" resultMap="BaseResultMap">
+	 <select id="GetMenu" resultMap="BaseResultMap" parameterType="com.pj.auth.pojo.AuthMenu">
 		select * from auth_menu
-		where id = #{id}
+		where 1=1
+		<if test="fid != null">
+			AND fid= #{fid}
+		</if>
+		<if test="grade != null">
+			AND grade= #{grade}
+		</if>
+		<if test="auth != null">
+			AND auth= #{auth}
+		</if>
 	</select>
 </mapper>
