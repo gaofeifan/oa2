@@ -2,15 +2,18 @@ package com.pj.auth.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.http.client.ClientProtocolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.auth.pojo.AuthUser;
@@ -19,6 +22,7 @@ import com.pj.config.web.controller.SystemManageController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Controller
 @RequestMapping("/auth/user")
@@ -27,6 +31,8 @@ public class AuthUserController extends SystemManageController{
 	@Resource
 	private AuthUserService authuserService;
 	
+	private static final Logger logger = LoggerFactory.getLogger(AuthAgencyController.class);
+	
 	/**
 	 * 添加权限
 	 * 
@@ -34,22 +40,17 @@ public class AuthUserController extends SystemManageController{
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
+	@RequestMapping(value="/saveauth.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "添加权限", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue saveauth(@ModelAttribute("authuser") AuthUser authuser){
 
-	@ApiOperation(value = "添加权限", httpMethod = "POST", response = String.class, notes = "添加权限")
-	@RequestMapping(value = "/saveauth.do", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> saveauth(@ModelAttribute("SaveAuthUser") AuthUser authuser)
-			throws ClientProtocolException, IOException, URISyntaxException {
-		Map<String, Object> map;
 		try {
 			this.authuserService.insert(authuser);
-			map = this.success(null);
+			return this.successJsonp(this.success());
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("添加权限失败" + e.getMessage());
-			map = this.error();
+			logger.error("【AuthUserController.saveauth】"+e.getMessage());
+			return this.successJsonp(this.error("保存失败"+e.getMessage()));
 		}
-		return map;
 
 	}
 	
@@ -61,21 +62,16 @@ public class AuthUserController extends SystemManageController{
 	 * @throws ClientProtocolException
 	 */
 
-	@ApiOperation(value = "删除权限", httpMethod = "POST", response = String.class, notes = "删除权限")
-	@RequestMapping(value = "/DeleteAuth.do", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> DeleteAuth(@ModelAttribute("DeleteAuthUser") AuthUser authuser)
-			throws ClientProtocolException, IOException, URISyntaxException {
-		Map<String, Object> map;
+	@RequestMapping(value="/DeleteAuth.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "删除权限", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue DeleteAuth(@ApiParam("用户id") @RequestParam(value = "userid", required = true) Integer userid) {
 		try {
-			this.authuserService.delete(authuser);
-			map = this.success(null);
+			this.authuserService.deleteByUserid(userid);
+			return this.successJsonp(this.success());
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("添加权限失败" + e.getMessage());
-			map = this.error();
+			logger.error("【AuthUserController.saveauth】"+e.getMessage());
+			return this.successJsonp(this.error("删除失败"+e.getMessage()));
 		}
-		return map;
 
 	}
 }
