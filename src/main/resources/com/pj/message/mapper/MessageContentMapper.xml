@@ -18,12 +18,12 @@
 	</sql>
 	<select id="selectMessageContentByUserIdAndNotificationType" parameterType="com.pj.message.pojo.MessageContent" resultMap="BaseResultMap">
 		select 
-			mc.id,mc.type,mc.apply_time,mc.applicat_id,mc.applicat_name,mc.applicat_position,mc.applicat_demp,mc.notification_type
+			mc.id id,mc.type type,mc.apply_time apply_time,mc.applicat_id applicat_id,mc.applicat_name applicat_name,mc.applicat_position applicat_position,mc.applicat_demp applicat_demp,mc.notification_type notification_type
 		FROM message_content mc 
 		INNER JOIN message_content_user mcu ON mcu.message_id = mc.id 
 		<where>
 			<if test="applicatId != null">
-				AND mcu.user_id = #{applicatId}				
+				 mcu.user_id = #{applicatId}				
 			</if>
 			<if test="notificationType != null">
 				AND mc.notification_type = #{notificationType}

@@ -11,6 +11,7 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Demp;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.UserService;
@@ -52,24 +53,36 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	 */
 	@Override
 	public Boolean isDeleteCompany(Integer companyId) {
-		Boolean flag = false;
+		Boolean flag = true;
 		Example example = new Example(Company.class);
 		example.createCriteria().andCondition(" pId = "+companyId).andCondition(" isdelete = 0 ");
-//		List<Company> companys = this.companyMapper.selectByExample(example );
-//		List<User> users = this.userService.findUserByDempIdAndCompanyId(null, companyId);
-//		List<Demp> demps = this.dempService.selectByCompanyId(companyId);
-//		if(companys.size() == 0 && users.size() == 0 && demps.size() == 0){
-//			flag = true;
-//		}else{
-//			flag =false;
-//		}
+		List<Company> companys = this.companyMapper.selectByExample(example );
+		Demp record = new Demp();
+		record.setCompanyid(companyId);
+		record.setIsdelete(0);
+		List<Demp> demps = this.dempService.select(record );
+		if(companys.size() > 0 || demps.size() > 0){
+			flag = false;
+		}
 		return flag;
 	}
 
+	/**
+	 * 	根据用户权限查询所负责公司信息
+	 */
 	@Override
 	public List<Company> getByAuthUser(Integer userId) {
-		
 		return companyMapper.getByAuthUser(userId);
 	}
+
+	/**
+	 * 	根据id获取父节节点
+	 */
+	@Override
+	public Company selectParentCompanyById(int id) {
+		return this.companyMapper.selectParentCompanyById(id);
+	}
+	
+	
 
 }

@@ -12,4 +12,16 @@ import com.pj.config.base.service.BaseService;
  */
 public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 
+	/**
+	 * 	查询用户的机构等级
+	 *	@author 	GFF
+	 *	@date		2017年6月28日上午9:56:31	
+	 * 	@param companyId
+	 * 	@param dempId
+	 * 	@param isCompanyLeader
+	 * 	@param isDempLeader
+	 * 	@return
+	 */
+	AuthAgency selectApplicantAgency(int companyId, int dempId, int isCompanyLeader, int isDempLeader);
+
 }

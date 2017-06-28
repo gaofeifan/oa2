@@ -1,9 +1,6 @@
 package com.pj.config.template;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.Set;
 
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.pojo.MessageContentUser;
@@ -18,29 +15,28 @@ import com.pj.message.service.MessageContentUserService;
  *	@parameter	
  *  @since		1.8
  */
-@Component
 public abstract class MessageTemplate {
 	
-	@Autowired
-	private MessageContentService messageContentService;
-	
-	@Autowired
-	private MessageContentUserService messageContentUserService;
-		
 	public final void messageNotification(){
 		inserMessage(addMessageContent());
 	}
 
 	private void inserMessage(MessageContent messageContent) {
-		messageContentService.insertSelective(messageContent);
+		getMessageContentService().insertSelective(messageContent);
 		for (Integer userId : addMessageViewers()) {
-			messageContentUserService.insertSelective(new MessageContentUser(userId, messageContent.getId(), 0));
+			getMessageContentUserService().insertSelective(new MessageContentUser(userId, messageContent.getId(), 0));
 		}
 	}
 
+
+
+	protected abstract MessageContentUserService getMessageContentUserService();
+
+	protected abstract MessageContentService getMessageContentService();
+
 	protected abstract MessageContent addMessageContent();
 
-	protected abstract List<Integer> addMessageViewers();
+	protected abstract Set<Integer> addMessageViewers();
 
 	
 }

@@ -207,8 +207,8 @@ public class User implements Serializable {
     /**
      * 企业外键只用来查询
      */
-	@Transient
 	@ApiModelProperty(value = "企业外键只用来查询", required = false)
+	@Column(name="companyid")
     private Integer companyid;
 
 	/**

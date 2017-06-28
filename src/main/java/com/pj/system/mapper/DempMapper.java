@@ -16,5 +16,25 @@ public interface DempMapper extends MyMapper<Demp> {
 	 * 	@return
 	 */
 	List<Demp> selectEliminateSubset(Integer id);
+
+	/**
+	 * 	获取当前id的父节点
+	 *	@author 	GFF
+	 *	@date		2017年6月27日下午2:40:44	
+	 * 	@param id
+	 * 	@return
+	 */
+	List<Demp> selectDempParentListById(Integer id);
+
+	/**
+	 * 	获取所有的子集
+	 *	@author 	GFF
+	 *	@date		2017年6月27日下午2:55:33	
+	 * 	@param id
+	 * 	@return
+	 */
+	List<Demp> selectDempChildListById(Integer id);
+
+	
 	
 }

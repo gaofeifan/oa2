@@ -11,6 +11,10 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
   </resultMap>
+  
+  <sql id="Base_column">
+  	id,number,name,address,contact,pId,isdelete,hierarchy
+  </sql>
 	<select id="getByAuthUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select c.* from t_company c
 			where c.id in 
@@ -19,4 +23,10 @@
 						(select au.postid from auth_user au where au.userid = #{userId}))
 	</select>
 
+	<select id="selectParentCompanyById" parameterType="int" resultMap="BaseResultMap">
+		select 
+			<include refid="Base_column"/> 
+		from 
+		t_company where id = (select pId from t_company where id=#{id})
+	</select>
 </mapper>

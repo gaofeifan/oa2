@@ -13,10 +13,9 @@ import javax.persistence.Table;
  *	@version	1.0.0
  *	@parameter	
  *  @since		1.8
- */
-@Table(name="message_context")
+ */			 
+@Table(name="message_content")
 public class MessageContent {
-
 	@Id
 	@GeneratedValue(generator = "JDBC")
 	private Integer id;
@@ -115,6 +114,13 @@ public class MessageContent {
 
 	public void setNotificationType(Integer notificationType) {
 		this.notificationType = notificationType;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageContent [id=" + id + ", type=" + type + ", title=" + title + ", applyTime=" + applyTime
+				+ ", applicatId=" + applicatId + ", applicatName=" + applicatName + ", applicatPosition="
+				+ applicatPosition + ", applicatDemp=" + applicatDemp + ", notificationType=" + notificationType + "]";
 	}
 	
 }

@@ -34,5 +34,14 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 */
 	List<Company> getByAuthUser(Integer userId);
 
+	/**
+	 * 	根据id获取父节节点
+	 *	@author 	GFF
+	 *	@date		2017年6月28日上午10:09:06	
+	 * 	@param companyId
+	 * 	@return
+	 */
+	Company selectParentCompanyById(int companyId);
+
 
 }

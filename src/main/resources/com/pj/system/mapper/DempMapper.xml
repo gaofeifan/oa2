@@ -35,4 +35,20 @@
 		) AND d.isdelete = 0
 	</where>
   </select>
+  <select id="selectDempParentListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+ 	SELECT
+		 id,name,frontrank,companyid,number,pId,isdelete,hierarchy
+	FROM 
+		t_demp 
+	where 
+		FIND_IN_SET(id, getParentList(#{id}))
+  </select>
+  <select id="selectDempChildListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+ 	SELECT
+		 id,name,frontrank,companyid,number,pId,isdelete,hierarchy
+	FROM 
+		t_demp 
+	where 
+		FIND_IN_SET(id, getChildLst(#{id}))
+  </select>
 </mapper>

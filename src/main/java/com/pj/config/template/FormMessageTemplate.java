@@ -1,8 +1,13 @@
 package com.pj.config.template;
 
-import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.pj.message.pojo.MessageContent;
+import com.pj.message.service.MessageContentService;
+import com.pj.message.service.MessageContentUserService;
 
 /**
  *	@author		GFF
@@ -11,11 +16,18 @@ import com.pj.message.pojo.MessageContent;
  *	@parameter	
  *  @since		1.8
  */
+@Component
 public class FormMessageTemplate extends MessageTemplate {
 
 	private MessageContent messageContent;
 	
-	private List<Integer> ids;
+	private Set<Integer> ids;
+	
+	@Autowired
+	private MessageContentService messageContentService;
+	
+	@Autowired
+	private MessageContentUserService messageContentUserService;
 	
 	@Override
 	protected MessageContent addMessageContent() {
@@ -23,7 +35,7 @@ public class FormMessageTemplate extends MessageTemplate {
 	}
 
 	@Override
-	protected List<Integer> addMessageViewers() {
+	protected Set<Integer> addMessageViewers() {
 		return ids;
 	}
 
@@ -31,11 +43,21 @@ public class FormMessageTemplate extends MessageTemplate {
 		this.messageContent = messageContent;
 	}
 
-	public void addMessageViewers(List<Integer> ids) {
+	public void addMessageViewers(Set<Integer> ids) {
 		this.ids = ids;
 	}
-	
 
+	@Override
+	protected MessageContentUserService getMessageContentUserService() {
+		return messageContentUserService;
+	}
+
+	@Override
+	protected MessageContentService getMessageContentService() {
+		return messageContentService;
+	}
+	
+	
 	
 	
 }

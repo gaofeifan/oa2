@@ -53,6 +53,13 @@ public class Position implements Serializable {
 	@ApiModelProperty(value = "父节点", required = false)
     private Integer pid;
 
+	/**
+	 * 父节点
+	 */
+	@Column(name="grade")
+	@ApiModelProperty(value = "级别", required = false)
+	private Integer grade;
+
     private static final long serialVersionUID = 1L;
 
     
@@ -113,7 +120,15 @@ public class Position implements Serializable {
         this.pid = pid;
     }
 
-    @Override
+    public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());

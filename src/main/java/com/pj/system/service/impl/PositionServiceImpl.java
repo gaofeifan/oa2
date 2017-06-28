@@ -56,7 +56,7 @@ public class PositionServiceImpl extends AbstractBaseServiceImpl<Position, Integ
 		return position;
 	}
 	/**
-	 * 查询是否可以删除
+	 * 	查询是否可以删除
 	 */
 	@Override
 	public Boolean isDeletePosition(Integer positionId) {
@@ -65,6 +65,25 @@ public class PositionServiceImpl extends AbstractBaseServiceImpl<Position, Integ
 		record.setIsdelete(1);
 		List<User> list = userService.select(record );
 		return list.size() == 0 ? true:false;
+	}
+	
+	/**
+	 * 	获取上级级别的职位信息
+	 */
+	@Override
+	public Position selectSuperiorPositionById(int positionId) {
+		return this.positionMapper.selectSuperiorPositionById(positionId);
+	}
+	
+	/**
+	 * 	根据职位等级查询职位
+	 */
+	@Override
+	public Position selectPositionByGrade(int grade) {
+		Position record = new Position();
+		record.setGrade(grade);
+		List<Position> list = this.select(record );
+		return list.size() != 0 ? list.get(0) : null;
 	}
 
 

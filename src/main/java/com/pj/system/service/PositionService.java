@@ -30,4 +30,21 @@ public interface PositionService extends BaseService<Position, Integer> {
 	 * 	@return
 	 */
 	Integer selectByName(String positionName);
+
+	/**
+	 * 	获取上级级别的职位信息
+	 *	@author 	GFF
+	 *	@date		2017年6月27日下午7:42:39	
+	 * 	@param positionId
+	 */
+	Position selectSuperiorPositionById(int positionId);
+
+	/**
+	 * 	根据级别查询职位
+	 *	@author 	GFF
+	 *	@date		2017年6月28日上午9:20:24	
+	 * 	@param grade
+	 * 	@return
+	 */
+	Position selectPositionByGrade(int grade);
 }

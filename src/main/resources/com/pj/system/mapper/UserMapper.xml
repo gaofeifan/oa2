@@ -130,7 +130,7 @@
 			<include refid="Base_Column"/>
 		from t_user u 
 		left join t_demp demp on u.dempid = demp.id 
-		left join t_company company on company.id = demp.companyid
+		left join t_company company on company.id = u.companyid
 		left join t_position position on u.positionid = position.id
 		left join t_post post on u.postid = post.id
 		<where>
@@ -157,7 +157,7 @@
 		FROM
 		t_user u
 		left JOIN t_demp demp on u.dempid = demp.id
-		left JOIN t_company company on demp.companyid = company.id
+		left JOIN t_company company on u.companyid = company.id
 		left JOIN t_position position on u.positionid = position.id
 		left JOIN t_post post on u.postid = post.id
 		<if test="terrace != null">

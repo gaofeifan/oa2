@@ -17,5 +17,14 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 */
 	List<Company> getByAuthUser(@Param(value = "userId") Integer userId);
 
+	/**
+	 * 	根据id获取父节节点
+	 *	@author 	GFF
+	 *	@date		2017年6月28日上午10:23:16	
+	 * 	@param id
+	 * 	@return
+	 */
+	Company selectParentCompanyById(int id);
+
     
 }

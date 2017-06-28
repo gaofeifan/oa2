@@ -8,11 +8,17 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-      id, number, name, description, isdelete, pid
+      id, number, name, description, isdelete, pid,grade
   </sql>
  <select id="selectByPostId" parameterType="int" resultMap="BaseResultMap">
  	select <include refid="Base_Column_List"/> FROM t_position pt INNER JOIN t_post p ON pt.id = p.positionid where p.id = #{id} AND p.isdelete = 0
+ </select>
+ <select id="selectSuperiorPositionById" parameterType="int" resultMap="BaseResultMap">
+ 	select 
+ 	 <include refid="Base_Column_List"/>
+ 	from t_position where grade = (SELECT grade-1 FROM t_position where id = #{id}) 
  </select>
 </mapper>

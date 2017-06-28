@@ -14,4 +14,13 @@ public interface PositionMapper extends MyMapper<Position> {
 	 */
 	Position selectByPostId(Integer originalpostid);
 
+	/**
+	 * 	获取上级级别的职位信息
+	 *	@author 	GFF
+	 *	@date		2017年6月27日下午7:53:19	
+	 * 	@param positionId
+	 * @return 
+	 */
+	Position selectSuperiorPositionById(int positionId);
+
 }
