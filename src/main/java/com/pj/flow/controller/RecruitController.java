@@ -25,6 +25,7 @@ import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.pojo.User;
+import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
 import com.pj.utils.RequestUtils;
@@ -61,7 +62,35 @@ public class RecruitController extends BaseController{
 	private UserService userService;
 	@Resource
 	private SessionProvider sessionProvider;
+	@Resource
+	private DempService dempService;
 	
+	
+	@ApiOperation(value = "招聘申请查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘申请查询")
+	@RequestMapping(value = "/searchRecruits.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue searchRecruits(HttpServletResponse response, HttpServletRequest request){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			List<FlowRecruit> list = flowRecruitService.searchRecruits(user.getId());		
+			for(FlowRecruit flowRecruit : list){
+				Integer dempId = flowRecruit.getDempId();
+				//拼接上父部门的组合
+				String dempName = dempService.selectDempParentNameById(dempId);
+				flowRecruit.setDempName(dempName);
+			}
+			
+			map = this.successJsonp(list);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("提交招聘申请");
+		}
+		return map;
+	}
 	/**
 	 * 	提交申请
 	 */
@@ -205,6 +234,13 @@ public class RecruitController extends BaseController{
 			User user = this.userService.selectByEamil(email);
 
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
+			
+			for(FlowRecruit flowRecruit : recruits){
+				Integer dempId = flowRecruit.getDempId();
+				//拼接上父部门的组合
+				String dempName = dempService.selectDempParentNameById(dempId);
+				flowRecruit.setDempName(dempName);
+			}
 			map = this.successJsonp(recruits);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());

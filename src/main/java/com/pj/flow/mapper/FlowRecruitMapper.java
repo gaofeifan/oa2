@@ -23,10 +23,17 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	 * @param state
 	 * @return
 	 */
-	List<FlowRecruit> selectByQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
+	List<FlowRecruit> selectTodoByQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
 	/**
 	 * 删除
 	 * @param id
 	 */
 	void updateStatus(@Param(value = "id") Integer id);
+	
+	/**
+	 * 我的申请
+	 * @param applyId
+	 * @return
+	 */
+	List<FlowRecruit> selectByApplyId(@Param(value = "applyId") Integer applyId);
 }

@@ -51,8 +51,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		User user = new User();
 		if(dempId == null){
 			if(isCompanyLeader == 0){
-				//不是公司领导
-				//查找部门表找出该公司下所有部门id,再去user表根据部门id找到公司负责人
+				//不是公司领导(查找user表找到该公司下的负责人)
+				//（不用）查找部门表找出该公司下所有部门id,再去user表根据部门id找到公司负责人
 				user = userMapper.getCompanyLeader(companyId);
 			}else{
 				//是公司领导
@@ -81,7 +81,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	}
 	@Override
 	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
-		return flowRecruitMapper.selectByQuery(userId, companyId, username, state);
+		return flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
 	}
 	@Override
 	public void updateState(Integer recruitId, String reason, Integer state) {
@@ -93,6 +93,11 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		}
 		flowRecruitTodoMapper.updateState(recruitId, state, reason);
 		
+	}
+	@Override
+	public List<FlowRecruit> searchRecruits(Integer applyId) {
+		
+		return flowRecruitMapper.selectByApplyId(applyId);
 	}
 
 }

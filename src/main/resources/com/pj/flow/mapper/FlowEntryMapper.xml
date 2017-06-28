@@ -17,7 +17,13 @@
     <result column="resume_url" property="resumeUrl" jdbcType="VARCHAR" />
     <result column="register_url" property="registerUrl" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="dempId" property="dempId" jdbcType="INTEGER" />
+    <result column="applyDateStr" property="applyDateStr" jdbcType="INTEGER" />
   </resultMap>
 
   <resultMap id="EntrySalaryResultMap" type="com.pj.flow.pojo.FlowEntry" extends="BaseResultMap">
@@ -104,5 +110,14 @@
   			AND entry.id = #{id}
   		</if>
   	</where>
+  </select>
+  <select id="searchEntrys" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT e.id, e.recruit_id, r.username AS username, r.demp_id AS dempId, 
+  		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
+		c.name AS companyName, e.state, e.result
+		FROM flow_entry e
+		LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id
+		LEFT JOIN t_company c ON c.id = r.company_id
+		WHERE e.status = 0
   </select>
 </mapper>

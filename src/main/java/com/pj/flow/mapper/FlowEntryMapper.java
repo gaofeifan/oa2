@@ -24,4 +24,11 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 */
 	FlowOffer selectOfferDetailsByApplyId(Integer applyId);
 
+	/**
+	 * 我的入职申请
+	 * @param userId
+	 * @return
+	 */
+	List<FlowEntry> searchEntrys(Integer userId);
+
 }

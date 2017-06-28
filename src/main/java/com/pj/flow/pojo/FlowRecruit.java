@@ -131,9 +131,17 @@ public class FlowRecruit implements Serializable {
     private String dempName;
     private String postName;
     private String positionName;
+    private String applyDateStr;
 
-    
-    public Integer getTodoState() {
+    public String getApplyDateStr() {
+		return applyDateStr;
+	}
+
+	public void setApplyDateStr(String applyDateStr) {
+		this.applyDateStr = applyDateStr;
+	}
+
+	public Integer getTodoState() {
 		return todoState;
 	}
 

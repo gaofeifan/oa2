@@ -176,5 +176,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		return offerTemp;
 	}
+	@Override
+	public List<FlowEntry> searchEntrys(Integer userId) {
+		return flowEntryMapper.searchEntrys(userId);
+	}
 
 }

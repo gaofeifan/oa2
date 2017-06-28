@@ -44,6 +44,7 @@
 	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
 	<result column="postName" property="postName" jdbcType="VARCHAR" />
 	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
+	<result column="applyDateStr" property="applyDateStr" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, apply_id, username, apply_date, company_id, post_id, demp_id, position_id, is_demp_leader, 
@@ -65,26 +66,39 @@
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where r.id = #{id} and status = 0
 	</select>
-	<select id="selectByQuery" resultMap="BaseResultMap">
-		select r.*, COALESCE (pd.name + "-", d.name) as dempName, pn.name as positionName from flow_recruit r
-		LEFT JOIN t_demp d ON d.id = r.demp_id
-		LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId
+	<select id="selectTodoByQuery" resultMap="BaseResultMap">
+		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
+		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
+		c.name as companyName, pn.name as positionName
+		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
+		from flow_recruit r
+		LEFT JOIN t_company c ON c.id = r.company_id
+		<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
+		LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where r.status = 0
-		and r.post_id in 
-	  		(select au.postid from auth_user au where au.userid = #{userId})
+		and r.id in 
+			(select rt.recruit_id from flow_recruit_todo rt 
+			where rt.state = #{state})
 		<if test="companyId != null" >
 	        and r.company_id = #{companyId}
 	    </if>
 		<if test="username != null and username != ''" >
 	        and r.username = #{username}
 	    </if>
-		and r.id in 
-			(select rt.recruit_id from flow_recruit_todo rt 
-			where rt.state = #{state})
+		and r.post_id in 
+	  		(select au.postid from auth_user au where au.userid = #{userId})
 	
+	</select>
+	<select id="selectByApplyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT r.id, r.apply_id, r.username, r.demp_id, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
+		c.name AS companyName, r.state, r.result
+		FROM flow_recruit r 
+		LEFT JOIN t_company c ON c.id = r.company_id
+		WHERE apply_id = #{applyId} AND STATUS = 0
 	</select>
 	<update id="updateStatus" parameterType="java.lang.Integer">
 	 update flow_recruit set status = 1 where id = #{id}
 	</update>
+	
 </mapper>

@@ -43,4 +43,11 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 	 */
 	void updateState(Integer recruitId, String reason, Integer state);
 
+	/**
+	 * 我的招聘申请
+	 * @param applyId
+	 * @return
+	 */
+	List<FlowRecruit> searchRecruits(Integer applyId);
+
 }

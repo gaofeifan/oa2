@@ -43,4 +43,11 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 */
 	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email);
 
+	/**
+	 * 我的招聘申请
+	 * @param userId
+	 * @return
+	 */
+	List<FlowEntry> searchEntrys(Integer userId);
+
 }

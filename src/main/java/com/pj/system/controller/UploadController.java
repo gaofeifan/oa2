@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,10 +56,10 @@ public class UploadController extends BaseController {
 	 * @throws FileNotFoundException 
 	 */
 	@RequestMapping(value="/uploadPic.do",method={RequestMethod.GET,RequestMethod.POST})
-	@ApiOperation(value = "附件上传", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")
+	@ApiOperation(value = "附件上传", httpMethod = "GET", response=Map.class, notes ="附件上传")
 	@ResponseBody
-	public Map<String, Object> uploadPic(@ApiParam("上传的文件") @RequestParam("filePic")MultipartFile[] filePic, HttpServletResponse response ,HttpServletRequest request) throws FileNotFoundException, IOException, Exception{
-		Map<String, Object> success = null;
+	public MappingJacksonValue uploadPic(@ApiParam("上传的文件") @RequestParam("filePic")MultipartFile[] filePic, HttpServletResponse response ,HttpServletRequest request) throws FileNotFoundException, IOException, Exception{
+		MappingJacksonValue success = null;
 		List<String> pics = new ArrayList<>();
 		try {
 			for (MultipartFile myfile : filePic) {
@@ -81,7 +82,7 @@ public class UploadController extends BaseController {
 							myfile.getOriginalFilename(), myfile.getInputStream(),manageProperties.ftpProperties);
 					if (picPath != null) {
 						if(filePic.length == 1){
-							success = this.success(picPath);
+							success = this.successJsonp(picPath);
 							return success;
 						}else{
 							pics.add(picPath);
@@ -89,10 +90,10 @@ public class UploadController extends BaseController {
 					}
 				}
 			}
-			success = this.success(pics.toString());
+			success = this.successJsonp(pics.toString());
 		} catch (Exception e) {
 			logger.error("上传文件异常"+ e.getMessage());
-			success = this.error("上传文件异常");
+			success = this.errorToJsonp("上传文件异常");
 			throw new RuntimeException("操作资源异常");		}
 		return success;
 	}
