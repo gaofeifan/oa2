@@ -1,7 +1,7 @@
 package com.pj.config.base.constant;
 
 /**
- *  请假类型
+ *  薪资类型
  *	@author		GFF
  *	@date		2016年12月30日上午11:36:39
  *	@version	1.0.0

@@ -20,9 +20,10 @@ public class SwaggerConfig {
 	      return new Docket(DocumentationType.SWAGGER_2)
 		          	.apiInfo(apiInfo()) 
 		          	.select()
-		          	.apis(RequestHandlerSelectors.basePackage("com.pj"))
+//		          	.apis(RequestHandlerSelectors.basePackage("com.pj.flow.controller"))
 //		            .apis(RequestHandlerSelectors.basePackage("com.pj.auth.controller"))
 //		            .apis(RequestHandlerSelectors.basePackage("com.pj.system.controller"))
+		          	.apis(RequestHandlerSelectors.basePackage("com.pj"))
 		          	.build();  
 	  
 	   }  

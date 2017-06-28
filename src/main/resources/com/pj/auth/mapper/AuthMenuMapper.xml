@@ -26,5 +26,8 @@
 		<if test="auth != null">
 			AND auth= #{auth}
 		</if>
+		<if test="post != null">
+			AND post= #{post}
+		</if>
 	</select>
 </mapper>

@@ -310,6 +310,8 @@ public class User implements Serializable {
     private String companyname;
 	@Transient
     private String postname;
+	@Transient
+	private String replaceOffer;
     
     /**
      * 	消息查询
@@ -880,6 +882,14 @@ public class User implements Serializable {
 		this.workExperiences = workExperiences;
 	}
 
+	public String getReplaceOffer() {
+		return replaceOffer;
+	}
+
+	public void setReplaceOffer(String replaceOffer) {
+		this.replaceOffer = replaceOffer;
+	}
+	
 	public String getCompanyEmailPassword() {
 		return companyEmailPassword;
 	}

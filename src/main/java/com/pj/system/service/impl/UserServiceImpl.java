@@ -181,9 +181,15 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		 * 否则查找公司内的
 		 */
 		if(dempId != null){
-			user = userMapper.selectByNameAndDempId(dempId, username);
+			List<User> list = userMapper.selectByNameAndDempId(dempId, username);
+			if(list != null && list.size() > 0){
+				user = list.get(0);
+			}
 		}else{
-			user = userMapper.selectByNameAndCompanyId(companyId, username);
+			List<User> list = userMapper.selectByNameAndCompanyId(companyId, username);
+			if(list != null && list.size() > 0){
+				user = list.get(0);
+			}
 		}
 		return user;
 	}
