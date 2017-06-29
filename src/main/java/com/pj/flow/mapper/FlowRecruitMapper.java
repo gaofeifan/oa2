@@ -36,4 +36,10 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	 * @return
 	 */
 	List<FlowRecruit> selectByApplyId(@Param(value = "applyId") Integer applyId);
+	/**
+	 * 待办提交回显数据
+	 * @param recruitId
+	 * @return
+	 */
+	FlowRecruit getUserInfo(Integer id);
 }

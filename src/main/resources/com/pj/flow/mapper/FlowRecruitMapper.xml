@@ -97,6 +97,18 @@
 		LEFT JOIN t_company c ON c.id = r.company_id
 		WHERE apply_id = #{applyId} AND STATUS = 0
 	</select>
+	<select id="getUserInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT r.id, r.company_id, r.post_id, r.position_id, r.demp_id, 
+		r.leader_id, r.offer_range, pt.name AS positionName, c.name AS companyName,
+		d.name AS dempName, p.name AS postName, u.username AS leaderName
+		FROM flow_recruit r 
+		LEFT JOIN t_company c ON c.id = r.company_id
+		LEFT JOIN t_demp d ON d.id = r.demp_id
+		LEFT JOIN t_post p ON p.id = r.post_id
+		LEFT JOIN t_position pt ON pt.id = r.position_id
+		LEFT JOIN t_user u ON u.id = r.leader_id
+		WHERE r.id = 1 AND r.STATUS = 0
+	</select>
 	<update id="updateStatus" parameterType="java.lang.Integer">
 	 update flow_recruit set status = 1 where id = #{id}
 	</update>

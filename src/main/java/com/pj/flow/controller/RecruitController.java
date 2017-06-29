@@ -248,6 +248,23 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
+	
+	@ApiOperation(value = "待办提交回显数据", httpMethod = "GET", response=MappingJacksonValue.class, notes ="待办提交回显数据")
+	@RequestMapping(value = "/getUserInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue getUserInfo(
+			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
+		MappingJacksonValue map;
+		try {
+			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(recruitId);
+			
+			map = this.successJsonp(flowRecruit);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("待办提交回显数据");
+		}
+		return map;
+	}
 	/**
 	 * 	招聘待办状态改变
 	 */

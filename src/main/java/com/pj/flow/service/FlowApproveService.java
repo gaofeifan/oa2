@@ -1,7 +1,10 @@
 package com.pj.flow.service;
 
+import java.util.List;
+
 import com.pj.config.base.service.BaseService;
 import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.pojo.FlowUserApplication;
 
 /**
  *	@author		GFF
@@ -11,5 +14,13 @@ import com.pj.flow.pojo.FlowApprove;
  *  @since		1.8
  */
 public interface FlowApproveService extends BaseService<FlowApprove, Integer> {
+
+	/**
+	 * 我的审批
+	 * @param userid 审批人id
+	 * @param checkstatus 
+	 * @return
+	 */
+	List<FlowUserApplication> searchMyApproves(Integer userid, Integer checkstatus);
 
 }

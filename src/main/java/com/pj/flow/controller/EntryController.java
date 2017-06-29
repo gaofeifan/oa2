@@ -105,8 +105,8 @@ public class EntryController extends BaseController{
 			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = false) Integer entryId){
 		MappingJacksonValue map;
 		try {
-			List<FlowEntry> flowEntrys = flowEntryService.selectById(entryId);
-			map = this.successJsonp(flowEntrys);
+			FlowEntry flowEntry = flowEntryService.selectById(entryId);
+			map = this.successJsonp(flowEntry);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("入职申请详情");

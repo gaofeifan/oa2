@@ -50,4 +50,11 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 	 */
 	List<FlowRecruit> searchRecruits(Integer applyId);
 
+	/**
+	 * 待办提交回显数据
+	 * @param recruitId
+	 * @return
+	 */
+	FlowRecruit getUserInfo(Integer recruitId);
+
 }

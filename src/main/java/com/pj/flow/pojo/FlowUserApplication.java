@@ -32,12 +32,41 @@ public class FlowUserApplication {
     private Date applyTime;
 
 	@Column
-    private String applyPostName;
+    private String applyCompanyName;
 
 	@Column
     private String username;
+	
+	//查询使用
+	private Integer approveId;
+	private String applyDateStr;
+	private String applyState;
 
-    public Integer getId() {
+    public Integer getApproveId() {
+		return approveId;
+	}
+
+	public void setApproveId(Integer approveId) {
+		this.approveId = approveId;
+	}
+
+	public String getApplyState() {
+		return applyState;
+	}
+
+	public void setApplyState(String applyState) {
+		this.applyState = applyState;
+	}
+
+	public String getApplyDateStr() {
+		return applyDateStr;
+	}
+
+	public void setApplyDateStr(String applyDateStr) {
+		this.applyDateStr = applyDateStr;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -93,15 +122,15 @@ public class FlowUserApplication {
         this.applyTime = applyTime;
     }
 
-    public String getApplyPostName() {
-        return applyPostName;
-    }
+    public String getApplyCompanyName() {
+		return applyCompanyName;
+	}
 
-    public void setApplyPostName(String applyPostName) {
-        this.applyPostName = applyPostName == null ? null : applyPostName.trim();
-    }
+	public void setApplyCompanyName(String applyCompanyName) {
+		this.applyCompanyName = applyCompanyName;
+	}
 
-    public String getUsername() {
+	public String getUsername() {
         return username;
     }
 

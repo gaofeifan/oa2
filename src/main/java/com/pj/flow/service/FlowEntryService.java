@@ -20,7 +20,7 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 * @param entryId
 	 * @return
 	 */
-	List<FlowEntry> selectById(Integer entryId);
+	FlowEntry selectById(Integer entryId);
 
 	/**
 	 * 	根据表单id查询offer详情

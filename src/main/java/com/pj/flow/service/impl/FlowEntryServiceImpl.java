@@ -65,10 +65,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 	}
 	@Override
-	public List<FlowEntry> selectById(Integer entryId) {
-		List<FlowEntry> list = flowEntryMapper.selectById(entryId);
+	public FlowEntry selectById(Integer entryId) {
+		FlowEntry flowEntry = flowEntryMapper.selectById(entryId);
 		
-		return list;
+		return flowEntry;
 	}
 
 	/**
