@@ -22,6 +22,6 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 *	@date		2017年6月26日下午7:35:00	
 	 * 	@param applyId
 	 */
-	FlowOffer selectOfferDetailsByApplyId(Integer applyId);
+	FlowOffer selectOfferDetailsByApplyId(@Param(value = "id") Integer id);
 
 }

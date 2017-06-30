@@ -76,7 +76,6 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		//	设置类型为审批消息
 		content.setNotificationType(NotificationType.APPROVAL.getValue());
 		//	根据表单id查询所有审批人员
-		
 		Set<Integer> ids = getAssessingOfficer(applyId);
 		//	查询所有具有消息中心权限的的人员
 		ids.addAll(getMessageCenterAuthorizedPersonnel());

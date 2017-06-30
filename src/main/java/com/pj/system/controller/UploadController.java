@@ -36,7 +36,7 @@ import com.pj.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 @Controller
-@RequestMapping("/upload")
+@RequestMapping("/upload") 
 public class UploadController extends BaseController {
 //	@Resource
 //	private UploadService uploadService;
@@ -80,20 +80,15 @@ public class UploadController extends BaseController {
 					String picPath = FtpUtils.uploadFile(picName,
 							myfile.getOriginalFilename(), myfile.getInputStream(),manageProperties.ftpProperties);
 					if (picPath != null) {
-						if(filePic.length == 1){
-							success = this.success(picPath);
-							return success;
-						}else{
-							pics.add(picPath);
-						}
+						pics.add(picPath);
 					}
 				}
 			}
-			success = this.success(pics.toString());
+			success = this.success(pics.toArray());
 		} catch (Exception e) {
 			logger.error("上传文件异常"+ e.getMessage());
 			success = this.error("上传文件异常");
-			throw new RuntimeException("操作资源异常");		}
+		}
 		return success;
 	}
 	@ApiOperation(value = "附件下载", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")

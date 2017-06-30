@@ -88,8 +88,8 @@ public class SalaryServiceImpl extends AbstractBaseServiceImpl<Salary, Integer> 
 	
 	private List<Salary> selectSalaryByCondition(String fieldName , Integer entryId){
 		Example example = new Example(Salary.class);
-		example.createCriteria().andCondition(fieldName, entryId);
-		List<Salary> list = super.selectByExample(example );
+		example.createCriteria().andCondition(fieldName+" = ", entryId);
+		List<Salary> list = selectByExample(example );
 		return list.stream().map(salary -> decryptHex(salary)).collect(Collectors.toList());
 	}
 	

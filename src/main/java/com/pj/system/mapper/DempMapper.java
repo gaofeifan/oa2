@@ -35,6 +35,15 @@ public interface DempMapper extends MyMapper<Demp> {
 	 */
 	List<Demp> selectDempChildListById(Integer id);
 
+	/**
+	 * 	根据id查询上级
+	 *	@author 	GFF
+	 *	@date		2017年6月28日下午4:02:11	
+	 * 	@param dempId
+	 * 	@return
+	 */
+	Demp selectParentDempById(Integer dempId);
+
 	
 	
 }

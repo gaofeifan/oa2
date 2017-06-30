@@ -15,10 +15,12 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 
 import com.pj.config.base.properties.FtpProperties;
-
 public class FtpUtils {
 	private static Logger logger = Logger.getLogger(FtpUtils.class);
-
+	private static String url = "139.129.236.180";
+	private static String password = "pj!@#123oa";
+	private static Integer port = 2221;
+	private static String username="ftp";
 	/**
 	 * 
 	 * @param url
@@ -37,15 +39,16 @@ public class FtpUtils {
 	 *            输入流
 	 * @return 成功返回true，否则返回false
 	 */
+	
 	public static String uploadFile( String path,
 			String filename, InputStream input , FtpProperties ftpPro) throws Exception {
 		try {
 			FTPClient ftp = new FTPClient();
 			ftp.setControlEncoding("UTF-8");
-			ftp.connect(ftpPro.getUrl(), Integer.decode(ftpPro.getPort()));
+			ftp.connect(url, port);
 			int reply;
 			// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
-			ftp.login(ftpPro.getUsername(), ftpPro.getPassword());// 登录
+			ftp.login(username, password);// 登录
 			// 设置PassiveMode传输
 			ftp.enterLocalPassiveMode();
 			// 设置以二进制流的方式传输
@@ -77,7 +80,7 @@ public class FtpUtils {
 					logger.error("----------->>>ftp连接关闭失败 " + ioe.getMessage());
 				}
 			}
-			return new StringBuilder(ftpPro.getUrl()+"/"+ path + "/" + filename).toString();
+			return new StringBuilder("http://"+url+":81"+"/"+ path + "/" + filename).toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

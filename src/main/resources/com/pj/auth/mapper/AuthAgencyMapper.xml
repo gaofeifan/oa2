@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="com.pj.auth.mapper.AuthAgencyMapper">
+	<resultMap type="com.pj.auth.pojo.AuthAgency" id="Result_base">
+		<id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+	    <result column="demp_id" property="dempId" jdbcType="INTEGER" />
+	    <result column="grade" property="grade" jdbcType="INTEGER" />
+	    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_column">
+		id,company_id,demp_id,grade,isdelete
+	</sql>
+	<select id="selectAuthAgencyByCompanyIdOrDempId" parameterType="com.pj.auth.pojo.AuthAgency" resultMap="Result_base">
+		select 
+			<include refid="Base_column"/> 
+		from 
+		auth_agency 
+		<where>
+			isdelete = 0
+			<choose>
+				<when test="companyId != null">
+					AND	company_id=#{companyId} 
+				</when>
+				<otherwise>
+					AND company_id is null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="dempId != null">
+					AND demp_id=#{dempId}
+				</when>
+				<otherwise>
+					AND demp_id is null
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+</mapper>

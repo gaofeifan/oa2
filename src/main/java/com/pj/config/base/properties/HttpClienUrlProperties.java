@@ -23,18 +23,7 @@ public class HttpClienUrlProperties {
 		return ssoCreateUrl;
 	}
 
-	public void setSsoCreateUrl(String ssoCreateUrl) {
-		this.ssoCreateUrl = ssoCreateUrl;
-	}
-
 	public String getSsoUpdateUrl() {
 		return ssoUpdateUrl;
 	}
-
-	public void setSsoUpdateUrl(String ssoUpdateUrl) {
-		this.ssoUpdateUrl = ssoUpdateUrl;
-	}
-	
-	
-	
 }

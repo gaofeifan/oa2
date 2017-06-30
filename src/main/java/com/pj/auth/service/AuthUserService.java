@@ -9,4 +9,5 @@ public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 	int insertAuthUser(AuthUser authuser);
 	
 	int deleteByUserid(Integer userid);
+	
 }

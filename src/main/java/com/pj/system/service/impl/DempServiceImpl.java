@@ -123,5 +123,10 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 		String names = StringUtils.join(strs, "-");
 		return names;
 	}
+
+	@Override
+	public Demp selectParentDempById(Integer dempId) {
+		return this.dempMapper.selectParentDempById(dempId);
+	}
 	
 }

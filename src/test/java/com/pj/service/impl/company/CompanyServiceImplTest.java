@@ -59,7 +59,7 @@ public class CompanyServiceImplTest {
 	public void test4(){
 		User user = userService.selectByPrimaryKey(13);
 		user.setPhone("13716164118");
-		user.setUsername("高凡非");
+		user.setUsername("高非凡");
 		userService.updateByPrimaryKeySelective(user);
 	}
 	@Test

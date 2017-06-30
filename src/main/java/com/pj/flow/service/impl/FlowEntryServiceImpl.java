@@ -101,6 +101,11 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		flowOffer.setProbationPerformanceSalaryUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(sySalary.getPerformanceSalary())));
 		flowOffer.setTransferPerformancePay(zzSalary.getPerformanceSalary());
 		flowOffer.setTransferPerformancePayUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(zzSalary.getPerformanceSalary())));
+		
+		flowOffer.setLunchAllowance(zzSalary.getLunchAllowance());
+		flowOffer.setPhoneAllowance(zzSalary.getCommunicationAllowance());
+		flowOffer.setPresentAtDutyEveryDay(zzSalary.getFullHours());
+		
 		flowOffer.setContacts(user.getUsername());
 		flowOffer.setContactsPhone(user.getPhone());
 		return flowOffer;
@@ -110,11 +115,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	 * 	发送offer
 	 */
 	@Override
-	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email) {
+	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , Integer timeDivision) {
 		User user = this.userService.selectByEamil(email);
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
-		offer.setExpectedTimeOfArrivalYear(hour);
 		//	设置抄送人
 		String[] CC = null;
 		if(StringUtils.isNotBlank(usernames)){

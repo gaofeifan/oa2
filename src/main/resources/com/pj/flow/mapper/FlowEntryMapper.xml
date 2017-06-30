@@ -44,22 +44,18 @@
     </collection>  
   </resultMap>
   <resultMap id="BaseResultMap_Offer" type="com.pj.flow.pojo.FlowOffer" >
-    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="VARCHAR" />
-    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
     <result column="name" property="username" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
     <result column="probation" property="probation" jdbcType="VARCHAR" />
     <result column="service_years" property="serviceHours" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="companyName" property="company" jdbcType="VARCHAR" />
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
     <result column="postName" property="postName" jdbcType="VARCHAR" />
+    <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, number, recruit_id, name, sex, phone, email, entry_date, probation, service_years, 
@@ -77,9 +73,8 @@
 	LEFT JOIN t_post p ON p.id = r.post_id
 	where e.status = 0 and e.id = #{id}
   </select>
-  <select id="selectOfferDetailsByApplyId" parameterType="int" resultMap="BaseResultMap_Offer">
+  <select id="selectOfferDetailsByApplyId" parameterType="java.lang.Integer" resultMap="BaseResultMap_Offer">
   	select 
-  		entry.id ,
   		entry.number ,
   		entry.recruit_id ,
   		entry.name ,
@@ -94,14 +89,18 @@
   		entry.status ,
   		company.name companyName,
   		demp.name dempName,
-  		post.name postName
+  		post.name postName,
+  		recruit.work_address workAddress,
+  		pUser.username pUsername
   	from flow_entry entry 
-  	inner join t_company company on entry.compant_id = company.id
-  	inner join t_demp demp on entry.demp_id = demp.id
-  	inner join t_post post on post.id = entry.post_id
+  	inner join flow_recruit recruit on entry.recruit_id = recruit.id
+  	left join t_user pUser on pUser.id = recruit.leader_id 
+  	inner join t_company company on recruit.company_id = company.id
+  	inner join t_demp demp on recruit.demp_id = demp.id
+  	inner join t_post post on post.id = recruit.post_id
   	<where>
   		<if test="id != null">
-  			AND entry.id = #{id}
+  			 entry.id = #{id}
   		</if>
   	</where>
   </select>
