@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.web.controller.BaseController;
 import com.pj.system.service.SessionProvider;
@@ -58,9 +60,9 @@ public class UploadController extends BaseController {
 	@RequestMapping(value="/uploadPic.do",method={RequestMethod.GET,RequestMethod.POST})
 	@ApiOperation(value = "附件上传", httpMethod = "GET", response=Map.class, notes ="附件上传")
 	@ResponseBody
-	public Map<String, Object> uploadPic(@ApiParam("上传的文件") @RequestParam("filePic") MultipartFile[] filePic,
-			HttpServletResponse response, HttpServletRequest request)
-			throws FileNotFoundException, IOException, Exception {
+	public Object uploadPic(@ApiParam("上传的文件") @RequestParam("filePic") MultipartFile[] filePic,
+			HttpServletResponse response, HttpServletRequest request){
+//		MappingJacksonValue jacksonValue = null;
 		Map<String, Object> success = null;
 		List<String> pics = new ArrayList<>();
 		try {
@@ -90,9 +92,10 @@ public class UploadController extends BaseController {
 			
 		} catch (Exception e) {
 			logger.error("上传文件异常" + e.getMessage());
-			success = this.error("上传文件异常");
+			success = this.error("上传图片异常"+e.getMessage());
 		}
 		success = this.success(pics.toArray());
+			
 		return success;
 	}
 	@ApiOperation(value = "附件下载", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")
