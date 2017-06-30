@@ -16,15 +16,15 @@
 		http://www.springframework.org/schema/task
    		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 	<!-- 加载外部资源文件 -->
-	<!-- <context:property-placeholder location="classpath:db.properties"/> -->
+	<context:property-placeholder  ignore-unresolvable="true" location="classpath:properties/http.properties,classpath:properties/ftp.properties,classpath:properties/redis.properties,classpath:properties/db.properties"/>
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations" >
 			<list>
-				<value>classpath:properties/*.properties</value>
-			<!-- 	<value>classpath:properties/http.properties</value>
+				<value>classpath:properties/http.properties</value>
 				<value>classpath:properties/ftp.properties</value>
-				<value>classpath:properties/redis.properties</value> -->
+				<value>classpath:properties/redis.properties</value>
+				<value>classpath:properties/db.properties</value>
 			</list>
 		</property>
 	</bean>

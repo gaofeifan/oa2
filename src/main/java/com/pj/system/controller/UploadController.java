@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.web.controller.BaseController;
 import com.pj.system.service.SessionProvider;
@@ -37,7 +39,7 @@ import com.pj.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 @Controller
-@RequestMapping("/upload")
+@RequestMapping("/upload") 
 public class UploadController extends BaseController {
 //	@Resource
 //	private UploadService uploadService;
@@ -58,8 +60,10 @@ public class UploadController extends BaseController {
 	@RequestMapping(value="/uploadPic.do",method={RequestMethod.GET,RequestMethod.POST})
 	@ApiOperation(value = "附件上传", httpMethod = "GET", response=Map.class, notes ="附件上传")
 	@ResponseBody
-	public MappingJacksonValue uploadPic(@ApiParam("上传的文件") @RequestParam("filePic")MultipartFile[] filePic, HttpServletResponse response ,HttpServletRequest request) throws FileNotFoundException, IOException, Exception{
-		MappingJacksonValue success = null;
+	public Object uploadPic(@ApiParam("上传的文件") @RequestParam("filePic") MultipartFile[] filePic,
+			HttpServletResponse response, HttpServletRequest request){
+//		MappingJacksonValue jacksonValue = null;
+		Map<String, Object> success = null;
 		List<String> pics = new ArrayList<>();
 		try {
 			for (MultipartFile myfile : filePic) {
@@ -78,23 +82,20 @@ public class UploadController extends BaseController {
 					String[] originalFileName = myfile.getOriginalFilename().split("\\.");
 					@SuppressWarnings("unused")
 					String fileName = timeStr + "." + originalFileName[1];
-					String picPath = FtpUtils.uploadFile(picName,
-							myfile.getOriginalFilename(), myfile.getInputStream(),manageProperties.ftpProperties);
+					String picPath = FtpUtils.uploadFile(picName, myfile.getOriginalFilename(), myfile.getInputStream(),
+							manageProperties.ftpProperties);
 					if (picPath != null) {
-						if(filePic.length == 1){
-							success = this.successJsonp(picPath);
-							return success;
-						}else{
-							pics.add(picPath);
-						}
+						pics.add(picPath);
 					}
 				}
 			}
-			success = this.successJsonp(pics.toString());
+			
 		} catch (Exception e) {
-			logger.error("上传文件异常"+ e.getMessage());
-			success = this.errorToJsonp("上传文件异常");
-			throw new RuntimeException("操作资源异常");		}
+			logger.error("上传文件异常" + e.getMessage());
+			success = this.error("上传图片异常"+e.getMessage());
+		}
+		success = this.success(pics.toArray());
+			
 		return success;
 	}
 	@ApiOperation(value = "附件下载", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")

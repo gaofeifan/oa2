@@ -1,6 +1,5 @@
 package com.pj.system.service;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.pj.config.base.service.BaseService;
@@ -74,6 +73,15 @@ public interface DempService  extends BaseService<Demp, Integer>{
 	 * 	@return
 	 */
 	String selectDempParentNameById(Integer id);
+
+	/**
+	 * 	获取当前id的上级
+	 *	@author 	GFF
+	 *	@date		2017年6月28日下午4:01:17	
+	 * 	@param dempId
+	 * 	@return
+	 */
+	Demp selectParentDempById(Integer dempId);
 
 
 	

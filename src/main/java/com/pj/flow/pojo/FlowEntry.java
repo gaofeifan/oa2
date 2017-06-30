@@ -351,5 +351,15 @@ public class FlowEntry implements Serializable {
 	public void setApplyId(Integer applyId) {
 		this.applyId = applyId;
 	}
+	@Override
+	public String toString() {
+		return "FlowEntry [id=" + id + ", number=" + number + ", recruitId=" + recruitId + ", name=" + name + ", sex="
+				+ sex + ", phone=" + phone + ", email=" + email + ", entryDate=" + entryDate + ", probation="
+				+ probation + ", serviceYears=" + serviceYears + ", remark=" + remark + ", checkUrl=" + checkUrl
+				+ ", resumeUrl=" + resumeUrl + ", registerUrl=" + registerUrl + ", state=" + state + ", status="
+				+ status + ", salarys=" + salarys + ", offerRange=" + offerRange + ", leaderName=" + leaderName
+				+ ", companyName=" + companyName + ", dempName=" + dempName + ", postName=" + postName + "]";
+	}
+    
     
 }

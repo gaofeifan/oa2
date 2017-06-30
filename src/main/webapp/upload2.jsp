@@ -11,7 +11,7 @@
 		// 附件上传
 		function uploadPic(){
 			var options = {
-					url:"http://10.0.0.127:8080/oa/upload/uploadPic.do",
+					url:"192.168.4.203:8081/oa/upload/uploadPic.do",
 					type:"post",
 					dataType:"json",
 					success:function(data){

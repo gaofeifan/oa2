@@ -16,6 +16,4 @@
 		http://www.springframework.org/schema/task
    		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
-	<!-- 扫描带有@Service的注解，并由sprig的bean容器管理这些service -->
-	<context:component-scan base-package="com.pj.*.service.impl"/>
 </beans>

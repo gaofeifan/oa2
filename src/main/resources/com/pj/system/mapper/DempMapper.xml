@@ -11,6 +11,10 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
   </resultMap>
+  <sql id="Base_column"> 
+  	id,name,frontrank,companyid,number,pId,isdelete,hierarchy
+  </sql>
+  
   <select id="selectEliminateSubset" parameterType="java.lang.Integer" resultMap="BaseResultMap">
  	SELECT
 		  d.id, d.name, d.frontrank, d.companyid, d.number, d.pId, d.isdelete, d.hierarchy
@@ -37,7 +41,7 @@
   </select>
   <select id="selectDempParentListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
  	SELECT
-		 id,name,frontrank,companyid,number,pId,isdelete,hierarchy
+		 <include refid="Base_column"/>
 	FROM 
 		t_demp 
 	where 
@@ -45,10 +49,17 @@
   </select>
   <select id="selectDempChildListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
  	SELECT
-		 id,name,frontrank,companyid,number,pId,isdelete,hierarchy
+		<include refid="Base_column"/>
 	FROM 
 		t_demp 
 	where 
 		FIND_IN_SET(id, getChildLst(#{id}))
+  </select>
+  
+  <select id="selectParentDempById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select 
+			<include refid="Base_column"/>
+		from 
+		t_demp where id = (select pId from t_demp where id=#{id})
   </select>
 </mapper>

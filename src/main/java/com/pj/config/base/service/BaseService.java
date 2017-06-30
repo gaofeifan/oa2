@@ -166,5 +166,4 @@ public interface BaseService  <T,ID extends Serializable> {
 	 */
 	int deleteByPrimaryKeyToLogic(ID id);
 
-	
 }

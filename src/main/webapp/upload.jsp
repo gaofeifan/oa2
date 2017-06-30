@@ -47,7 +47,7 @@
 </head>
 <body>
 	</h3>
-	<form id="jvForm" action="http://10.0.0.208:8080/oa/upload/uploadPic.do" method="post" enctype="multipart/form-data">
+	<form id="jvForm" action="http://192.168.4.203:8081/oa/upload/uploadPic.do" method="post" enctype="multipart/form-data">
 		<input type="file" name="filePic"></input><br/>
 		<input type="file" name="filePic"></input><br/>
 		 <input type="submit" value="上传文件"></input><br/>

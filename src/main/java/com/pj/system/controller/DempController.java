@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.properties.FtpProperties;
+import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
@@ -32,6 +34,10 @@ import io.swagger.annotations.ApiParam;
 @Controller
 public class DempController extends SystemManageController{
 
+	@Resource
+	private ManageProperties manageProperties;
+	@Resource
+	private FtpProperties ftpProperties;
 	//	日志对象
 	private static final Logger logger = LoggerFactory.getLogger(DempController.class); 
 	@Resource
@@ -221,6 +227,14 @@ public class DempController extends SystemManageController{
 		Map<String, Object> map = this.success(demps);
 		return map;
 	}
-	
+	@RequestMapping(value="/getXxx.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getXxx(){
+		Map<String, Object> map = new HashMap<>();
+		map.put("password", ftpProperties.getPassword());
+		map.put("url", manageProperties.ftpProperties.getUrl());
+		map.put("ssocreateUrl", manageProperties.httpClienUrlProperties.getSsoCreateUrl());
+		return map;
+	}
 	
 }

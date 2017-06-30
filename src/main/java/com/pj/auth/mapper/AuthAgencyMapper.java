@@ -12,4 +12,13 @@ import com.pj.config.base.mapper.MyMapper;
  */
 public interface AuthAgencyMapper extends MyMapper<AuthAgency> {
 
+	/**
+	 * 	根据公司部门查询机构权限
+	 *	@author 	GFF
+	 *	@date		2017年6月28日上午11:53:21	
+	 * 	@param record
+	 * 	@return
+	 */
+	AuthAgency selectAuthAgencyByCompanyIdOrDempId(AuthAgency record);
+
 }

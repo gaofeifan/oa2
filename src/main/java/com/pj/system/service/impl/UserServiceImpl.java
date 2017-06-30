@@ -31,7 +31,7 @@ import com.pj.system.service.WorkExperienceService;
 @Transactional
 @Service
 public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> implements UserService {
-
+	
 	@Resource
 	private UserMapper userMapper;
 	@Resource
@@ -79,9 +79,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	@Override
 	public int updateByPrimaryKeySelective(User user) {
 		//	更新家庭成员
-		user.getFamilyMembers().stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
+//		user.getFamilyMembers().stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
 		//	更新工作经历
-		user.getWorkExperiences().stream().forEach(workExperience -> this.workExperienceService.updateByPrimaryKeySelective(workExperience));
+//		user.getWorkExperiences().stream().forEach(workExperience -> this.workExperienceService.updateByPrimaryKeySelective(workExperience));
 		User u = this.selectByPrimaryKey(user.getId());
 		if(
 		   (StringUtils.isNoneBlank(user.getUsername()) ? !user.getUsername().equals(u.getUsername()) :true) ||  
