@@ -86,10 +86,16 @@ public class EntryController extends BaseController{
 	@ApiOperation(value = "提交入职申请", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交入职申请")
 	@RequestMapping("/commitEntry.do")
 	@ResponseBody
-	public MappingJacksonValue commitEntry(@ModelAttribute("flowEntry") FlowEntry flowEntry,
-						@ApiParam(value = "工资信息(json格式[{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':'200','reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'sal'ry_type':(1(实习))},{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':200,'reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':200,'communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'salary_type':(2(试用))},{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':200,'reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':200,'communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'salary_type':(3(转正))}])", required = false)@RequestParam(value = "salarys", required = false) String salarys){
+	public MappingJacksonValue commitEntry(HttpServletResponse response, HttpServletRequest request,
+			@ModelAttribute(value = "flowEntry") FlowEntry flowEntry){
 		MappingJacksonValue map;
 		try {
+			String salarys = flowEntry.getSalaryJson();
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			flowEntry.setApplyId(user.getId());
+			flowEntry.setUsername(user.getUsername());
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {

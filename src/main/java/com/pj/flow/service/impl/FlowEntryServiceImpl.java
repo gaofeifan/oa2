@@ -1,6 +1,7 @@
 package com.pj.flow.service.impl;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -53,7 +54,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 * 先保存入职申请信息
 		 * 得到入职表id,作为外键保存薪资表
 		 */
-		flowEntryMapper.insertUseGeneratedKeys(flowEntry);
+		flowEntry.setApplyDate(new Date());
+		flowEntryMapper.insertEntry(flowEntry);
 		//保存薪资表
 		Integer entryId = flowEntry.getId();
 		JSONArray array = JSONArray.fromObject(salarys);

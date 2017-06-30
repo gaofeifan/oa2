@@ -78,7 +78,7 @@ public class RecruitController extends BaseController{
 			
 			List<FlowRecruit> list = flowRecruitService.searchRecruits(user.getId());		
 			for(FlowRecruit flowRecruit : list){
-				Integer dempId = flowRecruit.getDempId();
+				Integer dempId = flowRecruit.getApplyDempId();
 				//拼接上父部门的组合
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
@@ -97,9 +97,11 @@ public class RecruitController extends BaseController{
 	@ApiOperation(value = "提交招聘申请", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交招聘申请")
 	@RequestMapping(value = "/insertRecruit.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue insertRecruit(@ModelAttribute("flowRecruit")FlowRecruit flowRecruit){
+	public MappingJacksonValue insertRecruit(
+			@ModelAttribute("flowRecruit")FlowRecruit flowRecruit){
 		MappingJacksonValue map;
 		try {
+			flowRecruit.setStatus(0);
 			flowRecruitService.insertSelective(flowRecruit);
 			
 			map = this.successJsonp("提交成功");

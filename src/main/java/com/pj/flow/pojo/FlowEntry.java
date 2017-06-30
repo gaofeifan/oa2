@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -24,69 +25,110 @@ public class FlowEntry implements Serializable {
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
 
+	
+	@Column
+	private Integer applyId;
+	//申请人
+	@Column
+	private String username;
+	
+	@Column
     private String number;
 
     @ApiModelProperty(value = "招聘表id")
+    @Column
     private Integer recruitId;
 
     @ApiModelProperty(value = "入职姓名")
+    @Column
     private String name;
 
     @ApiModelProperty(value = "性别")
+    @Column
     private Integer sex;
 
     @ApiModelProperty(value = "手机号")
+    @Column
     private String phone;
 
     @ApiModelProperty(value = "邮箱")
+    @Column
     private String email;
 
     @ApiModelProperty(value = "入职日期")
+    @Column
     private Date entryDate;
 
     @ApiModelProperty(value = "试用期")
+    @Column
     private String probation;
 
     @ApiModelProperty(value = "服务年份")
+    @Column
     private String serviceYears;
 
     @ApiModelProperty(value = "备注")
+    @Column
     private String remark;
 
     @ApiModelProperty(value = "背景调查表url")
+    @Column
     private String checkUrl;
 
     @ApiModelProperty(value = "简历url")
+    @Column
     private String resumeUrl;
 
     @ApiModelProperty(value = "应聘人员登记表url")
+    @Column
     private String registerUrl;
 
     @ApiModelProperty(value = "入职状态")
+    @Column
     private String state;
     
     @ApiModelProperty(value = "申请结果")
+    @Column
     private String result;
 
+    @ApiModelProperty(value = "工资信息(json格式[{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
+    @Transient
+    private String salaryJson;
+    
+    @Column
     private Integer status;
     
+    @Column
     private Date applyDate;
     
     @Transient
     private List<Salary> salarys;
 
     //查询使用
+    @Transient
     private String offerRange;
+    @Transient
     private String leaderName;
+    @Transient
     private String companyName;
+    @Transient
     private String dempName;
+    @Transient
     private Integer dempId;
+    @Transient
     private String postName;
+    @Transient
     private String applyDateStr;
-    //申请人
-    private String username;
     
-    public String getResult() {
+    public String getSalaryJson() {
+		return salaryJson;
+	}
+
+	public void setSalaryJson(String salaryJson) {
+		this.salaryJson = salaryJson;
+	}
+
+	public String getResult() {
 		return result;
 	}
 
@@ -301,4 +343,13 @@ public class FlowEntry implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+	public Integer getApplyId() {
+		return applyId;
+	}
+
+	public void setApplyId(Integer applyId) {
+		this.applyId = applyId;
+	}
+    
 }

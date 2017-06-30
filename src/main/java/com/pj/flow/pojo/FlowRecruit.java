@@ -128,12 +128,21 @@ public class FlowRecruit implements Serializable {
     private String replaceOffer;
     private String leaderName;
     private String companyName;
+    private Integer applyDempId;
     private String dempName;
     private String postName;
     private String positionName;
     private String applyDateStr;
 
-    public String getApplyDateStr() {
+    public Integer getApplyDempId() {
+		return applyDempId;
+	}
+
+	public void setApplyDempId(Integer applyDempId) {
+		this.applyDempId = applyDempId;
+	}
+
+	public String getApplyDateStr() {
 		return applyDateStr;
 	}
 

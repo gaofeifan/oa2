@@ -31,4 +31,13 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 */
 	List<FlowEntry> searchEntrys(Integer userId);
 
+	void insertEntry(FlowEntry flowEntry);
+
+	/**
+	 * 根据主键得到入职表的申请人信息
+	 * @param formId
+	 * @return
+	 */
+	FlowEntry selectApplyInfoById(Integer formId);
+
 }
