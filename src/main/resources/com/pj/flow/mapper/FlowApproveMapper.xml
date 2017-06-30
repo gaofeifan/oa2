@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pj.flow.mapper.FlowApproveMapper" >
-
+  <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowApprove" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="recordid" property="recordid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="positionid" property="positionid" jdbcType="INTEGER" />
+    <result column="handledate" property="handledate" jdbcType="DATE" />
+    <result column="handleidea" property="handleidea" jdbcType="VARCHAR" />
+    <result column="checkstatus" property="checkstatus" jdbcType="INTEGER" />
+    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="is_approve" property="isApprove" jdbcType="INTEGER" />
+    <result column="apply_user_id" property="applyUserId" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="is_messaging" property="isMessaging" jdbcType="INTEGER" />
+  </resultMap>
   
 </mapper>

@@ -3,7 +3,7 @@ package com.pj.config.base.constant;
 /**
  * 项目名称：oa   
  * 类名称：ApplyReasonConstant   
- * 类描述：招聘申请状态枚举类
+ * 类描述：入职申请状态枚举类
  * 创建人：limr   
  * 创建时间：2017年6月21日 上午10:00:12   
  * 修改人：limr   
@@ -12,16 +12,14 @@ package com.pj.config.base.constant;
  * @version    
  *
  */
-public enum RecruitApplyState {
+public enum EntryApplyState {
 
-	IN_RECRUIT_APPROVAL("招聘审批中", 1),
-	RECRUIT_APPROVED("招聘已审批", 2),
-	IN_ENTRY_APPROVAL("入职审批中", 3),
-	ENTRY_APPROVED("入职审批中", 4),
-	IN_OFFER("已发offer", 5),
-	FILING("已建档", 6);	
+	IN_ENTRY_APPROVAL("入职审批中", 1),
+	ENTRY_APPROVED("入职审批中", 2),
+	IN_OFFER("已发offer", 3),
+	FILING("已建档", 4);	
 	
-	private RecruitApplyState(String stateName, int state) {
+	private EntryApplyState(String stateName, int state) {
 		this.stateName = stateName;
 		this.state = state;
 	}

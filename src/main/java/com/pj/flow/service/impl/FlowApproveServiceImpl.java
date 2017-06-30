@@ -1,5 +1,7 @@
 package com.pj.flow.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowApproveMapper;
+import com.pj.flow.mapper.FlowUserApplicationMapper;
 import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowApproveService;
 
 /**
@@ -26,9 +30,17 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	@Resource
 	private FlowApproveMapper flowApproveMapper;
 	
+	@Resource
+	private FlowUserApplicationMapper flowUserApplicationMapper;
+	
 	@Override
 	public MyMapper<FlowApprove> getMapper() {
 		return flowApproveMapper;
+	}
+
+	@Override
+	public List<FlowUserApplication> searchMyApproves(Integer userid, Integer checkstatus) {
+		return flowUserApplicationMapper.searchMyApproves(userid, checkstatus);
 	}
 
 

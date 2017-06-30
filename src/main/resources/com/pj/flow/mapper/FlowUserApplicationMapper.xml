@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.flow.mapper.FlowUserApplicationMapper" >
+<mapper namespace="com.pj.flow.mapper.FlowUserApplicationMapper">
+	<resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowUserApplication">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="form_id" property="formId" jdbcType="INTEGER" />
+		<result column="apply_type" property="applyType" jdbcType="VARCHAR" />
+		<result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+		<result column="apply_demp_name" property="applyDempName"
+			jdbcType="VARCHAR" />
+		<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+		<result column="apply_company_name" property="applyCompanyName"
+			jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
 
+		<result column="applyDateStr" property="applyDateStr" jdbcType="VARCHAR" />
+		<result column="approveId" property="approveId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="searchMyApproves" resultMap="BaseResultMap">
+		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr from flow_user_application ua
+		a.id as approveId
+		right join flow_approve a on ua.id = a.apply_id and a.is_approve = 0 and a.userid = #{userid}
+			<if test="checkstatus != null and checkstatus != 0">
+				and a.checkstatus = #{checkstatus}
+			</if>
+	</select>
 </mapper>

@@ -64,8 +64,13 @@ public class FlowEntry implements Serializable {
 
     @ApiModelProperty(value = "入职状态")
     private String state;
+    
+    @ApiModelProperty(value = "申请结果")
+    private String result;
 
     private Integer status;
+    
+    private Date applyDate;
     
     @Transient
     private List<Salary> salarys;
@@ -75,9 +80,53 @@ public class FlowEntry implements Serializable {
     private String leaderName;
     private String companyName;
     private String dempName;
+    private Integer dempId;
     private String postName;
+    private String applyDateStr;
+    //申请人
+    private String username;
     
-    public String getOfferRange() {
+    public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getApplyDateStr() {
+		return applyDateStr;
+	}
+
+	public void setApplyDateStr(String applyDateStr) {
+		this.applyDateStr = applyDateStr;
+	}
+
+	public Integer getDempId() {
+		return dempId;
+	}
+
+	public void setDempId(Integer dempId) {
+		this.dempId = dempId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Date getApplyDate() {
+		return applyDate;
+	}
+
+	public void setApplyDate(Date applyDate) {
+		this.applyDate = applyDate;
+	}
+
+	public String getOfferRange() {
 		return offerRange;
 	}
 

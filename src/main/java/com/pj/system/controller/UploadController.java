@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,9 +56,11 @@ public class UploadController extends BaseController {
 	 * @throws FileNotFoundException 
 	 */
 	@RequestMapping(value="/uploadPic.do",method={RequestMethod.GET,RequestMethod.POST})
-	@ApiOperation(value = "附件上传", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")
+	@ApiOperation(value = "附件上传", httpMethod = "GET", response=Map.class, notes ="附件上传")
 	@ResponseBody
-	public Map<String, Object> uploadPic(@ApiParam("上传的文件") @RequestParam("filePic")MultipartFile[] filePic, HttpServletResponse response ,HttpServletRequest request) throws FileNotFoundException, IOException, Exception{
+	public Map<String, Object> uploadPic(@ApiParam("上传的文件") @RequestParam("filePic") MultipartFile[] filePic,
+			HttpServletResponse response, HttpServletRequest request)
+			throws FileNotFoundException, IOException, Exception {
 		Map<String, Object> success = null;
 		List<String> pics = new ArrayList<>();
 		try {
@@ -77,18 +80,19 @@ public class UploadController extends BaseController {
 					String[] originalFileName = myfile.getOriginalFilename().split("\\.");
 					@SuppressWarnings("unused")
 					String fileName = timeStr + "." + originalFileName[1];
-					String picPath = FtpUtils.uploadFile(picName,
-							myfile.getOriginalFilename(), myfile.getInputStream(),manageProperties.ftpProperties);
+					String picPath = FtpUtils.uploadFile(picName, myfile.getOriginalFilename(), myfile.getInputStream(),
+							manageProperties.ftpProperties);
 					if (picPath != null) {
 						pics.add(picPath);
 					}
 				}
 			}
-			success = this.success(pics.toArray());
+			
 		} catch (Exception e) {
-			logger.error("上传文件异常"+ e.getMessage());
+			logger.error("上传文件异常" + e.getMessage());
 			success = this.error("上传文件异常");
 		}
+		success = this.success(pics.toArray());
 		return success;
 	}
 	@ApiOperation(value = "附件下载", httpMethod = "POST", response=Map.class, notes ="加载 公司  和职位信息")

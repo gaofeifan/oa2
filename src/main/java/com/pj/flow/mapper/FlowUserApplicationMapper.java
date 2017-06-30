@@ -1,5 +1,9 @@
 package com.pj.flow.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.flow.pojo.FlowUserApplication;
 
@@ -12,4 +16,12 @@ import com.pj.flow.pojo.FlowUserApplication;
  */
 public interface FlowUserApplicationMapper extends MyMapper<FlowUserApplication> {
 
+	/**
+	 * 我的审批查询
+	 * @author limr
+	 * @param userid
+	 * @param checkstatus
+	 * @return
+	 */
+	List<FlowUserApplication> searchMyApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus);
 }

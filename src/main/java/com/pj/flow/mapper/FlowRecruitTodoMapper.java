@@ -23,6 +23,6 @@ public interface FlowRecruitTodoMapper extends MyMapper<FlowRecruitTodo> {
 	 * @param state
 	 * @param reason
 	 */
-	void updateState(Integer recruitId, Integer state, String reason);
+	void updateState(@Param(value = "recruitId")Integer recruitId, @Param(value = "state")Integer state, @Param(value = "reason")String reason);
 
 }

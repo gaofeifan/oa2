@@ -15,7 +15,7 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 * @param id
 	 * @return
 	 */
-	List<FlowEntry> selectById(@Param(value = "id") Integer id);
+	FlowEntry selectById(@Param(value = "id") Integer id);
 	
 	/**	根据表单id查询offer详情
 	 *	@author 	GFF
@@ -23,5 +23,12 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 * 	@param applyId
 	 */
 	FlowOffer selectOfferDetailsByApplyId(@Param(value = "id") Integer id);
+
+	/**
+	 * 我的入职申请
+	 * @param userId
+	 * @return
+	 */
+	List<FlowEntry> searchEntrys(Integer userId);
 
 }
