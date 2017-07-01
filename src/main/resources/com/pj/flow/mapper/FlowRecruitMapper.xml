@@ -29,8 +29,8 @@
     <result column="special_ability" property="specialAbility" jdbcType="VARCHAR" />
     <result column="experience" property="experience" jdbcType="VARCHAR" />
     <result column="other_demand" property="otherDemand" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="INTEGER" />
     <result column="entry_num" property="entryNum" jdbcType="INTEGER" />
     <result column="leader_id" property="leaderId" jdbcType="INTEGER" />
     <result column="offer_range" property="offerRange" jdbcType="VARCHAR" />
@@ -98,7 +98,7 @@
 		FROM flow_recruit r 
 		LEFT JOIN t_user u ON u.id = r.apply_id
 		LEFT JOIN t_company c ON c.id = u.companyid
-		WHERE r.apply_id = #{applyId} AND r.status = 0
+		WHERE r.apply_id = #{applyId}
 	</select>
 	<select id="getUserInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		SELECT r.id, r.company_id, r.post_id, r.position_id, r.demp_id, 

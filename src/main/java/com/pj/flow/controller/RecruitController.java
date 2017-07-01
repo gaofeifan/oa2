@@ -1,5 +1,6 @@
 package com.pj.flow.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowRecruit;
+import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.pojo.User;
@@ -56,12 +60,19 @@ public class RecruitController extends BaseController{
 	private static final Logger logger = LoggerFactory.getLogger(RecruitController.class); 
 	@Resource
 	private FlowRecruitService flowRecruitService;
+	
 	@Resource
 	private FlowRecruitTodoService flowRecruitTodoService;
+	
+	@Resource
+	private FlowApproveService flowApproveService;
+	
 	@Resource
 	private UserService userService;
+	
 	@Resource
 	private SessionProvider sessionProvider;
+	
 	@Resource
 	private DempService dempService;
 	
@@ -181,8 +192,14 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘申请单id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
+			Map<String, Object> result = new HashMap<String, Object>();
+			//申请详情
 			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
-			map = this.successJsonp(recruit);
+			//审批详情
+			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(recruit.getId(), ApplyType.RECRUIT.getApplyType());
+			result.put("recruit", recruit);
+			result.put("approves", list);
+			map = this.successJsonp(result);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("申请单详情");

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowRecruitMapper;
@@ -85,13 +86,22 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	}
 	@Override
 	public void updateState(Integer recruitId, String reason, Integer state) {
-			
+		FlowRecruit	 recruit = flowRecruitMapper.selectByPrimaryKey(recruitId);
 		//0:终止,1:开始,2:提交,3:暂停
 		if(state == 0){
-			//删除
-			flowRecruitMapper.updateStatus(recruitId);
+			//把招聘结果改为取消且status改为已删除
+			recruit.setResult(RecruitApplyResult.RECRUIT_CANCEL.getState());
+			recruit.setStatus(1);
+			flowRecruitMapper.updateByPrimaryKeySelective(recruit);
+		}else{
+			if(state == 3){
+				//把招聘结果改为暂停
+				recruit.setResult(RecruitApplyResult.RECRUIT_PAUSE.getState());
+				flowRecruitMapper.updateByPrimaryKeySelective(recruit);
+			}
+			//修改待办表
+			flowRecruitTodoMapper.updateState(recruitId, state, reason);
 		}
-		flowRecruitTodoMapper.updateState(recruitId, state, reason);
 		
 	}
 	@Override

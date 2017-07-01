@@ -19,8 +19,8 @@
 	</resultMap>
 
 	<select id="searchMyApproves" resultMap="BaseResultMap">
-		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr from flow_user_application ua
-		a.id as approveId
+		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
+		a.id as approveId  from flow_user_application ua
 		right join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
 			<if test="checkstatus != null and checkstatus == 0">
 				and a.checkstatus = 0 and a.is_approve = 0

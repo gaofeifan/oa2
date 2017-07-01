@@ -1,6 +1,8 @@
 package com.pj.flow.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
+import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
@@ -40,6 +45,9 @@ public class EntryController extends BaseController{
 	
 	@Resource
 	private FlowEntryService flowEntryService;
+	
+	@Resource
+	private FlowApproveService flowApproveService;
 	
 	@Resource
 	private UserService userService;
@@ -71,7 +79,7 @@ public class EntryController extends BaseController{
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("提交招聘申请");
+			throw new RuntimeException("入职申请查询");
 		}
 		return map;
 	}
@@ -111,8 +119,16 @@ public class EntryController extends BaseController{
 			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = false) Integer entryId){
 		MappingJacksonValue map;
 		try {
+			Map<String, Object> result = new HashMap<String, Object>();
+			//申请详情
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
-			map = this.successJsonp(flowEntry);
+			
+			//审批详情
+			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
+			result.put("entry", flowEntry);
+			result.put("approves", list);
+			map = this.successJsonp(result);
+			
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("入职申请详情");

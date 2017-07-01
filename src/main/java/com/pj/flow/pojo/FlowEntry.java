@@ -85,11 +85,11 @@ public class FlowEntry implements Serializable {
 
     @ApiModelProperty(value = "入职状态")
     @Column
-    private String state;
+    private Integer state;
     
     @ApiModelProperty(value = "申请结果")
     @Column
-    private String result;
+    private Integer result;
 
     @ApiModelProperty(value = "工资信息(json格式[{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
     @Transient
@@ -128,11 +128,19 @@ public class FlowEntry implements Serializable {
 		this.salaryJson = salaryJson;
 	}
 
-	public String getResult() {
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public Integer getResult() {
 		return result;
 	}
 
-	public void setResult(String result) {
+	public void setResult(Integer result) {
 		this.result = result;
 	}
 
@@ -326,14 +334,6 @@ public class FlowEntry implements Serializable {
 
     public void setRegisterUrl(String registerUrl) {
         this.registerUrl = registerUrl == null ? null : registerUrl.trim();
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state == null ? null : state.trim();
     }
 
     public Integer getStatus() {

@@ -124,4 +124,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		
 		flowApproveMapper.insertSelective(flowApprove);
 	}
+
+	@Override
+	public List<FlowApprove> selectByApplyIdAndType(Integer applyId, String applyType) {
+		return flowApproveMapper.selectByApplyIdAndType(applyId, applyType);
+	}
 }

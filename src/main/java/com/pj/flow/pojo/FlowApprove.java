@@ -1,15 +1,19 @@
 package com.pj.flow.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "flow_approve")
-public class FlowApprove {
+public class FlowApprove implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
@@ -45,9 +49,41 @@ public class FlowApprove {
     private Date startTime;
 
 	@Column
-    private Integer is_Messaging;
+    private Integer isMessaging;
+	
+	//查询使用
+	@Transient
+	private String approveName;//审批人姓名
+	@Transient
+	private String positionName;//职位名
+	@Transient
+	private String approveDateStr;//审批时间字符串
 
-    public Integer getId() {
+    public String getApproveName() {
+		return approveName;
+	}
+
+	public void setApproveName(String approveName) {
+		this.approveName = approveName;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	public String getApproveDateStr() {
+		return approveDateStr;
+	}
+
+	public void setApproveDateStr(String approveDateStr) {
+		this.approveDateStr = approveDateStr;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -135,13 +171,13 @@ public class FlowApprove {
 		this.applyUserId = applyUserId;
 	}
 
-	public Integer getIs_Messaging() {
-		return is_Messaging;
+	public Integer getIsMessaging() {
+		return isMessaging;
 	}
 
-	public void setIs_Messaging(Integer is_Messaging) {
-		this.is_Messaging = is_Messaging;
+	public void setIsMessaging(Integer isMessaging) {
+		this.isMessaging = isMessaging;
 	}
 
-
+	
 }
