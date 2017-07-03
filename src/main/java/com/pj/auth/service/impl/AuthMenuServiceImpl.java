@@ -31,6 +31,12 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 		List<AuthMenu> authmenus = this.authMenuMapper.GetMenu(authmenu);
 		return authmenus;
 	}
+
+	@Override
+	public List<AuthMenu> GetMenubyUserid(Integer grade, Integer auth, Integer userid) {
+		List<AuthMenu> authmenus =authMenuMapper.GetMenubyUserid(grade, auth, userid);
+		return authmenus;
+	}
 	
 
 	
