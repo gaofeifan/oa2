@@ -14,7 +14,8 @@ package com.pj.config.base.constant;
  */
 public enum RecruitTodoState {
 
-	//招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）
+	//招聘待办状态（0:已终止,1:招聘中,2:已提交,3:已暂停,4:已审批）
+	HAS_CANCEL("已终止", 0),
 	IN_RECRUIT("招聘中", 1),
 	HAS_COMMIT("已提交", 2),
 	HAS_PAUSE("已暂停", 3),

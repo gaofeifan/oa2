@@ -146,7 +146,7 @@ public class ApproveController extends BaseController{
 	@ResponseBody
 	public MappingJacksonValue commitApprove(
 			@ApiParam(value = "审批人id", required = true) @RequestParam(value = "userid", required = true) Integer userid,
-			@ApiParam(value = "审批状态", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
+			@ApiParam(value = "审批状态(0、审批中 1、不同意 2、同意)", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
 			@ApiParam(value = "审批意见", required = false) @RequestParam(value = "handleidea", required = true) String handleidea,
 			@ApiParam(value = "申请表id", required = true) @RequestParam(value = "formId", required = true) Integer formId,
 			@ApiParam(value = "申请类型(招聘:recruit 入职:entry，转正:regular ，异动:change，离职:dimission，请假:leave，其他:other)", required = true) @RequestParam(value = "applyType", required = true) String applyType
@@ -160,7 +160,7 @@ public class ApproveController extends BaseController{
 			 */
 			flowApproveService.commitApprove(userid, checkstatus, handleidea, formId, applyType);
 			
-			map = this.successJsonp(null);
+			map = this.successJsonp("保存成功");
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("选择姓名跳转对应的申请详情页面");

@@ -50,4 +50,23 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 */
 	List<FlowEntry> searchEntrys(Integer userId);
 
+	/**
+	 * 根据当前用户id得到所负责的岗位
+	 * 入职结果为已同意的个数
+	 * @param userId
+	 * @param result
+	 * @return
+	 */
+	int getNumByAuthResult(Integer userId, int result);
+	
+	/**
+	 * 根据负责的公司和入职人姓名
+	 * 以及登录用户所负责的岗位查询
+	 * @param userId
+	 * @param companyId
+	 * @param name
+	 * @return
+	 */
+	List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name);
+
 }

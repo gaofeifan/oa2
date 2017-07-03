@@ -16,6 +16,8 @@ public class FlowRecruitTodo implements Serializable {
     private Integer id;
 
     private Integer recruitId;
+    
+    private Integer entryId;
 
     private Integer state;
     
@@ -31,7 +33,15 @@ public class FlowRecruitTodo implements Serializable {
         this.id = id;
     }
 
-    public Integer getRecruitId() {
+    public Integer getEntryId() {
+		return entryId;
+	}
+
+	public void setEntryId(Integer entryId) {
+		this.entryId = entryId;
+	}
+
+	public Integer getRecruitId() {
         return recruitId;
     }
 

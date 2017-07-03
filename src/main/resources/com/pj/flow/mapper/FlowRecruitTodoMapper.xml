@@ -4,19 +4,21 @@
   <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowRecruitTodo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
+    <result column="entry_id" property="entryId" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, recruit_id, state, number, reason
-  </sql>
   <select id="getListByState" resultMap="BaseResultMap">
   	select td.* from flow_recruit_todo td 
   		where td.recruit_id in 
   			(select fr.id from flow_recruit fr where fr.post_id in 
   				(select au.postid from auth_user au where au.userid = #{userId}) and fr.status = 0) 
   			and td.state = #{state}
+  </select>
+  <select id="selectByRecruitId" resultMap="BaseResultMap">
+  	select * from flow_recruit_todo 
+  	where recruit_id = #{rucruitId} and state = #{todoState}
   </select>
   <update id="updateState">
   		update flow_recruit_todo 

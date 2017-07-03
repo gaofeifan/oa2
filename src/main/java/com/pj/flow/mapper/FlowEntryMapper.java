@@ -40,4 +40,23 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 */
 	FlowEntry selectApplyInfoById(Integer formId);
 
+	/**
+	 * 根据当前用户id得到所负责的岗位
+	 * 入职结果为已同意的个数
+	 * @param userId
+	 * @param result
+	 * @return
+	 */
+	int getNumByAuthResult(@Param(value = "userId") Integer userId, @Param(value = "result") Integer result);
+
+	/**
+	 * 根据负责的公司和入职人姓名
+	 * 以及登录用户所负责的岗位查询
+	 * @param userId
+	 * @param companyId
+	 * @param name
+	 * @return
+	 */
+	List<FlowEntry> selectByTodo(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "name") String name);
+
 }

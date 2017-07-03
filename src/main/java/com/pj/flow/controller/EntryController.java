@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowEntry;
@@ -104,6 +105,7 @@ public class EntryController extends BaseController{
 			User user = this.userService.selectByEamil(email);
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
+			flowEntry.setStatus(0);
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
@@ -182,6 +184,60 @@ public class EntryController extends BaseController{
 			success = this.errorToJsonp(e.getMessage());
 		}
 		return success;
+	}
+	
+/**********************建档待办**********************/
+	
+	/**
+	 * 	建档待办提示,得到待办个数
+	 */
+	@ApiOperation(value = "招聘待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办提示,得到待办个数")
+	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue todoTips(
+			HttpServletResponse response, HttpServletRequest request){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
+			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
+			
+			map = this.successJsonp(number);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("建档待办提示");
+		}
+		return map;
+	}
+	/**
+	 * 	建档待办查询
+	 */
+	@ApiOperation(value = "建档待办查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办查询")
+	@RequestMapping(value = "/listEntryTodo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue listecruitTodo(
+			HttpServletResponse response,
+			HttpServletRequest request,
+			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
+			@ApiParam(value = "入职人姓名", required = false)@RequestParam(value = "name", required = false)String name){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+
+			List<FlowEntry> entrys = flowEntryService.selectByTodo(user.getId(), companyId, name);
+			
+			
+			map = this.successJsonp(entrys);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("建档待办查询");
+		}
+		return map;
 	}
 	
 }

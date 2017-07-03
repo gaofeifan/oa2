@@ -24,4 +24,11 @@ public interface FlowRecruitTodoService extends BaseService<FlowRecruitTodo, Int
 	 */
 	int getNumByState(Integer userId, Integer state);
 
+	/**
+	 * 审批通过后保存招聘待办表
+	 * @param applyId 招聘表id
+	 * @param applyType(申请类型,招聘:recruit,入职:entry)
+	 */
+	void insertRecruitTodo(Integer applyId, String applyType);
+
 }

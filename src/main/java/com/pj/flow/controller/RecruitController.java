@@ -238,9 +238,9 @@ public class RecruitController extends BaseController{
 	 * 	招聘待办查询
 	 */
 	@ApiOperation(value = "招聘待办查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办查询")
-	@RequestMapping(value = "/listecruitTodo.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/listRecruitTodo.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue listecruitTodo(
+	public MappingJacksonValue listRecruitTodo(
 			HttpServletResponse response,
 			HttpServletRequest request,
 			@ApiParam(value = "招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）", required = true)@RequestParam(value = "state", required = true)Integer state,
@@ -254,11 +254,13 @@ public class RecruitController extends BaseController{
 
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
 			
+			
 			for(FlowRecruit flowRecruit : recruits){
 				Integer dempId = flowRecruit.getDempId();
 				//拼接上父部门的组合
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
+				
 			}
 			map = this.successJsonp(recruits);
 		} catch (Exception e) {
