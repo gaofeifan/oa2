@@ -1,7 +1,9 @@
 package com.pj.auth.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	@Autowired
 	private FlowApproveService flowApproveService;
 	
-	private List<User> approvers = new ArrayList<User>();
+	private Set<User> approvers = new HashSet<User>();
 
 	@Override
 	public MyMapper<AuthAgency> getMapper() {
@@ -60,18 +62,21 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		if(recruitApplyReason == RecruitApplyReason.STRAT.getReason()){
 			addCEO();
 		}
-		FlowApprove approve = null;
 		for (User user : approvers) {
-			approve = new FlowApprove();
+			FlowApprove approve = new FlowApprove();
 			approve.setUserid(user.getId());
 			approve.setPositionid(user.getPositionid());
-			this.flowApproveService.insertSelective(approve);
+			System.out.println(approve);
+			
+//			this.flowApproveService.insertSelective(approve);
 		}
+		
+		
 		return null;
 	}
 
 	private void selectAuthAgency(Integer companyId, Integer dempId, Integer grade, Integer isCompanyLeader, Integer isDempLeader) {
-		if(isCompanyLeader != 1){
+		if(isDempLeader == 1){
 			Demp demp = this.dempService.selectParentDempById(dempId);
 			if(demp != null){
 				dempId = demp.getId();
@@ -81,38 +86,50 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 				dempId = null;
 				companyId = this.companyService.selectByPrimaryKey(companyId).getId();
 			}
-		}else{
+		}else if(isCompanyLeader == 1){
 			Company company = this.companyService.selectParentCompanyById(companyId);
 			if(company != null){
 				companyId = company.getId();
+			}
+		}else{
+			if(dempId != null){
+				isDempLeader = 1;
+			}else{
+				isCompanyLeader = 1;
 			}
 		}
 		AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
 		if(authAgency == null){
 			if(dempId == null){
-				Company company = this.companyService.selectParentCompanyById(companyId);
+				Company company = this.companyService.selectByPrimaryKey(companyId);
 				if(company != null){
+					isCompanyLeader = 1;
+					isDempLeader = 0;
 					companyId = company.getId();
 				}
+				
+				
 			}
 			this.selectAuthAgency(companyId, dempId, grade, isCompanyLeader, isDempLeader);
-		}
-		User record = new User();
-		record.setCompanyid(authAgency.getCompanyId());
-		record.setIsCompanyBoss(isCompanyLeader);
-		record.setDempid(authAgency.getDempId());
-		record.setIsDepartmentHead(isCompanyLeader);
-		record.setIsdelete(0);
-		
-		List<User> list = this.userService.select(record );
-		if(approvers.size() != 0){
-			approvers.add(list.get(0));
-		}
-		if(authAgency.getGrade() > grade ){
-			this.selectAuthAgency(authAgency.getCompanyId(), authAgency.getDempId(), grade, isCompanyLeader, isDempLeader);
+		}else{
+			User record = new User();
+			record.setCompanyid(authAgency.getCompanyId());
+			record.setIsCompanyBoss(isCompanyLeader);
+			record.setDempid(authAgency.getDempId());
+			record.setIsDepartmentHead(isDempLeader);
+			record.setIsdelete(0);
+			
+			List<User> list = this.userService.select(record );
+			if(list.size() != 0){
+				approvers.add(list.get(0));
+			}
+			if(authAgency.getGrade() > grade ){
+				this.selectAuthAgency(authAgency.getCompanyId(), authAgency.getDempId(), grade, isCompanyLeader, isDempLeader);
+			}
 		}
 	}
 
+	
 	private Integer selectEndNode(Integer posiGrade ,Integer recruitApplyReason) {
 		if(recruitApplyReason == RecruitApplyReason.REPLACE.getReason()){
 			posiGrade = posiGrade > 4 ? 3 : posiGrade - 1;

@@ -395,18 +395,21 @@ public class User implements Serializable {
 	 * 	薪资
 	 */
 	@Transient
+	@ApiModelProperty(value = "薪资明细", required = false)
 	private List<Salary> salarys;
 	
 	/**
 	 * 	家庭成员
 	 */
 	@Transient
+	@ApiModelProperty(value = "家庭成员", required = false)
 	private List<FamilyMember> familyMembers;
 	
 	/**
 	 * 	工作经历
 	 */
 	@Transient
+	@ApiModelProperty(value = "工作经历", required = false)
 	private List<WorkExperience> workExperiences;
 
 	public Integer getId() {

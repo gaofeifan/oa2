@@ -143,5 +143,106 @@ public class FlowApprove {
 		this.is_Messaging = is_Messaging;
 	}
 
+	@Override
+	public String toString() {
+		return "FlowApprove [id=" + id + ", recordid=" + recordid + ", userid=" + userid + ", positionid=" + positionid
+				+ ", handledate=" + handledate + ", handleidea=" + handleidea + ", checkstatus=" + checkstatus
+				+ ", applyId=" + applyId + ", isApprove=" + isApprove + ", applyUserId=" + applyUserId + ", startTime="
+				+ startTime + ", is_Messaging=" + is_Messaging + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((applyId == null) ? 0 : applyId.hashCode());
+		result = prime * result + ((applyUserId == null) ? 0 : applyUserId.hashCode());
+		result = prime * result + ((checkstatus == null) ? 0 : checkstatus.hashCode());
+		result = prime * result + ((handledate == null) ? 0 : handledate.hashCode());
+		result = prime * result + ((handleidea == null) ? 0 : handleidea.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isApprove == null) ? 0 : isApprove.hashCode());
+		result = prime * result + ((is_Messaging == null) ? 0 : is_Messaging.hashCode());
+		result = prime * result + ((positionid == null) ? 0 : positionid.hashCode());
+		result = prime * result + ((recordid == null) ? 0 : recordid.hashCode());
+		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
+		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FlowApprove other = (FlowApprove) obj;
+		if (applyId == null) {
+			if (other.applyId != null)
+				return false;
+		} else if (!applyId.equals(other.applyId))
+			return false;
+		if (applyUserId == null) {
+			if (other.applyUserId != null)
+				return false;
+		} else if (!applyUserId.equals(other.applyUserId))
+			return false;
+		if (checkstatus == null) {
+			if (other.checkstatus != null)
+				return false;
+		} else if (!checkstatus.equals(other.checkstatus))
+			return false;
+		if (handledate == null) {
+			if (other.handledate != null)
+				return false;
+		} else if (!handledate.equals(other.handledate))
+			return false;
+		if (handleidea == null) {
+			if (other.handleidea != null)
+				return false;
+		} else if (!handleidea.equals(other.handleidea))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isApprove == null) {
+			if (other.isApprove != null)
+				return false;
+		} else if (!isApprove.equals(other.isApprove))
+			return false;
+		if (is_Messaging == null) {
+			if (other.is_Messaging != null)
+				return false;
+		} else if (!is_Messaging.equals(other.is_Messaging))
+			return false;
+		if (positionid == null) {
+			if (other.positionid != null)
+				return false;
+		} else if (!positionid.equals(other.positionid))
+			return false;
+		if (recordid == null) {
+			if (other.recordid != null)
+				return false;
+		} else if (!recordid.equals(other.recordid))
+			return false;
+		if (startTime == null) {
+			if (other.startTime != null)
+				return false;
+		} else if (!startTime.equals(other.startTime))
+			return false;
+		if (userid == null) {
+			if (other.userid != null)
+				return false;
+		} else if (!userid.equals(other.userid))
+			return false;
+		return true;
+	}
+	
+	
+
 
 }

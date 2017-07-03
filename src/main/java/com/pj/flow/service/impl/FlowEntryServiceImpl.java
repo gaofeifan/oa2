@@ -1,6 +1,5 @@
 package com.pj.flow.service.impl;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,9 +23,9 @@ import com.pj.system.service.SalaryService;
 import com.pj.system.service.UserService;
 import com.pj.utils.AESUtils;
 import com.pj.utils.DigitalConversionUtils;
+import com.pj.utils.OfferUtils;
 import com.pj.utils.SendEmailUtils;
 
-import io.swagger.annotations.ApiModelProperty;
 import net.sf.json.JSONArray;
 
 @Transactional
@@ -35,7 +34,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 
 	@Resource
 	private FlowEntryMapper flowEntryMapper;
-	
 	@Resource
 	private SalaryMapper salaryMapper;
 	@Autowired
@@ -126,7 +124,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		//	获取offer模板
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
-		offerTemp = replaceOfferContent(offerTemp,offer);
+		offerTemp = OfferUtils.replaceOfferContent(offerTemp,offer);
 		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, offer.getCompany()+"offer", offerTemp, CC);
 	}
 
@@ -149,37 +147,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		return CC;
 	}
 	
-	/**
-	 * 	将offer模板中的内容替换
-	 *	@author 	GFF
-	 *	@date		2017年6月27日上午11:40:42	
-	 * 	@param offerTemp
-	 * 	@param offer
-	 * 	@return
-	 */
-	private String replaceOfferContent(String offerTemp, FlowOffer offer) {
-		Class<? extends FlowOffer> clazz = offer.getClass();
-		Field[] fields = clazz.getDeclaredFields();
-		try {
-			for (Field field : fields) {
-				field.setAccessible(true);
-				boolean b = field.isAnnotationPresent(ApiModelProperty.class);
-				if (b) {
-					Object fileValue = field.get(clazz);
-					if (fileValue != null) {
-						ApiModelProperty api = field.getDeclaredAnnotation(ApiModelProperty.class);
-						String notes = api.notes();
-						offerTemp.replaceAll(notes, fileValue.toString());
-					}
-				}
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return offerTemp;
-	}
+	
 	@Override
 	public List<FlowEntry> searchEntrys(Integer userId) {
 		return flowEntryMapper.searchEntrys(userId);
