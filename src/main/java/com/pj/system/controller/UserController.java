@@ -17,6 +17,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,10 +73,10 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "添加用户", httpMethod = "POST", response = String.class, notes = "添加用户")
 	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
 	@ResponseBody()
-	public Map<String, Object> saveUser(@ModelAttribute("user") User user){
+	public Map<String, Object> saveUser(@RequestBody User user){
 		Map<String, Object> map;
 		try {
-			this.userService.insertSelective(user);
+			this.userService.insertSelective( user);
 			map = this.success(null);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,7 +141,7 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "更新用户", httpMethod = "POST", response = String.class, notes = "更新用户")
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> updateUser(@ModelAttribute("user") User user) {
+	public Map<String, Object> updateUser(@RequestBody User user) {
 		try {
 			this.userService.updateByPrimaryKeySelective(user);
 		} catch (Exception e) {

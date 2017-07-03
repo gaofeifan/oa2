@@ -3,10 +3,13 @@ package com.pj.flow.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
@@ -16,10 +19,15 @@ import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowRecruitTodo;
 import com.pj.flow.service.FlowRecruitService;
+import com.pj.message.pojo.MessageContent;
+import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
+import com.pj.system.service.DempService;
+import com.pj.system.service.PositionService;
 
 @Transactional
 @Service
@@ -39,6 +47,15 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	
 	@Autowired
 	private DempMapper dempMapper;
+
+	@Autowired
+	private DempService dempService;
+	
+	@Resource
+	private PositionService positionService;
+	
+	@Autowired
+	private MessageContentService messageContentService;
 	
 	@Override
 	public MyMapper<FlowRecruit> getMapper() {
@@ -155,5 +172,32 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public FlowRecruit getUserInfo(Integer recruitId) {
 		return flowRecruitMapper.getUserInfo(recruitId);
 	}
+	
+	/**
+	 * 	提交招聘申请
+	 */
+	@Override
+	public int insertSelective(FlowRecruit t) {
+		/**
+		 * 	保存提交申请的消息通知
+		 */
+		MessageContent content = new MessageContent();
+		User user = this.userMapper.selectByPrimaryKey(t.getApplyId());
+		String names = this.dempService.selectDempParentNameById(user.getDempid());
+		content.setApplicatDemp(names);
+		Position position = this.positionService.selectByPrimaryKey(user.getPositionid());
+		if(position != null){
+			content.setApplicatPosition(position.getName());
+		}
+		content.setApplicatId(t.getApplyId());
+		content.setApplyTime(t.getApplyDate());
+		content.setApplicatName(t.getUsername());
+		content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
+		content.setType(MessageType.RECRUITMENT_MES.getValue());
+		messageContentService.addUnapprovedMessage(content);
+		return super.insertSelective(t);
+	}
+	
+	
 
 }

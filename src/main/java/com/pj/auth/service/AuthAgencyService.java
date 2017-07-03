@@ -36,5 +36,6 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 * 	@return
 	 */
 	AuthAgency selectAuthAgencyByCompanyIdOrDempId(Integer companyId, Integer dempId, Integer grade);
+
 	
 }

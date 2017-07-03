@@ -38,8 +38,8 @@ public class SendEmailUtils {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(sendEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-			// 设置抄送人
-			if(Cc.length != 0){
+			// 设置抄送人z
+			if(Cc != null && Cc.length != 0){
 				InternetAddress[] addresss = new InternetAddress[Cc.length];
 				for (int i = 0; i < Cc.length; i++) {
 					addresss[i] = new InternetAddress(Cc[i]);

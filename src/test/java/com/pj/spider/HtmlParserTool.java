@@ -1,17 +1,5 @@
 package com.pj.spider;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
-import org.htmlparser.filters.NodeClassFilter;
-import org.htmlparser.filters.OrFilter;
-import org.htmlparser.tags.LinkTag;
-import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
-
 /**
  *	@author		GFF
  *	@date		2017年6月9日下午3:21:39

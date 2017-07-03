@@ -1,9 +1,6 @@
 package com.pj.service.impl.company;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,7 +18,6 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.UserService;
-import com.pj.utils.DateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

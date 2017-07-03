@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.auth.pojo.AuthMenu;
@@ -19,6 +20,7 @@ import com.pj.config.web.controller.BaseController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Controller
 @RequestMapping("/auth/Menu")
@@ -41,6 +43,22 @@ public class AuthMenuController  extends BaseController{
 			return this.successJsonp(authmenus);
 		} catch (Exception e) {
 			logger.error("【AuthMenuController.GetMenu】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("查询菜单信息失败"));
+	}
+	
+	@RequestMapping(value="/Authlist.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue GetMenubyUserid(
+			@ApiParam("菜单等级") @RequestParam(value = "grade", required = true) Integer grade,
+			@ApiParam("是否设置权限") @RequestParam(value = "auth", required = true) Integer auth,
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			List<AuthMenu> authmenus = this.authMenuService.GetMenubyUserid(grade, auth, userid);
+			return this.successJsonp(authmenus);
+		} catch (Exception e) {
+			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
 			e.printStackTrace();
 		}
 		return this.successJsonp(this.error("查询菜单信息失败"));

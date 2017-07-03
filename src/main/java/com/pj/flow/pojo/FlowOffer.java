@@ -19,184 +19,176 @@ public class FlowOffer {
 	/**
 	 * email
 	 */
-	@ApiModelProperty(value = "邮箱", notes = "(email)")
+//	@ApiModelProperty(value = "邮箱", notes = "<email>")
 	private String email;
 
 	/**
 	 * 用户名
 	 */
-	@ApiModelProperty(value = "用户名", notes = "(username)")
+	@ApiModelProperty(value = "用户名", notes = "<username>")
 	private String username;
 
 	/**
 	 * 公司
 	 */
-	@ApiModelProperty(value = "公司", notes = "(company)")
+	@ApiModelProperty(value = "公司", notes = "<company>")
 	private String company;
 
 	/**
 	 * 岗位职级
 	 */
-	@ApiModelProperty(value = "岗位职级", notes = "(postName)")
+	@ApiModelProperty(value = "岗位职级", notes = "<postName>")
 	private String postName;
 
 	/**
 	 * 汇报对象
 	 */
-	@ApiModelProperty(value = "汇报对象", notes = " (pUserName)")
+	@ApiModelProperty(value = "汇报对象", notes = "<pUserName>")
 	private String pUserName;
 
 	/**
 	 * 工作部门
 	 */
-	@ApiModelProperty(value = "工作部门", notes = "(dempName)")
+	@ApiModelProperty(value = "工作部门", notes = "<dempName>")
 	private String dempName;
 
 	/**
 	 * 工作地点
 	 */
-	@ApiModelProperty(value = "工作地点", notes = "(workAddress)")
+	@ApiModelProperty(value = "工作地点", notes = "<workAddress>")
 	private String workAddress;
 
 	/**
 	 * 基本工资 试用期内每月税前
 	 */
-	@ApiModelProperty(value = "基本工资 试用期内每月税前", notes = "(basePretaxSalaryForTrialPeriod)")
+	@ApiModelProperty(value = "基本工资 试用期内每月税前", notes = "<basePretaxSalaryForTrialPeriod>")
 	private String basePretaxSalaryForTrialPeriod;
 
 	/**
 	 * 基本工资 试用期内每月税前 大写
 	 */
-	@ApiModelProperty(value = "基本工资  试用期内每月税前  大写", notes = "(basePretaxSalaryForTrialPeriodUpper)")
+	@ApiModelProperty(value = "基本工资  试用期内每月税前  大写", notes = "<basePretaxSalaryForTrialPeriodUpper>")
 	private String basePretaxSalaryForTrialPeriodUpper;
 
 	/**
 	 * 基本工资 转正后每月税前
 	 */
-	@ApiModelProperty(value = "基本工资   转正后每月税前", notes = "(pre_taxSalary)")
+	@ApiModelProperty(value = "基本工资   转正后每月税前", notes = "<pre_taxSalary>")
 	private String pre_taxSalary;
 
 	/**
 	 * 基本工资 转正后每月税前 大写
 	 */
-	@ApiModelProperty(value = "基本工资    转正后每月税前 大写", notes = "(pre_taxSalaryUpper)")
+	@ApiModelProperty(value = "基本工资    转正后每月税前 大写", notes = "<pre_taxSalaryUpper>")
 	private String pre_taxSalaryUpper;
 
 	/**
 	 * 岗位工资 试用期内每月税前
 	 */
-	@ApiModelProperty(value = " 岗位工资 试用期内每月税前", notes = "(theSalaryOfTheUsePeriod)")
+	@ApiModelProperty(value = " 岗位工资 试用期内每月税前", notes = "<theSalaryOfTheUsePeriod>")
 	private String theSalaryOfTheUsePeriod;
 
 	/**
 	 * 岗位工资 试用期内每月税前 大写
 	 */
-	@ApiModelProperty(value = "岗位工资 试用期内每月税前 大写", notes = "(theSalaryOfTheUsePeriodUpper)")
+	@ApiModelProperty(value = "岗位工资 试用期内每月税前 大写", notes = "<theSalaryOfTheUsePeriodUpper>")
 	private String theSalaryOfTheUsePeriodUpper;
 
 	/**
 	 * 岗位工资 转正后每月税前
 	 */
-	@ApiModelProperty(value = "岗位工资    转正后每月税前", notes = "(postAPostSalary)")
+	@ApiModelProperty(value = "岗位工资    转正后每月税前", notes = "<postAPostSalary>")
 	private String postAPostSalary;
 
 	/**
 	 * 岗位工资 转正后每月税前 大写
 	 */
-	@ApiModelProperty(value = "岗位工资    转正后每月税前 大写", notes = "(postAPostSalaryUpper)")
+	@ApiModelProperty(value = "岗位工资    转正后每月税前 大写", notes = "<postAPostSalaryUpper>")
 	private String postAPostSalaryUpper;
 
 	/**
 	 * 绩效工资 试用期每月税前
 	 */
-	@ApiModelProperty(value = "绩效工资  试用期每月税前", notes = "(probationPerformanceSalary)")
+	@ApiModelProperty(value = "绩效工资  试用期每月税前", notes = "<probationPerformanceSalary>")
 	private String probationPerformanceSalary;
 
 	/**
 	 * 绩效工资 试用期每月税前 大写
 	 */
-	@ApiModelProperty(value = "绩效工资  试用期每月税前 大写", notes = "(probationPerformanceSalaryUpper)")
+	@ApiModelProperty(value = "绩效工资  试用期每月税前 大写", notes = "<probationPerformanceSalaryUpper>")
 	private String probationPerformanceSalaryUpper;
 
 	/**
 	 * 绩效工资 转正后每月税前
 	 */
-	@ApiModelProperty(value = "绩效工资  转正后每月税前", notes = "(transferPerformancePay)")
+	@ApiModelProperty(value = "绩效工资  转正后每月税前", notes = "<transferPerformancePay>")
 	private String transferPerformancePay;
 
 	/**
 	 * 绩效工资 转正后每月税前 大写
 	 */
-	@ApiModelProperty(value = "绩效工资  转正后每月税前   大写", notes = "(transferPerformancePayUpper)")
+	@ApiModelProperty(value = "绩效工资  转正后每月税前   大写", notes = "<transferPerformancePayUpper>")
 	private String transferPerformancePayUpper;
 
 	/**
 	 * 午餐补贴
 	 */
-	@ApiModelProperty(value = "午餐补贴", notes = "(lunchAllowance)")
+	@ApiModelProperty(value = "午餐补贴", notes = "<lunchAllowance>")
 	private String lunchAllowance;
 
 	/**
 	 * 通讯补贴
 	 */
-	@ApiModelProperty(value = "通讯补贴", notes = "(phoneAllowance)")
+	@ApiModelProperty(value = "通讯补贴", notes = "<phoneAllowance>")
 	private String phoneAllowance;
 
 	/**
 	 * 考勤工资
 	 */
-	@ApiModelProperty(value = "考勤工资", notes = "(presentAtDutyEveryDay)")
+	@ApiModelProperty(value = "考勤工资", notes = "<presentAtDutyEveryDay>")
 	private String presentAtDutyEveryDay;
 
 	/**
 	 * ，试用期为
 	 */
-	@ApiModelProperty(value = "试用期为", notes = "(probation)")
+	@ApiModelProperty(value = "试用期为", notes = "<probation>")
 	private String probation;
 
 	/**
 	 * 服务期限
 	 */
-	@ApiModelProperty(value = "服务期限", notes = "(serviceHours)")
+	@ApiModelProperty(value = "服务期限", notes = "<serviceHours>")
 	private String serviceHours;
 
 	/**
 	 * 入职时间
 	 */
-	@ApiModelProperty(value = "入职时间", notes = "(hiredate)")
+	@ApiModelProperty(value = "入职时间", notes = "<hiredate>")
 	private Date hiredate;
 
 	/**
 	 * 时分
 	 */
-	@ApiModelProperty(value = "时分", notes = "(timeDivision)")
+	@ApiModelProperty(value = "时分", notes = "<timeDivision>")
 	private String timeDivision;
 
 	/**
 	 * 联系人
 	 */
-	@ApiModelProperty(value = "联系人", notes = "(contacts)")
+	@ApiModelProperty(value = "联系人", notes = "<contacts>")
 	private String contacts;
 
 	/**
 	 * 联系电话
 	 */
-	@ApiModelProperty(value = "联系电话(当前操作人员)", notes = "(contactsPhone)")
+	@ApiModelProperty(value = "联系电话(当前操作人员)", notes = "<contactsPhone>")
 	private String contactsPhone;
 
 	/**
 	 * 联系电话
 	 */
-	@ApiModelProperty(value = "联系电话(用户)", notes = "(phone)")
+	@ApiModelProperty(value = "联系电话(用户)", notes = "<phone>")
 	private String phone;
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public String getUsername() {
 		return username;
@@ -381,8 +373,7 @@ public class FlowOffer {
 	public void setServiceHours(String serviceHours) {
 		this.serviceHours = serviceHours;
 	}
-
-	@JsonFormat(pattern = DateUtils.DATE_FORMAT_C, timezone = "GMT+8")
+	@JsonFormat(pattern=DateUtils.DATE_FORMAT,timezone = "GMT+8") 
 	public Date getHiredate() {
 		return hiredate;
 	}
@@ -423,9 +414,17 @@ public class FlowOffer {
 		this.phone = phone;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
-		return "FlowOffer [email=" + email + ", username=" + username + ", company=" + company + ", postName="
+		return "FlowOffer [username=" + username + ", company=" + company + ", postName="
 				+ postName + ", pUserName=" + pUserName + ", dempName=" + dempName + ", workAddress=" + workAddress
 				+ ", basePretaxSalaryForTrialPeriod=" + basePretaxSalaryForTrialPeriod
 				+ ", basePretaxSalaryForTrialPeriodUpper=" + basePretaxSalaryForTrialPeriodUpper + ", pre_taxSalary="

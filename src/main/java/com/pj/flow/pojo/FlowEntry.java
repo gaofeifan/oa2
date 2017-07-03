@@ -118,6 +118,8 @@ public class FlowEntry implements Serializable {
     @Transient
     private String postName;
     @Transient
+    private Integer positionId;
+    @Transient
     private String applyDateStr;
     
     public String getSalaryJson() {
@@ -351,6 +353,15 @@ public class FlowEntry implements Serializable {
 	public void setApplyId(Integer applyId) {
 		this.applyId = applyId;
 	}
+	
+	public Integer getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
+	}
+
 	@Override
 	public String toString() {
 		return "FlowEntry [id=" + id + ", number=" + number + ", recruitId=" + recruitId + ", name=" + name + ", sex="

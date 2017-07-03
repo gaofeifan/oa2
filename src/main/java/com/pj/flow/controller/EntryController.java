@@ -30,7 +30,9 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
+import com.pj.utils.OfferUtils;
 import com.pj.utils.RequestUtils;
+import com.pj.utils.SendEmailUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -240,4 +242,23 @@ public class EntryController extends BaseController{
 		return map;
 	}
 	
+
+	/**
+	 * 	发送offer
+	 *	@author 	GFF
+	 *	@date		2017年6月27日上午10:58:14	
+	 * 	@param iEamil
+	 * 	@param CC
+	 * 	@param hour
+	 * 	@return
+	 */
+	@ApiOperation(value = "发送offer", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
+	@RequestMapping("/testOffer.do")
+	public @ResponseBody MappingJacksonValue testOffer(){
+		FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(1, "hujingjing@pj-l.com");
+		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
+		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
+		SendEmailUtils.sendMessage("gaofeifan@pj-l.com", "PJ.123456", "695096916@qq.com", flowOffer.getCompany()+"offer", string, null);
+		return null;
+	}
 }

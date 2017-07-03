@@ -439,13 +439,16 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<http.sso.create.url>http://10.0.0.18:8082/sso/userSync/add</http.sso.create.url>
 				<http.sso.update.url>http://10.0.0.18:8082/sso/userSync/update</http.sso.update.url>
 				<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-				<jdbc.url>jdbc:mysql://localhost:3306/oa</jdbc.url>
+				<jdbc.url>jdbc:mysql://localhost:3306/oa3</jdbc.url>
 				<jdbc.username>root</jdbc.username>
 				<jdbc.password>1234</jdbc.password>
 				<redis.host>10.0.0.18</redis.host>
 				<redis.port>6379</redis.port>
 				<redis.pass>redis</redis.pass>
 			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<!-- 生产环境 -->
 		<profile>
@@ -480,9 +483,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<ftp.password>pj!@#123oa</ftp.password>
 				<ftp.port>2221</ftp.port>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 		</profile>
 	</profiles>
 

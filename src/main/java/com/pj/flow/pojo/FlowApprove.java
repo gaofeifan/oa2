@@ -178,6 +178,5 @@ public class FlowApprove implements Serializable {
 	public void setIsMessaging(Integer isMessaging) {
 		this.isMessaging = isMessaging;
 	}
-
 	
 }
