@@ -2,6 +2,7 @@ package com.pj.flow.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowApproveMapper;
@@ -20,8 +22,14 @@ import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowApproveService;
+import com.pj.message.pojo.MessageContent;
+import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.Position;
+import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
+import com.pj.system.service.PositionService;
+import com.pj.system.service.UserService;
 
 /**
  *	@author		GFF
@@ -34,6 +42,8 @@ import com.pj.system.service.DempService;
 @Transactional
 public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove, Integer>
 									implements FlowApproveService {
+	@Resource
+	private MessageContentService messageContentService;
 	
 	@Resource
 	private DempService dempService;
@@ -52,6 +62,12 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	
 	@Resource
 	private FlowEntryMapper flowEntryMapper;
+
+	@Resource
+	private PositionService positionService;
+	
+	@Resource
+	private UserService userService;
 	
 	@Override
 	public MyMapper<FlowApprove> getMapper() {
@@ -123,6 +139,62 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		flowApprove.setHandledate(new Date());
 		
 		flowApproveMapper.insertSelective(flowApprove);
+		isApproveComplete(flowUserApplication,applyType);
+	}
+
+	/**
+	 * 	审批完成的处理
+	 *	@author 	GFF
+	 *	@date		2017年7月3日下午4:54:04	
+	 * 	@param flowUserApplication
+	 */
+	private void isApproveComplete(FlowUserApplication flowUserApplication , String applyType) {
+		FlowApprove record = new FlowApprove();
+		record.setApplyId(flowUserApplication.getId());
+		List<FlowApprove> list = super.select(record );
+		List<Boolean> collect = list.stream().map(approve -> approve.getCheckstatus() != 0).collect(Collectors.toList());
+		//	判断是否所有人员都审批完成
+		if(collect.contains(false)){
+			return ;
+		}
+		/**
+		 * 	保存消息通知
+		 */
+		
+		MessageContent content = new MessageContent();
+		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
+			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(flowUserApplication.getFormId());
+			if(applyId.size() > 0){
+				FlowRecruit recruit = applyId.get(0);
+				User user = this.userService.selectById(recruit.getApplyId());
+				content.setApplicatId(user.getId());
+				content.setApplicatName(user.getUsername());
+				content.setApplicatPosition(user.getPositionname());
+				if(user.getDempid() != null){
+					String names = this.dempService.selectDempParentNameById(user.getDempid());
+					content.setApplicatDemp(names);
+				}
+				content.setApplyTime(recruit.getApplyDate());
+				content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
+				content.setType(MessageType.RECRUITMENT_MES.getValue());
+			}
+		}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
+			if(flowEntry != null){
+				content.setApplyTime(flowEntry.getApplyDate());
+				content.setApplicatName(flowEntry.getUsername());
+				content.setTitle(MessageType.ENTRY_MES.getDesc());
+				content.setType(MessageType.ENTRY_MES.getValue());
+				content.setApplicatId(flowUserApplication.getFormId());
+				String names = this.dempService.selectDempParentNameById(flowEntry.getDempId());
+				content.setApplicatDemp(names);
+				Position position = this.positionService.selectByPrimaryKey(flowEntry.getPositionId());
+				if(position != null){
+					content.setApplicatPosition(position.getName());
+				}
+			}
+		}
+		messageContentService.addApprovedMessage(content , flowUserApplication.getId());
 	}
 
 	@Override

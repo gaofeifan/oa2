@@ -117,7 +117,6 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	 */
 	@Override
 	public String selectDempParentNameById(Integer id) {
-		
 		Object[] array = this.selectDempParentListById(id).stream().map(demp -> demp.getName()).toArray();
 		String[] strs = Arrays.asList( array ).toArray( new String[0] );
 		String names = StringUtils.join(strs, "-");

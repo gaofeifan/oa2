@@ -1,6 +1,5 @@
 package com.pj.auth.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,6 @@ import com.pj.config.base.constant.RecruitApplyReason;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.pojo.FlowApprove;
-import com.pj.flow.service.FlowApproveService;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Position;
@@ -44,8 +42,6 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	private UserService userService;
 	@Autowired
 	private DempService dempService;
-	@Autowired
-	private FlowApproveService flowApproveService;
 	
 	private Set<User> approvers = new HashSet<User>();
 

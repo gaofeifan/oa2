@@ -21,7 +21,7 @@ public interface MessageContentService extends BaseService<MessageContent,Intege
 	 * 	@param content
 	 * 	@param applyId
 	 */
-	public void addApprovedMessage(MessageContent content , int applyId);
+	public void addApprovedMessage(MessageContent content , Integer applyId);
 	
 	/**
 	 * 	添加未审批消息

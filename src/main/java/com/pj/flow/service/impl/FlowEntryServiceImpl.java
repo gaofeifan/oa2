@@ -9,16 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.SalaryType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
+import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowEntryService;
+import com.pj.flow.service.FlowRecruitService;
+import com.pj.message.pojo.MessageContent;
+import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.SalaryMapper;
+import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Salary;
 import com.pj.system.pojo.User;
+import com.pj.system.service.DempService;
+import com.pj.system.service.PositionService;
 import com.pj.system.service.SalaryService;
 import com.pj.system.service.UserService;
 import com.pj.utils.AESUtils;
@@ -40,6 +48,14 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private SalaryService salaryService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MessageContentService messageContentService;
+	@Autowired
+	private DempService dempService;
+	@Autowired
+	private PositionService positionService;
+	@Autowired
+	private FlowRecruitService flowRecruitService;
 	
 	@Override
 	public MyMapper<FlowEntry> getMapper() {
@@ -62,16 +78,39 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			salary.setEntryId(entryId);
 			salaryMapper.insertSelective(salary);
 		}
+		
+		/**
+		 * 	保存入职消息通知
+		 */
+		MessageContent content = new MessageContent();
+		//	查询招聘表
+		FlowRecruit flowRecruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
+		if(flowRecruit != null){
+			String names = this.dempService.selectDempParentNameById(flowRecruit.getDempId());
+			content.setApplicatDemp(names);
+			Position position = this.positionService.selectByPrimaryKey(flowRecruit.getPositionId());
+			if(position != null){
+				content.setApplicatPosition(position.getName());
+			}
+			content.setApplicatId(flowEntry.getId());
+			content.setApplicatName(flowEntry.getUsername());
+			content.setApplyTime(flowEntry.getApplyDate());
+			content.setTitle(MessageType.ENTRY_MES.getDesc());
+			content.setType(MessageType.ENTRY_MES.getValue());
+		}
+		messageContentService.addUnapprovedMessage(content);
+		
+		
+		
 	}
 	@Override
 	public FlowEntry selectById(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectById(entryId);
-		
 		return flowEntry;
 	}
 
 	/**
-	 * 	查询offer展示的详情
+	 * 	offer展示的详情
 	 */
 	@Override
 	public FlowOffer selectOfferDetailsByApplyIdAndEmail(Integer applyId, String email) {

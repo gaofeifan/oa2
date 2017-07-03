@@ -1,16 +1,6 @@
 package com.pj.auth.service.impl;
 
-import javax.annotation.Resource;
-
-import org.junit.Test;
-
 import com.pj.BaseTest;
-import com.pj.auth.service.AuthAgencyService;
-import com.pj.config.base.constant.RecruitApplyReason;
-import com.pj.system.pojo.Position;
-import com.pj.system.pojo.User;
-import com.pj.system.service.PositionService;
-import com.pj.system.service.UserService;
 
 /**
  *	@author		GFF

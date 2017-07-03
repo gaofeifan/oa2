@@ -89,6 +89,5 @@ public interface UserService extends BaseService<User, Integer> {
 	 * 	@return
 	 */
 	List<User> selectUserByUsername(String username);
-
 	
 }
