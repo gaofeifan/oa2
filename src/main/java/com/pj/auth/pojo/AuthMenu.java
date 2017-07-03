@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -43,6 +44,8 @@ public class AuthMenu {
 	@Column
 	private Integer post;
 	
+	@Transient
+	private String choice;
 	
 	public Integer getId() {
 		return id;
@@ -107,7 +110,12 @@ public class AuthMenu {
 		this.post = post;
 	}
 	
-	
-	
+	public String getChoice() {
+		return choice;
+	}
+
+	public void setChoice(String choice) {
+		this.choice = choice;
+	}
 	
 }

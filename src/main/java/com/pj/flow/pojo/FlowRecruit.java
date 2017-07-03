@@ -100,10 +100,10 @@ public class FlowRecruit implements Serializable {
     private String otherDemand;
 
 	@ApiModelProperty(value = "申请状态(1:招聘审批中,2:招聘已审批,3:入职审批中,4:入职已审批,5:已发offer,6:已建档)", required = false)
-    private String state;
+    private Integer state;
 
 	@ApiModelProperty(value = "申请结果(1:招聘同意,2:招聘不同意,3:招聘暂停,4:招聘取消,5:入职同意,6:入职不同意,7:入职完结)", required = false)
-    private String result;
+    private Integer result;
 
 	@ApiModelProperty(value = "入职人数", required = false)
     private Integer entryNum;
@@ -128,12 +128,21 @@ public class FlowRecruit implements Serializable {
     private String replaceOffer;
     private String leaderName;
     private String companyName;
+    private Integer applyDempId;
     private String dempName;
     private String postName;
     private String positionName;
     private String applyDateStr;
 
-    public String getApplyDateStr() {
+    public Integer getApplyDempId() {
+		return applyDempId;
+	}
+
+	public void setApplyDempId(Integer applyDempId) {
+		this.applyDempId = applyDempId;
+	}
+
+	public String getApplyDateStr() {
 		return applyDateStr;
 	}
 
@@ -422,23 +431,24 @@ public class FlowRecruit implements Serializable {
         this.otherDemand = otherDemand == null ? null : otherDemand.trim();
     }
 
-    public String getState() {
-        return state;
-    }
 
-    public void setState(String state) {
-        this.state = state == null ? null : state.trim();
-    }
+    public Integer getState() {
+		return state;
+	}
 
-    public String getResult() {
-        return result;
-    }
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
-    public void setResult(String result) {
-        this.result = result == null ? null : result.trim();
-    }
+	public Integer getResult() {
+		return result;
+	}
 
-    public Integer getEntryNum() {
+	public void setResult(Integer result) {
+		this.result = result;
+	}
+
+	public Integer getEntryNum() {
         return entryNum;
     }
 

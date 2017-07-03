@@ -29,8 +29,8 @@
     <result column="special_ability" property="specialAbility" jdbcType="VARCHAR" />
     <result column="experience" property="experience" jdbcType="VARCHAR" />
     <result column="other_demand" property="otherDemand" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="INTEGER" />
     <result column="entry_num" property="entryNum" jdbcType="INTEGER" />
     <result column="leader_id" property="leaderId" jdbcType="INTEGER" />
     <result column="offer_range" property="offerRange" jdbcType="VARCHAR" />
@@ -41,6 +41,7 @@
 	<result column="replaceOffer" property="replaceOffer" jdbcType="VARCHAR" />
 	<result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
 	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
+	<result column="applyDempId" property="applyDempId" jdbcType="VARCHAR" />
 	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
 	<result column="postName" property="postName" jdbcType="VARCHAR" />
 	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
@@ -72,10 +73,11 @@
 		c.name as companyName, pn.name as positionName
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
-		LEFT JOIN t_company c ON c.id = r.company_id
+		left join t_user u on u.id = r.apply_id
+		LEFT JOIN t_company c ON c.id = u.companyid
 		<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 		LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
-		LEFT JOIN t_position pn ON pn.id = r.position_id
+		LEFT JOIN t_position pn ON pn.id = u.positionid
 		where r.status = 0
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
@@ -91,11 +93,12 @@
 	
 	</select>
 	<select id="selectByApplyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-		SELECT r.id, r.apply_id, r.username, r.demp_id, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
+		SELECT r.id, r.apply_id, r.username, u.dempid as applyDempId, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, r.state, r.result
 		FROM flow_recruit r 
-		LEFT JOIN t_company c ON c.id = r.company_id
-		WHERE apply_id = #{applyId} AND STATUS = 0
+		LEFT JOIN t_user u ON u.id = r.apply_id
+		LEFT JOIN t_company c ON c.id = u.companyid
+		WHERE r.apply_id = #{applyId}
 	</select>
 	<select id="getUserInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		SELECT r.id, r.company_id, r.post_id, r.position_id, r.demp_id, 

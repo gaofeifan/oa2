@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
-import com.pj.config.base.constant.EntryApplyState;
-import com.pj.config.base.constant.RecruitApplyState;
+import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
@@ -74,34 +73,38 @@ public class ApproveController extends BaseController{
 	@RequestMapping(value = "/searchMyApproves.do", method = RequestMethod.GET)
 	@ResponseBody
 	public MappingJacksonValue searchMyApproves(HttpServletResponse response, HttpServletRequest request,
-			@ApiParam(value = "审批状态(0:已审批,1:未审批)", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus
+			@ApiParam(value = "审批状态(0:未审批,1:已审批)", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus
 			){
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			//1、同意；2、不同意；3、驳回；4、未处理
-			//如果是0，则checkstatus=4，查询未处理的且 是否可审批(0 可审批  1 不可审批)为1的数据列表
-			if(checkstatus == 1){
-				checkstatus = 4;
-			}
+			//0、审批中 1、不同意 2、同意
+			//如果是0，查询未处理的且 是否可审批(0 可审批  1 不可审批)为0的数据列表
+			
 			List<FlowUserApplication> list = flowApproveService.searchMyApproves(user.getId(), checkstatus);		
 			for(FlowUserApplication fa : list){
 				//申请结果
-				String state = "";
-				//根据applyType判断是招聘还是入职
+				int result = 0;
+				//根据applyType判断是招聘还是入职,
+				//如果是招聘，则判断result是（5入职同意6入职不同意 7入职完结）,则是（1招聘同意）
 				String applyType = fa.getApplyType();
 				if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
 					//招聘
-					state = flowRecruitService.selectByPrimaryKey(fa.getFormId()).getState();
-					state = RecruitApplyState.valueOf(state).getStateName();
+					result = flowRecruitService.selectByPrimaryKey(fa.getFormId()).getResult();
+					if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
+							 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
+						result = RecruitApplyResult.RECRUIT_AGREE.getState();
+					}
+					
+					//result = RecruitApplyState.valueOf(state).getStateName();
 				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 					//入职
-					state = flowEntryService.selectByPrimaryKey(fa.getFormId()).getState();
-					state = EntryApplyState.valueOf(state).getStateName();
+					result = flowEntryService.selectByPrimaryKey(fa.getFormId()).getResult();
+//					result = EntryApplyState.valueOf(state).getStateName();
 				}
-				fa.setApplyState(state);
+				fa.setApplyResult(result);
 			}
 			
 			map = this.successJsonp(list);
@@ -132,6 +135,32 @@ public class ApproveController extends BaseController{
 			}else{
 				map = this.successJsonp(null);
 			}
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("选择姓名跳转对应的申请详情页面");
+		}
+		return map;
+	}
+	@ApiOperation(value = "提交审批", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交审批")
+	@RequestMapping(value = "/commitApprove.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue commitApprove(
+			@ApiParam(value = "审批人id", required = true) @RequestParam(value = "userid", required = true) Integer userid,
+			@ApiParam(value = "审批状态", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
+			@ApiParam(value = "审批意见", required = false) @RequestParam(value = "handleidea", required = true) String handleidea,
+			@ApiParam(value = "申请表id", required = true) @RequestParam(value = "formId", required = true) Integer formId,
+			@ApiParam(value = "申请类型(招聘:recruit 入职:entry，转正:regular ，异动:change，离职:dimission，请假:leave，其他:other)", required = true) @RequestParam(value = "applyType", required = true) String applyType
+			){
+		MappingJacksonValue map;
+		try {
+			/**
+			 * 先查询中间表
+			 * 	根据申请表id和申请类型查询是否存在，如存在不保存不存在则保存，
+			 * 再保存审批表
+			 */
+			flowApproveService.commitApprove(userid, checkstatus, handleidea, formId, applyType);
+			
+			map = this.successJsonp(null);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("选择姓名跳转对应的申请详情页面");

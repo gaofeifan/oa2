@@ -1,15 +1,19 @@
 package com.pj.flow.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "flow_approve")
-public class FlowApprove {
+public class FlowApprove implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
@@ -45,9 +49,41 @@ public class FlowApprove {
     private Date startTime;
 
 	@Column
-    private Integer is_Messaging;
+    private Integer isMessaging;
+	
+	//查询使用
+	@Transient
+	private String approveName;//审批人姓名
+	@Transient
+	private String positionName;//职位名
+	@Transient
+	private String approveDateStr;//审批时间字符串
 
-    public Integer getId() {
+    public String getApproveName() {
+		return approveName;
+	}
+
+	public void setApproveName(String approveName) {
+		this.approveName = approveName;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	public String getApproveDateStr() {
+		return approveDateStr;
+	}
+
+	public void setApproveDateStr(String approveDateStr) {
+		this.approveDateStr = approveDateStr;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -135,114 +171,12 @@ public class FlowApprove {
 		this.applyUserId = applyUserId;
 	}
 
-	public Integer getIs_Messaging() {
-		return is_Messaging;
+	public Integer getIsMessaging() {
+		return isMessaging;
 	}
 
-	public void setIs_Messaging(Integer is_Messaging) {
-		this.is_Messaging = is_Messaging;
-	}
-
-	@Override
-	public String toString() {
-		return "FlowApprove [id=" + id + ", recordid=" + recordid + ", userid=" + userid + ", positionid=" + positionid
-				+ ", handledate=" + handledate + ", handleidea=" + handleidea + ", checkstatus=" + checkstatus
-				+ ", applyId=" + applyId + ", isApprove=" + isApprove + ", applyUserId=" + applyUserId + ", startTime="
-				+ startTime + ", is_Messaging=" + is_Messaging + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((applyId == null) ? 0 : applyId.hashCode());
-		result = prime * result + ((applyUserId == null) ? 0 : applyUserId.hashCode());
-		result = prime * result + ((checkstatus == null) ? 0 : checkstatus.hashCode());
-		result = prime * result + ((handledate == null) ? 0 : handledate.hashCode());
-		result = prime * result + ((handleidea == null) ? 0 : handleidea.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((isApprove == null) ? 0 : isApprove.hashCode());
-		result = prime * result + ((is_Messaging == null) ? 0 : is_Messaging.hashCode());
-		result = prime * result + ((positionid == null) ? 0 : positionid.hashCode());
-		result = prime * result + ((recordid == null) ? 0 : recordid.hashCode());
-		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
-		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		FlowApprove other = (FlowApprove) obj;
-		if (applyId == null) {
-			if (other.applyId != null)
-				return false;
-		} else if (!applyId.equals(other.applyId))
-			return false;
-		if (applyUserId == null) {
-			if (other.applyUserId != null)
-				return false;
-		} else if (!applyUserId.equals(other.applyUserId))
-			return false;
-		if (checkstatus == null) {
-			if (other.checkstatus != null)
-				return false;
-		} else if (!checkstatus.equals(other.checkstatus))
-			return false;
-		if (handledate == null) {
-			if (other.handledate != null)
-				return false;
-		} else if (!handledate.equals(other.handledate))
-			return false;
-		if (handleidea == null) {
-			if (other.handleidea != null)
-				return false;
-		} else if (!handleidea.equals(other.handleidea))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (isApprove == null) {
-			if (other.isApprove != null)
-				return false;
-		} else if (!isApprove.equals(other.isApprove))
-			return false;
-		if (is_Messaging == null) {
-			if (other.is_Messaging != null)
-				return false;
-		} else if (!is_Messaging.equals(other.is_Messaging))
-			return false;
-		if (positionid == null) {
-			if (other.positionid != null)
-				return false;
-		} else if (!positionid.equals(other.positionid))
-			return false;
-		if (recordid == null) {
-			if (other.recordid != null)
-				return false;
-		} else if (!recordid.equals(other.recordid))
-			return false;
-		if (startTime == null) {
-			if (other.startTime != null)
-				return false;
-		} else if (!startTime.equals(other.startTime))
-			return false;
-		if (userid == null) {
-			if (other.userid != null)
-				return false;
-		} else if (!userid.equals(other.userid))
-			return false;
-		return true;
+	public void setIsMessaging(Integer isMessaging) {
+		this.isMessaging = isMessaging;
 	}
 	
-	
-
-
 }

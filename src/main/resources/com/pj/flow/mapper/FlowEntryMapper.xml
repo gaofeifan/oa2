@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pj.flow.mapper.FlowEntryMapper" >
+  <resultMap id="ApplyMap" type="com.pj.flow.pojo.FlowEntry" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+	<result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    
+    <result column="dempId" property="dempId" jdbcType="INTEGER" />
+    <result column="companyName" property="companyName" jdbcType="VARCHAR" />
+  </resultMap>
   <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowEntry" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
+	<result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
@@ -16,12 +26,11 @@
     <result column="check_url" property="checkUrl" jdbcType="VARCHAR" />
     <result column="resume_url" property="resumeUrl" jdbcType="VARCHAR" />
     <result column="register_url" property="registerUrl" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="apply_date" property="applyDate" jdbcType="DATE" />
     
-    <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="dempId" property="dempId" jdbcType="INTEGER" />
     <result column="applyDateStr" property="applyDateStr" jdbcType="INTEGER" />
   </resultMap>
@@ -51,7 +60,12 @@
   </resultMap>
   <resultMap id="BaseResultMap_Offer" type="com.pj.flow.pojo.FlowOffer" >
     <result column="number" property="number" jdbcType="VARCHAR" />
-    <result column="name" property="username" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
@@ -63,10 +77,6 @@
     <result column="postName" property="postName" jdbcType="VARCHAR" />
     <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, number, recruit_id, name, sex, phone, email, entry_date, probation, service_years, 
-    remark, check_url, resume_url, register_url, state, status
-  </sql>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName
@@ -77,6 +87,14 @@
 	LEFT JOIN t_company c ON c.id = r.company_id
 	LEFT JOIN t_demp d ON d.id = r.demp_id
 	LEFT JOIN t_post p ON p.id = r.post_id
+	where e.status = 0 and e.id = #{id}
+  </select>
+  <select id="selectApplyInfoById" parameterType="java.lang.Integer" resultMap="ApplyMap">
+  	select e.*, c.name AS companyName,
+		u.dempid as dempId
+  	from flow_entry e
+	LEFT JOIN t_user u ON e.apply_id = u.id
+	LEFT JOIN t_company c ON c.id = u.companyid
 	where e.status = 0 and e.id = #{id}
   </select>
   <select id="selectOfferDetailsByApplyId" parameterType="java.lang.Integer" resultMap="BaseResultMap_Offer">
@@ -111,12 +129,140 @@
   	</where>
   </select>
   <select id="searchEntrys" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	SELECT e.id, e.recruit_id, r.username AS username, r.demp_id AS dempId, 
+  	SELECT e.id, e.recruit_id, e.username, u.dempid AS dempId, 
   		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, e.state, e.result
 		FROM flow_entry e
-		LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id
-		LEFT JOIN t_company c ON c.id = r.company_id
-		WHERE e.status = 0
+		left join t_user u on u.id = e.apply_id
+		<!-- LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id -->
+		LEFT JOIN t_company c ON c.id = u.companyid
+		WHERE e.apply_id = #{userId} and e.status = 0 
   </select>
+  <insert id="insertEntry" parameterType="com.pj.flow.pojo.FlowEntry" useGeneratedKeys="true" keyProperty="id">
+    insert into flow_entry
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applyId != null" >
+        apply_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="entryDate != null" >
+        entry_date,
+      </if>
+      <if test="probation != null" >
+        probation,
+      </if>
+      <if test="serviceYears != null" >
+        service_years,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="checkUrl != null" >
+        check_url,
+      </if>
+      <if test="resumeUrl != null" >
+        resume_url,
+      </if>
+      <if test="registerUrl != null" >
+        register_url,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="applyDate != null" >
+        apply_date,
+      </if>
+      <if test="recruitId != null" >
+        recruit_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="entryDate != null" >
+        #{entryDate,jdbcType=DATE},
+      </if>
+      <if test="probation != null" >
+        #{probation,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceYears != null" >
+        #{serviceYears,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUrl != null" >
+        #{checkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeUrl != null" >
+        #{resumeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="registerUrl != null" >
+        #{registerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null" >
+        #{applyDate,jdbcType=DATE},
+      </if>
+      <if test="recruitId != null" >
+        #{recruitId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
 </mapper>

@@ -40,7 +40,7 @@ public class FlowUserApplication {
 	//查询使用
 	private Integer approveId;
 	private String applyDateStr;
-	private String applyState;
+	private Integer applyResult;
 
     public Integer getApproveId() {
 		return approveId;
@@ -50,12 +50,12 @@ public class FlowUserApplication {
 		this.approveId = approveId;
 	}
 
-	public String getApplyState() {
-		return applyState;
+	public Integer getApplyResult() {
+		return applyResult;
 	}
 
-	public void setApplyState(String applyState) {
-		this.applyState = applyState;
+	public void setApplyResult(Integer applyResult) {
+		this.applyResult = applyResult;
 	}
 
 	public String getApplyDateStr() {

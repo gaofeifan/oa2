@@ -1,6 +1,8 @@
 package com.pj.flow.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
+import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
@@ -42,6 +47,9 @@ public class EntryController extends BaseController{
 	
 	@Resource
 	private FlowEntryService flowEntryService;
+	
+	@Resource
+	private FlowApproveService flowApproveService;
 	
 	@Resource
 	private UserService userService;
@@ -73,7 +81,7 @@ public class EntryController extends BaseController{
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("提交招聘申请");
+			throw new RuntimeException("入职申请查询");
 		}
 		return map;
 	}
@@ -88,10 +96,16 @@ public class EntryController extends BaseController{
 	@ApiOperation(value = "提交入职申请", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交入职申请")
 	@RequestMapping("/commitEntry.do")
 	@ResponseBody
-	public MappingJacksonValue commitEntry(@ModelAttribute("flowEntry") FlowEntry flowEntry,
-						@ApiParam(value = "工资信息(json格式[{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':'200','reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'sal'ry_type':(1(实习))},{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':200,'reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':200,'communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'salary_type':(2(试用))},{'totalSalary(总工资)':111,'baseSalary(基本工资)':10,'postSalary(岗位工资)':1,'performanceSalary(绩效工资)':200,'reimbursement(报销金额)':200,'lunchAllowance(午餐补贴)':200,'communicationAllowance(通讯补贴)':200,'fullHours(全勤)':200,'salary_type':(3(转正))}])", required = false)@RequestParam(value = "salarys", required = false) String salarys){
+	public MappingJacksonValue commitEntry(HttpServletResponse response, HttpServletRequest request,
+			@ModelAttribute(value = "flowEntry") FlowEntry flowEntry){
 		MappingJacksonValue map;
 		try {
+			String salarys = flowEntry.getSalaryJson();
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			flowEntry.setApplyId(user.getId());
+			flowEntry.setUsername(user.getUsername());
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
@@ -107,8 +121,16 @@ public class EntryController extends BaseController{
 			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = false) Integer entryId){
 		MappingJacksonValue map;
 		try {
+			Map<String, Object> result = new HashMap<String, Object>();
+			//申请详情
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
-			map = this.successJsonp(flowEntry);
+			
+			//审批详情
+			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
+			result.put("entry", flowEntry);
+			result.put("approves", list);
+			map = this.successJsonp(result);
+			
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("入职申请详情");

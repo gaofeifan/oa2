@@ -30,4 +30,17 @@
 			AND post= #{post}
 		</if>
 	</select>
+	<select id="GetMenubyUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select auth_menu.id,auth_menu.name,auth_menu.fid,auth_menu.post,COUNT(auth_user.menuid)  as Choice from auth_menu
+		LEFT JOIN auth_user on auth_user.menuid=auth_menu.id and userid=#{userid}
+		
+		where 1=1
+		<if test="grade != 0">
+			AND grade= #{grade}
+		</if>
+		<if test="auth != 0">
+			AND auth= #{auth}
+		</if>
+		GROUP BY auth_menu.id,auth_menu.name,auth_menu.fid,auth_menu.post
+	</select>
 </mapper>

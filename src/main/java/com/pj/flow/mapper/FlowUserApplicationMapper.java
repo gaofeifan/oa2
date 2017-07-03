@@ -24,4 +24,12 @@ public interface FlowUserApplicationMapper extends MyMapper<FlowUserApplication>
 	 * @return
 	 */
 	List<FlowUserApplication> searchMyApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus);
+
+	/**
+	 * 根据申请表id和申请类型查询
+	 * @param formId
+	 * @param applyType
+	 * @return
+	 */
+	FlowUserApplication selectByApplyIdAndType(Integer formId, String applyType);
 }

@@ -11,4 +11,5 @@ public interface AuthMenuService extends BaseService<AuthMenu, Integer> {
 
 	List<AuthMenu> GetMenu(AuthMenu authmenu);
 
+	List<AuthMenu> GetMenubyUserid(Integer grade,Integer auth,Integer userid);
 }
