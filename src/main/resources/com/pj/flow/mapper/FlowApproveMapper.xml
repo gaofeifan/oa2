@@ -29,4 +29,9 @@
   	where fa.apply_id in (select fu.id from flow_user_application fu 
   		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
   </select>
+  <select id="selectListByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select * from flow_approve
+  	where apply_id = #{applyId}
+  	order by id asc
+  </select>
 </mapper>

@@ -2,99 +2,91 @@ package com.pj.flow.pojo;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- *	@author		GFF
- *	@date		2017年6月19日上午11:35:00
- *	@version	1.0.0
- *	@parameter	
- *  @since		1.8
- */
-@Table(name="flow_action_log")
+@Table(name = "flow_action_log")
 public class FlowActionLog {
-
 	@Id
 	@GeneratedValue(generator = "JDBC")
-	private Integer id;
-	
-	/**
-	 * 	状态
-	 */
-	@Column
-	private String status;
-	
-	/**
-	 * 	操作时间
-	 */
-	@Column
-	private Date operationTime;
-	
-	/**
-	 * 	申请单号
-	 */
-	@Column
-	private String applicationNumber;
-	
-	/**
-	 * 	操作人员
-	 */
-	private String operationStaff;
-	
-	/**
-	 * 	处理意见
-	 */
-	@Column
-	private String handlingSuggestion;
+    private Integer id;
+
+    private String status;
+
+    private Date operateTime;
+
+    private Integer recruitId;
+
+    private Integer entryId;
+
+    private String operater;
+
+    private String opinion;
+    
+    private String operateTimeStr;
+
+    public String getOperateTimeStr() {
+		return operateTimeStr;
+	}
+
+	public void setOperateTimeStr(String operateTimeStr) {
+		this.operateTimeStr = operateTimeStr;
+	}
 
 	public Integer getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
 
-	public Date getOperationTime() {
-		return operationTime;
-	}
+    public Date getOperateTime() {
+        return operateTime;
+    }
 
-	public void setOperationTime(Date operationTime) {
-		this.operationTime = operationTime;
-	}
+    public void setOperateTime(Date operateTime) {
+        this.operateTime = operateTime;
+    }
 
-	public String getApplicationNumber() {
-		return applicationNumber;
-	}
+    public Integer getRecruitId() {
+        return recruitId;
+    }
 
-	public void setApplicationNumber(String applicationNumber) {
-		this.applicationNumber = applicationNumber;
-	}
+    public void setRecruitId(Integer recruitId) {
+        this.recruitId = recruitId;
+    }
 
-	public String getOperationStaff() {
-		return operationStaff;
-	}
+    public Integer getEntryId() {
+        return entryId;
+    }
 
-	public void setOperationStaff(String operationStaff) {
-		this.operationStaff = operationStaff;
-	}
+    public void setEntryId(Integer entryId) {
+        this.entryId = entryId;
+    }
 
-	public String getHandlingSuggestion() {
-		return handlingSuggestion;
-	}
+    public String getOperater() {
+        return operater;
+    }
 
-	public void setHandlingSuggestion(String handlingSuggestion) {
-		this.handlingSuggestion = handlingSuggestion;
-	}
+    public void setOperater(String operater) {
+        this.operater = operater == null ? null : operater.trim();
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion == null ? null : opinion.trim();
+    }
 }
