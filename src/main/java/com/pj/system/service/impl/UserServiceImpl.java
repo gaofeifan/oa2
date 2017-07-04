@@ -14,7 +14,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.pojo.page.Pagination;
-import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.base.tool.HttpClienTool;
 import com.pj.system.mapper.DempMapper;
@@ -44,8 +43,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private CompanyService companyService;
 	@Resource
 	private DempService dempService;
-	@Resource
-	private ManageProperties manageProperties;
+//	@Resource
+//	private ManageProperties manageProperties;
+	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
+											
 	@Resource 
 	private FamilyMemberService familyMemberService;
 	@Resource
@@ -89,9 +91,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		   (StringUtils.isNoneBlank(user.getOpenid()) ? !user.getOpenid().equals(u.getOpenid()) : true) ||
 		   (StringUtils.isNoneBlank(user.getPhone()) ? !user.getPhone().equals(u.getPhone()) : true)){
 			String stauts = updateSSOSystem(user);
-			if(StringUtils.isNoneBlank(stauts)){
+//			if(StringUtils.isNoneBlank(stauts)){
 				return super.updateByPrimaryKeySelective(user);
-			}
+//			}
 		}
 		return 0;
 	}
@@ -206,7 +208,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("username", t.getUsername());
 		map.put("email", t.getCompanyEmail());
 		map.put("phone", t.getPhone());
-		String id = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
+		String id = HttpClienTool.doGet(ssoCreateUrl, map);
 		return StringUtils.isNoneBlank(id) ? Integer.decode(id) : null;
 	}
 
@@ -223,7 +225,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("phone", user.getPhone());
 		map.put("id", user.getSsoId());
 		map.put("openid", user.getOpenid());
-		return HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
+		return HttpClienTool.doGet(ssoUpdateUrl, map);
 		
 	}
 	

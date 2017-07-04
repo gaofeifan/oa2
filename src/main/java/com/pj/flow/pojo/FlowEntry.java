@@ -100,6 +100,12 @@ public class FlowEntry implements Serializable {
     
     @Column
     private Date applyDate;
+
+    @Column
+    private String hour;
+
+    @Column
+    private String peopleWhoCopied;
     
     @Transient
     private List<Salary> salarys;
@@ -360,6 +366,22 @@ public class FlowEntry implements Serializable {
 
 	public void setPositionId(Integer positionId) {
 		this.positionId = positionId;
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+
+	public String getPeopleWhoCopied() {
+		return peopleWhoCopied;
+	}
+
+	public void setPeopleWhoCopied(String peopleWhoCopied) {
+		this.peopleWhoCopied = peopleWhoCopied;
 	}
 
 	@Override

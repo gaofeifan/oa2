@@ -31,5 +31,5 @@ public interface FlowUserApplicationMapper extends MyMapper<FlowUserApplication>
 	 * @param applyType
 	 * @return
 	 */
-	FlowUserApplication selectByApplyIdAndType(Integer formId, String applyType);
+	FlowUserApplication selectByApplyIdAndType(@Param(value = "formId")Integer formId,@Param(value = "applyType") String applyType);
 }

@@ -76,6 +76,8 @@
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
     <result column="postName" property="postName" jdbcType="VARCHAR" />
     <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
+    <result column="hour" property="timeDivision" jdbcType="VARCHAR" />
+    <result column="people_who_copied" property="peopleWhoCopied" jdbcType="VARCHAR" />
   </resultMap>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
@@ -111,6 +113,8 @@
   		entry.remark ,
   		entry.state ,
   		entry.status ,
+  		entry.hour,
+  		entry.people_who_copied people_who_copied,
   		company.name companyName,
   		demp.name dempName,
   		post.name postName,

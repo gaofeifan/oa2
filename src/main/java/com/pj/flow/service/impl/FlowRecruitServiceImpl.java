@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.mapper.MyMapper;
@@ -54,6 +55,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	@Autowired
 	private MessageContentService messageContentService;
 	
+	@Autowired
+	private AuthAgencyService authAgencyService;
 	@Override
 	public MyMapper<FlowRecruit> getMapper() {
 		return flowRecruitMapper;
@@ -153,6 +156,12 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 		content.setType(MessageType.RECRUITMENT_MES.getValue());
 		messageContentService.addUnapprovedMessage(content);
+		
+		/**
+		 * 	获取审批流程人员
+		 */
+		Position pt = this.positionService.selectByPrimaryKey(t.getPositionId());
+		authAgencyService.selectApplicantAgency(t.getCompanyId(), t.getDempId(), t.getIsCompanyLeader(), t.getIsDempLeader(), pt, t.getApplyReasonType());
 		return super.insertSelective(t);
 	}
 	

@@ -177,7 +177,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				content.setApplyTime(recruit.getApplyDate());
 				content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 				content.setType(MessageType.RECRUITMENT_MES.getValue());
-			}
+			} 
 		}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){

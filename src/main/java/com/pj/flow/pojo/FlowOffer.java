@@ -190,6 +190,12 @@ public class FlowOffer {
 	@ApiModelProperty(value = "联系电话(用户)", notes = "<phone>")
 	private String phone;
 
+	/**
+	 * 抄送人
+	 */
+	@ApiModelProperty(value = "抄送人")
+	private String peopleWhoCopied;
+
 	public String getUsername() {
 		return username;
 	}
@@ -420,6 +426,14 @@ public class FlowOffer {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPeopleWhoCopied() {
+		return peopleWhoCopied;
+	}
+
+	public void setPeopleWhoCopied(String peopleWhoCopied) {
+		this.peopleWhoCopied = peopleWhoCopied;
 	}
 
 	@Override
