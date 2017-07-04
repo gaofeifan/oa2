@@ -42,10 +42,15 @@ public class AuthUserController extends SystemManageController{
 	 */
 	@RequestMapping(value="/saveauth.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "添加权限", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue saveauth(@ModelAttribute("authuser") AuthUser authuser){
+	public @ResponseBody MappingJacksonValue saveauth(
+			@ApiParam("点击菜单类型") @RequestParam(value = "type", required = true) String type,
+			@ApiParam("复选框value") @RequestParam(value = "id", required = true) Integer id,
+			@ApiParam("父级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid,
+			@ApiParam("选中状态0取消勾选，1为勾选") @RequestParam(value = "current", required = true) Integer current){
 
 		try {
-			this.authuserService.insert(authuser);
+			this.authuserService.insertAuthUser(type,id,fid,userid,current);
 			return this.successJsonp(this.success());
 		} catch (Exception e) {
 			logger.error("【AuthUserController.saveauth】"+e.getMessage());

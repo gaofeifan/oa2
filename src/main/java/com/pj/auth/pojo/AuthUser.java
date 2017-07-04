@@ -29,6 +29,12 @@ public class AuthUser {
 	private Integer menuid;
 	
 	@Column
+	private Integer companyid;
+	
+	@Column
+	private Integer dempid;
+	
+	@Column
 	private Integer postid;
 	
 	public Integer getId() {
@@ -53,6 +59,22 @@ public class AuthUser {
 
 	public void setMenuid(Integer menuid) {
 		this.menuid = menuid;
+	}
+	
+	public Integer getCompanyid() {
+		return companyid;
+	}
+
+	public void setCompanyid(Integer companyid) {
+		this.companyid = companyid;
+	}
+	
+	public Integer getDempid() {
+		return dempid;
+	}
+
+	public void setDempid(Integer dempid) {
+		this.dempid = dempid;
 	}
 	
 	public Integer getPostid() {

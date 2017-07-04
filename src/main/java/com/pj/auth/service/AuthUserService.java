@@ -6,7 +6,7 @@ import com.pj.config.base.service.BaseService;
 public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 
 	
-	int insertAuthUser(AuthUser authuser);
+	int insertAuthUser(String type,Integer id,Integer fid,Integer userid,Integer current);
 	
 	int deleteByUserid(Integer userid);
 	
