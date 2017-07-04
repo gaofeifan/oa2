@@ -15,6 +15,7 @@ import com.pj.config.base.constant.RecruitApplyReason;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.service.FlowApproveService;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Position;
@@ -42,6 +43,8 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	private UserService userService;
 	@Autowired
 	private DempService dempService;
+	@Autowired
+	private FlowApproveService flowApproveService;
 	
 	private Set<User> approvers = new HashSet<User>();
 
@@ -62,11 +65,10 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			FlowApprove approve = new FlowApprove();
 			approve.setUserid(user.getId());
 			approve.setPositionid(user.getPositionid());
-			System.out.println(approve);
-			
-//			this.flowApproveService.insertSelective(approve);
+			System.out.println(approve.toString());
+			this.flowApproveService.insertSelective(approve);
 		}
-		
+		approvers.clear();
 		
 		return null;
 	}

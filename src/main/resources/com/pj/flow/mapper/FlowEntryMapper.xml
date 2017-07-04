@@ -77,6 +77,8 @@
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
     <result column="postName" property="postName" jdbcType="VARCHAR" />
     <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
+    <result column="hour" property="timeDivision" jdbcType="VARCHAR" />
+    <result column="people_who_copied" property="peopleWhoCopied" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getNumByAuthResult" resultType="int">
   	select count(e.*)
@@ -138,6 +140,8 @@
   		entry.remark ,
   		entry.state ,
   		entry.status ,
+  		entry.hour,
+  		entry.people_who_copied people_who_copied,
   		company.name companyName,
   		demp.name dempName,
   		post.name postName,
@@ -160,10 +164,19 @@
   		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, e.state, e.result
 		FROM flow_entry e
-		left join t_user u on u.id = e.apply_id
+		inner join t_user u on u.id = e.apply_id
+		<if test="companyId != null" >
+	        and u.companyid = #{companyId}
+	    </if>
 		<!-- LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id -->
 		LEFT JOIN t_company c ON c.id = u.companyid
-		WHERE e.apply_id = #{userId} and e.status = 0 
+		WHERE 1 = 1 
+		<if test="applyId != null" >
+	        and e.apply_id = #{applyId}
+	    </if>
+		<if test="username != null and username != ''" >
+	        and e.username LIKE CONCAT('%',#{username},'%')
+	    </if>
   </select>
   <insert id="insertEntry" parameterType="com.pj.flow.pojo.FlowEntry" useGeneratedKeys="true" keyProperty="id">
     insert into flow_entry

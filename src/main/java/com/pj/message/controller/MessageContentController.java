@@ -2,6 +2,8 @@ package com.pj.message.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.config.web.controller.BaseController;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
+import com.pj.system.service.SessionProvider;
+import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,12 +34,15 @@ public class MessageContentController extends BaseController {
 
 	@Resource
 	private  MessageContentService  messageContentService;
-	
-	@RequestMapping(value="/selectMessageAll.do" , method=RequestMethod.GET)
+	@Resource
+	private SessionProvider sessionProvider;
 	@ApiOperation(value = "消息查询", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue selectMessageAll(@ApiParam("消息类型 0(默认)申请已发送  1申请以审批") @RequestParam(name="notificationType",defaultValue="0",required=false) Integer notificationType){
+	@RequestMapping(value="/selectMessageAll.do" , method=RequestMethod.GET)
+	public @ResponseBody MappingJacksonValue selectMessageAll(@ApiParam("消息类型 1(默认)申请已发送 2申请以审批") @RequestParam(name="notificationType",defaultValue="1",required=false) Integer notificationType ,HttpServletResponse response, HttpServletRequest request){
 		try {
-			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType( getSession() , notificationType);
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request,response));
+			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);
 		} catch (Exception e) {
 			e.printStackTrace();

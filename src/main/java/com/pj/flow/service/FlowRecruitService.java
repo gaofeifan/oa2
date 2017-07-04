@@ -37,18 +37,21 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 
 	/**
 	 * 修改招聘待办状态
+	 * @param user当前登录人
 	 * @param recruitId
 	 * @param reason 
 	 * @param state
 	 */
-	void updateState(Integer recruitId, String reason, Integer state);
+	void updateState(User user, Integer recruitId, String reason, Integer state);
 
 	/**
-	 * 我的招聘申请
-	 * @param applyId
+	 * 申请查询
+	 * @param companyId 申请人公司
+	 * @param username 申请人姓名
+	 * @param applyId 申请人id
 	 * @return
 	 */
-	List<FlowRecruit> searchRecruits(Integer applyId);
+	List<FlowRecruit> searchRecruits(Integer companyId, String username, Integer applyId);
 
 	/**
 	 * 待办提交回显数据

@@ -73,7 +73,7 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "添加用户", httpMethod = "POST", response = String.class, notes = "添加用户")
 	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
 	@ResponseBody()
-	public Map<String, Object> saveUser(@RequestBody User user){
+	public Map<String, Object> saveUser(@ModelAttribute("user") User user){
 		Map<String, Object> map;
 		try {
 			this.userService.insertSelective( user);

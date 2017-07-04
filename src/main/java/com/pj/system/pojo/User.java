@@ -326,6 +326,10 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "系统角色名称（用于数据回现）", required = false)
 	@Transient
 	private String systemRoleName;
+
+	@ApiModelProperty(value = "所属上级", required = false)
+	@Transient
+	private String pUsername;
   
 	/**
      * 	上级id
@@ -412,6 +416,17 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "工作经历", required = false)
 	private List<WorkExperience> workExperiences;
 
+	@ApiModelProperty(value = "工资信息(json格式[{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
+    @Transient
+    private String salaryJson;
+	
+	@ApiModelProperty(value = "工作经历(json格式[{'workTime(工作时间)':'2017.1.1-2017.10.10','duty(职务)':'程序猿','grossWage(税前薪资)':'5555','reasonLeave(离职原因)':'个人原因','certifierAndPhone(证明人及电话)':'张三 11111111111'},{},{}])")
+	@Transient
+	private String workExperienceJson;
+	
+	@ApiModelProperty(value = "家庭成员(json格式[{'memberName(家庭成员名称)':'张三','duty(职务)':'高级程序猿','workUnit(工作单位)':'xxx有限公司','relation(关系)':'兄弟','phone':'13716161616'},{},{}])")
+	@Transient
+	private String familyMembersJson;
 	public Integer getId() {
 		return id;
 	}
@@ -899,6 +914,38 @@ public class User implements Serializable {
 
 	public void setCompanyEmailPassword(String companyEmailPassword) {
 		this.companyEmailPassword = companyEmailPassword;
+	}
+
+	public String getpUsername() {
+		return pUsername;
+	}
+
+	public void setpUsername(String pUsername) {
+		this.pUsername = pUsername;
+	}
+
+	public String getSalaryJson() {
+		return salaryJson;
+	}
+
+	public void setSalaryJson(String salaryJson) {
+		this.salaryJson = salaryJson;
+	}
+
+	public String getWorkExperienceJson() {
+		return workExperienceJson;
+	}
+
+	public void setWorkExperienceJson(String workExperienceJson) {
+		this.workExperienceJson = workExperienceJson;
+	}
+
+	public String getFamilyMembersJson() {
+		return familyMembersJson;
+	}
+
+	public void setFamilyMembersJson(String familyMembersJson) {
+		this.familyMembersJson = familyMembersJson;
 	}
 	
 }

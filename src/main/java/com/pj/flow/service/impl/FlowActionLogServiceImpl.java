@@ -1,5 +1,7 @@
 package com.pj.flow.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,11 @@ public class FlowActionLogServiceImpl extends AbstractBaseServiceImpl<FlowAction
 	@Override
 	public MyMapper<FlowActionLog> getMapper() {
 		return flowActionLogMapper;
+	}
+
+	@Override
+	public List<FlowActionLog> selectByEntryId(Integer entryId) {
+		return flowActionLogMapper.selectByEntryId(entryId);
 	}
 
 }
