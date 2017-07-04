@@ -10,14 +10,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.auth.service.AuthAgencyService;
+import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.MessageType;
+import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.constant.SalaryType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.mapper.FlowEntryMapper;
+import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
 import com.pj.flow.pojo.FlowRecruit;
+import com.pj.flow.pojo.FlowRecruitTodo;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.message.pojo.MessageContent;
@@ -43,6 +49,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 
 	@Resource
 	private FlowEntryMapper flowEntryMapper;
+	
+	@Resource
+	private FlowRecruitTodoMapper flowRecruitTodoMapper;
 	@Resource
 	private SalaryMapper salaryMapper;
 	@Autowired
@@ -59,6 +68,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private FlowRecruitService flowRecruitService;
 	@Autowired
 	private AuthAgencyService authAgencyService;
+	@Autowired
+	private FlowActionLogMapper flowActionLogMapper;
+	
 	@Override
 	public MyMapper<FlowEntry> getMapper() {
 		return flowEntryMapper;
@@ -80,7 +92,41 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			salary.setEntryId(entryId);
 			salaryMapper.insertSelective(salary);
 		}
+		/***************招聘待办信息保存satrt**********/
 		
+		//若提交，提交入职申请后再更新到已提交栏目，招聘中状态减一
+		//已提交的信息
+		int recruitId = flowEntry.getRecruitId();
+		FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
+		if(hasCommitTodo != null){
+			hasCommitTodo.setNumber(hasCommitTodo.getNumber() + 1);
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
+		}else{
+			hasCommitTodo = new FlowRecruitTodo();
+			hasCommitTodo.setRecruitId(recruitId);
+			hasCommitTodo.setState(RecruitTodoState.HAS_COMMIT.getState());
+			hasCommitTodo.setNumber(1);
+			flowRecruitTodoMapper.insert(hasCommitTodo);
+		}
+		//招聘中状态的数据减一,如只有一个则删除，多个则减一
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
+		int num = inRecruitTodo.getNumber();
+		if(num > 1){
+			inRecruitTodo.setNumber(num - 1);
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
+		}else{
+			flowRecruitTodoMapper.delete(inRecruitTodo);
+		}
+		
+		//保存日志表
+		FlowActionLog log = new FlowActionLog();
+		log.setRecruitId(recruitId);
+		log.setOperater(flowEntry.getUsername());
+		log.setStatus(ActionLogOperation.COMMIT_ENTRY.getValue());
+		log.setOperateTime(new Date());
+		flowActionLogMapper.insert(log);
+		
+		/***************招聘待办信息保存end**********/
 		/**
 		 * 	保存入职消息通知
 		 */
@@ -206,8 +252,16 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	
 	
 	@Override
-	public List<FlowEntry> searchEntrys(Integer userId) {
-		return flowEntryMapper.searchEntrys(userId);
+	public List<FlowEntry> searchEntrys(Integer companyId, String username, Integer userId) {
+		return flowEntryMapper.searchEntrys(companyId, username, userId);
+	}
+	@Override
+	public int getNumByAuthResult(Integer userId, int result) {
+		return flowEntryMapper.getNumByAuthResult(userId, result);
+	}
+	@Override
+	public List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name) {
+		return flowEntryMapper.selectByTodo(userId, companyId, name);
 	}
 
 }

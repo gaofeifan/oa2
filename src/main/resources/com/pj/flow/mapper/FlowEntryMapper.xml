@@ -33,6 +33,9 @@
     
     <result column="dempId" property="dempId" jdbcType="INTEGER" />
     <result column="applyDateStr" property="applyDateStr" jdbcType="INTEGER" />
+	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
+	<result column="postName" property="postName" jdbcType="VARCHAR" />
+	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
   </resultMap>
 
   <resultMap id="EntrySalaryResultMap" type="com.pj.flow.pojo.FlowEntry" extends="BaseResultMap">
@@ -40,9 +43,7 @@
     <!-- 查询使用 -->
     <result column="offerRange" property="offerRange" jdbcType="VARCHAR" />
     <result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
-	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
 	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
-	<result column="postName" property="postName" jdbcType="VARCHAR" />
     <collection property="salarys" ofType="com.pj.system.pojo.Salary" >
     	<id column="s_id" property="id" jdbcType="INTEGER" />  
 	    <result column="total_salary" property="totalSalary" jdbcType="VARCHAR" />
@@ -79,6 +80,32 @@
     <result column="hour" property="timeDivision" jdbcType="VARCHAR" />
     <result column="people_who_copied" property="peopleWhoCopied" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getNumByAuthResult" resultType="int">
+  	select count(e.*)
+  	from flow_entry e
+  	left join flow_recruit r on r.id = e.recruit_id
+  		and r.post_id in 
+	  		(select au.postid from auth_user au where au.userid = #{userId})
+  	where e.result = #{result} and e.status = 0
+  </select>
+  <select id="selectByTodo" resultMap="BaseResultMap">
+  select e.id, e.name, DATE_FORMAT(e.entry_date,"%Y-%m-%d") as applyDateStr, 
+		c.name as companyName, pn.name as positionName, p.name as postName
+		from flow_entry e
+			inner join flow_recruit r on r.id = e.recruit_id
+				<if test="companyId != null" >
+			        and r.company_id = #{companyId}
+			    </if>
+				and r.post_id in 
+	  			(select au.postid from auth_user au where au.userid = #{userId})
+			LEFT JOIN t_company c ON c.id = r.company_id
+			LEFT JOIN t_post p ON p.id = r.post_id
+			LEFT JOIN t_position pn ON pn.id = r.position_id
+		where e.status = 0 and e.result = 1
+		<if test="name != null and name != ''" >
+	        and e.name = #{name}
+	    </if>
+  </select>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,r.position_id positionId
@@ -137,10 +164,19 @@
   		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, e.state, e.result
 		FROM flow_entry e
-		left join t_user u on u.id = e.apply_id
+		inner join t_user u on u.id = e.apply_id
+		<if test="companyId != null" >
+	        and u.companyid = #{companyId}
+	    </if>
 		<!-- LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id -->
 		LEFT JOIN t_company c ON c.id = u.companyid
-		WHERE e.apply_id = #{userId} and e.status = 0 
+		WHERE 1 = 1 
+		<if test="applyId != null" >
+	        and e.apply_id = #{applyId}
+	    </if>
+		<if test="username != null and username != ''" >
+	        and e.username LIKE CONCAT('%',#{username},'%')
+	    </if>
   </select>
   <insert id="insertEntry" parameterType="com.pj.flow.pojo.FlowEntry" useGeneratedKeys="true" keyProperty="id">
     insert into flow_entry

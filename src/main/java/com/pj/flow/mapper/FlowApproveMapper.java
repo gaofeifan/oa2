@@ -16,4 +16,11 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	 * @return
 	 */
 	List<FlowApprove> selectByApplyIdAndType(@Param(value = "applyId") Integer applyId, @Param(value = "applyType") String applyType);
+
+	/**
+	 * 根据中间表id查找审批人list
+	 * @param id
+	 * @return
+	 */
+	List<FlowApprove> selectListByApplyId(Integer applyId);
 }

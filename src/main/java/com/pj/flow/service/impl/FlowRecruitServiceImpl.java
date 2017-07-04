@@ -1,5 +1,7 @@
 package com.pj.flow.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,12 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.auth.service.AuthAgencyService;
+import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.mapper.FlowRecruitMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.message.pojo.MessageContent;
@@ -31,6 +37,9 @@ import com.pj.system.service.PositionService;
 @Service
 public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit, Integer> implements FlowRecruitService {
 
+	@Autowired
+	private FlowActionLogMapper flowActionLogMapper;
+	
 	@Autowired
 	private FlowRecruitMapper flowRecruitMapper;
 	
@@ -102,32 +111,80 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	}
 	@Override
 	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
-		return flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
+		List<FlowRecruit> list = new ArrayList<FlowRecruit>();
+		if(state == 4){
+			//已审核，需要查出入职时间,且公司是入职人公司
+			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
+		}else{
+			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
+		}
+		
+		return list;
 	}
 	@Override
-	public void updateState(Integer recruitId, String reason, Integer state) {
+	public void updateState(User loginUser, Integer recruitId, String reason, Integer state) {
 		FlowRecruit	 recruit = flowRecruitMapper.selectByPrimaryKey(recruitId);
+		//保存日志表
+//		FlowActionLog log = new FlowActionLog();
+//		log.setRecruitId(recruitId);
+//		log.setOperater(loginUser.getUsername());
+//		log.setOpinion(reason);
+		
+		//日志的操作记录
+		String status = "";
+		
 		//0:终止,1:开始,2:提交,3:暂停
+		//更新待办表状态
+		
 		if(state == 0){
 			//把招聘结果改为取消且status改为已删除
 			recruit.setResult(RecruitApplyResult.RECRUIT_CANCEL.getState());
 			recruit.setStatus(1);
 			flowRecruitMapper.updateByPrimaryKeySelective(recruit);
+			//修改状态为state的待办表
+			flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.HAS_CANCEL.getState(), reason);
+			
+			status = ActionLogOperation.CANCEL_RECRUIT.getValue();
+		
 		}else{
 			if(state == 3){
 				//把招聘结果改为暂停
 				recruit.setResult(RecruitApplyResult.RECRUIT_PAUSE.getState());
 				flowRecruitMapper.updateByPrimaryKeySelective(recruit);
+				//修改状态待办表
+				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.HAS_PAUSE.getState(), reason);
+				
+				status = ActionLogOperation.PAUSE_RECRUIT.getValue();
+			}else if(state == 1){
+				//开始
+				//修改状态待办表
+				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.IN_RECRUIT.getState(), reason);
+				
+				status = ActionLogOperation.RESTART_RECRUIT.getValue();
 			}
-			//修改待办表
-			flowRecruitTodoMapper.updateState(recruitId, state, reason);
+//			state == 2在提交入职申请后保存
 		}
+		insertLog(loginUser, recruitId, reason, status);
 		
 	}
+	private void insertLog(User loginUser, Integer recruitId, String reason, String status) {
+		//得到招聘id为recruitId的已有日志记录的entryId(去重)，添加招聘终止的日志
+		List<Integer> entryIds = flowActionLogMapper.selectByRecruitId(recruitId);
+		for(Integer entryId : entryIds){
+			FlowActionLog innerLog = new FlowActionLog();
+			innerLog.setEntryId(entryId);
+			innerLog.setRecruitId(recruitId);
+			innerLog.setStatus(status);
+			innerLog.setOperater(loginUser.getUsername());
+			innerLog.setOpinion(reason);
+			innerLog.setOperateTime(new Date());
+			flowActionLogMapper.insert(innerLog);
+		}
+	}
 	@Override
-	public List<FlowRecruit> searchRecruits(Integer applyId) {
+	public List<FlowRecruit> searchRecruits(Integer companyId, String username, Integer applyId) {
 		
-		return flowRecruitMapper.selectByApplyId(applyId);
+		return flowRecruitMapper.selectByApplyId(companyId, username, applyId);
 	}
 	@Override
 	public FlowRecruit getUserInfo(Integer recruitId) {

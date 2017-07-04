@@ -24,6 +24,7 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	 * @return
 	 */
 	List<FlowRecruit> selectTodoByQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
+	List<FlowRecruit> selectTodoByEntryQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
 	/**
 	 * 删除
 	 * @param id
@@ -31,11 +32,13 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	void updateStatus(@Param(value = "id") Integer id);
 	
 	/**
-	 * 我的申请
-	 * @param applyId
+	 * 申请查询
+	 * @param companyId 申请人公司
+	 * @param username 申请人姓名
+	 * @param applyId 申请人id
 	 * @return
 	 */
-	List<FlowRecruit> selectByApplyId(@Param(value = "applyId") Integer applyId);
+	List<FlowRecruit> selectByApplyId(@Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "applyId") Integer applyId);
 	/**
 	 * 待办提交回显数据
 	 * @param recruitId

@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
+import com.pj.flow.service.FlowActionLogService;
 import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.system.pojo.User;
@@ -52,6 +55,9 @@ public class EntryController extends BaseController{
 	private FlowApproveService flowApproveService;
 	
 	@Resource
+	private FlowActionLogService flowActionLogService;
+	
+	@Resource
 	private UserService userService;
 	
 	@Resource
@@ -70,7 +76,7 @@ public class EntryController extends BaseController{
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
 			
-			List<FlowEntry> list = flowEntryService.searchEntrys(user.getId());		
+			List<FlowEntry> list = flowEntryService.searchEntrys(null, null, user.getId());		
 			for(FlowEntry flowEntry : list){
 				Integer dempId = flowEntry.getDempId();
 				//拼接上父部门的组合
@@ -106,6 +112,7 @@ public class EntryController extends BaseController{
 			User user = this.userService.selectByEamil(email);
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
+			flowEntry.setStatus(0);
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
@@ -118,17 +125,47 @@ public class EntryController extends BaseController{
 	@RequestMapping("/showEntryApply.do")
 	@ResponseBody
 	public MappingJacksonValue showEntryApply(
-			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = false) Integer entryId){
+			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = true) Integer entryId){
 		MappingJacksonValue map;
 		try {
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
 			
-			//审批详情
+			//审批列表
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
+			
 			result.put("entry", flowEntry);
 			result.put("approves", list);
+			
+			map = this.successJsonp(result);
+			
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("入职申请详情");
+		}
+		return map;
+	}
+	@ApiOperation(value = "入职待办状态详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职待办状态详情")
+	@RequestMapping("/showApplyTodo.do")
+	@ResponseBody
+	public MappingJacksonValue showApplyTodo(
+			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = true) Integer entryId){
+		MappingJacksonValue map;
+		try {
+			Map<String, Object> result = new HashMap<String, Object>();
+			//申请详情
+			FlowEntry flowEntry = flowEntryService.selectById(entryId);
+			
+			//审批列表
+			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
+			
+			//待办日志记录list
+			List<FlowActionLog> logList = flowActionLogService.selectByEntryId(entryId);
+			
+			result.put("entry", flowEntry);
+			result.put("approves", list);
+			result.put("logs", logList);
 			map = this.successJsonp(result);
 			
 		} catch (Exception e) {
@@ -185,6 +222,61 @@ public class EntryController extends BaseController{
 		}
 		return success;
 	}
+	
+/**********************建档待办**********************/
+	
+	/**
+	 * 	建档待办提示,得到待办个数
+	 */
+	@ApiOperation(value = "建档待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="建档待办提示,得到待办个数")
+	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue todoTips(
+			HttpServletResponse response, HttpServletRequest request){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
+			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
+			
+			map = this.successJsonp(number);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("建档待办提示");
+		}
+		return map;
+	}
+	/**
+	 * 	建档待办查询
+	 */
+	@ApiOperation(value = "建档待办查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办查询")
+	@RequestMapping(value = "/listEntryTodo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue listEntryTodo(
+			HttpServletResponse response,
+			HttpServletRequest request,
+			@ApiParam(value = "入职公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
+			@ApiParam(value = "入职人姓名", required = false)@RequestParam(value = "name", required = false)String name){
+		MappingJacksonValue map;
+		try {
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+
+			List<FlowEntry> entrys = flowEntryService.selectByTodo(user.getId(), companyId, name);
+			
+			
+			map = this.successJsonp(entrys);
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("建档待办查询");
+		}
+		return map;
+	}
+	
 
 	/**
 	 * 	发送offer

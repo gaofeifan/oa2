@@ -87,7 +87,7 @@ public class RecruitController extends BaseController{
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
 			
-			List<FlowRecruit> list = flowRecruitService.searchRecruits(user.getId());		
+			List<FlowRecruit> list = flowRecruitService.searchRecruits(null, null, user.getId());		
 			for(FlowRecruit flowRecruit : list){
 				Integer dempId = flowRecruit.getApplyDempId();
 				//拼接上父部门的组合
@@ -98,7 +98,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("提交招聘申请");
+			throw new RuntimeException("提交招聘申请" + e.getMessage());
 		}
 		return map;
 	}
@@ -118,7 +118,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp("提交成功");
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("提交招聘申请");
+			throw new RuntimeException("提交招聘申请" + e.getMessage());
 		}
 		return map;
 	}
@@ -141,7 +141,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("得到直属领导");
+			throw new RuntimeException("得到直属领导" + e.getMessage());
 		}
 		return map;
 	}
@@ -161,7 +161,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("替代用户");
+			throw new RuntimeException("替代用户" + e.getMessage());
 		}
 		return map;
 	}
@@ -202,7 +202,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(result);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("申请单详情");
+			throw new RuntimeException("申请单详情" + e.getMessage());
 		}
 		return map;
 	}
@@ -230,7 +230,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(number);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("招聘待办提示");
+			throw new RuntimeException("招聘待办提示" + e.getMessage());
 		}
 		return map;
 	}
@@ -238,14 +238,14 @@ public class RecruitController extends BaseController{
 	 * 	招聘待办查询
 	 */
 	@ApiOperation(value = "招聘待办查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办查询")
-	@RequestMapping(value = "/listecruitTodo.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/listRecruitTodo.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue listecruitTodo(
+	public MappingJacksonValue listRecruitTodo(
 			HttpServletResponse response,
 			HttpServletRequest request,
 			@ApiParam(value = "招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）", required = true)@RequestParam(value = "state", required = true)Integer state,
 			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
-			@ApiParam(value = "username", required = false)@RequestParam(value = "username", required = false)String username){
+			@ApiParam(value = "申请人姓名", required = false)@RequestParam(value = "username", required = false)String username){
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
@@ -259,11 +259,12 @@ public class RecruitController extends BaseController{
 				//拼接上父部门的组合
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
+				
 			}
 			map = this.successJsonp(recruits);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("招聘待办查询");
+			throw new RuntimeException("招聘待办查询" + e.getMessage());
 		}
 		return map;
 	}
@@ -280,7 +281,7 @@ public class RecruitController extends BaseController{
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("待办提交回显数据");
+			throw new RuntimeException("待办提交回显数据" + e.getMessage());
 		}
 		return map;
 	}
@@ -298,11 +299,15 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
-			flowRecruitService.updateState(recruitId, reason, state);
+			//得到当前登录用户
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
+			
+			flowRecruitService.updateState(user, recruitId, reason, state);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("招聘待办状态改变");
+			throw new RuntimeException("招聘待办状态改变" + e.getMessage());
 		}
 		return map;
 	}

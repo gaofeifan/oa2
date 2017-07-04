@@ -1,6 +1,5 @@
 package com.pj.flow.service.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,66 +78,100 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		return flowUserApplicationMapper.searchMyApproves(userid, checkstatus);
 	}
 
+//	public void commitApprove(Integer userid, Integer checkstatus, String handleidea, Integer formId,
+//			String applyType) {
+//		/**
+//		 *  更新审批人状态
+//		 * 	根据申请表id和申请类型查询是否存在，如存在不保存不存在则保存，
+//		 * 再更新审批表，如果是不同意，则审批表的当前用户下面所有流程的审批人都删除
+//		 */
+//		FlowApprove flowApprove = new FlowApprove();
+//		flowApprove.setUserid(userid);
+//		//根据用户查询职位
+//		Integer positionId = userMapper.selectByPrimaryKey(userid).getPositionid();
+//		flowApprove.setPositionid(positionId);
+//		flowApprove.setCheckstatus(checkstatus);
+//		flowApprove.setHandleidea(handleidea);
+//		flowApprove.setIsApprove(1);//审批完状态更改为不可审批
+//		
+//		FlowUserApplication flowUserApplication = flowUserApplicationMapper.selectByApplyIdAndType(formId,applyType);
+//		if(flowUserApplication == null){
+//			flowUserApplication = new FlowUserApplication();
+//			flowUserApplication.setFormId(formId);
+//			//根据申请表id和type得到申请时间和申请人信息
+//			//根据applyType判断是招聘还是入职
+//			if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
+//				//招聘
+//				FlowRecruit recruit = flowRecruitMapper.selectById(formId);
+//				flowUserApplication.setApplyCompanyName(recruit.getCompanyName());
+//				flowUserApplication.setUserId(recruit.getApplyId());;
+//				flowUserApplication.setApplyName(recruit.getUsername());
+//				//申请人部门
+//				Integer dempId = recruit.getApplyDempId();
+//				//拼接上父部门的组合
+//				String dempName = dempService.selectDempParentNameById(dempId);
+//				flowUserApplication.setApplyDempName(dempName);
+//				
+//				flowUserApplication.setApplyTime(recruit.getApplyDate());
+//				
+//			}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+//				//入职
+//				FlowEntry entry = flowEntryMapper.selectApplyInfoById(formId);
+//				flowUserApplication.setApplyCompanyName(entry.getCompanyName());
+//				flowUserApplication.setUserId(entry.getApplyId());;
+//				flowUserApplication.setApplyName(entry.getUsername());
+//				//申请人部门
+//				Integer dempId = entry.getDempId();
+//				//拼接上父部门的组合
+//				String dempName = dempService.selectDempParentNameById(dempId);
+//				flowUserApplication.setApplyDempName(dempName);
+//				
+//				flowUserApplication.setApplyTime(entry.getApplyDate());
+//			}
+//			flowUserApplicationMapper.insertSelective(flowUserApplication);
+//		}
+//		//保存审批表
+//		flowApprove.setApplyId(flowUserApplication.getId());
+//		flowApprove.setApplyUserId(flowUserApplication.getUserId());
+//		
+//		flowApprove.setHandledate(new Date());
+//		
+//		flowApproveMapper.insertSelective(flowApprove);
+//		isApproveComplete(flowUserApplication,applyType);
+//	}
 	@Override
 	public void commitApprove(Integer userid, Integer checkstatus, String handleidea, Integer formId,
 			String applyType) {
 		/**
-		 * 先查询中间表
-		 * 	根据申请表id和申请类型查询是否存在，如存在不保存不存在则保存，
-		 * 再保存审批表
+		 *  更新审批人状态
+		 * 	根据申请表id和申请类型出所有审批人，再根据审批人得到一条数据
+		 * 更新审批表审批意见，如果是不同意，则审批表的当前用户下面所有流程的审批人都删除
 		 */
-		FlowApprove flowApprove = new FlowApprove();
-		flowApprove.setUserid(userid);
-		//根据用户查询职位
-		Integer positionId = userMapper.selectByPrimaryKey(userid).getPositionid();
-		flowApprove.setPositionid(positionId);
-		flowApprove.setCheckstatus(checkstatus);
-		flowApprove.setHandleidea(handleidea);
-		flowApprove.setIsApprove(1);//审批完状态更改为不可审批
-		
+		//根据申请表id和申请类型得到中间表
 		FlowUserApplication flowUserApplication = flowUserApplicationMapper.selectByApplyIdAndType(formId,applyType);
-		if(flowUserApplication == null){
-			flowUserApplication = new FlowUserApplication();
-			flowUserApplication.setFormId(formId);
-			//根据申请表id和type得到申请时间和申请人信息
-			//根据applyType判断是招聘还是入职
-			if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
-				//招聘
-				FlowRecruit recruit = flowRecruitMapper.selectById(formId);
-				flowUserApplication.setApplyCompanyName(recruit.getCompanyName());
-				flowUserApplication.setUserId(recruit.getApplyId());;
-				flowUserApplication.setApplyName(recruit.getUsername());
-				//申请人部门
-				Integer dempId = recruit.getApplyDempId();
-				//拼接上父部门的组合
-				String dempName = dempService.selectDempParentNameById(dempId);
-				flowUserApplication.setApplyDempName(dempName);
+		//所有该申请表的审核人
+		List<FlowApprove> list = flowApproveMapper.selectListByApplyId(flowUserApplication.getId());
+		//记录删除开始的位置，不同意时用
+		int delStartIndex = 0;
+		for (int i = 0; i < list.size(); i++) {
+			FlowApprove innerApprove = list.get(i);
+			if(userid == innerApprove.getUserid()){//当前审批人
+
+				delStartIndex = i + 1;
 				
-				flowUserApplication.setApplyTime(recruit.getApplyDate());
-				
-			}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
-				//入职
-				FlowEntry entry = flowEntryMapper.selectApplyInfoById(formId);
-				flowUserApplication.setApplyCompanyName(entry.getCompanyName());
-				flowUserApplication.setUserId(entry.getApplyId());;
-				flowUserApplication.setApplyName(entry.getUsername());
-				//申请人部门
-				Integer dempId = entry.getDempId();
-				//拼接上父部门的组合
-				String dempName = dempService.selectDempParentNameById(dempId);
-				flowUserApplication.setApplyDempName(dempName);
-				
-				flowUserApplication.setApplyTime(entry.getApplyDate());
+				innerApprove.setCheckstatus(checkstatus);
+				innerApprove.setHandleidea(handleidea);
+				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
+				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
 			}
-			flowUserApplicationMapper.insertSelective(flowUserApplication);
 		}
-		//保存审批表
-		flowApprove.setApplyId(flowUserApplication.getId());
-		flowApprove.setApplyUserId(flowUserApplication.getUserId());
 		
-		flowApprove.setHandledate(new Date());
-		
-		flowApproveMapper.insertSelective(flowApprove);
+		if(checkstatus == 1){
+			//不同意，则接下来流程的审批人信息删除
+			for(int i = delStartIndex; i < list.size(); i++){
+				flowApproveMapper.delete(list.get(i));
+			}
+		}
 		isApproveComplete(flowUserApplication,applyType);
 	}
 
@@ -163,7 +196,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		
 		MessageContent content = new MessageContent();
 		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
-			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(flowUserApplication.getFormId());
+			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(null,null,flowUserApplication.getFormId());
 			if(applyId.size() > 0){
 				FlowRecruit recruit = applyId.get(0);
 				User user = this.userService.selectById(recruit.getApplyId());

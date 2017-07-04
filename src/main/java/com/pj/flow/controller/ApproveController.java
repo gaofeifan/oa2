@@ -69,7 +69,36 @@ public class ApproveController extends BaseController{
 	private FlowEntryService flowEntryService;
 	
 	
-	@ApiOperation(value = "我的审批查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘申请查询")
+	@ApiOperation(value = "审批查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="审批查询")
+	@RequestMapping(value = "/searchAllApproves.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue searchMyApproves(HttpServletResponse response, HttpServletRequest request,
+			@ApiParam(value = "申请类型（招聘:recruit,入职:entry）", required = true)@RequestParam(value = "applyType", required = true)String applyType,
+			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
+			@ApiParam(value = "申请人姓名", required = false)@RequestParam(value = "username", required = false)String username
+			){
+		MappingJacksonValue map;
+		try {
+			
+			//根据applyType判断是招聘还是入职,
+			if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
+				//招聘
+				List<FlowRecruit> recruits = flowRecruitService.searchRecruits(companyId, username, null);
+				map = this.successJsonp(recruits);
+			}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+				//入职
+				List<FlowEntry> entrys = flowEntryService.searchEntrys(companyId, username, null);
+				map = this.successJsonp(entrys);
+			}else {
+				map = this.successJsonp(null);
+			}
+		} catch (Exception e) {
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("审批查询" + e.getMessage());
+		}
+		return map;
+	}
+	@ApiOperation(value = "我的审批查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="我的审批查询")
 	@RequestMapping(value = "/searchMyApproves.do", method = RequestMethod.GET)
 	@ResponseBody
 	public MappingJacksonValue searchMyApproves(HttpServletResponse response, HttpServletRequest request,
@@ -110,7 +139,7 @@ public class ApproveController extends BaseController{
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("我的审批查询");
+			throw new RuntimeException("我的审批查询" + e.getMessage());
 		}
 		return map;
 	}
@@ -137,7 +166,7 @@ public class ApproveController extends BaseController{
 			}
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("选择姓名跳转对应的申请详情页面");
+			throw new RuntimeException("选择姓名跳转对应的申请详情页面" + e.getMessage());
 		}
 		return map;
 	}
@@ -146,7 +175,7 @@ public class ApproveController extends BaseController{
 	@ResponseBody
 	public MappingJacksonValue commitApprove(
 			@ApiParam(value = "审批人id", required = true) @RequestParam(value = "userid", required = true) Integer userid,
-			@ApiParam(value = "审批状态", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
+			@ApiParam(value = "审批状态(0、审批中 1、不同意 2、同意)", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
 			@ApiParam(value = "审批意见", required = false) @RequestParam(value = "handleidea", required = true) String handleidea,
 			@ApiParam(value = "申请表id", required = true) @RequestParam(value = "formId", required = true) Integer formId,
 			@ApiParam(value = "申请类型(招聘:recruit 入职:entry，转正:regular ，异动:change，离职:dimission，请假:leave，其他:other)", required = true) @RequestParam(value = "applyType", required = true) String applyType
@@ -160,10 +189,10 @@ public class ApproveController extends BaseController{
 			 */
 			flowApproveService.commitApprove(userid, checkstatus, handleidea, formId, applyType);
 			
-			map = this.successJsonp(null);
+			map = this.successJsonp("保存成功");
 		} catch (Exception e) {
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("选择姓名跳转对应的申请详情页面");
+			throw new RuntimeException("选择姓名跳转对应的申请详情页面" + e.getMessage());
 		}
 		return map;
 	}

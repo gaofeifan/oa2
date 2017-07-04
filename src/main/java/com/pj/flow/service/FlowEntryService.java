@@ -2,6 +2,8 @@ package com.pj.flow.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.config.base.service.BaseService;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
@@ -44,10 +46,31 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , Integer timeDivision);
 
 	/**
-	 * 我的招聘申请
-	 * @param userId
+	 * 申请查询
+	 * @param companyId 申请人公司
+	 * @param username 申请人姓名
+	 * @param applyId 申请人id
 	 * @return
 	 */
-	List<FlowEntry> searchEntrys(Integer userId);
+	List<FlowEntry> searchEntrys(@Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "applyId") Integer applyId);
+
+	/**
+	 * 根据当前用户id得到所负责的岗位
+	 * 入职结果为已同意的个数
+	 * @param userId
+	 * @param result
+	 * @return
+	 */
+	int getNumByAuthResult(Integer userId, int result);
+	
+	/**
+	 * 根据负责的公司和入职人姓名
+	 * 以及登录用户所负责的岗位查询
+	 * @param userId 当前用户
+	 * @param companyId 入职人公司
+	 * @param name 入职人姓名
+	 * @return
+	 */
+	List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name);
 
 }

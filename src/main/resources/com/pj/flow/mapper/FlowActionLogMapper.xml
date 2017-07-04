@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pj.flow.mapper.FlowActionLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowActionLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
+    <result column="entry_id" property="entryId" jdbcType="INTEGER" />
+    <result column="operater" property="operater" jdbcType="VARCHAR" />
+    <result column="opinion" property="opinion" jdbcType="VARCHAR" />
+
+    <result column="operateTimeStr" property="operateTimeStr" jdbcType="VARCHAR" />
+  </resultMap>
+
+	<select id="selectByEntryId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select id,status,recruit_id,entry_id,operater,opinion,DATE_FORMAT(operate_time,"%Y-%m-%d") as operateTimeStr from flow_action_log
+		where entry_id = #{entryId}
+		order by operate_time desc
+	
+	</select>
+	<select id="selectByRecruitId" parameterType="java.lang.Integer">
+		select distinct entry_id from flow_action_log
+		where recruit_id = #{recruitId} and entry_id is not null
+	</select>
+</mapper>

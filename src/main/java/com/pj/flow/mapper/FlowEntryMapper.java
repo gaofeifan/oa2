@@ -25,11 +25,13 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	FlowOffer selectOfferDetailsByApplyId(@Param(value = "id") Integer id);
 
 	/**
-	 * 我的入职申请
-	 * @param userId
+	 * 申请查询
+	 * @param companyId 申请人公司
+	 * @param username 申请人姓名
+	 * @param applyId 申请人id
 	 * @return
 	 */
-	List<FlowEntry> searchEntrys(Integer userId);
+	List<FlowEntry> searchEntrys(@Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "applyId") Integer applyId);
 
 	void insertEntry(FlowEntry flowEntry);
 
@@ -39,5 +41,24 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 * @return
 	 */
 	FlowEntry selectApplyInfoById(Integer formId);
+
+	/**
+	 * 根据当前用户id得到所负责的岗位
+	 * 入职结果为已同意的个数
+	 * @param userId
+	 * @param result
+	 * @return
+	 */
+	int getNumByAuthResult(@Param(value = "userId") Integer userId, @Param(value = "result") Integer result);
+
+	/**
+	 * 根据负责的公司和入职人姓名
+	 * 以及登录用户所负责的岗位查询
+	 * @param userId 当前用户
+	 * @param companyId 入职人公司
+	 * @param name 入职人姓名
+	 * @return
+	 */
+	List<FlowEntry> selectByTodo(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "name") String name);
 
 }
