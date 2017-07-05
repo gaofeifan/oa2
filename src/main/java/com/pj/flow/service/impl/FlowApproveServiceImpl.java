@@ -140,15 +140,15 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 //		isApproveComplete(flowUserApplication,applyType);
 //	}
 	@Override
-	public void commitApprove(Integer userid, Integer checkstatus, String handleidea, Integer formId,
+	public void commitApprove(FlowUserApplication flowUserApplication, Integer userid, Integer checkstatus, String handleidea, Integer formId,
 			String applyType) {
 		/**
 		 *  更新审批人状态
 		 * 	根据申请表id和申请类型出所有审批人，再根据审批人得到一条数据
 		 * 更新审批表审批意见，如果是不同意，则审批表的当前用户下面所有流程的审批人都删除
 		 */
-		//根据申请表id和申请类型得到中间表
-		FlowUserApplication flowUserApplication = flowUserApplicationMapper.selectByApplyIdAndType(formId,applyType);
+//		//根据申请表id和申请类型得到中间表
+//		FlowUserApplication flowUserApplication = flowUserApplicationMapper.selectByApplyIdAndType(formId,applyType);
 		//所有该申请表的审核人
 		List<FlowApprove> list = flowApproveMapper.selectListByApplyId(flowUserApplication.getId());
 		//记录删除开始的位置，不同意时用
@@ -156,7 +156,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		for (int i = 0; i < list.size(); i++) {
 			FlowApprove innerApprove = list.get(i);
 			if(userid == innerApprove.getUserid()){//当前审批人
-
+				
 				delStartIndex = i + 1;
 				
 				innerApprove.setCheckstatus(checkstatus);

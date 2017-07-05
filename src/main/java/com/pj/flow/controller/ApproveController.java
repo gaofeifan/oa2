@@ -24,6 +24,7 @@ import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
+import com.pj.flow.service.FlowUserApplicationService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
@@ -68,6 +69,9 @@ public class ApproveController extends BaseController{
 	@Autowired
 	private FlowEntryService flowEntryService;
 	
+	@Autowired
+	private FlowUserApplicationService flowUserApplicationService;
+	
 	
 	@ApiOperation(value = "审批查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="审批查询")
 	@RequestMapping(value = "/searchAllApproves.do", method = RequestMethod.GET)
@@ -93,6 +97,7 @@ public class ApproveController extends BaseController{
 				map = this.successJsonp(null);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("审批查询" + e.getMessage());
 		}
@@ -138,6 +143,7 @@ public class ApproveController extends BaseController{
 			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("我的审批查询" + e.getMessage());
 		}
@@ -165,6 +171,7 @@ public class ApproveController extends BaseController{
 				map = this.successJsonp(null);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("选择姓名跳转对应的申请详情页面" + e.getMessage());
 		}
@@ -176,7 +183,7 @@ public class ApproveController extends BaseController{
 	public MappingJacksonValue commitApprove(
 			@ApiParam(value = "审批人id", required = true) @RequestParam(value = "userid", required = true) Integer userid,
 			@ApiParam(value = "审批状态(0、审批中 1、不同意 2、同意)", required = true) @RequestParam(value = "checkstatus", required = true) Integer checkstatus,
-			@ApiParam(value = "审批意见", required = false) @RequestParam(value = "handleidea", required = true) String handleidea,
+			@ApiParam(value = "审批意见", required = false) @RequestParam(value = "handleidea", required = false) String handleidea,
 			@ApiParam(value = "申请表id", required = true) @RequestParam(value = "formId", required = true) Integer formId,
 			@ApiParam(value = "申请类型(招聘:recruit 入职:entry，转正:regular ，异动:change，离职:dimission，请假:leave，其他:other)", required = true) @RequestParam(value = "applyType", required = true) String applyType
 			){
@@ -187,10 +194,18 @@ public class ApproveController extends BaseController{
 			 * 	根据申请表id和申请类型查询是否存在，如存在不保存不存在则保存，
 			 * 再保存审批表
 			 */
-			flowApproveService.commitApprove(userid, checkstatus, handleidea, formId, applyType);
+			//根据申请表id和申请类型得到中间表
+			FlowUserApplication flowUserApplication = flowUserApplicationService.selectByApplyIdAndType(formId,applyType);
+			if(flowUserApplication != null){
+				
+				flowApproveService.commitApprove(flowUserApplication,userid, checkstatus, handleidea, formId, applyType);
+				map = this.successJsonp("保存成功");
+			}else{
+				map = this.successJsonp("未找到相关数据，flowUserApplication is null");
+			}
 			
-			map = this.successJsonp("保存成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("选择姓名跳转对应的申请详情页面" + e.getMessage());
 		}

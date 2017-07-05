@@ -36,12 +36,13 @@ public interface FlowApproveService extends BaseService<FlowApprove, Integer> {
 	
 	/**
 	 * 提交审批
+	 * @param flowUserApplication
 	 * @param userid
 	 * @param checkstatus
 	 * @param handleidea
 	 * @param formId
 	 * @param applyType
 	 */
-	void commitApprove(Integer userid, Integer checkstatus, String handleidea, Integer formId, String applyType);
+	void commitApprove(FlowUserApplication flowUserApplication, Integer userid, Integer checkstatus, String handleidea, Integer formId, String applyType);
 
 }

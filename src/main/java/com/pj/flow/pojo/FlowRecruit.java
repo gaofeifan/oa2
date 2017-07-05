@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -124,16 +125,27 @@ public class FlowRecruit implements Serializable {
 //	private Integer todoState;
     
     //查询使用
+	@Transient
     private String replaceName;
+	@Transient
     private String replaceOffer;
+	@Transient
     private String leaderName;
+	@Transient
     private String companyName;
+	@Transient
     private Integer applyDempId;
+	@Transient
     private String dempName;
+	@Transient
     private String postName;
+	@Transient
     private String positionName;
+	@Transient
     private String applyDateStr;
+	@Transient
     private String entryDateStr;
+	@Transient
     private Integer entryId;
 
     public Integer getEntryId() {

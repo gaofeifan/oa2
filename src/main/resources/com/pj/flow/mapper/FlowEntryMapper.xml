@@ -85,7 +85,7 @@
     <result column="people_who_copied" property="peopleWhoCopied" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getNumByAuthResult" resultType="int">
-  	select count(e.*)
+  	select count(e.id)
   	from flow_entry e
   	left join flow_recruit r on r.id = e.recruit_id
   		and r.post_id in 
