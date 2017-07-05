@@ -44,6 +44,10 @@
     <result column="offerRange" property="offerRange" jdbcType="VARCHAR" />
     <result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
 	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
+	<result column="positionId" property="positionId" jdbcType="INTEGER" />
+	<result column="dempId" property="dempId" jdbcType="INTEGER" />
+	<result column="companyId" property="companyId" jdbcType="INTEGER" />
+	<result column="postId" property="postId" jdbcType="INTEGER" />
     <collection property="salarys" ofType="com.pj.system.pojo.Salary" >
     	<id column="s_id" property="id" jdbcType="INTEGER" />  
 	    <result column="total_salary" property="totalSalary" jdbcType="VARCHAR" />
@@ -108,7 +112,7 @@
   </select>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
-		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,r.position_id positionId,r.post_id postId,r.company_id companyId
+		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,pt.id positionId,p.id postId,c.id companyId
   	from flow_entry e
   	left join t_salary s on s.entry_id = e.id
   	left join flow_recruit r on e.recruit_id = r.id
@@ -116,6 +120,7 @@
 	LEFT JOIN t_company c ON c.id = r.company_id
 	LEFT JOIN t_demp d ON d.id = r.demp_id
 	LEFT JOIN t_post p ON p.id = r.post_id
+	left JOIN t_position pt on pt.id = r.position_id
 	where e.status = 0 and e.id = #{id}
   </select>
   <select id="selectApplyInfoById" parameterType="java.lang.Integer" resultMap="ApplyMap">

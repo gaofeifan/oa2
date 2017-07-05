@@ -134,16 +134,17 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	@Override
 	public List<Demp> selectDempByPersonnelAuthority() {
 		List<Demp> demps = this.selectAll();
-		for (Demp demp : demps) {
-			Post record = new Post();
-			record.setDempId(demp.getId());
-			record.setIsdelete(0);
-			List<Post> posts = this.postService.select(record);
-			AuthUser authUser = new AuthUser();
-			authUser.setDempid(demp.getId());
-			List<AuthUser> authPosts = this.authUserService.select(authUser );
+//		for (Demp demp : demps) {
+//			Post record = new Post();
+//			record.setDempId(demp.getId());
+//			record.setIsdelete(0);
+//			List<Post> posts = this.postService.select(record);
+//			AuthUser authUser = new AuthUser();
+//			authUser.setDempid(demp.getId());
+//			List<AuthUser> authPosts = this.authUserService.select(authUser );
+//			authPosts.stream().map(post -> post.getPostid()).collect(collector);
 //			posts.stream().filter(post -> post.get)
-		}
+//		}
 		
 		return null;
 	}
