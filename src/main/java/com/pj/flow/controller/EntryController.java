@@ -302,20 +302,5 @@ public class EntryController extends BaseController{
 		SendEmailUtils.sendMessage("gaofeifan@pj-l.com", "PJ.123456", "695096916@qq.com", flowOffer.getCompany()+"offer", string, null);
 		return null;
 	}
-	/**
-	 * 	发送offer
-	 *	@author 	GFF
-	 *	@date		2017年6月27日上午10:58:14	
-	 * 	@param iEamil
-	 * 	@param CC
-	 * 	@param hour
-	 * 	@return
-	 */
-	@ApiOperation(value = "testApprove", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
-	@RequestMapping("/testApprove.do")
-	public @ResponseBody void testEntry(){
 	
-		this.flowApproveService.commitApprove(2, 2, null, 1, ApplyType.RECRUIT.getApplyType());
-		
-	}
 }
