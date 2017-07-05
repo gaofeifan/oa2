@@ -285,7 +285,9 @@ public class UserController extends BaseController {
 			return this.errorToJsonp("获取单号异常  ："+e.getMessage());
 		}
 	}
-	
+	@ApiOperation(value = "查询用户通过公司id岗位id", httpMethod = "GET", response = String.class, notes = "查询用户通过公司id岗位id")
+	@RequestMapping("/selectUserByCompanyIdAndPostId.do")
+	@ResponseBody
 	public MappingJacksonValue selectUserByCompanyIdAndPostId(@ApiParam("公司id") @RequestParam("companyId") Integer companyId,
 															  @ApiParam("岗位id") @RequestParam("postId") Integer postId){
 		try {
