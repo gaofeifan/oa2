@@ -108,7 +108,7 @@
   </select>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
-		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,r.position_id positionId
+		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,r.position_id positionId,r.post_id postId,r.company_id companyId
   	from flow_entry e
   	left join t_salary s on s.entry_id = e.id
   	left join flow_recruit r on e.recruit_id = r.id

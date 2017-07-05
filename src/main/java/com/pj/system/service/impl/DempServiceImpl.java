@@ -138,10 +138,11 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 			Post record = new Post();
 			record.setDempId(demp.getId());
 			record.setIsdelete(0);
-			List<Post> post = this.postService.select(record);
+			List<Post> posts = this.postService.select(record);
 			AuthUser authUser = new AuthUser();
-			this.authUserService.select(authUser );
-			
+			authUser.setDempid(demp.getId());
+			List<AuthUser> authPosts = this.authUserService.select(authUser );
+//			posts.stream().filter(post -> post.get)
 		}
 		
 		return null;
