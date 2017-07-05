@@ -16,10 +16,10 @@
 	</context-param>
 
 
-	<filter>
+	<!-- <filter>
 		<filter-name>DomainFilter</filter-name>
 		<filter-class>com.pj.config.web.filter.DomainFilter</filter-class>
-	</filter>
+	</filter> -->
 	<!-- UTF-8 配置乱码过滤器POST -->
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
@@ -43,11 +43,11 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
+	<!-- <filter-mapping>
 		<filter-name>DomainFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+ -->
 	<filter-mapping>
 		<filter-name>characterEncodingFilter</filter-name>
 		<url-pattern>*.do</url-pattern>

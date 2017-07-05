@@ -237,4 +237,15 @@ public class DempController extends SystemManageController{
 		return map;
 	}
 	
+	public Map<String, Object> selectDempByPersonnelAuthority(){
+		try {
+			List<Demp> dmeps = this.dempService.selectDempByPersonnelAuthority();
+			return this.success(dmeps);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
+		
+	}
+	
 }

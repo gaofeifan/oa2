@@ -137,6 +137,16 @@ public abstract class AbstractBaseServiceImpl<T,ID extends Serializable > implem
 		return getMapper().deleteByPrimaryKey(id);
 	}
 
+
+	/**
+	 * 	批量添加
+	 */
+	@Override
+	public int insertList(List<T> t) {
+		return getMapper().insertList(t);
+	}
+
+
 	/**
 	 *  查询最后的number编号
 	 */

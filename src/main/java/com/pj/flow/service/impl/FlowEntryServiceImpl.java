@@ -90,7 +90,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		List<Salary> list = JSONArray.toList(array, Salary.class);
 		for(Salary salary : list){
 			salary.setEntryId(entryId);
-			salaryMapper.insertSelective(salary);
+			salaryService.insertSelective(salary);
 		}
 		/***************招聘待办信息保存satrt**********/
 		
@@ -160,6 +160,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	@Override
 	public FlowEntry selectById(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectById(entryId);
+		List<Salary> salarys = flowEntry.getSalarys();
+		for (Salary salary : salarys) {
+			salary = (Salary)AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
+		}
 		return flowEntry;
 	}
 

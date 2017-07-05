@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.pojo.AuthUser;
+import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.DempMapper;
@@ -32,7 +34,8 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	private DempMapper dempMapper;
 	@Autowired
 	private PostService postService;
-	
+	@Autowired
+	private AuthUserService authUserService;
 	@Override
 	public MyMapper<Demp> getMapper() {
 		return dempMapper;
@@ -127,5 +130,23 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	public Demp selectParentDempById(Integer dempId) {
 		return this.dempMapper.selectParentDempById(dempId);
 	}
+
+	@Override
+	public List<Demp> selectDempByPersonnelAuthority() {
+		List<Demp> demps = this.selectAll();
+		for (Demp demp : demps) {
+			Post record = new Post();
+			record.setDempId(demp.getId());
+			record.setIsdelete(0);
+			List<Post> post = this.postService.select(record);
+			AuthUser authUser = new AuthUser();
+			this.authUserService.select(authUser );
+			
+		}
+		
+		return null;
+	}
+	
+	
 	
 }

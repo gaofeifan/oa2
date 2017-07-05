@@ -89,5 +89,27 @@ public interface UserService extends BaseService<User, Integer> {
 	 * 	@return
 	 */
 	List<User> selectUserByUsername(String username);
-	
+
+	/**
+	 * 	查询用户详情
+	 *	@author 	GFF
+	 *	@date		2017年7月5日上午11:19:34	
+	 * 	@param id
+	 * 	@return
+	 */
+	User selectUserDetail(Integer id);
+
+	/**
+	 * 	
+	 *	@author 	GFF
+	 *	@date		2017年7月5日上午11:54:49	
+	 * 	@param hiredate
+	 * 
+	 * 	@param entryId
+	 * 	@return
+	 */
+	String selectEmployeeNumberByHiredateAndEntryId(Integer entryId);
+
+	User getReplaceUser(Integer companyI);
+
 }
