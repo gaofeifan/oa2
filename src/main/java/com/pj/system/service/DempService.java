@@ -90,7 +90,7 @@ public interface DempService  extends BaseService<Demp, Integer>{
 	 *	@date		2017年7月5日下午4:58:07	
 	 * 	@return
 	 */
-	List<Demp> selectDempByPersonnelAuthority();
+	List<Demp> selectDempByPersonnelAuthority(Integer companyId);
 
 
 	

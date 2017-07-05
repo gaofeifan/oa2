@@ -1,5 +1,6 @@
 package com.pj.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -81,6 +82,28 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	@Override
 	public Company selectParentCompanyById(int id) {
 		return this.companyMapper.selectParentCompanyById(id);
+	}
+
+	/**
+	 * 	查询公司跟人事权限
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午7:30:58	
+	 * 	@return
+	 */
+	@Override
+	public List<Company> selectCompanyByPersonnelAuthority() {
+		List<Company> companys = this.selectNotDeleteALL();
+		List<Company> deleteCompanys = new ArrayList<>();
+		for (Company company : companys) {
+			List<Demp> dempList = this.dempService.selectDempByPersonnelAuthority(company.getId());
+			if(dempList.size() == 0){
+				deleteCompanys.add(company);
+			}
+		}
+		for (Company company : deleteCompanys) {
+			companys.remove(company);
+		}
+		return companys;
 	}
 	
 	

@@ -43,5 +43,13 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 */
 	Company selectParentCompanyById(int companyId);
 
+	/**
+	 * 	查询公司 根据人事权限
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午7:27:29	
+	 * 	@return
+	 */
+	List<Company> selectCompanyByPersonnelAuthority();
+
 
 }

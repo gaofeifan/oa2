@@ -128,23 +128,12 @@ public class FlowEntry implements Serializable {
     @Transient
     private Integer positionId;
     @Transient
-    private String positionName;
-    @Transient
     private Integer companyId;
     @Transient
     private Integer postId;
     @Transient
     private String applyDateStr;
     
-    
-    public String getPositionName() {
-		return positionName;
-	}
-
-	public void setPositionName(String positionName) {
-		this.positionName = positionName;
-	}
-
 	public String getSalaryJson() {
 		return salaryJson;
 	}

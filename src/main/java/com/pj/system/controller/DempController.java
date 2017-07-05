@@ -242,7 +242,7 @@ public class DempController extends SystemManageController{
 	@ResponseBody
 	public Map<String, Object> selectDempByPersonnelAuthority(){
 		try {
-			List<Demp> dmeps = this.dempService.selectDempByPersonnelAuthority();
+			List<Demp> dmeps = this.dempService.selectDempByPersonnelAuthority(null);
 			return this.success(dmeps);
 		} catch (Exception e) {
 			e.printStackTrace();

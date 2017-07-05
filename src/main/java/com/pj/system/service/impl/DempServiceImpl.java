@@ -147,8 +147,16 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	 * 	@return
 	 */
 	@Override
-	public List<Demp> selectDempByPersonnelAuthority() {
-		List<Demp> demps = this.selectNotDeleteALL();
+	public List<Demp> selectDempByPersonnelAuthority(Integer companyId) {
+		List<Demp> demps = null; 
+		if(companyId != null){
+			Demp record = new Demp();
+			record.setCompanyid(companyId);
+			record.setIsdelete(0);
+			demps = this.select(record );
+		}else{
+			demps = this.selectNotDeleteALL();
+		}
 		List<Demp> deleteDemp = new ArrayList<>();
 		
 		for (Demp demp : demps) {

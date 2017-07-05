@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.SessionProvider;
@@ -210,5 +211,19 @@ public class CompanyController extends SystemManageController{
 			throw new RuntimeException("根据用户权限查询所负责公司信息");			
 		}
     	return map;
+	}
+	
+	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")
+	@RequestMapping(value="/selectCompanyByPersonnelAuthority.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectCompanyByPersonnelAuthority(){
+		try {
+			List<Company> companys = this.companyService.selectCompanyByPersonnelAuthority();
+			return this.success(companys);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
+		
 	}
 }

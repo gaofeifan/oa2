@@ -285,4 +285,18 @@ public class UserController extends BaseController {
 			return this.errorToJsonp("获取单号异常  ："+e.getMessage());
 		}
 	}
+	
+	public MappingJacksonValue selectUserByCompanyIdAndPostId(@ApiParam("公司id") @RequestParam("companyId") Integer companyId,
+															  @ApiParam("岗位id") @RequestParam("postId") Integer postId){
+		try {
+			User record = new User();
+			record.setCompanyid(companyId);
+			record.setPostid(postId);
+			record.setIsdelete(0);
+			return this.successJsonp(this.userService.select(record));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp("查询异常 :"+e.getMessage());
+		}
+	}
 }
