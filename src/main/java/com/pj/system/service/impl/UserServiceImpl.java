@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -246,7 +245,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 
 	@Override
 	public User getReplaceUser(Integer companyId, Integer dempId, String username) {
-		User user = new User();
+		User user = null;
 		/**
 		 * 如果dempId!=null,查找部门内的用户
 		 * 否则查找公司内的
