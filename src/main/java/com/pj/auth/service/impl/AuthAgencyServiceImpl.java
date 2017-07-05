@@ -1,7 +1,9 @@
 package com.pj.auth.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -179,17 +181,17 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	 * 	查询所有机构权限
 	 */
 	@Override
-	public Map<Integer,Object> selectAuthAgencyALL() {
-		Map<Integer,Object> map = new HashMap<>();
+	public List<Object> selectAuthAgencyALL() {
+		List<Object> data = new ArrayList<>();
 		AuthAgency authAgency = this.authAgencyMapper.selectAuthAgencyMaxGrade();
 		Integer grade = authAgency.getGrade();
 		for (int i = 1; i <= grade; i++) {
-			AuthAgency record = new AuthAgency();
-			record.setGrade(i);
-			record.setIsdelete(0);
-			List<AuthAgency> list = this.authAgencyMapper.select(record );
-			map.put(i, list);
+			List<AuthAgency> list = this.authAgencyMapper.selectAuthAgencyByGrade(i);
+			Map<String,Object> map = new HashMap<>();
+			map.put("grade", i);
+			map.put("data", list);
+			data.add(map);
 		}
-		return map;
+		return data;
 	}
 }

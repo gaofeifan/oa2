@@ -1,5 +1,9 @@
 package com.pj.auth.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.config.base.mapper.MyMapper;
 
@@ -28,5 +32,14 @@ public interface AuthAgencyMapper extends MyMapper<AuthAgency> {
 	 * 	@return
 	 */
 	AuthAgency selectAuthAgencyMaxGrade();
+
+	/**
+	 * 	根据级别查询机构权限
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午6:17:09	
+	 * 	@param i
+	 * 	@return
+	 */
+	List<AuthAgency> selectAuthAgencyByGrade(@Param("grade")Integer grade);
 
 }

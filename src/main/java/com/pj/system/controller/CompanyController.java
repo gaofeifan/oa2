@@ -181,7 +181,7 @@ public class CompanyController extends SystemManageController{
 		logger.error("查询是否是否可以删除异常" + e.getMessage());
 		throw new RuntimeException("查询是否是否可以删除");
 	}
-	return map;
+		return map;
 	}
 	
 	/******************** 招聘待办 ******************/

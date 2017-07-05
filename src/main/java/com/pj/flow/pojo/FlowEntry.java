@@ -126,6 +126,8 @@ public class FlowEntry implements Serializable {
     @Transient
     private Integer positionId;
     @Transient
+    private String positionName;
+    @Transient
     private Integer companyId;
     @Transient
     private Integer postId;
@@ -402,6 +404,14 @@ public class FlowEntry implements Serializable {
 
 	public void setPostId(Integer postId) {
 		this.postId = postId;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
 	}
 
 	@Override

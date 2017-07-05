@@ -1,6 +1,6 @@
 package com.pj.auth.controller;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -116,13 +116,13 @@ public class AuthAgencyController extends BaseController{
 	@ApiOperation(value = "查询所有机构权限(未删除)", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue findAuthAgencyAll(){
 		try {
-			Map<Integer, Object> map = this.authAgencyService.selectAuthAgencyALL();
-			return this.successJsonp(map);
+			List<Object> list = this.authAgencyService.selectAuthAgencyALL();
+			return this.successJsonp(list);
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.findAuthAgencyAll】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("该机构存在未处理的任务无法删除"));
+		return this.successJsonp(this.error("查询机构异常"));
 	}
 	
 	

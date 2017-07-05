@@ -1,7 +1,9 @@
 package com.pj.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -126,27 +128,56 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 		return names;
 	}
 
+	/**
+	 * 	查询
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午7:17:14	
+	 * 	@param dempId
+	 * 	@return
+	 */
 	@Override
 	public Demp selectParentDempById(Integer dempId) {
 		return this.dempMapper.selectParentDempById(dempId);
 	}
 
+	/**
+	 * 	查询部门通过人事权限
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午7:19:00	
+	 * 	@return
+	 */
 	@Override
 	public List<Demp> selectDempByPersonnelAuthority() {
-		List<Demp> demps = this.selectAll();
-//		for (Demp demp : demps) {
-//			Post record = new Post();
-//			record.setDempId(demp.getId());
-//			record.setIsdelete(0);
-//			List<Post> posts = this.postService.select(record);
-//			AuthUser authUser = new AuthUser();
-//			authUser.setDempid(demp.getId());
-//			List<AuthUser> authPosts = this.authUserService.select(authUser );
-//			authPosts.stream().map(post -> post.getPostid()).collect(collector);
-//			posts.stream().filter(post -> post.get)
-//		}
+		List<Demp> demps = this.selectNotDeleteALL();
+		List<Demp> deleteDemp = new ArrayList<>();
 		
-		return null;
+		for (Demp demp : demps) {
+			List<Post> deletePost = new ArrayList<>();
+			Post record = new Post();
+			record.setDempId(demp.getId());
+			record.setIsdelete(0);
+			List<Post> posts = this.postService.select(record);
+			AuthUser authUser = new AuthUser();
+			authUser.setDempid(demp.getId());
+			List<AuthUser> authPosts = this.authUserService.select(authUser );
+			List<Integer> postIds = authPosts.stream().map(post -> post.getPostid()).collect(Collectors.toList());
+			for (Post post : posts) {
+				if(postIds.contains(post.getId())){
+					deletePost.add(post);
+				}
+			}
+			for (Post post : deletePost) {
+				posts.remove(post);
+			}
+			
+			if(posts.size() == 0){
+				deleteDemp.add(demp);
+			}
+		}
+		for (Demp demp : deleteDemp) {
+			demps.remove(demp);
+		}
+		return demps;
 	}
 	
 	

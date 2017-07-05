@@ -1,5 +1,6 @@
 package com.pj.auth.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.pj.auth.pojo.AuthAgency;
@@ -45,6 +46,6 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 *	@date		2017年7月5日下午2:22:27	
 	 * 	@return
 	 */
-	Map<Integer, Object> selectAuthAgencyALL();
+	List<Object> selectAuthAgencyALL();
 
 }

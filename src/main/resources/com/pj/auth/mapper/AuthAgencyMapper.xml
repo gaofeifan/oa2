@@ -7,6 +7,8 @@
 	    <result column="demp_id" property="dempId" jdbcType="INTEGER" />
 	    <result column="grade" property="grade" jdbcType="INTEGER" />
 	    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+	    <result column="dempName" property="dempName" jdbcType="VARCHAR" />
+	    <result column="companyName" property="companyName" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_column">
 		id,company_id,demp_id,grade,isdelete
@@ -38,5 +40,14 @@
 	</select>
 	<select id="selectAuthAgencyMaxGrade" resultMap="Result_base">
 		SELECT <include refid="Base_column"/> FROM auth_agency GROUP BY grade DESC limit 0,1
+	</select>
+	<select id="selectAuthAgencyByGrade" parameterType="java.lang.Integer" resultMap="Result_base">
+		SELECT 
+				agency.id id,agency.company_id company_id,agency.demp_id demp_id,agency.grade grade,agency.isdelete ,c.name companyName,d.name dempName
+		FROM 
+		auth_agency agency
+		left join t_company c on c.id = agency.company_id
+		left join t_demp d on d.id = agency.demp_id
+		where agency.grade = #{grade} 
 	</select>
 </mapper>

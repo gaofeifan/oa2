@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -37,6 +38,15 @@ public class AuthAgency {
 	@Column
 	@ApiModelProperty(value = "是否删除", required = false)
 	private Integer isdelete;
+
+	@ApiModelProperty(value = "公司名称", required = false)
+	@Transient
+	private String companyName;
+
+	@ApiModelProperty(value = "部门名称", required = false)
+	@Transient
+	private String dempName;
+	
 
 	public Integer getId() {
 		return id;
@@ -77,5 +87,20 @@ public class AuthAgency {
 	public void setIsdelete(Integer isdelete) {
 		this.isdelete = isdelete;
 	}
-	
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getDempName() {
+		return dempName;
+	}
+
+	public void setDempName(String dempName) {
+		this.dempName = dempName;
+	}
 }

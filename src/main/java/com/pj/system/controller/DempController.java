@@ -237,6 +237,9 @@ public class DempController extends SystemManageController{
 		return map;
 	}
 	
+	@ApiOperation(value = "查询部门 根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询部门 根据人事权限查询")
+	@RequestMapping(value="/selectDempByPersonnelAuthority.do" , method=RequestMethod.GET)
+	@ResponseBody
 	public Map<String, Object> selectDempByPersonnelAuthority(){
 		try {
 			List<Demp> dmeps = this.dempService.selectDempByPersonnelAuthority();
