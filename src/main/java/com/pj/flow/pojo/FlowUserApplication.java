@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "flow_user_application")
 public class FlowUserApplication {
@@ -38,8 +39,11 @@ public class FlowUserApplication {
     private String username;
 	
 	//查询使用
+	@Transient
 	private Integer approveId;
+	@Transient
 	private String applyDateStr;
+	@Transient
 	private Integer applyResult;
 
     public Integer getApproveId() {

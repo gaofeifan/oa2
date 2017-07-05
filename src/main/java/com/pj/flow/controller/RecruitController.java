@@ -97,6 +97,7 @@ public class RecruitController extends BaseController{
 			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("提交招聘申请" + e.getMessage());
 		}
@@ -117,6 +118,7 @@ public class RecruitController extends BaseController{
 			
 			map = this.successJsonp("提交成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("提交招聘申请" + e.getMessage());
 		}
@@ -140,6 +142,7 @@ public class RecruitController extends BaseController{
 			User user = flowRecruitService.getLeader(companyId, dempId, isCompanyLeader, isDempLeader);
 			map = this.successJsonp(user);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("得到直属领导" + e.getMessage());
 		}
@@ -160,6 +163,7 @@ public class RecruitController extends BaseController{
 			User user = userService.getReplaceUser(companyId, dempId, replaceName);
 			map = this.successJsonp(user);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("替代用户" + e.getMessage());
 		}
@@ -201,6 +205,7 @@ public class RecruitController extends BaseController{
 			result.put("approves", list);
 			map = this.successJsonp(result);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("申请单详情" + e.getMessage());
 		}
@@ -229,6 +234,7 @@ public class RecruitController extends BaseController{
 			
 			map = this.successJsonp(number);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("招聘待办提示" + e.getMessage());
 		}
@@ -263,6 +269,7 @@ public class RecruitController extends BaseController{
 			}
 			map = this.successJsonp(recruits);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("招聘待办查询" + e.getMessage());
 		}
@@ -280,6 +287,7 @@ public class RecruitController extends BaseController{
 			
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("待办提交回显数据" + e.getMessage());
 		}
@@ -306,6 +314,7 @@ public class RecruitController extends BaseController{
 			flowRecruitService.updateState(user, recruitId, reason, state);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("招聘待办状态改变" + e.getMessage());
 		}

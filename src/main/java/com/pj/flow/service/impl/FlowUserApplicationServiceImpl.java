@@ -30,4 +30,9 @@ public class FlowUserApplicationServiceImpl extends AbstractBaseServiceImpl<Flow
 		return flowUserApplicationMapper;
 	}
 
+	@Override
+	public FlowUserApplication selectByApplyIdAndType(Integer formId, String applyType) {
+		return flowUserApplicationMapper.selectByApplyIdAndType(formId, applyType);
+	}
+
 }

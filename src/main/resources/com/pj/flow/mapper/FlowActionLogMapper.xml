@@ -19,7 +19,7 @@
 		order by operate_time desc
 	
 	</select>
-	<select id="selectByRecruitId" parameterType="java.lang.Integer">
+	<select id="selectByRecruitId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select distinct entry_id from flow_action_log
 		where recruit_id = #{recruitId} and entry_id is not null
 	</select>

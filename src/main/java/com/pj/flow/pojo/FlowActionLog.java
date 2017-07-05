@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "flow_action_log")
 public class FlowActionLog {
@@ -24,6 +25,7 @@ public class FlowActionLog {
 
     private String opinion;
     
+    @Transient
     private String operateTimeStr;
 
     public String getOperateTimeStr() {

@@ -86,6 +86,7 @@ public class EntryController extends BaseController{
 			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("入职申请查询");
 		}
@@ -116,6 +117,7 @@ public class EntryController extends BaseController{
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("提交入职申请");
 		}
@@ -141,6 +143,7 @@ public class EntryController extends BaseController{
 			map = this.successJsonp(result);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("入职申请详情");
 		}
@@ -169,8 +172,9 @@ public class EntryController extends BaseController{
 			map = this.successJsonp(result);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("入职申请详情");
+			throw new RuntimeException("入职待办状态详情" + e.getMessage());
 		}
 		return map;
 	}
@@ -244,6 +248,7 @@ public class EntryController extends BaseController{
 			
 			map = this.successJsonp(number);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("建档待办提示");
 		}
@@ -271,6 +276,7 @@ public class EntryController extends BaseController{
 			
 			map = this.successJsonp(entrys);
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
 			throw new RuntimeException("建档待办查询");
 		}
