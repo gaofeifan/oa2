@@ -166,4 +166,13 @@ public interface BaseService  <T,ID extends Serializable> {
 	 */
 	int deleteByPrimaryKeyToLogic(ID id);
 
-}
+	/**
+	 * 	批量插入
+	 *	@author 	GFF
+	 *	@date		2017年7月5日上午9:06:46	
+	 * 	@param t
+	 * 	@return
+	 */
+	public int insertList(List<T> t);
+
+	}

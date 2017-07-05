@@ -178,5 +178,14 @@ public class FlowApprove implements Serializable {
 	public void setIsMessaging(Integer isMessaging) {
 		this.isMessaging = isMessaging;
 	}
+
+	@Override
+	public String toString() {
+		return "FlowApprove [id=" + id + ", recordid=" + recordid + ", userid=" + userid + ", positionid=" + positionid
+				+ ", handledate=" + handledate + ", handleidea=" + handleidea + ", checkstatus=" + checkstatus
+				+ ", applyId=" + applyId + ", isApprove=" + isApprove + ", applyUserId=" + applyUserId + ", startTime="
+				+ startTime + ", isMessaging=" + isMessaging + ", approveName=" + approveName + ", positionName="
+				+ positionName + ", approveDateStr=" + approveDateStr + "]";
+	}
 	
 }

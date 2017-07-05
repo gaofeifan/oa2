@@ -22,10 +22,10 @@ public class WorkExperience {
 	private Integer id;
 	
 	@Column
-	private Date workTime;
+	private String workTime;
 	
 	@Column
-	private String relation;
+	private String duty;
 	
 	@Column
 	private String grossWage;
@@ -47,20 +47,20 @@ public class WorkExperience {
 		this.id = id;
 	}
 
-	public Date getWorkTime() {
+	public String getWorkTime() {
 		return workTime;
 	}
 
-	public void setWorkTime(Date workTime) {
+	public void setWorkTime(String workTime) {
 		this.workTime = workTime;
 	}
 
-	public String getRelation() {
-		return relation;
+	public String getDuty() {
+		return duty;
 	}
 
-	public void setRelation(String relation) {
-		this.relation = relation;
+	public void setDuty(String duty) {
+		this.duty = duty;
 	}
 
 	public String getGrossWage() {

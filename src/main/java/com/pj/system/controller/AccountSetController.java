@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.system.pojo.User;
-import com.pj.system.service.AccountService;
 import com.pj.system.service.SessionProvider;
+import com.pj.system.service.UserService;
 import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
@@ -37,9 +38,9 @@ import io.swagger.annotations.ApiParam;
 public class AccountSetController {
 
 	@Autowired
-	private AccountService accountService;	
-	@Autowired
 	private SessionProvider sessionProvider;
+	@Autowired
+	private UserService userService;
 	Map<String, Object> map = new HashMap<String, Object>();
 	//显示账号信息
 	@ApiOperation(value="显示账号信息",httpMethod="GET")
@@ -48,11 +49,12 @@ public class AccountSetController {
 	public MappingJacksonValue list(String callback,HttpServletRequest req, HttpServletResponse res){
 		Map<String, String> map = new HashMap<String, String>();
 		String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(req, res));
-		
-		User user = accountService.findByName(email);
+		User user = this.userService.selectByEamil(email);
+//		User user = accountService.findByName(email);
 		map.put("phone", user.getPhone());
 		map.put("email", user.getCompanyEmail());
 		map.put("id", user.getId().toString());
+		map.put("companyEmail", user.getCompanyEmailPassword());
 		MappingJacksonValue mjv = new MappingJacksonValue(map);
 		mjv.setJsonpFunction(callback);
 		return mjv;
@@ -63,18 +65,19 @@ public class AccountSetController {
 	@ResponseBody
 	public ResponseEntity<T> editPhone(@RequestParam(required =false) @ApiParam(value="用户email") String email, @RequestParam(required =false) @ApiParam(value ="手机号") String phone,
 			@RequestParam(required =false) @ApiParam(value ="新手机号") String newphone
+			,@RequestParam(required =false) @ApiParam(value ="设置邮箱密码") String emailPassword
 			){
 		Map<String, String> map = new HashMap<String, String>();
-		if(phone !=null){
+		if(phone !=null || StringUtils.isNoneBlank(emailPassword)){
 			if(phone.equals(newphone)){
 				map.put("error", "原手机号与新手机号相同,请重新输入!");
-			}{
-		//根据前台id查到用户所有信息
-		User u = accountService.findByName(email);
-		u.setPhone(newphone);
-		accountService.updatephone(u);
-		return ResponseEntity.status(HttpStatus.OK).body(null);
 			}
+			//根据前台id查到用户所有信息
+			User u = this.userService.selectByEamil(email);
+			u.setPhone(newphone);
+			u.setCompanyEmailPassword(emailPassword);
+			userService.updateByPrimaryKeySelective(u);
+			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}else{
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}

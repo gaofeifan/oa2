@@ -21,4 +21,12 @@ public interface AuthAgencyMapper extends MyMapper<AuthAgency> {
 	 */
 	AuthAgency selectAuthAgencyByCompanyIdOrDempId(AuthAgency record);
 
+	/**
+	 * 	获取最大的级别
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午2:12:23	
+	 * 	@return
+	 */
+	AuthAgency selectAuthAgencyMaxGrade();
+
 }

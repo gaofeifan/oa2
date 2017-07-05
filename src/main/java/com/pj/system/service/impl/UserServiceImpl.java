@@ -1,8 +1,12 @@
 package com.pj.system.service.impl;
 
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -14,19 +18,30 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.pojo.page.Pagination;
-import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.base.tool.HttpClienTool;
+import com.pj.flow.pojo.FlowEntry;
+import com.pj.flow.service.FlowEntryService;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
 import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.Education;
+import com.pj.system.pojo.FamilyMember;
+import com.pj.system.pojo.Salary;
 import com.pj.system.pojo.User;
+import com.pj.system.pojo.WorkExperience;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
+import com.pj.system.service.EducationService;
 import com.pj.system.service.FamilyMemberService;
 import com.pj.system.service.PositionService;
+import com.pj.system.service.SalaryService;
 import com.pj.system.service.UserService;
 import com.pj.system.service.WorkExperienceService;
+import com.pj.utils.DateUtils;
+
+import net.sf.json.JSONArray;
+import tk.mybatis.mapper.entity.Example;
 
 @Transactional
 @Service
@@ -45,7 +60,16 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	@Resource
 	private DempService dempService;
 	@Resource
-	private ManageProperties manageProperties;
+	private SalaryService salaryService;
+	@Resource
+	private FlowEntryService flowEntryService;
+	@Resource
+	private EducationService educationService;
+//	@Resource
+//	private ManageProperties manageProperties;
+	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
+											
 	@Resource 
 	private FamilyMemberService familyMemberService;
 	@Resource
@@ -55,45 +79,89 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		return userMapper;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public int insertSelective(User t) {
 		Integer ssoId = saveSSOSystem(t);
 		if(ssoId != null){
-			int i = insertSelective(updateUserByEntryFrom(t));
-			//	保存家庭成员
-//			List<FamilyMember> members = t.getFamilyMembers();
-//			members.stream().forEach(member -> member.setUserId(t.getId()));
-//			members.stream().forEach(familyMember -> this.familyMemberService.insertSelective(familyMember));
-			//	保存工作经历
-//			List<WorkExperience> workExperiences = t.getWorkExperiences();
-//			workExperiences.stream().forEach(workExperience -> workExperience.setUserId(t.getId()));
-//			workExperiences.stream().forEach(workExperience -> this.workExperienceService.insertSelective(workExperience));
-			//	关联薪资
+			t.setSsoId(ssoId);
+			int i = insertSelective(t);
+		
+			/**
+			 * 	更新薪资
+			 */
+			String salaryJson = t.getSalaryJson();
+			JSONArray salaryArray = JSONArray.fromString(salaryJson);
+			List<Salary> salaryList = JSONArray.toList(salaryArray, Salary.class);
+			salaryList.stream().forEach(salary -> salary.setUserId(t.getId()));
+			salaryList.stream().forEach(salary -> this.salaryService.updateByPrimaryKeySelective(salary));
+			/**
+			 * 	家庭成员
+			 */
+			String familyMemberJson = t.getFamilyMembersJson();
+			JSONArray jsonArray = JSONArray.fromString(familyMemberJson);
+			List<FamilyMember> list = JSONArray.toList(jsonArray, FamilyMember.class);
+			list.stream().forEach(menber -> menber.setUserId(t.getId()));
+			this.familyMemberService.insertList(list);
 			
+			/**
+			 * 	教育经历
+			 */
+			String educationJson = t.getEducationJson();
+			JSONArray educationArray = JSONArray.fromString(educationJson);
+			List<Education> educationList = JSONArray.toList(educationArray, Education.class);
+			educationList.forEach(educatino -> educatino.setUserId(t.getId()));
+			this.educationService.insertList(educationList);
+			
+			/**
+			 * 	工作经历
+			 */
+			String workExperienceJson = t.getWorkExperienceJson();
+			JSONArray workExperienceArray = JSONArray.fromString(workExperienceJson);
+			List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
+			workExperienceList.stream().forEach(work -> work.setUserId(t.getId()));
+			this.workExperienceService.insertList(workExperienceList);
 			return i;
 		}
 		return 0;
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int updateByPrimaryKeySelective(User user) {
-		//	更新家庭成员
-//		user.getFamilyMembers().stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
-		//	更新工作经历
-//		user.getWorkExperiences().stream().forEach(workExperience -> this.workExperienceService.updateByPrimaryKeySelective(workExperience));
-		User u = this.selectByPrimaryKey(user.getId());
-		if(
-		   (StringUtils.isNoneBlank(user.getUsername()) ? !user.getUsername().equals(u.getUsername()) :true) ||  
-		   (StringUtils.isNoneBlank(user.getCompanyEmail()) ? !user.getCompanyEmail().equals(u.getCompanyEmail()) : true) ||
-		   (StringUtils.isNoneBlank(user.getOpenid()) ? !user.getOpenid().equals(u.getOpenid()) : true) ||
-		   (StringUtils.isNoneBlank(user.getPhone()) ? !user.getPhone().equals(u.getPhone()) : true)){
-			String stauts = updateSSOSystem(user);
-			if(StringUtils.isNoneBlank(stauts)){
-				return super.updateByPrimaryKeySelective(user);
-			}
-		}
-		return 0;
+		/**
+		 * 	更新薪资
+		 */
+		String salaryJson = user.getSalaryJson();
+		JSONArray salaryArray = JSONArray.fromString(salaryJson);
+		List<Salary> salaryList = JSONArray.toList(salaryArray, Salary.class);
+		salaryList.stream().forEach(salary -> this.salaryService.updateByPrimaryKeySelective(salary));
+		/**
+		 * 	家庭成员
+		 */
+		String familyMemberJson = user.getFamilyMembersJson();
+		JSONArray jsonArray = JSONArray.fromString(familyMemberJson);
+		List<FamilyMember> list = JSONArray.toList(jsonArray, FamilyMember.class);
+		list.stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
+		
+		/**
+		 * 	教育经历
+		 */
+		String educationJson = user.getEducationJson();
+		JSONArray educationArray = JSONArray.fromString(educationJson);
+		List<Education> educationList = JSONArray.toList(educationArray, Education.class);
+		educationList.stream().forEach(education -> this.educationService.updateByPrimaryKeySelective(education));
+		
+		/**
+		 * 	工作经历
+		 */
+		String workExperienceJson = user.getWorkExperienceJson();
+		JSONArray workExperienceArray = JSONArray.fromString(workExperienceJson);
+		List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
+		workExperienceList.stream().forEach(work -> this.workExperienceService.updateByPrimaryKeySelective(work));
+		updateSSOSystem(user);
+		return super.updateByPrimaryKeySelective(user);
 	}
 
 
@@ -138,6 +206,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 */
 	@Override
 	public User selectByEamil(String email) {
+		if(StringUtils.isNoneBlank(email)){
+			throw new NullPointerException("邮箱不能为空");
+		}
 		User user = new User();
 		user.setCompanyEmail(email);
 		return selectUserByCondition(user);
@@ -206,7 +277,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("username", t.getUsername());
 		map.put("email", t.getCompanyEmail());
 		map.put("phone", t.getPhone());
-		String id = HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoCreateUrl(), map);
+		String id = HttpClienTool.doGet(ssoCreateUrl, map);
 		return StringUtils.isNoneBlank(id) ? Integer.decode(id) : null;
 	}
 
@@ -223,14 +294,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("phone", user.getPhone());
 		map.put("id", user.getSsoId());
 		map.put("openid", user.getOpenid());
-		return HttpClienTool.doGet(manageProperties.httpClienUrlProperties.getSsoUpdateUrl(), map);
+		return HttpClienTool.doGet(ssoUpdateUrl, map);
 		
 	}
 	
-	private User updateUserByEntryFrom(User t) {
-		return t;
-	}
-
 	/**
 	 * 	根据用户名称查询
 	 */
@@ -240,7 +307,77 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		user.setUsername(username);
 		return this.selectUsersByCondition(user);
 	}
-	
-	
+
+	/**
+	 * 	查询用户详情
+	 */
+	@Override
+	public User selectUserDetail(Integer id) {
+		User user = this.selectById(id);
+		List<Salary> salary = this.salaryService.selectSalaryByUserId(user.getId());
+		user.setSalarys(salary);
+		WorkExperience workExperience = new WorkExperience();
+		workExperience.setUserId(user.getId());
+		List<WorkExperience> workExperiences = this.workExperienceService.select(workExperience );
+		user.setWorkExperiences(workExperiences);
+		Education education = new Education();
+		education.setUserId(user.getId());
+		List<Education> educations = this.educationService.select(education );
+		user.setEducations(educations);
+		FamilyMember familyMember = new FamilyMember();
+		familyMember.setUserId(user.getId());
+		List<FamilyMember> familyMembers = this.familyMemberService.select(familyMember );
+		user.setFamilyMembers(familyMembers);
+		return user;
+	}
+
+	@Override
+	public User getReplaceUser(Integer companyI) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 	根据入职时间与入职申请单号获取工号
+	 */
+	@Override
+	public String selectEmployeeNumberByHiredateAndEntryId(Integer entryId) {
+		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
+		Date date = flowEntry.getEntryDate();
+		Date startDate = DateUtils.updateDateByCondition(date, null, null, 1, null);
+		Date endDate = DateUtils.updateDateByCondition(date, null, null, 31, null);
+		Example example = new Example(User.class);
+		example.createCriteria().andCondition(" hiredate >= " , startDate).andCondition(" hiredate <= ", endDate);
+		example.orderBy(" hiredate ").desc();
+		List<User> list = this.userMapper.selectByExample(example );
+		String fileName = DateUtils.getInTimeYearORmonthORday(date, Calendar.YEAR)+"";
+		Integer month = DateUtils.getInTimeYearORmonthORday(date, Calendar.MONTH)+1;
+		if(month.toString().length() < 2){
+			fileName = fileName + 0 + month;
+		}else{
+			fileName += month;
+		}
+		if(list.size() > 0){
+			if(StringUtils.isNoneBlank(list.get(0).getFilenumber())){
+			String fileNumber = list.stream().map(user -> user.getFilenumber()).max(new Comparator<String>(){
+				@Override
+				public int compare(String o1, String o2) {
+					return Integer.decode(o1) - Integer.decode(o2);
+				}
+			}).get();
+			
+			
+				String number = fileNumber.substring(fileNumber.length()-2, fileNumber.length());
+				Integer decode = Integer.decode(number)+1;
+				if(decode.toString().length() < 2){
+					return fileName+0+decode;
+				}else{
+					return fileName+decode;
+				}
+			}
+		}
+		return fileName+0+1;
+	}
+
 
 }

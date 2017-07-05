@@ -114,6 +114,7 @@
 		<result column="dempname" property="dempname" jdbcType="VARCHAR" />
 		<result column="companyname" property="companyname" jdbcType="VARCHAR" />
 		<result column="postname" property="postname" jdbcType="VARCHAR" />
+		<result column="pUsername" property="pUsername" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<sql id="Base_Column">
@@ -122,7 +123,7 @@
 		,u.is_ding_talk,u.is_status,u.contract_type,u.contract_period,u.leavedate,u.probation,u.regulardate,u.apply_regular_date,u.contract_start_time
 		,u.contract_stop_time,u.contacts,u.marital_status,u.child_status,u.education,u.school,u.is_fulltime,u.is_new_ginseng,u.is_social_security_cards
 		,u.is_accumulation_fund,u.alnature,u.social_security_cardinal_number,u.accumulation_fund_cardinal_number
-		,u.social_security_payment_address,u.deposit_bank,u.bankcard,position.name positionname,demp.name dempname,company.name companyname,post.name postname
+		,u.social_security_payment_address,u.deposit_bank,u.bankcard,position.name positionname,demp.name dempname,company.name companyname,post.name postname,pUser.username pUsername
 	</sql>
 	
 	
@@ -134,6 +135,7 @@
 		left join t_company company on company.id = u.companyid
 		left join t_position position on u.positionid = position.id
 		left join t_post post on u.postid = post.id
+		left join t_user pUser on pUser.id = u.pid
 		<where>
 			u.isdelete = 0
 			<if test="companyEmail != null">

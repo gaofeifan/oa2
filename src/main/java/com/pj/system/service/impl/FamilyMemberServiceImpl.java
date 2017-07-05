@@ -30,6 +30,4 @@ public class FamilyMemberServiceImpl extends AbstractBaseServiceImpl<FamilyMembe
 	public MyMapper<FamilyMember> getMapper() {
 		return familyMemberMapper;
 	}
-
-
 }

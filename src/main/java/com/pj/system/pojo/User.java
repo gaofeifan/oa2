@@ -33,7 +33,7 @@ public class User implements Serializable {
      * 性别 
      */
 	@Column(name="sex")
-	@ApiModelProperty(value = "性别 ", required = false)
+	@ApiModelProperty(value = "性别 男  女 ", required = false)
     private String sex;
 
     /**
@@ -326,6 +326,10 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "系统角色名称（用于数据回现）", required = false)
 	@Transient
 	private String systemRoleName;
+
+	@ApiModelProperty(value = "所属上级", required = false)
+	@Transient
+	private String pUsername;
   
 	/**
      * 	上级id
@@ -404,6 +408,13 @@ public class User implements Serializable {
 	@Transient
 	@ApiModelProperty(value = "家庭成员", required = false)
 	private List<FamilyMember> familyMembers;
+
+	/**
+	 * 	教育经历
+	 */
+	@Transient
+	@ApiModelProperty(value = "教育经历", required = false)
+	private List<Education> educations;
 	
 	/**
 	 * 	工作经历
@@ -412,6 +423,26 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "工作经历", required = false)
 	private List<WorkExperience> workExperiences;
 
+	@ApiModelProperty(value = "工资信息(json格式[{'id(添加修改员工都需要使用)':'1','totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
+    @Transient
+    private String salaryJson;
+
+	@ApiModelProperty(value = "学历信息(json格式[{'id(没有可以不传 更新使用)':'1','learningTime(学习时间)':'111','campus(院校)':'10','specialty(专业)':'1','education(学历)':'200','isFullTime(是否为全日制 0 否 1 是)':'200'}])")
+	@Transient
+	private String educationJson;
+	
+	@ApiModelProperty(value = "工作经历(json格式[{'id(没有可以不传 更新使用)':'1','workTime(工作时间)':'2017.1.1-2017.10.10','duty(职务)':'程序猿','grossWage(税前薪资)':'5555','reasonLeave(离职原因)':'个人原因','certifierAndPhone(证明人及电话)':'张三 11111111111'},{},{}])")
+	@Transient
+	private String workExperienceJson;
+	
+	@ApiModelProperty(value = "家庭成员(json格式[{'id(没有可以不传 更新使用)':'1','memberName(家庭成员名称)':'张三','duty(职务)':'高级程序猿','workUnit(工作单位)':'xxx有限公司','relation(关系)':'兄弟','phone':'13716161616'},{},{}])")
+	@Transient
+	private String familyMembersJson;
+
+	@Transient
+	@ApiModelProperty(value = "入职表单id", required = false)
+	private Integer entryId;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -900,5 +931,63 @@ public class User implements Serializable {
 	public void setCompanyEmailPassword(String companyEmailPassword) {
 		this.companyEmailPassword = companyEmailPassword;
 	}
+
+	public String getpUsername() {
+		return pUsername;
+	}
+
+	public void setpUsername(String pUsername) {
+		this.pUsername = pUsername;
+	}
+
+	public String getSalaryJson() {
+		return salaryJson;
+	}
+
+	public void setSalaryJson(String salaryJson) {
+		this.salaryJson = salaryJson;
+	}
+
+	public String getWorkExperienceJson() {
+		return workExperienceJson;
+	}
+
+	public void setWorkExperienceJson(String workExperienceJson) {
+		this.workExperienceJson = workExperienceJson;
+	}
+
+	public String getFamilyMembersJson() {
+		return familyMembersJson;
+	}
+
+	public void setFamilyMembersJson(String familyMembersJson) {
+		this.familyMembersJson = familyMembersJson;
+	}
+
+	public List<Education> getEducations() {
+		return educations;
+	}
+
+	public void setEducations(List<Education> educations) {
+		this.educations = educations;
+	}
+
+	public String getEducationJson() {
+		return educationJson;
+	}
+
+	public void setEducationJson(String educationJson) {
+		this.educationJson = educationJson;
+	}
+
+	public Integer getEntryId() {
+		return entryId;
+	}
+
+	public void setEntryId(Integer entryId) {
+		this.entryId = entryId;
+	}
+	
+	
 	
 }

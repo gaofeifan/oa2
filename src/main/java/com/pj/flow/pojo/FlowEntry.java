@@ -100,6 +100,12 @@ public class FlowEntry implements Serializable {
     
     @Column
     private Date applyDate;
+
+    @Column
+    private String hour;
+
+    @Column
+    private String peopleWhoCopied;
     
     @Transient
     private List<Salary> salarys;
@@ -119,6 +125,10 @@ public class FlowEntry implements Serializable {
     private String postName;
     @Transient
     private Integer positionId;
+    @Transient
+    private Integer companyId;
+    @Transient
+    private Integer postId;
     @Transient
     private String applyDateStr;
     
@@ -360,6 +370,38 @@ public class FlowEntry implements Serializable {
 
 	public void setPositionId(Integer positionId) {
 		this.positionId = positionId;
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+
+	public String getPeopleWhoCopied() {
+		return peopleWhoCopied;
+	}
+
+	public void setPeopleWhoCopied(String peopleWhoCopied) {
+		this.peopleWhoCopied = peopleWhoCopied;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	public Integer getPostId() {
+		return postId;
+	}
+
+	public void setPostId(Integer postId) {
+		this.postId = postId;
 	}
 
 	@Override

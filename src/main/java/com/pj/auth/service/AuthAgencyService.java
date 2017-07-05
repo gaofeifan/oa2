@@ -1,5 +1,7 @@
 package com.pj.auth.service;
 
+import java.util.Map;
+
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Position;
@@ -37,5 +39,12 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 */
 	AuthAgency selectAuthAgencyByCompanyIdOrDempId(Integer companyId, Integer dempId, Integer grade);
 
-	
+	/**
+	 * 	查询所有的机构
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午2:22:27	
+	 * 	@return
+	 */
+	Map<Integer, Object> selectAuthAgencyALL();
+
 }

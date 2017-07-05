@@ -84,6 +84,15 @@ public interface DempService  extends BaseService<Demp, Integer>{
 	Demp selectParentDempById(Integer dempId);
 
 
+	/**
+	 * 	查询部门根据人事权限
+	 *	@author 	GFF
+	 *	@date		2017年7月5日下午4:58:07	
+	 * 	@return
+	 */
+	List<Demp> selectDempByPersonnelAuthority();
+
+
 	
 
 

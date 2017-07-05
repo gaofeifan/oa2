@@ -196,18 +196,21 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		
 		MessageContent content = new MessageContent();
 		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
-			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-			User user = this.userService.selectById(recruit.getApplyId());
-			content.setApplicatId(user.getId());
-			content.setApplicatName(user.getUsername());
-			content.setApplicatPosition(user.getPositionname());
-			if(user.getDempid() != null){
-				String names = this.dempService.selectDempParentNameById(user.getDempid());
-				content.setApplicatDemp(names);
-			}
-			content.setApplyTime(recruit.getApplyDate());
-			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
-			content.setType(MessageType.RECRUITMENT_MES.getValue());
+			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(null,null,flowUserApplication.getFormId());
+			if(applyId.size() > 0){
+				FlowRecruit recruit = applyId.get(0);
+				User user = this.userService.selectById(recruit.getApplyId());
+				content.setApplicatId(user.getId());
+				content.setApplicatName(user.getUsername());
+				content.setApplicatPosition(user.getPositionname());
+				if(user.getDempid() != null){
+					String names = this.dempService.selectDempParentNameById(user.getDempid());
+					content.setApplicatDemp(names);
+				}
+				content.setApplyTime(recruit.getApplyDate());
+				content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
+				content.setType(MessageType.RECRUITMENT_MES.getValue());
+			} 
 		}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){

@@ -17,6 +17,12 @@
 	 <select id="GetMenu" resultMap="BaseResultMap" parameterType="com.pj.auth.pojo.AuthMenu">
 		select * from auth_menu
 		where 1=1
+		<if test="id != null">
+			AND id= #{id}
+		</if>
+		<if test="name != null">
+			AND name= #{name}
+		</if>
 		<if test="fid != null">
 			AND fid= #{fid}
 		</if>

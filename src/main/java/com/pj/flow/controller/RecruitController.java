@@ -322,4 +322,6 @@ public class RecruitController extends BaseController{
 	}
 	
 	
+	
+	
 }

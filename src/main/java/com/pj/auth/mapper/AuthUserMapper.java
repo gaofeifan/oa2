@@ -7,6 +7,6 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	
 	int insertAuthUser(AuthUser authuser);
 	
-	int deleteByUserid(Integer userid);
+	int deleteByUserid(AuthUser authuser);
 	
 }

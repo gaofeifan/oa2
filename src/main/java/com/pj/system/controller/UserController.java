@@ -73,7 +73,7 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "添加用户", httpMethod = "POST", response = String.class, notes = "添加用户")
 	@RequestMapping(value = "/save.do", method = RequestMethod.POST)
 	@ResponseBody()
-	public Map<String, Object> saveUser(@RequestBody User user){
+	public Map<String, Object> saveUser(@ModelAttribute("user") User user){
 		Map<String, Object> map;
 		try {
 			this.userService.insertSelective( user);
@@ -89,7 +89,7 @@ public class UserController extends BaseController {
 	/**
 	 * 回现用户信息
 	 */
-	@ApiOperation(value = "修改用户回现相关信息", httpMethod = "GET", response = String.class, notes = "修改用户回现相关信息")
+	@ApiOperation(value = "查询用户根据id", httpMethod = "GET", response = String.class, notes = "修改用户回现相关信息")
 	@RequestMapping(value = "/find.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> selectUserById(@ApiParam("主键") @RequestParam("id") Integer id) {
@@ -100,6 +100,25 @@ public class UserController extends BaseController {
 			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
+			map = this.error("获取用户信息异常" + e.getMessage());
+		}
+		return map;
+	}
+	
+	/**
+	 * 	根据id查询用户详情
+	 */
+	@ApiOperation(value = "根据id查询用户详情", httpMethod = "GET", response = String.class, notes = "修改用户回现相关信息")
+	@RequestMapping(value = "/selectUserDetail.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectUserDetail(@ApiParam("主键") @RequestParam("id") Integer id) {
+		Map<String, Object> map;
+		try {
+			User user = this.userService.selectUserDetail(id);
+			map = this.success(user);
+			return map;
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			map = this.error("获取用户信息异常" + e.getMessage());
 		}
@@ -252,5 +271,18 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public void updateUserBJ(@ModelAttribute("user") User user) {
 		this.userService.updateUserBJ(user);
+	}
+	
+	@ApiOperation(value = "根据入职时间查询员工 工号", httpMethod = "GET", response = String.class, notes = "根据入职时间查询员工 工号")
+	@RequestMapping("/selectEmployeeNumberByHiredateAndEntryId.do")
+	@ResponseBody
+	public MappingJacksonValue selectEmployeeNumberByHiredateAndEntryId(@ApiParam("入职id") @RequestParam("entryId") Integer entryId){
+		try {
+			String number = this.userService.selectEmployeeNumberByHiredateAndEntryId(entryId);
+			return this.successJsonp(number);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp("获取单号异常  ："+e.getMessage());
+		}
 	}
 }

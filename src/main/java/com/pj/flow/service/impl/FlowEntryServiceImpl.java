@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitTodoState;
@@ -66,6 +67,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	@Autowired
 	private FlowRecruitService flowRecruitService;
 	@Autowired
+	private AuthAgencyService authAgencyService;
+	@Autowired
 	private FlowActionLogMapper flowActionLogMapper;
 	
 	@Override
@@ -87,7 +90,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		List<Salary> list = JSONArray.toList(array, Salary.class);
 		for(Salary salary : list){
 			salary.setEntryId(entryId);
-			salaryMapper.insertSelective(salary);
+			salaryService.insertSelective(salary);
 		}
 		/***************招聘待办信息保存satrt**********/
 		
@@ -145,12 +148,22 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		messageContentService.addUnapprovedMessage(content);
 		
+		/**
+		 * 	获取审批人员
+		 */
+		FlowRecruit recruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
+		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
+		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType());
 		
 		
 	}
 	@Override
 	public FlowEntry selectById(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectById(entryId);
+		List<Salary> salarys = flowEntry.getSalarys();
+		for (Salary salary : salarys) {
+			salary = (Salary)AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
+		}
 		return flowEntry;
 	}
 
@@ -200,6 +213,15 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	@Override
 	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , Integer timeDivision) {
 		User user = this.userService.selectByEamil(email);
+		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
+		if(StringUtils.isNoneBlank(hour)){
+			flowEntry.setHour(hour);
+		}
+		if(StringUtils.isNoneBlank(usernames)){
+			flowEntry.setPeopleWhoCopied(usernames);
+		}
+		this.flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
+		
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
 		//	设置抄送人
