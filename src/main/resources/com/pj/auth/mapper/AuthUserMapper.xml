@@ -5,16 +5,33 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
     <result column="menuid" property="menuid" jdbcType="INTEGER" />
+    <result column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="dempid" property="dempid" jdbcType="INTEGER" />
     <result column="postid" property="postid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, userid, menuid, postid
+    id, userid, menuid, companyid, dempid, postid
   </sql>
   <insert id="insertAuthUser" parameterType="com.pj.auth.pojo.AuthUser" >
-    insert into auth_user (userid, menuid, postid)
-    values ( #{userid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, #{postid,jdbcType=INTEGER})
+    insert into auth_user (userid, menuid, companyid, dempid, postid)
+    values (#{userid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, #{companyid,jdbcType=INTEGER}, #{dempid,jdbcType=INTEGER}, #{postid,jdbcType=INTEGER})
   </insert>
-    <delete id="deleteByUserid" parameterType="java.lang.Integer" >
-    delete from auth_user where userid = #{userid,jdbcType=INTEGER}
+    <delete id="deleteByUserid" parameterType="com.pj.auth.pojo.AuthUser"  >
+    delete from auth_user where
+    <if test="userid != null">
+			userid= #{userid}
+	</if>
+	<if test="menuid != null">
+			and menuid= #{menuid}
+	</if>
+	<if test="companyid != null">
+			and companyid= #{companyid}
+	</if>
+	<if test="dempid != null">
+			and dempid= #{dempid}
+	</if>
+	<if test="postid != null">
+			and postid= #{postid}
+	</if>
   </delete>
 </mapper>
