@@ -134,9 +134,9 @@ public class RecruitController extends BaseController{
 	@ResponseBody
 	public MappingJacksonValue getLeader(
 			@ApiParam(value = "公司id", required = true)@RequestParam(value = "companyId", required = true)Integer companyId, 
-			@ApiParam(value = "部门id")@RequestParam(value = "dempId")Integer dempId, 
-			@ApiParam(value = "是否是公司领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isCompanyLeader", defaultValue = "0")Integer isCompanyLeader, 
-			@ApiParam(value = "是否是部门领导(0:否，1:是)", defaultValue = "0")@RequestParam(value = "isDempLeader", defaultValue = "0")Integer isDempLeader){
+			@ApiParam(value = "部门id", required = false)@RequestParam(value = "dempId", required = false)Integer dempId, 
+			@ApiParam(value = "是否是公司领导(0:否，1:是)", required = false, defaultValue = "0")@RequestParam(value = "isCompanyLeader", defaultValue = "0", required = false)Integer isCompanyLeader, 
+			@ApiParam(value = "是否是部门领导(0:否，1:是)", required = false, defaultValue = "0")@RequestParam(value = "isDempLeader", defaultValue = "0", required = false)Integer isDempLeader){
 		MappingJacksonValue map;
 		try {
 			User user = flowRecruitService.getLeader(companyId, dempId, isCompanyLeader, isDempLeader);

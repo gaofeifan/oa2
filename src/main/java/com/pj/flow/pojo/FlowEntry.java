@@ -124,6 +124,8 @@ public class FlowEntry implements Serializable {
     @Transient
     private String postName;
     @Transient
+    private String positionName;
+    @Transient
     private Integer positionId;
     @Transient
     private String positionName;
@@ -134,7 +136,16 @@ public class FlowEntry implements Serializable {
     @Transient
     private String applyDateStr;
     
-    public String getSalaryJson() {
+    
+    public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	public String getSalaryJson() {
 		return salaryJson;
 	}
 

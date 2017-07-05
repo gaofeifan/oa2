@@ -81,6 +81,7 @@
     <result column="companyName" property="company" jdbcType="VARCHAR" />
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
     <result column="postName" property="postName" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
     <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
     <result column="hour" property="timeDivision" jdbcType="VARCHAR" />
     <result column="people_who_copied" property="peopleWhoCopied" jdbcType="VARCHAR" />
