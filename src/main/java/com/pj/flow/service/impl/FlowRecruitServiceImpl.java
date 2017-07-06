@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitTodoState;
@@ -20,14 +21,17 @@ import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.mapper.FlowRecruitMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.mapper.FlowUserApplicationMapper;
 import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowRecruit;
+import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
@@ -66,6 +70,10 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	
 	@Autowired
 	private AuthAgencyService authAgencyService;
+	
+	@Autowired
+	private FlowUserApplicationMapper flowUserApplicationMapper;
+	
 	@Override
 	public MyMapper<FlowRecruit> getMapper() {
 		return flowRecruitMapper;
@@ -196,18 +204,38 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	 */
 	@Override
 	public int insertSelective(FlowRecruit t) {
+		super.insertUseGeneratedKeys(t);
+		
+		//保存申请表和申请人的中间表
+		int userId = t.getApplyId();
+		//申请人
+		User user = this.userMapper.selectByPrimaryKey(userId);
+		//申请人部门
+		String names = this.dempService.selectDempParentNameById(user.getDempid());
+		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+		
+		//保存中间表
+		FlowUserApplication fa = new FlowUserApplication();
+		
+		fa.setFormId(t.getId());
+		fa.setUserId(userId);
+		fa.setApplyName(t.getUsername());
+		fa.setApplyTime(t.getApplyDate());
+		fa.setApplyType(ApplyType.RECRUIT.getApplyType());
+		fa.setApplyDempName(names);
+		fa.setApplyCompanyName(company.getName());
+		
+		flowUserApplicationMapper.insertUseGeneratedKeys(fa);
 		/**
 		 * 	保存提交申请的消息通知
 		 */
 		MessageContent content = new MessageContent();
-		User user = this.userMapper.selectByPrimaryKey(t.getApplyId());
-		String names = this.dempService.selectDempParentNameById(user.getDempid());
 		content.setApplicatDemp(names);
 		Position position = this.positionService.selectByPrimaryKey(user.getPositionid());
 		if(position != null){
 			content.setApplicatPosition(position.getName());
 		}
-		content.setApplicatId(t.getApplyId());
+		content.setApplicatId(userId);
 		content.setApplyTime(t.getApplyDate());
 		content.setApplicatName(t.getUsername());
 		content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
@@ -219,7 +247,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		 */
 		Position pt = this.positionService.selectByPrimaryKey(t.getPositionId());
 		authAgencyService.selectApplicantAgency(t.getCompanyId(), t.getDempId(), t.getIsCompanyLeader(), t.getIsDempLeader(), pt, t.getApplyReasonType());
-		return super.insertSelective(t);
+		return 0;
 	}
 	
 	
