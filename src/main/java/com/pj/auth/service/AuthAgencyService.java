@@ -28,7 +28,7 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 * @param recruitApplyReason 
 	 * 	@return
 	 */
-	List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader, Position position, Integer recruitApplyReason);
+	List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader, Position position, Integer recruitApplyReason ,Integer applyId);
 
 	/**
 	 * 	根据公司部门查询机构

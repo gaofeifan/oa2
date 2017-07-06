@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.auth.mapper.AuthAgencyMapper;
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
+import com.pj.config.base.constant.ApprovalResults;
 import com.pj.config.base.constant.RecruitApplyReason;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -56,7 +57,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 
 	@Override
 	public List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader,
-			Position position , Integer recruitApplyReason) {
+			Position position , Integer recruitApplyReason ,Integer applyId) {
 		AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
 		 Integer isCEO = 0;
 		 if(authAgency.getGrade() == 1){
@@ -69,11 +70,15 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		}
 		FlowApprove approve = null;
 		for (int i = 0; i < approvers.size(); i++) {
+			approve = new FlowApprove();
+			if(i == 0){
+				approve.setIsApprove(0);
+			}
+			approve.setApplyId(applyId);
 			approve.setUserid(approvers.get(i).getId());
 			approve.setPositionid(approvers.get(i).getPositionid());
-			
-			
-			
+			approve.setCheckstatus(ApprovalResults.UNTREATED.getValue());
+			this.flowApproveService.insertSelective(approve);
 		}
 		approvers.clear();
 		return null;

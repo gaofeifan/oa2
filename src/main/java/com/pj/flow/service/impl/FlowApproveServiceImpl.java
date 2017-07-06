@@ -193,7 +193,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		/**
 		 * 	保存消息通知
 		 */
-		
 		MessageContent content = new MessageContent();
 		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
 			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(null,null,flowUserApplication.getFormId());

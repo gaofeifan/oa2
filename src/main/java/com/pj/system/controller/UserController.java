@@ -289,11 +289,13 @@ public class UserController extends BaseController {
 	@RequestMapping("/selectUserByCompanyIdAndPostId.do")
 	@ResponseBody
 	public MappingJacksonValue selectUserByCompanyIdAndPostId(@ApiParam("公司id") @RequestParam("companyId") Integer companyId,
-															  @ApiParam("岗位id") @RequestParam("postId") Integer postId){
+															  @ApiParam(name="岗位id",required=false) @RequestParam(value="postId",required=false) Integer postId){
 		try {
 			User record = new User();
 			record.setCompanyid(companyId);
-			record.setPostid(postId);
+			if(postId != null){
+				record.setPostid(postId);
+			}
 			record.setIsdelete(0);
 			return this.successJsonp(this.userService.select(record));
 		} catch (Exception e) {

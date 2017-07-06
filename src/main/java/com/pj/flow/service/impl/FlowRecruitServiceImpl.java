@@ -196,6 +196,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	 */
 	@Override
 	public int insertSelective(FlowRecruit t) {
+		int i = super.insertSelective(t);
 		/**
 		 * 	保存提交申请的消息通知
 		 */
@@ -218,8 +219,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		 * 	获取审批流程人员
 		 */
 		Position pt = this.positionService.selectByPrimaryKey(t.getPositionId());
-		authAgencyService.selectApplicantAgency(t.getCompanyId(), t.getDempId(), t.getIsCompanyLeader(), t.getIsDempLeader(), pt, t.getApplyReasonType());
-		return super.insertSelective(t);
+		authAgencyService.selectApplicantAgency(t.getCompanyId(), t.getDempId(), t.getIsCompanyLeader(), t.getIsDempLeader(), pt, t.getApplyReasonType(),1);
+		return i; 
 	}
 	
 	

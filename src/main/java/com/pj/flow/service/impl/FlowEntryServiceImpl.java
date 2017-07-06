@@ -150,14 +150,13 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		
 		/**
 		 * 	获取并保存审批人员
+		 * 
 		 */
 		FlowRecruit recruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
-		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType());
-		
-		
-		
+		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),1);
 	}
+	
 	@Override
 	public FlowEntry selectById(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectById(entryId);

@@ -13,8 +13,6 @@ import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.RecruitApplyReason;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
-import com.pj.system.service.CompanyService;
-import com.pj.system.service.DempService;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.UserService;
 
@@ -50,6 +48,6 @@ public class WorkFlowController {
 	public void getRecruitmentFlow(){
 		User user = this.userService.selectByPrimaryKey(342);
 		Position position = this.positionService.selectByPrimaryKey(user.getPositionid());
-		authAgencyService.selectApplicantAgency(user.getCompanyid(), user.getDempid(), user.getIsCompanyBoss(),user.getIsDepartmentHead(), position, RecruitApplyReason.STRAT.getReason());
+		authAgencyService.selectApplicantAgency(user.getCompanyid(), user.getDempid(), user.getIsCompanyBoss(),user.getIsDepartmentHead(), position, RecruitApplyReason.STRAT.getReason(),2);
 	}
 }
