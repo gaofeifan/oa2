@@ -63,4 +63,48 @@ public class AuthMenuController  extends BaseController{
 		}
 		return this.successJsonp(this.error("查询菜单信息失败"));
 	}
+	
+	@RequestMapping(value="/OneAuthlist.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue GetOneMenubyUserid(
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			List<AuthMenu> authmenus = this.authMenuService.GetOneMenubyUserid(userid);
+			return this.successJsonp(authmenus);
+		} catch (Exception e) {
+			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("查询菜单信息失败"));
+	}
+	
+	@RequestMapping(value="/TwoAuthlist.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue GetMenubyUserid(
+			@ApiParam("一级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			List<AuthMenu> authmenus = this.authMenuService.GetTwoMenubyUserid( userid, fid);
+			return this.successJsonp(authmenus);
+		} catch (Exception e) {
+			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("查询菜单信息失败"));
+	}
+	
+	@RequestMapping(value="/AuthUser.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询用户权限", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue GetAuthMenubyUserid(
+			@ApiParam("菜单名称") @RequestParam(value = "name", required = true) String name,
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			int num = this.authMenuService.GetAuthMenubyUserid( name, userid);
+			return this.successJsonp(num);
+		} catch (Exception e) {
+			logger.error("【AuthMenuController.GetAuthMenubyUserid】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("查询用户权限失败"));
+	}
 }

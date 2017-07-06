@@ -13,4 +13,10 @@ public interface AuthMenuMapper extends MyMapper<AuthMenu> {
 	List<AuthMenu> GetMenu(AuthMenu authmenu);
 	
 	List<AuthMenu> GetMenubyUserid(@Param(value="grade") Integer grade,@Param(value="auth") Integer auth,@Param(value="userid") Integer userid);
+	
+	List<AuthMenu> GetOneMenubyUserid(@Param(value="userid") Integer userid);
+	
+	List<AuthMenu> GetTwoMenubyUserid(@Param(value="userid") Integer userid,@Param(value="fid") Integer fid);
+	  
+	int GetAuthMenubyUserid(@Param(value="name") String name,@Param(value="userid") Integer userid);
 }
