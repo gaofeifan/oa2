@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.constant.SalaryType;
@@ -19,16 +20,21 @@ import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.mapper.FlowUserApplicationMapper;
 import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowRecruitTodo;
+import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
+import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.SalaryMapper;
+import com.pj.system.mapper.UserMapper;
+import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Salary;
 import com.pj.system.pojo.User;
@@ -70,6 +76,12 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private AuthAgencyService authAgencyService;
 	@Autowired
 	private FlowActionLogMapper flowActionLogMapper;
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
+	private CompanyMapper companyMapper;
+	@Autowired
+	private FlowUserApplicationMapper flowUserApplicationMapper;
 	
 	@Override
 	public MyMapper<FlowEntry> getMapper() {
@@ -92,6 +104,27 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			salary.setEntryId(entryId);
 			salaryService.insertSelective(salary);
 		}
+		//申请人
+		Integer userId = flowEntry.getApplyId();
+		User user = this.userMapper.selectByPrimaryKey(userId);
+		//申请人部门
+		String dempName = this.dempService.selectDempParentNameById(user.getDempid());
+		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+		
+		//保存中间表
+		FlowUserApplication fa = new FlowUserApplication();
+		
+		fa.setFormId(entryId);
+		fa.setUserId(userId);
+		fa.setApplyName(flowEntry.getUsername());
+		fa.setApplyTime(flowEntry.getApplyDate());
+		fa.setApplyType(ApplyType.ENTRY.getApplyType());
+		fa.setApplyDempName(dempName);
+		fa.setApplyCompanyName(company.getName());
+		
+		flowUserApplicationMapper.insertUseGeneratedKeys(fa);
+		
+		
 		/***************招聘待办信息保存satrt**********/
 		
 		//若提交，提交入职申请后再更新到已提交栏目，招聘中状态减一
@@ -154,7 +187,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 */
 		FlowRecruit recruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
-		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),1);
+		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),fa.getId());
 	}
 	
 	@Override

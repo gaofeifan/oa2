@@ -41,6 +41,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		}
 		return num;
 	}
+	
 	@Override
 	public void insertRecruitTodo(Integer applyId, String applyType) {
 		/**
@@ -49,7 +50,6 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		 * 如是招聘中，则先查询同一个招聘id且待办状态是
 		 * 招聘中的招聘是否已经存在
 		 * 存在则number+1，不存在则新增
-		 * 
 		 * 已审核，则会添加审核数据,原来已提交个数减一
 		 */
 		if("recruit".equals(applyType)){
@@ -78,7 +78,6 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
 			int num = hasCommitTodo.getNumber();
 			if(num > 1){
-				hasCommitTodo.setNumber(num - 1);
 				flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
 			}else{
 				flowRecruitTodoMapper.delete(hasCommitTodo);

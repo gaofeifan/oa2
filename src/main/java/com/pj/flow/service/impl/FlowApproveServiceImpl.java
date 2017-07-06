@@ -21,6 +21,7 @@ import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowApproveService;
+import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.UserMapper;
@@ -67,6 +68,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private FlowRecruitTodoService flowRecruitTodoService;
 	
 	@Override
 	public MyMapper<FlowApprove> getMapper() {
@@ -156,7 +160,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		for (int i = 0; i < list.size(); i++) {
 			FlowApprove innerApprove = list.get(i);
 			if(userid == innerApprove.getUserid()){//当前审批人
-				
 				delStartIndex = i + 1;
 				
 				innerApprove.setCheckstatus(checkstatus);
@@ -186,6 +189,11 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		record.setApplyId(flowUserApplication.getId());
 		List<FlowApprove> list = super.select(record );
 		List<Boolean> collect = list.stream().map(approve -> approve.getCheckstatus() != 0).collect(Collectors.toList());
+		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 0).collect(Collectors.toList());
+		//	审批人员都同意 修改
+		if(!agrees.contains(false)){
+			flowRecruitTodoService.insertRecruitTodo(flowUserApplication.getFormId(), applyType);
+		}
 		//	判断是否所有人员都审批完成
 		if(collect.contains(false)){
 			return ;

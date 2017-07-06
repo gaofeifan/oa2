@@ -71,7 +71,8 @@ public class AuthAgencyController extends BaseController{
 	@ApiOperation(value = "根据id更新机构权限", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue updateAuthAgencyById(@ModelAttribute("authAgency")AuthAgency authAgency ){
 		try {
-			this.authAgencyService.updateByPrimaryKeySelective(authAgency);
+			authAgency.setIsdelete(0);
+			this.authAgencyService.updateByPrimaryKey(authAgency);
 			return this.successJsonp(this.success());
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.updateAuthAgencyById】"+e.getMessage());
