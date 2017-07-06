@@ -1,11 +1,11 @@
 package com.pj.auth.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Position;
+import com.pj.system.pojo.User;
 
 /**
  *	@author		GFF
@@ -28,7 +28,7 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 * @param recruitApplyReason 
 	 * 	@return
 	 */
-	AuthAgency selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader, Position position, Integer recruitApplyReason);
+	List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader, Position position, Integer recruitApplyReason);
 
 	/**
 	 * 	根据公司部门查询机构
@@ -47,5 +47,12 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 * 	@return
 	 */
 	List<Object> selectAuthAgencyALL();
+
+	/**
+	 * 	查询机构级别
+	 *	@author 	GFF
+	 *	@date		2017年7月6日上午9:30:41
+	 */
+	AuthAgency selectInstitutionalLevel();
 
 }

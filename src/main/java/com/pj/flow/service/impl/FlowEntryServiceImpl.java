@@ -149,11 +149,12 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		messageContentService.addUnapprovedMessage(content);
 		
 		/**
-		 * 	获取审批人员
+		 * 	获取并保存审批人员
 		 */
 		FlowRecruit recruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
 		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType());
+		
 		
 		
 	}

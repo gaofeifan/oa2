@@ -264,7 +264,7 @@ public class User implements Serializable {
 	 */
 	@Column(name="education")
 	@ApiModelProperty(value = "学历", required = false)
-	private String education;
+	private Integer education;
 	
 	/**
 	 * 	申请转正时间
@@ -724,11 +724,11 @@ public class User implements Serializable {
 		this.maritalStatus = maritalStatus;
 	}
 
-	public String getEducation() {
+	public Integer getEducation() {
 		return education;
 	}
 
-	public void setEducation(String education) {
+	public void setEducation(Integer education) {
 		this.education = education;
 	}
 

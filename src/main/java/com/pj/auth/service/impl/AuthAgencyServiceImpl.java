@@ -2,11 +2,8 @@ package com.pj.auth.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	@Autowired
 	private FlowApproveService flowApproveService;
 	
-	private Set<User> approvers = new HashSet<User>();
+	private List<User> approvers = new ArrayList<User>();
 
 	@Override
 	public MyMapper<AuthAgency> getMapper() {
@@ -58,9 +55,9 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	}
 
 	@Override
-	public AuthAgency selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader,
+	public List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader,
 			Position position , Integer recruitApplyReason) {
-		 AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
+		AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
 		 Integer isCEO = 0;
 		 if(authAgency.getGrade() == 1){
 			isCEO = 1;
@@ -70,15 +67,15 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		if(recruitApplyReason == RecruitApplyReason.STRAT.getReason()){
 			addCEO();
 		}
-		for (User user : approvers) {
-			FlowApprove approve = new FlowApprove();
-			approve.setUserid(user.getId());
-			approve.setPositionid(user.getPositionid());
-			System.out.println(approve.toString());
-			this.flowApproveService.insertSelective(approve);
+		FlowApprove approve = null;
+		for (int i = 0; i < approvers.size(); i++) {
+			approve.setUserid(approvers.get(i).getId());
+			approve.setPositionid(approvers.get(i).getPositionid());
+			
+			
+			
 		}
 		approvers.clear();
-		
 		return null;
 	}
 
@@ -193,5 +190,15 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			data.add(map);
 		}
 		return data;
+	}
+
+	/**
+	 * 	获取机构级别
+	 */
+	@Override
+	public AuthAgency selectInstitutionalLevel() {
+		AuthAgency authAgency = this.authAgencyMapper.selectAuthAgencyMaxGrade();
+		authAgency.setGrade(authAgency.getGrade()+1);
+		return authAgency;
 	}
 }

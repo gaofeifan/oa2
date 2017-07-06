@@ -32,7 +32,7 @@
 		<result column="contacts" property="contacts" jdbcType="VARCHAR" />
 		<result column="marital_status" property="maritalStatus" jdbcType="INTEGER" />
 		<result column="child_status" property="childStatus" jdbcType="INTEGER" />
-		<result column="education" property="education" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="INTEGER" />
 		<result column="school" property="school" jdbcType="VARCHAR" />
 		<result column="is_fulltime" property="isFulltime" jdbcType="INTEGER" />
 		<result column="is_new_ginseng" property="isNewGinseng" jdbcType="INTEGER" />
@@ -89,7 +89,7 @@
 		<result column="contacts" property="contacts" jdbcType="VARCHAR" />
 		<result column="marital_status" property="maritalStatus" jdbcType="INTEGER" />
 		<result column="child_status" property="childStatus" jdbcType="INTEGER" />
-		<result column="education" property="education" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="INTEGER" />
 		<result column="school" property="school" jdbcType="VARCHAR" />
 		<result column="is_fulltime" property="isFulltime" jdbcType="INTEGER" />
 		<result column="is_new_ginseng" property="isNewGinseng" jdbcType="INTEGER" />

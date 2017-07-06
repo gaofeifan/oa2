@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -344,7 +345,9 @@ public class AESUtils {
 						if (ENCRYPTHEX.equals(key)) {
 							field.set(obj, encryptHex(object.toString(), ALGORITHM));
 						} else {
-							field.set(obj, decryptHex(object.toString(), ALGORITHM));
+							if(!isNum(obj.toString())){
+								field.set(obj, decryptHex(object.toString(), ALGORITHM));
+							}
 						}
 					}
 				}
@@ -355,5 +358,13 @@ public class AESUtils {
 		return obj;
 	}
 	
+	public static Boolean isNum(String str){
+		 Pattern pattern = Pattern.compile("^-?[0-9]+");
+	     if(pattern.matcher(str).matches()){
+	         return true;
+	     } else {
+	         return false;
+	     }
+	}
 
 }

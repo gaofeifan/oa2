@@ -43,9 +43,6 @@ public class FlowApprove implements Serializable {
     private Integer isApprove;
 
 	@Column
-    private Integer applyUserId;
-
-	@Column
     private Date startTime;
 
 	@Column
@@ -163,14 +160,6 @@ public class FlowApprove implements Serializable {
 		this.isApprove = isApprove;
 	}
 
-	public Integer getApplyUserId() {
-		return applyUserId;
-	}
-
-	public void setApplyUserId(Integer applyUserId) {
-		this.applyUserId = applyUserId;
-	}
-
 	public Integer getIsMessaging() {
 		return isMessaging;
 	}
@@ -183,7 +172,7 @@ public class FlowApprove implements Serializable {
 	public String toString() {
 		return "FlowApprove [id=" + id + ", recordid=" + recordid + ", userid=" + userid + ", positionid=" + positionid
 				+ ", handledate=" + handledate + ", handleidea=" + handleidea + ", checkstatus=" + checkstatus
-				+ ", applyId=" + applyId + ", isApprove=" + isApprove + ", applyUserId=" + applyUserId + ", startTime="
+				+ ", applyId=" + applyId + ", isApprove=" + isApprove + ", startTime="
 				+ startTime + ", isMessaging=" + isMessaging + ", approveName=" + approveName + ", positionName="
 				+ positionName + ", approveDateStr=" + approveDateStr + "]";
 	}

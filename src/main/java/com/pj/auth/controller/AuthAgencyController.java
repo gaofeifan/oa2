@@ -125,6 +125,18 @@ public class AuthAgencyController extends BaseController{
 		return this.successJsonp(this.error("查询机构异常"));
 	}
 	
+	@RequestMapping(value="/selectInstitutionalLevel.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询机构级别", httpMethod = "GET", response = Object.class)
+	public @ResponseBody Object selectInstitutionalLevel(){
+		try {
+			AuthAgency authAgency = this.authAgencyService.selectInstitutionalLevel();
+			return this.successJsonp(authAgency);
+		} catch (Exception e) {
+			logger.error("【AuthAgencyController.selectInstitutionalLevel】 查询异常 ： "+e.getMessage());
+			return this.errorToJsonp("查询异常 ："+e.getMessage());
+		}
+	}
+	
 	
 	
 	
