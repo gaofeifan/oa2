@@ -249,6 +249,14 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		return i; 
 	}
 	
+	/**
+	 * 	根据入职查询招聘
+	 */
+	@Override
+	public FlowRecruit selectEntryNum(Integer entryId) {
+		return this.selectEntryNum(entryId);
+	}
+	
 	
 
 }
