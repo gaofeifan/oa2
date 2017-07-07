@@ -20,7 +20,9 @@ import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.base.tool.HttpClienTool;
 import com.pj.flow.pojo.FlowEntry;
+import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowEntryService;
+import com.pj.flow.service.FlowRecruitService;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
 import com.pj.system.mapper.UserMapper;
@@ -46,6 +48,8 @@ import tk.mybatis.mapper.entity.Example;
 @Service
 public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> implements UserService {
 	
+	@Resource
+	private FlowRecruitService flowRecruitService;
 	@Resource
 	private UserMapper userMapper;
 	@Resource
@@ -120,6 +124,15 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
 			workExperienceList.stream().forEach(work -> work.setUserId(t.getId()));
 			this.workExperienceService.insertList(workExperienceList);
+			
+			
+			
+			/**
+			 * 	修改招聘入职人数
+			 */
+			FlowRecruit recruit = this.flowRecruitService.selectEntryNum(t.getEntryId());
+			recruit.setEntryNum(recruit.getEntryNum()+1);
+			this.flowRecruitService.updateByPrimaryKeySelective(recruit);
 			return i;
 		}
 		return 0;

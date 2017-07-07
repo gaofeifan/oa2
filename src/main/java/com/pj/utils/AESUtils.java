@@ -22,7 +22,7 @@ public class AESUtils {
 
 	public static final String ENCRYPTHEX = "encryptHex";	//	加密
 	public static final String DECRYPTHEX = "decryptHex";	//	解密
-	private static final String ALGORITHM = "AES";
+	public static final String ALGORITHM = "AES";
 	private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
 	private static final String CHARSET = "utf-8";
 

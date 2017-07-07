@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
 @Table(name = "t_company")
@@ -54,6 +55,10 @@ public class Company implements Serializable {
     @Column(name="hierarchy")
     private Integer hierarchy;
 
+    
+	@Transient
+	private String choice;
+	
     private static final long serialVersionUID = 1L;
 
     
@@ -128,6 +133,14 @@ public class Company implements Serializable {
     public void setHierarchy(Integer hierarchy) {
         this.hierarchy = hierarchy;
     }
+    
+	public String getChoice() {
+		return choice;
+	}
+
+	public void setChoice(String choice) {
+		this.choice = choice;
+	}
 
     @Override
     public String toString() {

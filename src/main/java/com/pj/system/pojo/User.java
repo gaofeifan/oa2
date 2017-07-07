@@ -135,10 +135,10 @@ public class User implements Serializable {
     private String nation;
 
     /**
-     * 户口性质
+     *  1 农业 0 城镇  2未知
      */
 	@Column(name="alnature")
-	@ApiModelProperty(value = "户口性质", required = false)
+	@ApiModelProperty(value = " 1 农业 0 城镇  2未知", required = false)
     private String alnature;
 
     /**
@@ -149,10 +149,10 @@ public class User implements Serializable {
     private String school;
 
     /**
-     * 是否全日制 1是0否
+     * 是否全日制 1是0否2未知
      */
 	@Column(name="is_fulltime")
-	@ApiModelProperty(value = "是否全日制 1是0否", required = false)
+	@ApiModelProperty(value = "是否全日制 1是0否2未知", required = false)
     private Integer isFulltime;
 
     /**
@@ -212,24 +212,24 @@ public class User implements Serializable {
     private Integer companyid;
 
 	/**
-	 * 是否为新参保 1 是 0否
+	 * 是否为新参保 1 是 0否  2未知
 	 */
 	@Column(name="is_new_ginseng")
-	@ApiModelProperty(value = "是否为新参保 1 是 0否", required = false)
+	@ApiModelProperty(value = "是否为新参保 1 是 0否  2未知", required = false)
 	private Integer isNewGinseng;
 
     /**
-     * 是否有社保卡   1 是 0否
+     * 是否有社保卡   1 是 0否 2未知
      */
 	@Column(name="is_social_security_cards")
-	@ApiModelProperty(value = "是否有社保卡   1 是 0否", required = false)
+	@ApiModelProperty(value = "是否有社保卡   1 是 0否 2未知", required = false)
     private Integer isSocialSecurityCards;
 
     /**
-     * 	合同类型		1劳动合同   2 实习合同
+     * 	合同类型		1劳动合同   2 实习合同  3 劳务合同
      */
 	@Column(name="contract_type")
-	@ApiModelProperty(value = "合同类型		1劳动合同  0  实习合同", required = false)
+	@ApiModelProperty(value = "合同类型 1劳动合同  0  实习合同 3 劳务合同", required = false)
     private Integer contractType;
 
 	/**
@@ -246,17 +246,17 @@ public class User implements Serializable {
 	private String weChatName;
 
 	/**
-	 * 	子女状况 0 未 1 已
+	 * 	子女状况 0 未 1 已  2 未知
 	 */
 	@Column(name="child_status")
-	@ApiModelProperty(value = "子女状况 0 未 1 已", required = false)
+	@ApiModelProperty(value = "子女状况 0 未 1 已 2 未知", required = false)
 	private String childStatus;
 
 	/**
 	 * 	婚姻状况 0 未 1 已 2离异
 	 */
 	@Column(name="marital_status")
-	@ApiModelProperty(value = "婚姻状况 0 未 1 已 2离异", required = false)
+	@ApiModelProperty(value = "婚姻状况 0 未 1 已 2离异  3 未知", required = false)
 	private String maritalStatus;
 
 	/**
@@ -348,9 +348,9 @@ public class User implements Serializable {
 	private String openid;
 	
 	/**
-	 * 	是否有公积金 1是 0否
+	 * 	是否有公积金 1是 0否 2 未知
 	 */
-	@ApiModelProperty(value = "是否有公积金 1是 0否", required = false)
+	@ApiModelProperty(value = "是否有公积金 1是 0否 2 未知", required = false)
 	@Column(name="is_accumulation_fund")
 	private Integer isAccumulationFund; 
 	/**

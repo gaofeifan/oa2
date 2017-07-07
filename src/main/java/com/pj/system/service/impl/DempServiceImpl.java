@@ -187,6 +187,11 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 		}
 		return demps;
 	}
+
+	@Override
+	public List<Demp> SelectByUserid(Integer menuid, Integer userid,Integer companyid) {
+		return this.dempMapper.SelectByUserid(menuid,userid,companyid);
+	}
 	
 	
 	

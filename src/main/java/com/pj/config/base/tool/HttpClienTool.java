@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -166,4 +167,38 @@ public class HttpClienTool {
 	                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
 			return base;
 	 }
+	 
+	 public static JSONObject doGetToMap(String url, Map<String, Object> map) {
+			List<NameValuePair> params = getUrlParams(map);
+			CloseableHttpResponse res = null;
+			CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+			HttpGet get = new HttpGet(url + (params != null ? "?" + URLEncodedUtils.format(params, "UTF-8"): ""));
+			try {
+				res = httpclient.execute(get);
+				if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					String result = EntityUtils.toString(res.getEntity());
+					return JSONObject.fromObject(result);
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+
+			} finally {
+				// 关闭连接 ,释放资源
+				try {
+					if(httpclient != null){
+						httpclient.close();
+					}
+					if(res != null){
+						res.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+	 
+
+	
+		
 }

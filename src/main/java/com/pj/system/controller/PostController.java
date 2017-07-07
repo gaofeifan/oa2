@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
+import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.PostService;
@@ -162,6 +163,19 @@ public class PostController extends SystemManageController {
 		Map<String, Object> map = this.success(flag);
 		return map;
 		
+	}
+	
+	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")
+	@RequestMapping(value="/selectPostByUserid.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectPostByUserid(@ApiParam("userid") @RequestParam("userid")Integer userid,@ApiParam("menuid") @RequestParam("menuid")Integer menuid,@ApiParam("dempid") @RequestParam("dempid")Integer dempid){
+		try {
+			List<Post> post = this.postService.SelectByUserid(userid, menuid,dempid);
+			return this.success(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
 	}
 	
 }

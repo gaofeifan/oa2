@@ -60,4 +60,13 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 	 */
 	FlowRecruit getUserInfo(Integer recruitId);
 
+	/**
+	 * 	查询入职人数
+	 *	@author 	GFF
+	 *	@date		2017年7月6日下午3:58:06	
+	 * 	@param entryId
+	 * 	@return
+	 */
+	FlowRecruit selectEntryNum(Integer entryId);
+
 }
