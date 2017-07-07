@@ -2,6 +2,8 @@ package com.pj.system.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.system.pojo.Demp;
 
@@ -44,6 +46,7 @@ public interface DempMapper extends MyMapper<Demp> {
 	 */
 	Demp selectParentDempById(Integer dempId);
 
+	List<Demp> SelectByUserid(@Param(value = "userid") Integer userid,@Param(value = "menuid") Integer menuid,@Param(value = "companyid") Integer companyid);
 	
 	
 }

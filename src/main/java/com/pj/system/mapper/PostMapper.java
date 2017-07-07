@@ -2,6 +2,8 @@ package com.pj.system.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.system.pojo.Post;
 
@@ -14,5 +16,7 @@ public interface PostMapper extends MyMapper<Post>{
 	 * 	@return
 	 */
 	List<Post> selectALL(Post post);
+	
+	List<Post> SelectByUserid(@Param(value = "userid") Integer userid,@Param(value = "menuid") Integer menuid,@Param(value = "dempid") Integer dempid);
 
 }

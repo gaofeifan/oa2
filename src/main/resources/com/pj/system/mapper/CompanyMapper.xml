@@ -10,6 +10,8 @@
     <result column="pId" property="pId" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
+    <result column="choice" property="choice" jdbcType="VARCHAR" />
+    
   </resultMap>
   
   <sql id="Base_column">
@@ -28,5 +30,26 @@
 			<include refid="Base_column"/> 
 		from 
 		t_company where id = (select pId from t_company where id=#{id})
+	</select>
+	
+	<select id="selectByUserid" parameterType="int" resultMap="BaseResultMap">
+		select t_company.id,t_company.name,COUNT(auth_user.companyid) as choice from t_company 
+		LEFT JOIN auth_user on t_company.id=auth_user.companyid and menuid=#{menuid} AND userid=#{userid}
+		where isdelete=0
+		and t_company.id in (
+		select companyid from (
+		select t_demp.companyid from t_demp 
+		LEFT JOIN auth_user on t_demp.id=auth_user.dempid and menuid=#{menuid} AND userid=#{userid}
+		where t_demp.id not in (SELECT dempid from auth_user  where userid !=#{userid} AND menuid=#{menuid} AND postid is NULL)
+		and  t_demp.id not in (SELECT demp_id from t_post) and t_demp.isdelete=0  
+		union all
+		select t_demp.companyid from t_post
+		left JOIN t_demp on t_demp.id=t_post.demp_id
+		LEFT JOIN auth_user on t_demp.id=auth_user.dempid and menuid=#{menuid} AND userid=#{userid}
+		where  t_post.isdelete = 0 and t_post.id not in (SELECT postid from auth_user  where userid !=#{userid} AND menuid=#{menuid} AND postid is not NULL) and t_demp.isdelete=0  
+		) aaa
+		GROUP BY companyid
+		)
+		group by t_company.id,t_company.name
 	</select>
 </mapper>

@@ -13,7 +13,7 @@
     <!-- 查询使用 -->
     <result column="companyname" property="companyname" jdbcType="VARCHAR" />
     <result column="dempname" property="dempname" jdbcType="VARCHAR" />
-    
+    <result column="choice" property="choice" jdbcType="VARCHAR" />
   </resultMap>
  <select id="selectALL" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.Post">
   SELECT
@@ -42,5 +42,15 @@
 		</if>
 	</where>	
 	ORDER BY p.id
+  </select>
+  
+  <select id="SelectByUserid" resultMap="BaseResultMap" >
+	select t_post.id,t_post.name,t_post.demp_id,t_post.company_id,COUNT(auth_user.postid) as choice from t_post
+	LEFT JOIN auth_user on t_post.id=auth_user.postid and menuid=#{menuid} AND userid=#{userid}
+	where t_post.isdelete = 0 and t_post.id not in (select postid from auth_user where menuid=#{menuid} AND userid!=#{userid} and postid is not null )
+	<if test="dempid !=null">
+		demp_id = #{dempid}
+	</if>
+	GROUP BY  t_post.id,t_post.name,t_post.demp_id,t_post.company_id
   </select>
 </mapper>

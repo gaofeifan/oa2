@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.pojo.AuthUser;
+import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PostMapper;
@@ -27,6 +29,8 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	@Resource
 	private UserService userService;
 	
+	@Resource
+	private AuthUserService authUserService;
 
 	@Override
 	public MyMapper<Post> getMapper() {
@@ -80,6 +84,13 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 		criteria.andCondition(" isdelete = 0 ");
 		List<Post> list = this.postMapper.selectByExample(example);
 		return list.size() != 0 ? list.get(0).getId() : null;
+	}
+
+	@Override
+	public List<Post> SelectByUserid(Integer userid,Integer menuid,Integer dempid) {
+
+		List<Post> posts = this.postMapper.SelectByUserid(userid,menuid,dempid);
+		return posts;
 	}
 	
 

@@ -75,31 +75,38 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 								authUserMapper.insertAuthUser(authuser);
 							}else{
 								//循环所有公司
-								List<Company> companys = this.companyService.selectNotDeleteALL();
+								List<Company> companys = this.companyService.selectByUserid(userid, ThreeauthMenulist.get(j).getId());
 								for(int a = 0 ;  a <companys.size(); a++ ){
 									//循环所有部门
-									List<Demp> demps = this.dempService.selectByCompanyId(companys.get(a).getId());
-									
-									for(int q = 0 ;  q <demps.size(); q++ ){
-										post.setDempId(demps.get(q).getId());
-										List<Post> posts = this.postService.selectALL(post);
-										if(posts.size()==0){
-											AuthUser authuser=new AuthUser();
-											authuser.setUserid(userid);
-											authuser.setMenuid(ThreeauthMenulist.get(j).getId());
-											authuser.setCompanyid(companys.get(a).getId());
-											authuser.setDempid(demps.get(q).getId());
-											authUserMapper.insertAuthUser(authuser);
-											
-										}else{
-											for(int w = 0 ;  w <posts.size(); w++ ){
+									List<Demp> demps = this.dempService.SelectByUserid(userid,  ThreeauthMenulist.get(j).getId(), companys.get(a).getId());
+									if(demps.size()==0){
+										AuthUser authuser=new AuthUser();
+										authuser.setUserid(userid);
+										authuser.setMenuid(ThreeauthMenulist.get(j).getId());
+										authuser.setCompanyid(companys.get(a).getId());
+										authUserMapper.insertAuthUser(authuser);
+										
+									}else{
+										for(int q = 0 ;  q <demps.size(); q++ ){
+											List<Post> posts = this.postService.SelectByUserid(userid, ThreeauthMenulist.get(j).getId(), demps.get(q).getId());
+											if(posts.size()==0){
 												AuthUser authuser=new AuthUser();
 												authuser.setUserid(userid);
 												authuser.setMenuid(ThreeauthMenulist.get(j).getId());
 												authuser.setCompanyid(companys.get(a).getId());
 												authuser.setDempid(demps.get(q).getId());
-												authuser.setPostid(posts.get(w).getId());
 												authUserMapper.insertAuthUser(authuser);
+												
+											}else{
+												for(int w = 0 ;  w <posts.size(); w++ ){
+													AuthUser authuser=new AuthUser();
+													authuser.setUserid(userid);
+													authuser.setMenuid(ThreeauthMenulist.get(j).getId());
+													authuser.setCompanyid(companys.get(a).getId());
+													authuser.setDempid(demps.get(q).getId());
+													authuser.setPostid(posts.get(w).getId());
+													authUserMapper.insertAuthUser(authuser);
+												}
 											}
 										}
 									}
@@ -151,31 +158,39 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							authUserMapper.insertAuthUser(authuser);
 						}else{
 							//循环所有公司
-							List<Company> companys = this.companyService.selectNotDeleteALL();
+							List<Company> companys = this.companyService.selectByUserid(userid, ThreeauthMenulist.get(j).getId());
 							for(int a = 0 ;  a <companys.size(); a++ ){
 								//循环所有部门
-								List<Demp> demps = this.dempService.selectByCompanyId(companys.get(a).getId());
-								
-								for(int q = 0 ;  q <demps.size(); q++ ){
-									post.setDempId(demps.get(q).getId());
-									List<Post> posts = this.postService.selectALL(post);
-									if(posts.size()==0){
-										AuthUser authuser=new AuthUser();
-										authuser.setUserid(userid);
-										authuser.setMenuid(ThreeauthMenulist.get(j).getId());
-										authuser.setCompanyid(companys.get(a).getId());
-										authuser.setDempid(demps.get(q).getId());
-										authUserMapper.insertAuthUser(authuser);
+								List<Demp> demps = this.dempService.SelectByUserid(userid, ThreeauthMenulist.get(j).getId(), companys.get(a).getId());
+								if(demps.size()==0){
+									AuthUser authuser=new AuthUser();
+									authuser.setUserid(userid);
+									authuser.setMenuid(ThreeauthMenulist.get(j).getId());
+									authuser.setCompanyid(companys.get(a).getId());
+									authUserMapper.insertAuthUser(authuser);
+									
+								}else{
+									for(int q = 0 ;  q <demps.size(); q++ ){
 										
-									}else{
-										for(int w = 0 ;  w <posts.size(); w++ ){
+										List<Post> posts = this.postService.SelectByUserid(userid, ThreeauthMenulist.get(j).getId(), demps.get(q).getId());
+										if(posts.size()==0){
 											AuthUser authuser=new AuthUser();
 											authuser.setUserid(userid);
 											authuser.setMenuid(ThreeauthMenulist.get(j).getId());
 											authuser.setCompanyid(companys.get(a).getId());
 											authuser.setDempid(demps.get(q).getId());
-											authuser.setPostid(posts.get(w).getId());
 											authUserMapper.insertAuthUser(authuser);
+											
+										}else{
+											for(int w = 0 ;  w <posts.size(); w++ ){
+												AuthUser authuser=new AuthUser();
+												authuser.setUserid(userid);
+												authuser.setMenuid(ThreeauthMenulist.get(j).getId());
+												authuser.setCompanyid(companys.get(a).getId());
+												authuser.setDempid(demps.get(q).getId());
+												authuser.setPostid(posts.get(w).getId());
+												authUserMapper.insertAuthUser(authuser);
+											}
 										}
 									}
 								}
@@ -217,31 +232,38 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							authUserMapper.insertAuthUser(authuser);
 						}else{
 							//循环所有公司
-							List<Company> companys = this.companyService.selectNotDeleteALL();
+							List<Company> companys = this.companyService.selectByUserid(userid, TauthMenulist.get(j).getId());
 							for(int a = 0 ;  a <companys.size(); a++ ){
 								//循环所有部门
-								List<Demp> demps = this.dempService.selectByCompanyId(companys.get(a).getId());
-								
-								for(int q = 0 ;  q <demps.size(); q++ ){
-									post.setDempId(demps.get(q).getId());
-									List<Post> posts = this.postService.selectALL(post);
-									if(posts.size()==0){
-										AuthUser authuser=new AuthUser();
-										authuser.setUserid(userid);
-										authuser.setMenuid(TauthMenulist.get(j).getId());
-										authuser.setCompanyid(companys.get(a).getId());
-										authuser.setDempid(demps.get(q).getId());
-										authUserMapper.insertAuthUser(authuser);
-										
-									}else{
-										for(int w = 0 ;  w <posts.size(); w++ ){
+								List<Demp> demps = this.dempService.SelectByUserid(userid, TauthMenulist.get(j).getId(), companys.get(a).getId());
+								if(demps.size()==0){
+									AuthUser authuser=new AuthUser();
+									authuser.setUserid(userid);
+									authuser.setMenuid(TauthMenulist.get(j).getId());
+									authuser.setCompanyid(companys.get(a).getId());
+									authUserMapper.insertAuthUser(authuser);
+									
+								}else{
+									for(int q = 0 ;  q <demps.size(); q++ ){
+										List<Post> posts = this.postService.SelectByUserid(userid, TauthMenulist.get(j).getId(), demps.get(q).getId());
+										if(posts.size()==0){
 											AuthUser authuser=new AuthUser();
 											authuser.setUserid(userid);
 											authuser.setMenuid(TauthMenulist.get(j).getId());
 											authuser.setCompanyid(companys.get(a).getId());
 											authuser.setDempid(demps.get(q).getId());
-											authuser.setPostid(posts.get(w).getId());
 											authUserMapper.insertAuthUser(authuser);
+											
+										}else{
+											for(int w = 0 ;  w <posts.size(); w++ ){
+												AuthUser authuser=new AuthUser();
+												authuser.setUserid(userid);
+												authuser.setMenuid(TauthMenulist.get(j).getId());
+												authuser.setCompanyid(companys.get(a).getId());
+												authuser.setDempid(demps.get(q).getId());
+												authuser.setPostid(posts.get(w).getId());
+												authUserMapper.insertAuthUser(authuser);
+											}
 										}
 									}
 								}
@@ -269,28 +291,36 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				break;
 			case "Company":
 				if(current==1){
-					List<Demp> demps = this.dempService.selectByCompanyId(id);
-					for(int q = 0 ;  q <demps.size(); q++ ){
-						post.setDempId(demps.get(q).getId());
+					
+					List<Demp> demps = this.dempService.SelectByUserid(userid, fid, id);
+					if(demps.size()==0){
+						AuthUser authuser=new AuthUser();
+						authuser.setUserid(userid);
+						authuser.setMenuid(fid);
+						authuser.setCompanyid(id);
+						authUserMapper.insertAuthUser(authuser);
 						
-						List<Post> posts = this.postService.selectALL(post);
-						if(posts.size()==0){
-							AuthUser authuser=new AuthUser();
-							authuser.setUserid(userid);
-							authuser.setMenuid(fid);
-							authuser.setCompanyid(id);
-							authuser.setDempid(demps.get(q).getId());
-							authUserMapper.insertAuthUser(authuser);
-							
-						}else{
-							for(int w = 0 ;  w <posts.size(); w++ ){
+					}else{
+						for(int q = 0 ;  q <demps.size(); q++ ){
+							List<Post> posts = this.postService.SelectByUserid(userid, fid, demps.get(q).getId());
+							if(posts.size()==0){
 								AuthUser authuser=new AuthUser();
 								authuser.setUserid(userid);
 								authuser.setMenuid(fid);
 								authuser.setCompanyid(id);
 								authuser.setDempid(demps.get(q).getId());
-								authuser.setPostid(posts.get(w).getId());
 								authUserMapper.insertAuthUser(authuser);
+								
+							}else{
+								for(int w = 0 ;  w <posts.size(); w++ ){
+									AuthUser authuser=new AuthUser();
+									authuser.setUserid(userid);
+									authuser.setMenuid(fid);
+									authuser.setCompanyid(id);
+									authuser.setDempid(demps.get(q).getId());
+									authuser.setPostid(posts.get(w).getId());
+									authUserMapper.insertAuthUser(authuser);
+								}
 							}
 						}
 					}
@@ -307,7 +337,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				if(current==1){
 					Demp demp = this.dempService.selectByPrimaryKey(id);
 					post.setDempId(id);
-					List<Post> posts = this.postService.selectALL(post);
+					List<Post> posts = this.postService.SelectByUserid(userid, fid, id);
 					if(posts.size()==0){
 						AuthUser authuser=new AuthUser();
 						authuser.setUserid(userid);

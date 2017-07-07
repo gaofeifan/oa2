@@ -225,4 +225,17 @@ public class CompanyController extends SystemManageController{
 		}
 		
 	}
+	
+	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")
+	@RequestMapping(value="/selectCompanyByUserid.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectCompanyByUserid(@ApiParam("userid") @RequestParam("userid")Integer userid,@ApiParam("menuid") @RequestParam("menuid")Integer menuid){
+		try {
+			List<Company> companys = this.companyService.selectByUserid(userid, menuid);
+			return this.success(companys);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
+	}
 }

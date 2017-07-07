@@ -25,6 +25,8 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 * 	@return
 	 */
 	Company selectParentCompanyById(int id);
-
-    
+	
+	
+	List<Company> selectByUserid(@Param(value = "userid") Integer userid,@Param(value = "menuid") Integer menuid);
+	
 }

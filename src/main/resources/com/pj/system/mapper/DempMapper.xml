@@ -10,6 +10,7 @@
     <result column="pId" property="pId" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
+    <result column="choice" property="choice" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_column"> 
   	id,name,frontrank,companyid,number,pId,isdelete,hierarchy
@@ -61,5 +62,26 @@
 			<include refid="Base_column"/>
 		from 
 		t_demp where id = (select pId from t_demp where id=#{id})
+  </select>
+  <select id="SelectByUserid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select id,name,companyid,choice  from (
+  		select  id,name,companyid,choice FROM(
+		select  t_demp.id,t_demp.name,t_demp.companyid,COUNT(auth_user.dempid) as choice  from t_post
+		left JOIN t_demp on t_demp.id=t_post.demp_id
+		LEFT JOIN auth_user on t_demp.id=auth_user.dempid and menuid=#{menuid} AND userid=#{userid}
+		where  t_post.isdelete = 0 and t_post.id not in (SELECT postid from auth_user  where userid !=#{userid} AND menuid=#{menuid} AND postid is not NULL) and t_demp.isdelete=0  
+		group by t_demp.id,t_demp.name,t_demp.companyid ORDER BY choice DESC) a
+		union all
+		select * from (
+		select   t_demp.id,t_demp.name,t_demp.companyid,COUNT(auth_user.dempid) as choice  from t_demp 
+		LEFT JOIN auth_user on t_demp.id=auth_user.dempid and menuid=#{menuid} AND userid=#{userid}
+		where t_demp.id not in (SELECT dempid from auth_user  where userid !=#{userid} AND menuid=#{menuid} AND postid is NULL)
+		and  t_demp.id not in (SELECT demp_id from t_post)   and t_demp.isdelete=0  
+		group by t_demp.id,t_demp.name,t_demp.companyid ORDER BY choice DESC) b )c
+		<where>
+			<if test="companyid !=null">
+				companyid = #{companyid}
+			</if>
+		</where>
   </select>
 </mapper>

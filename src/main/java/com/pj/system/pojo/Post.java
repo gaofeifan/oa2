@@ -81,8 +81,9 @@ public class Post implements Serializable {
 	@Transient
 	private String positionname;
 	private static final long serialVersionUID = 1L;
-
 	
+	@Transient
+	private String choice;
 	public Post() {}
 
 	
@@ -179,6 +180,14 @@ public class Post implements Serializable {
 
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
+	}
+	
+	public String getChoice() {
+		return choice;
+	}
+
+	public void setChoice(String choice) {
+		this.choice = choice;
 	}
 }
 
