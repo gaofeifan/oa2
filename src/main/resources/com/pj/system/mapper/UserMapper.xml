@@ -201,7 +201,7 @@
 	<select id="getCompanyLeader" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		SELECT * FROM t_user
-		where is_company_boss = 1 and isdelete = 0
+		where companyid = #{companyid} and is_company_boss = 1 and isdelete = 0
 		<!-- SELECT u.* FROM t_user u
 		where u.dempid in 
 		(select d.id from t_demp d where d.companyid = #{companyid} and d.isdelete = 0)
