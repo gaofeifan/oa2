@@ -44,7 +44,7 @@ public class MessageContentController extends BaseController {
 		try {
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request,response));
-			logger.info("【MessageContentController.selectMessageAll】  邮箱"+email);
+			logger.debug("【MessageContentController.selectMessageAll】  邮箱"+email);
 			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);
 		} catch (Exception e) {

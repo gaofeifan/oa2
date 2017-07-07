@@ -103,5 +103,12 @@ public class WorkExperience {
 	public void setWorkUnit(String workUnit) {
 		this.workUnit = workUnit;
 	}
+
+	@Override
+	public String toString() {
+		return "WorkExperience [id=" + id + ", workTime=" + workTime + ", duty=" + duty + ", grossWage=" + grossWage
+				+ ", reasonLeave=" + reasonLeave + ", userId=" + userId + ", certifierAndPhone=" + certifierAndPhone
+				+ ", workUnit=" + workUnit + "]";
+	}
 	
 }

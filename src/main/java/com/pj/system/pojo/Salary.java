@@ -190,4 +190,15 @@ public class Salary {
 		this.salaryType = salaryType;
 	}
 
+	@Override
+	public String toString() {
+		return "Salary [id=" + id + ", totalSalary=" + totalSalary + ", reimbursement=" + reimbursement
+				+ ", baseSalary=" + baseSalary + ", postSalary=" + postSalary + ", performanceSalary="
+				+ performanceSalary + ", lunchAllowance=" + lunchAllowance + ", communicationAllowance="
+				+ communicationAllowance + ", fullHours=" + fullHours + ", userId=" + userId + ", entryId=" + entryId
+				+ ", salaryType=" + salaryType + "]";
+	}
+	
+	
+
 }

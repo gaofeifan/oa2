@@ -48,15 +48,15 @@ public class SpiderTest {
 			+ "__utmv=51854390.110--|2=registration_date=20160313=1^3=entry_date=20160313=1";
 	
 	public static void main(String[] args) {
-//		getTitle();
+		getTitle();
 //		findTitleDetails();
 //		jsoupTest();
-		laGou();
+//		laGou();
 	}
 	
 	private static void getTitle(){
 		try {
-			boolean b = httpTool.postAndCookie("https://www.zhihu.com/topic", cookie,null);
+			boolean b = httpTool.postAndCookie("http://192.168.4.203:8081/oa/message/content/selectMessageAll.do", "CSESSIONID=04345ed8be284e9fb4136ea0dfdf46a9",null);
 			if(b){
 				System.out.println("已爬出资源");
 			}else{

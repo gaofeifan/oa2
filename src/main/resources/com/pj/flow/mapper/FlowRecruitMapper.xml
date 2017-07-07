@@ -152,7 +152,7 @@
 	</update>
 	
 	<select id="selectEntryNum" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-		SELECT r.* flow_recruit r INNER JOIN flow_entry e ON e.recruit_id = r.id where e.id = #{id}
+		SELECT r.* FROM flow_recruit r LEFT JOIN flow_entry e ON e.recruit_id = r.id where e.id = #{id}
 	</select>
 	
 </mapper>

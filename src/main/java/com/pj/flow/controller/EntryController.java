@@ -302,5 +302,13 @@ public class EntryController extends BaseController{
 		SendEmailUtils.sendMessage("gaofeifan@pj-l.com", "PJ.123456", "695096916@qq.com", flowOffer.getCompany()+"offer", string, null);
 		return null;
 	}
+	/**
+	 * 	查询字段详情
+	 */
+	@ApiOperation(value = "selectOfferDetail", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
+	@RequestMapping("/selectOfferDetail.do")
+	public @ResponseBody MappingJacksonValue selectOfferDetail(@ModelAttribute("flowOffer") FlowOffer flowOffer ){
+		return null;
+	}
 	
 }
