@@ -251,4 +251,18 @@ public class DempController extends SystemManageController{
 		
 	}
 	
+	@ApiOperation(value = "查询部门 根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询部门 根据人事权限查询")
+	@RequestMapping(value="/selectDempByUserid.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectDempByUserid(@ApiParam("userid") @RequestParam("userid")Integer userid,@ApiParam("menuid") @RequestParam("menuid")Integer menuid,@ApiParam("companyid") @RequestParam("companyid")Integer companyid){
+		try {
+			List<Demp> dmeps = this.dempService.SelectByUserid(userid,menuid,companyid);
+			return this.success(dmeps);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
+		
+	}
+	
 }

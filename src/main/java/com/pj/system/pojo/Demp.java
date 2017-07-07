@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -99,6 +100,9 @@ public class Demp implements Serializable {
     @ApiModelProperty(value = "层级", required = false)
     private Integer hierarchy;
 
+	@Transient
+	private String choice;
+	
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -164,6 +168,14 @@ public class Demp implements Serializable {
 
 	public void setHierarchy(Integer hierarchy) {
 		this.hierarchy = hierarchy;
+	}
+	
+	public String getChoice() {
+		return choice;
+	}
+
+	public void setChoice(String choice) {
+		this.choice = choice;
 	}
 
 	@Override

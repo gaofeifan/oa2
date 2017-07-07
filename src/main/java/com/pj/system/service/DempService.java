@@ -94,7 +94,7 @@ public interface DempService  extends BaseService<Demp, Integer>{
 
 
 	
-
+	List<Demp> SelectByUserid(Integer userid,Integer menuid,Integer companyid);
 
 
 	

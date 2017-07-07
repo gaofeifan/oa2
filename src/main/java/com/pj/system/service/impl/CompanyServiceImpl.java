@@ -105,6 +105,11 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 		}
 		return companys;
 	}
+
+	@Override
+	public List<Company> selectByUserid(Integer userId, Integer menuid) {
+		return this.companyMapper.selectByUserid(userId,menuid);
+	}
 	
 	
 

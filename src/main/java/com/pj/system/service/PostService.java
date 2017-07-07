@@ -2,6 +2,8 @@ package com.pj.system.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Post;
 
@@ -45,6 +47,6 @@ public interface PostService extends BaseService<Post, Integer> {
 	 */
 	Integer selectByNameANDDempId(Integer dempId, String postName);
 
-
+	List<Post> SelectByUserid(Integer userid,Integer menuid,Integer dempid);
 
 }
