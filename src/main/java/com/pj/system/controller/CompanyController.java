@@ -195,7 +195,7 @@ public class CompanyController extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "根据用户权限查询所负责公司信息", httpMethod = "GET", response=String.class, notes ="根据用户权限查询所负责公司信息")
 	@RequestMapping(value = "/getCompanysByAuth.do",method=RequestMethod.GET)
-	public Map<String, Object> findCompanyList(HttpServletResponse response,
+	public Map<String, Object> getCompanysByAuth(HttpServletResponse response,
 			HttpServletRequest request){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {

@@ -1,5 +1,6 @@
 package com.pj.flow.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,10 +160,11 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		int delStartIndex = 0;
 		for (int i = 0; i < list.size(); i++) {
 			FlowApprove innerApprove = list.get(i);
-			if(userid == innerApprove.getUserid()){//当前审批人
+			if(userid.equals(innerApprove.getUserid())){//当前审批人
 				delStartIndex = i + 1;
 				
 				innerApprove.setCheckstatus(checkstatus);
+				innerApprove.setHandledate(new Date());
 				innerApprove.setHandleidea(handleidea);
 				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
 				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
@@ -174,6 +176,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			for(int i = delStartIndex; i < list.size(); i++){
 				flowApproveMapper.delete(list.get(i));
 			}
+		}else if(checkstatus == 2){
+			//同意,下一条值为0
+			//TODO
 		}
 		isApproveComplete(flowUserApplication,applyType);
 	}
@@ -203,21 +208,18 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		 */
 		MessageContent content = new MessageContent();
 		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
-			List<FlowRecruit> applyId = this.flowRecruitMapper.selectByApplyId(null,null,flowUserApplication.getFormId());
-			if(applyId.size() > 0){
-				FlowRecruit recruit = applyId.get(0);
-				User user = this.userService.selectById(recruit.getApplyId());
-				content.setApplicatId(user.getId());
-				content.setApplicatName(user.getUsername());
-				content.setApplicatPosition(user.getPositionname());
-				if(user.getDempid() != null){
-					String names = this.dempService.selectDempParentNameById(user.getDempid());
-					content.setApplicatDemp(names);
-				}
-				content.setApplyTime(recruit.getApplyDate());
-				content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
-				content.setType(MessageType.RECRUITMENT_MES.getValue());
-			} 
+			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+			User user = this.userService.selectById(recruit.getApplyId());
+			content.setApplicatId(user.getId());
+			content.setApplicatName(user.getUsername());
+			content.setApplicatPosition(user.getPositionname());
+			if (user.getDempid() != null) {
+				String names = this.dempService.selectDempParentNameById(user.getDempid());
+				content.setApplicatDemp(names);
+			}
+			content.setApplyTime(recruit.getApplyDate());
+			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
+			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){

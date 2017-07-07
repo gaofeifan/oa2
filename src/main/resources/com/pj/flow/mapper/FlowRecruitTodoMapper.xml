@@ -18,7 +18,7 @@
   </select>
   <select id="selectByRecruitId" resultMap="BaseResultMap">
   	select * from flow_recruit_todo 
-  	where recruit_id = #{rucruitId} and state = #{todoState}
+  	where recruit_id = #{recruitId} and state = #{todoState}
   </select>
   <update id="updateState">
   		update flow_recruit_todo 

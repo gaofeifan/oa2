@@ -205,9 +205,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 */
 	@Override
 	public User selectByEamil(String email) {
-		if(StringUtils.isNoneBlank(email)){
-			throw new NullPointerException("邮箱不能为空");
-		}
+//		if(StringUtils.isNoneBlank(email)){
+//			throw new NullPointerException("邮箱不能为空");
+//		}
 		User user = new User();
 		user.setCompanyEmail(email);
 		return selectUserByCondition(user);
