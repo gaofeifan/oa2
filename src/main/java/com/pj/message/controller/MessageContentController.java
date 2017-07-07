@@ -5,6 +5,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,7 @@ import io.swagger.annotations.ApiParam;
 @Controller
 @RequestMapping("/message/content")
 public class MessageContentController extends BaseController {
-
+	private Logger logger = LoggerFactory.getLogger(MessageContentController.class); 
 	@Resource
 	private  MessageContentService  messageContentService;
 	@Resource
@@ -42,6 +44,7 @@ public class MessageContentController extends BaseController {
 		try {
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request,response));
+			logger.info("【MessageContentController.selectMessageAll】  邮箱"+email);
 			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);
 		} catch (Exception e) {

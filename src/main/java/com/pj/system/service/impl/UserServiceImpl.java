@@ -125,6 +125,8 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			workExperienceList.stream().forEach(work -> work.setUserId(t.getId()));
 			this.workExperienceService.insertList(workExperienceList);
 			
+			
+			
 			/**
 			 * 	修改招聘入职人数
 			 */

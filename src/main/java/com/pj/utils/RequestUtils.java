@@ -24,6 +24,7 @@ public class RequestUtils {
 				logger.debug(cookies.toString());
 				if(cookie.getName().equals("CSESSIONID")){
 					//3:如果有 直接使用
+					logger.info("【RequestUtils.getCSESSIONID】 COOKIE = "+ cookie.getValue());
 					return cookie.getValue();
 				}
 			}

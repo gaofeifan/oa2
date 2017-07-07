@@ -1,7 +1,5 @@
 package com.pj.system.pojo;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,6 +36,9 @@ public class WorkExperience {
 	
 	@Column
 	private String certifierAndPhone;
+
+	@Column
+	private String workUnit;
 
 	public Integer getId() {
 		return id;
@@ -94,4 +95,13 @@ public class WorkExperience {
 	public void setCertifierAndPhone(String certifierAndPhone) {
 		this.certifierAndPhone = certifierAndPhone;
 	}
+
+	public String getWorkUnit() {
+		return workUnit;
+	}
+
+	public void setWorkUnit(String workUnit) {
+		this.workUnit = workUnit;
+	}
+	
 }
