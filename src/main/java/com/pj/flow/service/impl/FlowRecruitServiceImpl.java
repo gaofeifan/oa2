@@ -254,7 +254,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	 */
 	@Override
 	public FlowRecruit selectEntryNum(Integer entryId) {
-		return this.selectEntryNum(entryId);
+		return this.flowRecruitMapper.selectEntryNum(entryId);
 	}
 	
 	

@@ -90,7 +90,7 @@ public class User implements Serializable {
      */
 	@Column(name="probation")
 	@ApiModelProperty(value = "试用期", required = false)
-    private Date probation;
+    private String probation;
 	
 	/**
 	 * 合同开始日期
@@ -278,7 +278,7 @@ public class User implements Serializable {
 	 */
 	@Column(name="contract_period")
 	@ApiModelProperty(value = "合同期限", required = false)
-	private Integer contractPeriod;
+	private String contractPeriod;
 
 	/**
 	 * 	个人邮箱
@@ -297,20 +297,25 @@ public class User implements Serializable {
      * 职位名称
      */
 	@Transient
+	@ApiModelProperty(value = "职位名称（用于回现）", required = false)
     private String positionname;
     /**
      * 部门名称
      */
 	@Transient
+	@ApiModelProperty(value = "部门名称（用于回现）", required = false)
 	private String dempname;
     /**
      * 公司名称
      */
 	@Transient
+	@ApiModelProperty(value = "公司名称（用于回现）", required = false)
     private String companyname;
 	@Transient
+	@ApiModelProperty(value = "工岗位(用户回现)", required = false)
     private String postname;
 	@Transient
+	@ApiModelProperty(value = "替换offer", required = false)
 	private String replaceOffer;
     
     /**
@@ -423,19 +428,18 @@ public class User implements Serializable {
 	@ApiModelProperty(value = "工作经历", required = false)
 	private List<WorkExperience> workExperiences;
 
-	@ApiModelProperty(value = "工资信息(json格式[{'id(添加修改员工都需要使用)':'1','totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
+	@ApiModelProperty(value = "工资信息(json格式[{'id(添加修改员工都需要使用)':'1','totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])",required=false)
     @Transient
     private String salaryJson;
 
-	@ApiModelProperty(value = "学历信息(json格式[{'id(没有可以不传 更新使用)':'1','learningTime(学习时间)':'111','campus(院校)':'10','specialty(专业)':'1','education(学历)':'200','isFullTime(是否为全日制 0 否 1 是)':'200'}])")
+	@ApiModelProperty(value = "学历信息(json格式[{'id(没有可以不传 更新使用)':'1','learningTime(学习时间)':'111','campus(院校)':'10','specialty(专业)':'1','education(学历)':'200','isFullTime(是否为全日制 0 否 1 是)':'200'}])",required=false)
 	@Transient
 	private String educationJson;
-	
-	@ApiModelProperty(value = "工作经历(json格式[{'id(没有可以不传 更新使用)':'1','workTime(工作时间)':'2017.1.1-2017.10.10','duty(职务)':'程序猿','grossWage(税前薪资)':'5555','reasonLeave(离职原因)':'个人原因','certifierAndPhone(证明人及电话)':'张三 11111111111'},{},{}])")
+	@ApiModelProperty(value = "工作经历(json格式[{'id(没有可以不传 更新使用)':'1','workTime(工作时间)':'2017.1.1-2017.10.10','duty(职务)':'程序猿','grossWage(税前薪资)':'5555','reasonLeave(离职原因)':'个人原因','certifierAndPhone(证明人及电话)':'张三 11111111111'},{},{}])",required=false)
 	@Transient
 	private String workExperienceJson;
 	
-	@ApiModelProperty(value = "家庭成员(json格式[{'id(没有可以不传 更新使用)':'1','memberName(家庭成员名称)':'张三','duty(职务)':'高级程序猿','workUnit(工作单位)':'xxx有限公司','relation(关系)':'兄弟','phone':'13716161616'},{},{}])")
+	@ApiModelProperty(value = "家庭成员(json格式[{'id(没有可以不传 更新使用)':'1','memberName(家庭成员名称)':'张三','duty(职务)':'高级程序猿','workUnit(工作单位)':'xxx有限公司','relation(关系)':'兄弟','phone':'13716161616'},{},{}])",required=false)
 	@Transient
 	private String familyMembersJson;
 
@@ -521,14 +525,6 @@ public class User implements Serializable {
 
 	public void setDempid(Integer dempid) {
 		this.dempid = dempid;
-	}
-
-	public Date getProbation() {
-		return probation;
-	}
-
-	public void setProbation(Date probation) {
-		this.probation = probation;
 	}
 
 	public Date getContractStartTime() {
@@ -740,11 +736,19 @@ public class User implements Serializable {
 		this.applyRegularDate = applyRegularDate;
 	}
 
-	public Integer getContractPeriod() {
+	public String getProbation() {
+		return probation;
+	}
+
+	public void setProbation(String probation) {
+		this.probation = probation;
+	}
+
+	public String getContractPeriod() {
 		return contractPeriod;
 	}
 
-	public void setContractPeriod(Integer contractPeriod) {
+	public void setContractPeriod(String contractPeriod) {
 		this.contractPeriod = contractPeriod;
 	}
 

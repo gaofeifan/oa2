@@ -45,4 +45,7 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	 * @return
 	 */
 	FlowRecruit getUserInfo(Integer id);
+	
+	
+	FlowRecruit selectEntryNum(Integer entryId);
 }

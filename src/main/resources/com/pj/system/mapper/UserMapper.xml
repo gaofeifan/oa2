@@ -163,6 +163,7 @@
 		left JOIN t_company company on u.companyid = company.id
 		left JOIN t_position position on u.positionid = position.id
 		left JOIN t_post post on u.postid = post.id
+		left join t_user pUser on pUser.id = u.pid
 		<if test="terrace != null">
 			left join t_system_role sr on u.id = sr.userid
 			AND sr.terrace = #{terrace}

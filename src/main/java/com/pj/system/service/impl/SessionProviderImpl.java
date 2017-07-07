@@ -56,14 +56,15 @@ public class SessionProviderImpl implements SessionProvider {
 		return this.redisTemplate.execute(new RedisCallback<String>() {
 			public String doInRedis(RedisConnection connection) throws DataAccessException {
 				RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
-				logger.info("【SessionProviderImpl.getAttibute】  redis key ：="+key + ":" + oa_session);
+				logger.debug("【SessionProviderImpl.getAttibute】  redis key ：="+key + ":" + oa_session);
+				System.out.println(key + ":" + oa_session);
 				byte[] keys = serializer.serialize(key + ":" + oa_session);
 				byte[] bs = connection.get(keys);
 				String result = serializer.deserialize(bs);
 				logger.info("【SessionProviderImpl.getAttibute】  redis value ：=" + result);
 				if(StringUtils.isNotBlank(result)){
 					JSONObject jsonObject = JSONObject.fromBean(result);
-					logger.info("【SessionProviderImpl.getAttibute】  redis value json ：=" + jsonObject);
+					logger.debug("【SessionProviderImpl.getAttibute】  redis value json ：=" + jsonObject);
 					Object object = jsonObject.get("email");
 					if(object != null){
 						return object.toString();

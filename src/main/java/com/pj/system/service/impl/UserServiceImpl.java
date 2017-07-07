@@ -20,7 +20,6 @@ import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.base.tool.HttpClienTool;
 import com.pj.flow.pojo.FlowEntry;
-import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.system.mapper.DempMapper;
@@ -88,7 +87,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		Integer ssoId = saveSSOSystem(t);
 		if(ssoId != null){
 			t.setSsoId(ssoId);
-			int i = insertSelective(t);
+			int i = this.userMapper.insertSelective(t);
 		
 			/**
 			 * 	更新薪资
@@ -105,7 +104,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			JSONArray jsonArray = JSONArray.fromString(familyMemberJson);
 			List<FamilyMember> list = JSONArray.toList(jsonArray, FamilyMember.class);
 			list.stream().forEach(menber -> menber.setUserId(t.getId()));
-			this.familyMemberService.insertList(list);
+			for (FamilyMember familyMember : list) {
+				this.familyMemberService.insertSelective(familyMember);
+				
+			}
 			
 			/**
 			 * 	教育经历
@@ -114,7 +116,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			JSONArray educationArray = JSONArray.fromString(educationJson);
 			List<Education> educationList = JSONArray.toList(educationArray, Education.class);
 			educationList.forEach(educatino -> educatino.setUserId(t.getId()));
-			this.educationService.insertList(educationList);
+			for (Education education : educationList) {
+				this.educationService.insertSelective(education);
+			}
 			
 			/**
 			 * 	工作经历
@@ -123,16 +127,18 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			JSONArray workExperienceArray = JSONArray.fromString(workExperienceJson);
 			List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
 			workExperienceList.stream().forEach(work -> work.setUserId(t.getId()));
-			this.workExperienceService.insertList(workExperienceList);
+			for (WorkExperience workExperience : workExperienceList) {
+				this.workExperienceService.insertSelective(workExperience);
+			}
 			
 			
 			
 			/**
 			 * 	修改招聘入职人数
 			 */
-			FlowRecruit recruit = this.flowRecruitService.selectEntryNum(t.getEntryId());
-			recruit.setEntryNum(recruit.getEntryNum()+1);
-			this.flowRecruitService.updateByPrimaryKeySelective(recruit);
+			/*FlowRecruit recruit = this.flowRecruitService.selectEntryNum(t.getEntryId());
+			recruit.setEntryNum(recruit.getEntryNum() != null ?recruit.getEntryNum() +1 : 1);
+			this.flowRecruitService.updateByPrimaryKeySelective(recruit);*/
 			return i;
 		}
 		return 0;

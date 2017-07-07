@@ -69,9 +69,6 @@
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="apply_date" property="applyDate" jdbcType="DATE" />
-    <result column="recruit_id" property="recruitId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
