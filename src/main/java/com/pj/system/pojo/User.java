@@ -271,6 +271,7 @@ public class User implements Serializable {
 	 */
 	@Column(name="apply_regular_date")
 	@ApiModelProperty(value = "申请转正时间", required = false)
+	
 	private Date applyRegularDate;
 
 	/**

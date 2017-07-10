@@ -136,6 +136,9 @@ public class SpiderTest {
 		try {
 			String fileName ="E:\\lagou\\";
 			File file = null;
+			
+			
+			
 			Document document = laGouCookie("https://www.lagou.com/", cookie);
 			Elements elements = document.getElementsByClass("mainNavs");
 			for (Element element : elements) {

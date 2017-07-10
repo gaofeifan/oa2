@@ -230,4 +230,17 @@ public class ApproveController extends BaseController{
 		return map;
 	}
 	
+	/**
+	 * 	查询我的申请
+	 *	@author 	GFF
+	 *	@date		2017年7月8日下午5:40:22	
+	 * 	@return
+	 */
+	@ApiOperation(value = "查询我的申请", httpMethod = "GET", response=MappingJacksonValue.class, notes ="查询我的申请")
+	@RequestMapping(value = "/selectMyApply.do", method = RequestMethod.GET)
+	public @ResponseBody Object selectMyApply(){
+		return flowApproveService;
+		
+	}
+	
 }

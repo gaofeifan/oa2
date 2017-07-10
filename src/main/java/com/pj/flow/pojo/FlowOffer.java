@@ -436,6 +436,7 @@ public class FlowOffer {
 		this.peopleWhoCopied = peopleWhoCopied;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "FlowOffer [username=" + username + ", company=" + company + ", postName="

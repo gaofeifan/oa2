@@ -193,7 +193,7 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetails(@ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue successJsonp = null;
 		try {
-			String email = getSession();
+			String email = "gaofeifan@pj-l.com";
 			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , email);
 			successJsonp = this.successJsonp(flowOffer);
 		} catch (Exception e) {
@@ -220,8 +220,8 @@ public class EntryController extends BaseController{
 			 							 @ApiParam(value = "时", required = true)@RequestParam(value = "hour", required = true)String  hour,
 			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue success = null;
-		try {
-			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,getSession(),9);
+		try {															   
+			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,"gaofeifan@pj-l.com",hour);
 			success = this.successJsonp(null);
 		} catch (Exception e) {
 			success = this.errorToJsonp(e.getMessage());

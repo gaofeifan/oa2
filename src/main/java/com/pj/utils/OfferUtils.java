@@ -3,6 +3,8 @@ package com.pj.utils;
 import java.lang.reflect.Field;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.pj.flow.pojo.FlowOffer;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +42,9 @@ public class OfferUtils {
 						}
 						ApiModelProperty api = field.getDeclaredAnnotation(ApiModelProperty.class);
 						String notes = api.notes();
-						offerTemp = offerTemp.replaceAll(notes, fileValue.toString());
+						if(StringUtils.isNoneBlank(notes)){
+							offerTemp = offerTemp.replaceAll(notes, fileValue.toString());
+						}
 					}
 				}
 			}
