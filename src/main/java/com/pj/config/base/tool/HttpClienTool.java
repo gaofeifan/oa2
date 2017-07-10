@@ -3,12 +3,12 @@ package com.pj.config.base.tool;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -112,8 +112,8 @@ public class HttpClienTool {
 			HttpGet get = new HttpGet(new URIBuilder(uri).addParameters(params).build());
 			res = httpclient.execute(get);
 			if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				EntityUtils.toString(res.getEntity());
-				return "200";
+				String string = EntityUtils.toString(res.getEntity());
+				return StringUtils.isNoneBlank(string) ? string : null;
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());

@@ -233,7 +233,6 @@ public class CompanyController extends SystemManageController{
 			e.printStackTrace();
 			return this.error("查询异常"+e.getMessage());
 		}
-		
 	}
 	
 	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")

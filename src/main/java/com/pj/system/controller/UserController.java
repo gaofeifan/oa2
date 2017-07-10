@@ -17,12 +17,12 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.constant.Constant;
 import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.web.controller.BaseController;
 import com.pj.system.pojo.User;
@@ -160,7 +160,7 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "更新用户", httpMethod = "POST", response = String.class, notes = "更新用户")
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> updateUser(@RequestBody User user) {
+	public Map<String, Object> updateUser(@ModelAttribute("user") User user) {
 		try {
 			this.userService.updateByPrimaryKeySelective(user);
 		} catch (Exception e) {
@@ -302,5 +302,40 @@ public class UserController extends BaseController {
 			e.printStackTrace();
 			return this.errorToJsonp("查询异常 :"+e.getMessage());
 		}
+	}
+	
+	@ApiOperation(value = "根据用户名称查询企业邮箱", httpMethod = "GET", response = String.class, notes = "根据用户名称查询企业邮箱")
+	@RequestMapping("selectPeopleWhoCopiedEmailByUsername.do")
+	@ResponseBody
+	public Object selectPeopleWhoCopiedEmailByUsername(@ApiParam("用户名称") @RequestParam("username") String username
+			,@ApiParam("申请单id") @RequestParam("applyId") Integer applyId){
+		try {
+			Object[] objects = this.userService.selectPeopleWhoCopiedEmailByUsername(username ,applyId );
+			return this.successJsonp(objects);
+		} catch (Exception e) { 
+			e.printStackTrace();
+			return this.errorToJsonp(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 	查询CHO人员
+	 *	@author 	GFF
+	 *	@date		2017年7月8日下午12:59:07	
+	 * 	@return
+	 */
+	@ApiOperation(value = "查询CHO人员Email", httpMethod = "GET", response = String.class, notes = "查询CHO人员Email")
+	@RequestMapping("selectCHOEmail.do")
+	@ResponseBody
+	public Object selectCHOEmail(){
+		User record = new User();
+		record.setPostid(Constant.CHO);
+		record.setIsdelete(0);
+		List<User> list = this.userService.select(record );
+		if(list.size() > 0){
+			String email = list.get(0).getCompanyEmail();
+			return this.successJsonp(new String[]{email});
+		}
+		return this.errorToJsonp("没有查询到CHO");
 	}
 }

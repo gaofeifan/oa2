@@ -7,7 +7,15 @@ package com.pj.config.base.constant;
  *	@parameter	
  *  @since		1.8
  */
-public interface Company {
+public interface Constant {
 
+	/**
+	 * 	盘江物流公司id
+	 */
 	public static final Integer PJWL = 1;
+	
+	/**
+	 * 	CHO 岗位
+	 */
+	public static final Integer CHO = 263;
 }

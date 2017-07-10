@@ -24,11 +24,13 @@ import javax.mail.internet.MimeMessage;
  */
 public class SendEmailUtils {
 	private static final String HOST = "smtp.pj-l.com";
-	
-	public static void sendMessage(String sendEmail ,String sendPassword , String recipientEmail , String title , String content , String[] Cc){
+
+	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
+			String content, Object[] ccEmail) {
 		// 配置信息
 		Properties pro = new Properties();
 		pro.put("mail.host", HOST);
+
 		pro.put("mail.transport.protocol", "smtp");
 		pro.put("mail.smtp.auth", "true");
 		Session session = Session.getInstance(pro);
@@ -39,10 +41,10 @@ public class SendEmailUtils {
 			message.setFrom(new InternetAddress(sendEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
 			// 设置抄送人z
-			if(Cc != null && Cc.length != 0){
-				InternetAddress[] addresss = new InternetAddress[Cc.length];
-				for (int i = 0; i < Cc.length; i++) {
-					addresss[i] = new InternetAddress(Cc[i]);
+			if (ccEmail != null && ccEmail.length != 0) {
+				InternetAddress[] addresss = new InternetAddress[ccEmail.length];
+				for (int i = 0; i < ccEmail.length; i++) {
+					addresss[i] = new InternetAddress(ccEmail[i].toString());
 				}
 				message.setRecipients(Message.RecipientType.CC, addresss);
 			}
@@ -83,7 +85,9 @@ public class SendEmailUtils {
 		}
 		return null;
 	}
+
 	public static void main(String[] args) {
-		sendMessage("gaofeifan@pj-l.com", "PJ.123456", "1315697146@qq.com", "中亚宝丰offer", getResourceTemp("/temp/offer2") , new String[]{"xxx", "xxxx"});
+		sendMessage("gaofeifan@pj-l.com", "PJ.123456", "1315697146@qq.com", "中亚宝丰offer",
+				getResourceTemp("/temp/offer2"), new String[] { "xxx", "xxxx" });
 	}
 }
