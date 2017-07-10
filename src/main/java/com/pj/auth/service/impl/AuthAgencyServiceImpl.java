@@ -161,7 +161,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	private void addCEO() {
 		User u = new User();
 		u.setIsCompanyBoss(1);
-		u.setCompanyid(com.pj.config.base.constant.Company.PJWL);
+		u.setCompanyid(com.pj.config.base.constant.Constant.PJWL);
 		List<User> list = this.userService.select(u);
 		approvers.add(list.get(0));
 	}

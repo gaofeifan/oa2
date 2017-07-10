@@ -1,7 +1,6 @@
 package com.pj.system.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -90,7 +89,10 @@ public class SalaryServiceImpl extends AbstractBaseServiceImpl<Salary, Integer> 
 		Example example = new Example(Salary.class);
 		example.createCriteria().andCondition(fieldName+" = ", entryId);
 		List<Salary> list = selectByExample(example );
-		return list.stream().map(salary -> decryptHex(salary)).collect(Collectors.toList());
+//		for (Salary salary : list) {
+//			salary = (Salary)AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
+//		}
+		return list;
 	}
 	
 	private Salary encryptHex(Salary salary){
@@ -101,6 +103,13 @@ public class SalaryServiceImpl extends AbstractBaseServiceImpl<Salary, Integer> 
 		return (Salary)AESUtils.aesEncryptionOrDecryption(salary,AESUtils.ENCRYPTHEX);
 	}
 
+	@SuppressWarnings("unused")
+	private List<Salary> decryptHexList(List<Salary> salarys){
+		for (Salary salary : salarys) {
+			salary = decryptHex(salary);
+		}
+		return salarys;
+	}
 
 
 }

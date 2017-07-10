@@ -112,4 +112,14 @@ public interface UserService extends BaseService<User, Integer> {
 
 	User getReplaceUser(Integer companyI);
 
+	/**
+	 * 	根据申请单 用户名称查询companyEmail
+	 *	@author 	GFF
+	 *	@date		2017年7月8日下午12:12:25	
+	 * 	@param username
+	 * 	@param applyId
+	 * 	@return
+	 */
+	Object[] selectPeopleWhoCopiedEmailByUsername(String username, Integer applyId);
+
 }

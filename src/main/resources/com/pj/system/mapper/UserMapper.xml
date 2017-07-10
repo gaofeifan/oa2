@@ -107,6 +107,7 @@
 		<result column="is_department_head" property="isDepartmentHead" jdbcType="INTEGER" />
 		<result column="is_company_boss" property="isCompanyBoss" jdbcType="INTEGER" />
 		<result column="we_chat_name" property="weChatName" jdbcType="VARCHAR" />
+		<result column="companyEmailPassword" property="companyEmailPassword" jdbcType="VARCHAR" />
 		
 		<!-- 查询使用 -->
 		<result column="companyid" property="companyid" jdbcType="INTEGER" />
@@ -129,7 +130,7 @@
 	
 	<select id="selectUsersByCondition" parameterType="com.pj.system.pojo.User" resultMap="User_Relevance_Select">
 		select 
-			<include refid="Base_Column"/>
+			<include refid="Base_Column"/>,u.company_email_password companyEmailPassword
 		from t_user u 
 		left join t_demp demp on u.dempid = demp.id 
 		left join t_company company on company.id = u.companyid

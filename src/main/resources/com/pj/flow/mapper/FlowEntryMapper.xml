@@ -135,7 +135,7 @@
   	select 
   		entry.number ,
   		entry.recruit_id ,
-  		entry.name ,
+  		entry.name username,
   		entry.sex ,
   		entry.phone ,
   		entry.email ,

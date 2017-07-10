@@ -1,6 +1,8 @@
 package com.pj.flow.service.impl;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -208,9 +210,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		User user = this.userService.selectByEamil(email);
 		FlowOffer flowOffer = this.flowEntryMapper.selectOfferDetailsByApplyId(applyId);
 		List<Salary> list = this.salaryService.selectSalaryByEntryId(applyId);
-		for (Salary salary : list) {
-			salary = (Salary) AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
-		}
+//		for (Salary salary : list) {
+//			salary = (Salary) AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
+//		}
 		Salary sySalary = list.stream().filter(salary -> salary.getSalaryType() == SalaryType.SY.getIndex()).findFirst().get();
 		@SuppressWarnings("unused")
 		Salary sxSalary = list.stream().filter(salary -> salary.getSalaryType() == SalaryType.SX.getIndex()).findFirst().get();
@@ -244,7 +246,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	 * 	发送offer
 	 */
 	@Override
-	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , Integer timeDivision) {
+	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision) {
 		User user = this.userService.selectByEamil(email);
 		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
 		if(StringUtils.isNoneBlank(hour)){
@@ -258,14 +260,21 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
 		//	设置抄送人
-		String[] CC = null;
+		Object[] ccEmail = null;
 		if(StringUtils.isNotBlank(usernames)){
-			CC = getCCEmail(usernames);
+			Set<String> set = new HashSet<>();
+			String[] emails = usernames.split(",");
+			for (int i = 0; i < emails.length; i++) {
+				if(StringUtils.isNotBlank(emails[i].toString())){
+					set.add(emails[i]);
+				}
+			}
+			ccEmail = set.toArray();
 		}
 		//	获取offer模板
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 		offerTemp = OfferUtils.replaceOfferContent(offerTemp,offer);
-		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, offer.getCompany()+"offer", offerTemp, CC);
+		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, offer.getCompany()+"offer", offerTemp, ccEmail);
 	}
 
 	/**

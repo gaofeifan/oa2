@@ -43,7 +43,7 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 * @param email    当前操作人员的邮箱
 	 * @param applyId  申请表单id
 	 */
-	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , Integer timeDivision);
+	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision);
 
 	/**
 	 * 申请查询

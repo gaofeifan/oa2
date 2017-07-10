@@ -224,7 +224,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 */
 	@Override
 	public User selectByEamil(String email) {
-		if(StringUtils.isNoneBlank(email)){
+		if(StringUtils.isBlank(email)){
 			throw new NullPointerException("邮箱不能为空");
 		}
 		User user = new User();
@@ -321,6 +321,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 */
 	@Override
 	public List<User> selectUserByUsername(String username) {
+		if(StringUtils.isBlank(username)){
+			throw new RuntimeException("用户名不能为空");
+		}
 		User user = new User();
 		user.setUsername(username);
 		return this.selectUsersByCondition(user);
@@ -383,8 +386,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 					return Integer.decode(o1) - Integer.decode(o2);
 				}
 			}).get();
-			
-			
 				String number = fileNumber.substring(fileNumber.length()-2, fileNumber.length());
 				Integer decode = Integer.decode(number)+1;
 				if(decode.toString().length() < 2){
@@ -397,5 +398,24 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		return fileName+0+1;
 	}
 
-
+	/**
+	 * 	根据申请单 用户名称查询companyEmail
+	 */
+	@Override
+	public Object[] selectPeopleWhoCopiedEmailByUsername(String username, Integer applyId) {
+		FlowEntry flowEntry = this.flowEntryService.selectById(applyId);
+		if(flowEntry == null){
+			throw new RuntimeException("没有查询到申请单");
+		}
+		User record = new User();
+		record.setCompanyid(flowEntry.getCompanyId());
+		record.setUsername(username);
+		record.setIsdelete(0);
+		List<User> list = this.select(record );
+		if(list.size() == 0){
+			throw new RuntimeException("不存在该用户");
+		}
+		Object[] objects = list.stream().map(user -> user.getCompanyEmail()).toArray();
+		return objects;
+	}
 }
