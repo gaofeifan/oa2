@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Organization;
 
 public interface CompanyMapper extends MyMapper<Company> {
 
@@ -28,5 +29,12 @@ public interface CompanyMapper extends MyMapper<Company> {
 	
 	
 	List<Company> selectByUserid(@Param(value = "userid") Integer userid,@Param(value = "menuid") Integer menuid);
+
+	/**
+	 * 得到所有公司，pId记录number
+	 * @author limr
+	 * @return
+	 */
+	List<Organization> selectOransNotDeleteALL();
 	
 }

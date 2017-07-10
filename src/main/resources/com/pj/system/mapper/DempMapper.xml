@@ -12,6 +12,16 @@
     <result column="hierarchy" property="hierarchy" jdbcType="INTEGER" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="OrganizationMap" type="com.pj.system.pojo.Organization" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="pNum" property="pNum" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="choice" property="choice" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_column"> 
   	id,name,frontrank,companyid,number,pId,isdelete,hierarchy
   </sql>
@@ -83,5 +93,18 @@
 				companyid = #{companyid}
 			</if>
 		</where>
+  </select>
+  
+  <select id="selectOrgansByCompanyId" parameterType="java.lang.Integer" resultMap="OrganizationMap">
+  	select d.id,d.name,d.number,c.number as pNum,"demp" as type from t_demp d
+  	left join t_company c on c.id = d.companyid 
+  	where d.companyid = #{companyId} 
+  	and d.isdelete = 0 and (d.pId is null or d.pId = 0)
+  </select>
+  <select id="selectOrgansByPId" parameterType="java.lang.Integer" resultMap="OrganizationMap">
+  	select d.id,d.name,d.number,pd.number as pNum,"demp" as type from t_demp d
+  	left join t_demp pd on pd.id = d.pId 
+  	where d.pId = #{id} 
+  	and d.isdelete = 0
   </select>
 </mapper>

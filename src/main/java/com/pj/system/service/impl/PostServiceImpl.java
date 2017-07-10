@@ -8,11 +8,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PostMapper;
+import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.PostService;
 import com.pj.system.service.UserService;
@@ -91,6 +91,16 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 
 		List<Post> posts = this.postMapper.SelectByUserid(userid,menuid,dempid);
 		return posts;
+	}
+
+	@Override
+	public List<Organization> selectLinealsByCompanyId(Integer companyId) {
+		return postMapper.selectLinealsByCompanyId(companyId);
+	}
+
+	@Override
+	public List<Organization> selectLinealsByDempId(Integer dempId) {
+		return postMapper.selectLinealsByDempId(dempId);
 	}
 	
 

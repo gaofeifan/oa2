@@ -3,10 +3,9 @@ package com.pj.system.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Organization;
 
 public interface CompanyService extends BaseService<Company, Integer> {
 	
@@ -54,4 +53,11 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	List<Company> selectCompanyByPersonnelAuthority();
 
 	List<Company> selectByUserid(Integer userid,Integer menuid);
+
+	/**
+	 * 得到所有公司，pId记录number
+	 * @author limr
+	 * @return
+	 */
+	List<Organization> selectOransNotDeleteALL();
 }

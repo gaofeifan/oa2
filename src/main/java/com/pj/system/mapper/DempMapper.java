@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.system.pojo.Demp;
+import com.pj.system.pojo.Organization;
 
 public interface DempMapper extends MyMapper<Demp> {
 
@@ -47,6 +48,21 @@ public interface DempMapper extends MyMapper<Demp> {
 	Demp selectParentDempById(Integer dempId);
 
 	List<Demp> SelectByUserid(@Param(value = "userid") Integer userid,@Param(value = "menuid") Integer menuid,@Param(value = "companyid") Integer companyid);
+
+	/**
+	 * 公司下直接部门
+	 * @author limr
+	 * @param companyId
+	 * @return
+	 */
+	List<Organization> selectOrgansByCompanyId(Integer companyId);
+
+	/**
+	 * 子部门
+	 * @param dempId
+	 * @return
+	 */
+	List<Organization> selectOrgansByPId(Integer id);
 	
 	
 }

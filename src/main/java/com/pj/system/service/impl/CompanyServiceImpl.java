@@ -13,6 +13,7 @@ import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
+import com.pj.system.pojo.Organization;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.UserService;
@@ -109,6 +110,11 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	@Override
 	public List<Company> selectByUserid(Integer userId, Integer menuid) {
 		return this.companyMapper.selectByUserid(userId,menuid);
+	}
+
+	@Override
+	public List<Organization> selectOransNotDeleteALL() {
+		return companyMapper.selectOransNotDeleteALL();
 	}
 	
 	

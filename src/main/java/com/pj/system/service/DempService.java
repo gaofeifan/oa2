@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Demp;
+import com.pj.system.pojo.Organization;
 
 public interface DempService  extends BaseService<Demp, Integer>{
 
@@ -95,6 +96,23 @@ public interface DempService  extends BaseService<Demp, Integer>{
 
 	
 	List<Demp> SelectByUserid(Integer userid,Integer menuid,Integer companyid);
+
+
+	/**
+	 * 得到公司下的直接部门,pId=0或者null
+	 * @author limr
+	 * @param companyId
+	 * @return
+	 */
+	List<Organization> selectOrgansByCompanyId(Integer companyId);
+
+
+	/**
+	 * 部门下的直接子部门
+	 * @param dempId
+	 * @return
+	 */
+	List<Organization> selectOrgansByPId(Integer dempId);
 
 
 	
