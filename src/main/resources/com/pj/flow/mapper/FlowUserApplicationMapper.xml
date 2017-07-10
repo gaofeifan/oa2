@@ -25,6 +25,9 @@
 			<if test="checkstatus != null and checkstatus == 0">
 				and a.checkstatus = 0 and a.is_approve = 0
 			</if>
+			<if test="checkstatus != null and checkstatus != 0">
+				and a.checkstatus != 0
+			</if>
 	</select>
 	<select id="selectByApplyIdAndType" resultMap="BaseResultMap">
 		select * from flow_user_application 

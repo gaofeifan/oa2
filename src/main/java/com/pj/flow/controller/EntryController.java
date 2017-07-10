@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowApprove;
@@ -114,6 +115,7 @@ public class EntryController extends BaseController{
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
 			flowEntry.setStatus(0);
+			flowEntry.setState(EntryApplyState.IN_ENTRY_APPROVAL.getState());
 			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.pj.system.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
+import com.pj.system.service.DempService;
+import com.pj.system.service.PostService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
 import com.pj.utils.RequestUtils;
@@ -47,6 +51,12 @@ public class CompanyController extends SystemManageController{
 	
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private DempService dempService;
+	
+	@Resource
+	private PostService postService;
 	
 	@Resource
 	private SessionProvider sessionProvider;
@@ -195,7 +205,7 @@ public class CompanyController extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "根据用户权限查询所负责公司信息", httpMethod = "GET", response=String.class, notes ="根据用户权限查询所负责公司信息")
 	@RequestMapping(value = "/getCompanysByAuth.do",method=RequestMethod.GET)
-	public Map<String, Object> findCompanyList(HttpServletResponse response,
+	public Map<String, Object> getCompanysByAuth(HttpServletResponse response,
 			HttpServletRequest request){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -237,4 +247,70 @@ public class CompanyController extends SystemManageController{
 			return this.error("查询异常"+e.getMessage());
 		}
 	}
+	
+	/**
+	 * 展示公司部门岗位联系结构
+	 * @author limr
+	 * @param Model
+	 * @return
+	 */
+	@ResponseBody
+	@ApiOperation(value = "展示公司部门岗位联系列表", httpMethod = "GET", response=String.class, notes ="展示公司部门岗位联系列表")
+	@RequestMapping(value = "/listFrameTree.do",method=RequestMethod.GET)
+	public Map<String, Object> listFrameTree(){
+		Map<String, Object> map;
+		try {
+			List<Organization> organizations = new ArrayList<Organization>();
+			List<Organization> companys = companyService.selectOransNotDeleteALL();
+			organizations.addAll(companys);
+			//查找各公司下边的直接部门或者公司下边直接的岗位
+			for(Organization company : companys){
+				Integer companyId = company.getId();
+				List<Organization> innerDempList = dempService.selectOrgansByCompanyId(companyId);
+				List<Organization> innerPostList = postService.selectLinealsByCompanyId(companyId);
+				
+				organizations.addAll(innerDempList);
+				organizations.addAll(innerPostList);
+				
+				//查找子部门下的子部门或岗位
+				for(Organization organization : innerDempList){
+					Integer dempId = organization.getId();
+					List<Organization> dempList = dempService.selectOrgansByPId(dempId);
+					List<Organization> postList = postService.selectLinealsByDempId(dempId);
+					
+					organizations.addAll(postList);
+					organizations.addAll(getDepts(dempList));
+				}
+				
+			}
+			
+			map = this.success(organizations);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询所有的企业信息异常" + e.getMessage());
+			throw new RuntimeException("查询所有企业信息");			
+		}
+    	return map;
+	}
+	
+	/** 
+     * @descript:递归部门 
+     * @param dempList 
+     * @return 
+     */  
+    public List<Organization> getDepts(List<Organization> dempList){  
+        List<Organization> deptVosList=new ArrayList<Organization>();  
+        deptVosList.addAll(dempList);
+        if(dempList != null && dempList.size() > 0){  
+        	for(Organization organization : dempList){  
+        		
+        		Integer dempId = organization.getId();
+				List<Organization> innerDempList = dempService.selectOrgansByPId(dempId);
+				List<Organization> postList = postService.selectLinealsByDempId(dempId);
+				deptVosList.addAll(postList);
+				getDepts(innerDempList);
+            }  
+        }  
+        return deptVosList;  
+    }  
 }

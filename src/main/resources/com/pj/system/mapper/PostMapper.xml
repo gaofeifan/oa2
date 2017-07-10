@@ -15,6 +15,17 @@
     <result column="dempname" property="dempname" jdbcType="VARCHAR" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap id="OrganizationMap" type="com.pj.system.pojo.Organization" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="pNum" property="pNum" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="choice" property="choice" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
  <select id="selectALL" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.Post">
   SELECT
 		p.*, c.`name` companyname,
@@ -52,5 +63,15 @@
 		demp_id = #{dempid}
 	</if>
 	GROUP BY  t_post.id,t_post.name,t_post.demp_id,t_post.company_id
+  </select>
+  <select id="selectLinealsByCompanyId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
+	select p.id, p.number, p.name, c.number as pNum, "post" as type from t_post p
+	left join t_company c on c.id = p.company_id 
+	where p.company_id = #{cmpanyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
+  </select>
+  <select id="selectLinealsByDempId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
+	select p.id, p.number, p.name, d.number as pNum, "post" as type from t_post p
+	left join t_demp d on d.id = p.demp_id 
+	where p.demp_id = #{dempId} and p.isdelete = 0
   </select>
 </mapper>

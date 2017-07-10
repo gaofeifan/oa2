@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowApprove;
@@ -86,7 +87,6 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			List<FlowRecruit> list = flowRecruitService.searchRecruits(null, null, user.getId());		
 			for(FlowRecruit flowRecruit : list){
 				Integer dempId = flowRecruit.getApplyDempId();
@@ -114,6 +114,7 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
+			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			
 			map = this.successJsonp("提交成功");

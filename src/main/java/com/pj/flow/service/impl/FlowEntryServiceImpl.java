@@ -124,14 +124,14 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		fa.setApplyDempName(dempName);
 		fa.setApplyCompanyName(company.getName());
 		
-		flowUserApplicationMapper.insertUseGeneratedKeys(fa);
+		flowUserApplicationMapper.insertSelective(fa);
 		
 		
 		/***************招聘待办信息保存satrt**********/
 		
 		//若提交，提交入职申请后再更新到已提交栏目，招聘中状态减一
 		//已提交的信息
-		int recruitId = flowEntry.getRecruitId();
+		Integer recruitId = flowEntry.getRecruitId();
 		FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
 		if(hasCommitTodo != null){
 			hasCommitTodo.setNumber(hasCommitTodo.getNumber() + 1);
@@ -144,7 +144,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			flowRecruitTodoMapper.insert(hasCommitTodo);
 		}
 		//招聘中状态的数据减一,如只有一个则删除，多个则减一
-		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(166, RecruitTodoState.IN_RECRUIT.getState());
 		int num = inRecruitTodo.getNumber();
 		if(num > 1){
 			inRecruitTodo.setNumber(num - 1);
@@ -187,7 +187,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 * 	获取并保存审批人员
 		 * 
 		 */
-		FlowRecruit recruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
+		FlowRecruit recruit = this.flowRecruitService.selectById(166);
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
 		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),fa.getId());
 	}

@@ -18,6 +18,7 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.pojo.Demp;
+import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
@@ -191,6 +192,16 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	@Override
 	public List<Demp> SelectByUserid(Integer menuid, Integer userid,Integer companyid) {
 		return this.dempMapper.SelectByUserid(menuid,userid,companyid);
+	}
+
+	@Override
+	public List<Organization> selectOrgansByCompanyId(Integer companyId) {
+		return dempMapper.selectOrgansByCompanyId(companyId);
+	}
+
+	@Override
+	public List<Organization> selectOrgansByPId(Integer dempId) {
+		return dempMapper.selectOrgansByPId(dempId);
 	}
 	
 	

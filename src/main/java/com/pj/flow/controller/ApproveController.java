@@ -26,6 +26,7 @@ import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowUserApplicationService;
 import com.pj.system.pojo.User;
+import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
 import com.pj.utils.RequestUtils;
@@ -70,13 +71,16 @@ public class ApproveController extends BaseController{
 	private FlowEntryService flowEntryService;
 	
 	@Autowired
+	private DempService dempService;
+	
+	@Autowired
 	private FlowUserApplicationService flowUserApplicationService;
 	
 	
 	@ApiOperation(value = "审批查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="审批查询")
 	@RequestMapping(value = "/searchAllApproves.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue searchMyApproves(HttpServletResponse response, HttpServletRequest request,
+	public MappingJacksonValue searchAllApproves(HttpServletResponse response, HttpServletRequest request,
 			@ApiParam(value = "申请类型（招聘:recruit,入职:entry）", required = true)@RequestParam(value = "applyType", required = true)String applyType,
 			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
 			@ApiParam(value = "申请人姓名", required = false)@RequestParam(value = "username", required = false)String username
@@ -88,10 +92,24 @@ public class ApproveController extends BaseController{
 			if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
 				//招聘
 				List<FlowRecruit> recruits = flowRecruitService.searchRecruits(companyId, username, null);
+				for(FlowRecruit recruit : recruits){
+					//申请人部门
+					Integer dempId = recruit.getApplyDempId();
+					//拼接上父部门的组合
+					String dempName = dempService.selectDempParentNameById(dempId);
+					recruit.setDempName(dempName);
+				}
 				map = this.successJsonp(recruits);
 			}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 				//入职
 				List<FlowEntry> entrys = flowEntryService.searchEntrys(companyId, username, null);
+				for(FlowEntry entry : entrys){
+					//申请人部门
+					Integer dempId = entry.getDempId();
+					//拼接上父部门的组合
+					String dempName = dempService.selectDempParentNameById(dempId);
+					entry.setDempName(dempName);
+				}
 				map = this.successJsonp(entrys);
 			}else {
 				map = this.successJsonp(null);

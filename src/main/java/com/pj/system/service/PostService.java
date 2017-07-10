@@ -2,9 +2,8 @@ package com.pj.system.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.pj.config.base.service.BaseService;
+import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 
 public interface PostService extends BaseService<Post, Integer> {
@@ -48,5 +47,19 @@ public interface PostService extends BaseService<Post, Integer> {
 	Integer selectByNameANDDempId(Integer dempId, String postName);
 
 	List<Post> SelectByUserid(Integer userid,Integer menuid,Integer dempid);
+
+	/**
+	 * 根据公司查询直接子岗位,即dempid=0
+	 * @param companyId
+	 * @return
+	 */
+	List<Organization> selectLinealsByCompanyId(Integer companyId);
+
+	/**
+	 * 根据部门查询直接子岗位,即dempid=dempId
+	 * @param dempId
+	 * @return
+	 */
+	List<Organization> selectLinealsByDempId(Integer dempId);
 
 }

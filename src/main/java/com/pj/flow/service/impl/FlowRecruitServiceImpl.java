@@ -167,7 +167,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 				//开始
 				//修改状态待办表
 				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.IN_RECRUIT.getState(), reason);
-				
+				//TODO
 				status = ActionLogOperation.RESTART_RECRUIT.getValue();
 			}
 //			state == 2在提交入职申请后保存
@@ -224,7 +224,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		fa.setApplyDempName(names);
 		fa.setApplyCompanyName(company.getName());
 		
-		flowUserApplicationMapper.insertUseGeneratedKeys(fa);
+		flowUserApplicationMapper.insertSelective(fa);
 		/**
 		 * 	保存提交申请的消息通知
 		 */
