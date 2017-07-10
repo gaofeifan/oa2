@@ -243,4 +243,14 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	public List<FlowApprove> selectByApplyIdAndType(Integer applyId, String applyType) {
 		return flowApproveMapper.selectByApplyIdAndType(applyId, applyType);
 	}
+
+	@Override
+	public int selectByApprove(Integer userid, Integer isapprove) {
+		return flowApproveMapper.selectByApprove(userid, isapprove);
+	}
+
+	@Override
+	public int selectByUserid(Integer userid) {
+		return flowApproveMapper.selectByUserid(userid);
+	}
 }

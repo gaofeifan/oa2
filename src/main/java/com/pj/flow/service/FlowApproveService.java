@@ -45,4 +45,7 @@ public interface FlowApproveService extends BaseService<FlowApprove, Integer> {
 	 */
 	void commitApprove(FlowUserApplication flowUserApplication, Integer userid, Integer checkstatus, String handleidea, Integer formId, String applyType);
 
+	int selectByApprove(Integer userid,Integer isapprove);
+	
+	int selectByUserid(Integer userid);
 }
