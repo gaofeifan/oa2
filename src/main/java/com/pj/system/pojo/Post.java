@@ -29,6 +29,12 @@ public class Post implements Serializable {
 	@Column(name = "number")
 	@ApiModelProperty(value = "岗位编号", required = false)
 	private String number;
+	
+	/**
+	 * 机构编号
+	 */
+	@Column(name = "sign_num")
+	private String signNum;
 
 	/**
 	 * 岗位名称
@@ -189,5 +195,15 @@ public class Post implements Serializable {
 	public void setChoice(String choice) {
 		this.choice = choice;
 	}
+
+	public String getSignNum() {
+		return signNum;
+	}
+
+
+	public void setSignNum(String signNum) {
+		this.signNum = signNum;
+	}
+	
 }
 

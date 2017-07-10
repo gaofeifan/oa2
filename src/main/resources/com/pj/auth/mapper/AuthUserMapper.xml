@@ -8,10 +8,9 @@
     <result column="companyid" property="companyid" jdbcType="INTEGER" />
     <result column="dempid" property="dempid" jdbcType="INTEGER" />
     <result column="postid" property="postid" jdbcType="INTEGER" />
+    <result column="post_sign_num" property="postSignNum" jdbcType="VARCHAR" />
+    <result column="menuids" property="menuids" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, userid, menuid, companyid, dempid, postid
-  </sql>
   <insert id="insertAuthUser" parameterType="com.pj.auth.pojo.AuthUser" >
     insert into auth_user (userid, menuid, companyid, dempid, postid)
     values (#{userid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, #{companyid,jdbcType=INTEGER}, #{dempid,jdbcType=INTEGER}, #{postid,jdbcType=INTEGER})
@@ -34,5 +33,8 @@
 			and postid= #{postid}
 	</if>
   </delete>
- 
+ <select id="selectByUserid" resultMap="BaseResultMap">
+ 	select * from auth_user
+ 	 where userid = #{userid}
+ </select>
 </mapper>

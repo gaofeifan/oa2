@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
-import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.PostService;

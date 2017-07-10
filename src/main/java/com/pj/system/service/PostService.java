@@ -61,5 +61,13 @@ public interface PostService extends BaseService<Post, Integer> {
 	 * @return
 	 */
 	List<Organization> selectLinealsByDempId(Integer dempId);
+	
+	/**
+	 * 新增，增加机构编码
+	 * @author limr
+	 * @param record
+	 * @return
+	 */
+	public int insertSelective(Post post);
 
 }

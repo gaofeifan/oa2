@@ -1,12 +1,18 @@
 package com.pj.auth.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.mapper.AuthMenuMapper;
 import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.auth.pojo.AuthUser;
@@ -39,6 +45,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 	
 	@Resource
 	private PostService postService;
+	
+	@Resource
+	private AuthMenuMapper authMenuMapper;
 	
 	@Override
 	public MyMapper<AuthUser> getMapper() {
@@ -393,6 +402,114 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		AuthUser authuser=new AuthUser();
 		authuser.setUserid(userid);
 		return authUserMapper.deleteByUserid(authuser);
+	}
+
+	@Override
+	public List<Integer> getSelectedMenuIds(Integer grade, Integer menuId, Integer userid) {
+
+		List<Integer> selectMenuIds = new ArrayList<Integer>();
+		List<AuthUser> authUsers = authUserMapper.selectByUserid(userid);
+		//根据grade判断需要展示第几级
+		List<Integer> firstAuthList = new ArrayList<Integer>();
+		List<Integer> secondAuthList = new ArrayList<Integer>();
+		/**
+		 * 如果是第一级,得到menuids的第一个值记录firstAuthList集合，
+		 * 第二个值记录secondAuthList集合
+		 * 然后循环firstAuthList查询数据库得到各个menuId下所有的子菜单id
+		 * 
+		 * 第二级，传来的是第一级的id,若firstMenuId=menuId
+		 * 则firstList记录secondId
+		 * 
+		 * 第三级，传来的是第二级的id
+		 * 记录三级id
+		 */
+		//grade==1时使用
+		Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+		for(AuthUser authUser : authUsers){
+			String[] menuidArr = authUser.getMenuids().split("-");
+			Integer firstMenuId = Integer.parseInt(menuidArr[0]);
+			Integer secondMenuId = Integer.parseInt(menuidArr[1]);
+			Integer thirdMenuId = Integer.parseInt(menuidArr[2]);
+			if (grade == 1) {
+				List<Integer> secondList = map.get(firstMenuId);
+				if(secondList != null && secondList.size() > 0){
+					if(!secondList.contains(secondMenuId)){
+						secondList.add(secondMenuId);
+					}
+				}else{
+					secondList = new ArrayList<Integer>();
+					secondList.add(secondMenuId);
+				}
+				map.put(firstMenuId, secondList);
+				
+			}else if(grade == 2){
+				/**
+				 * 如果firstMenuId == menuId,则记录二级和三级菜单id
+				 */
+				
+				if(firstMenuId.equals(menuId)){  
+					if(!firstAuthList.contains(secondMenuId)){
+						firstAuthList.add(secondMenuId); 
+					}
+					if(!secondAuthList.contains(thirdMenuId)){  
+						secondAuthList.add(thirdMenuId);  
+					}
+				}
+				
+			}else if(grade == 3){
+				if(secondMenuId.equals(menuId)){ 
+					if(!selectMenuIds.contains(thirdMenuId)){
+						selectMenuIds.add(thirdMenuId);  
+					}
+				}
+			}
+		}
+		/**
+		 * 循环firstAuthList，得到逐个的所有子集菜单id
+		 * 与用户已经有的菜单id secondList比对
+		 * 若相同，则打勾，不同则不打勾
+		 * 
+		 */
+		//判断grade=1的情况取值
+		if(map != null && !map.isEmpty()){
+			for (Entry<Integer, List<Integer>> entry : map.entrySet()) {
+				   Integer firstMenuId = entry.getKey();
+				   List<Integer> secondList = entry.getValue();
+				   getSelectNums(selectMenuIds, secondList, firstMenuId);
+				  }
+		}
+		for(Integer firstMenuId : firstAuthList){
+			getSelectNums(selectMenuIds, secondAuthList, firstMenuId);
+		}
+		return selectMenuIds;
+	}
+
+	private void getSelectNums(List<Integer> selectMenuIds, List<Integer> secondAuthList, Integer firstMenuId) {
+		//查询数据库中firstMenuId菜单的所有子菜单
+		List<Integer> menuIds = authMenuMapper.selectByFid(firstMenuId);
+		if(compare(secondAuthList,menuIds)){
+			if(!selectMenuIds.contains(firstMenuId)){
+				selectMenuIds.add(firstMenuId);
+			}
+		}
+	}
+	/**
+	 * 队列比较
+	 * @param <T>
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public <T extends Comparable<T>> boolean compare(List<T> a, List<T> b) {
+	  if(a.size() != b.size())
+	    return false;
+	  Collections.sort(a);
+	  Collections.sort(b);
+	  for(int i=0;i<a.size();i++){
+	    if(!a.get(i).equals(b.get(i)))
+	      return false;
+	  }
+	  return true;
 	}
 
 }

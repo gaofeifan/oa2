@@ -70,4 +70,7 @@
 		LEFT JOIN auth_menu t3 on t2.id=t3.fid
 		where t3.name=#{name} and t3.id in (select menuid from auth_user where userid=#{userid}) OR t1.auth=0 and t2.name is not null
 	</select>
+	<select id="selectByFid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select id from auth_menu where fid = #{fid} and auth = 1
+	</select>
 </mapper>

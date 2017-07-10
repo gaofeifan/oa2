@@ -36,5 +36,13 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 * @return
 	 */
 	List<Organization> selectOransNotDeleteALL();
+
+	/**
+	 * 根据id得到所有父级以及本机编号
+	 * @author limr
+	 * @param id
+	 * @return
+	 */
+	List<String> selectParentsById(Integer id);
 	
 }

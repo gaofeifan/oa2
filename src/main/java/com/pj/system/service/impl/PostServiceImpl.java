@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.system.mapper.CompanyMapper;
+import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
+import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.PostService;
@@ -25,6 +28,12 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 
 	@Resource
 	private PostMapper postMapper;
+	
+	@Resource
+	private CompanyMapper companyMapper;
+	
+	@Resource
+	private DempMapper dempMapper;
 
 	@Resource
 	private UserService userService;
@@ -102,6 +111,28 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	public List<Organization> selectLinealsByDempId(Integer dempId) {
 		return postMapper.selectLinealsByDempId(dempId);
 	}
+	@Override
+	public int insertSelective(Post post) {
+		/**
+		 * 得到选中的公司id得到所有上级以及本级公司编号，
+		 * 根据选中的部门id得到所有上级以及本级部门编号，
+		 * 拼接为机构编码保存
+		 */
+		List<String> companyNumList = companyMapper.selectParentsById(post.getCompanyId());
+		String companyNums = companyNumList.get(0);
+		for (int i = 1; i < companyNumList.size(); i++) {
+			companyNums += "-" + companyNumList.get(i);
+		}
+		Integer dempId = post.getDempId();
+		String dempNums = "";
+		if(dempId != null && dempId != 0){
+			List<Demp> demps = dempMapper.selectDempParentListById(dempId);
+			for (int i = 0; i < demps.size(); i++) {
+				dempNums += "-" + demps.get(i).getNumber();
+			}
+		}
+		post.setSignNum(companyNums + dempNums + "-" + post.getNumber());
+		return super.insertSelective(post);
+	}
 	
-
 }
