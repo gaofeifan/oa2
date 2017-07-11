@@ -1,5 +1,8 @@
 package com.pj.flow.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
@@ -23,13 +26,15 @@ public class WorkbenchController  extends BaseController{
 	@Autowired
 	private FlowApproveService flowApproveService;
 	
-	@RequestMapping(value="/Approve.do" , method=RequestMethod.GET)
+	@RequestMapping(value="/ApplyState.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询我的申请状态", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue GetMenu(
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid,
-			@ApiParam("查询状态0:审批中  1:不同意  2:同意") @RequestParam(value = "isapprove", required = true) Integer isapprove){
+	public @ResponseBody MappingJacksonValue GetApprove(@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
 		try {
-			return this.successJsonp(flowApproveService.selectByApprove(userid, isapprove));
+			Map<Integer,Integer> map = new HashMap<Integer, Integer>();
+			map.put(0, flowApproveService.selectByApprove(userid, 0));
+			map.put(1, flowApproveService.selectByApprove(userid, 1));
+			map.put(2, flowApproveService.selectByApprove(userid, 2));
+			return this.successJsonp(map);
 		} catch (Exception e) {
 			logger.error("【WorkbenchController.Approve】"+e.getMessage());
 			e.printStackTrace();
@@ -37,9 +42,9 @@ public class WorkbenchController  extends BaseController{
 		return this.successJsonp(this.error("查询我的申请状态失败"));
 	}
 	
-	@RequestMapping(value="/ApproveUserid.do" , method=RequestMethod.GET)
+	@RequestMapping(value="/ApprovalState.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询我的审批状态", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue GetMenu(@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+	public @ResponseBody MappingJacksonValue GetApproveUserid(@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			return this.successJsonp(flowApproveService.selectByUserid(userid));
 		} catch (Exception e) {
