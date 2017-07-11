@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.ApprovalResults;
+import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -169,6 +171,14 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
 				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
 			}
+			
+			if(checkstatus.equals(ApprovalResults.AGREE.getValue())){
+				FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
+				if(flowApprove != null){
+					flowApprove.setIsApprove(0);
+					this.updateByPrimaryKeySelective(innerApprove);
+				}
+			}
 		}
 		
 		if(checkstatus == 1){
@@ -179,6 +189,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		}else if(checkstatus == 2){
 			//同意,下一条值为0
 			//TODO
+			
 		}
 		isApproveComplete(flowUserApplication,applyType);
 	}
@@ -190,24 +201,34 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	 * 	@param flowUserApplication
 	 */
 	private void isApproveComplete(FlowUserApplication flowUserApplication , String applyType) {
+		Integer entryResult = null;
 		FlowApprove record = new FlowApprove();
 		record.setApplyId(flowUserApplication.getId());
 		List<FlowApprove> list = super.select(record );
 		List<Boolean> collect = list.stream().map(approve -> approve.getCheckstatus() != 0).collect(Collectors.toList());
-		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 2).collect(Collectors.toList());
-		//	审批人员都同意 修改
-		if(!agrees.contains(false)){
-			flowRecruitTodoService.insertRecruitTodo(flowUserApplication.getFormId(), applyType);
-		}
 		//	判断是否所有人员都审批完成
 		if(collect.contains(false)){
 			return ;
 		}
+		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 2).collect(Collectors.toList());
+		List<Boolean> disagree = list.stream().map(approve -> approve.getCheckstatus() == 1).collect(Collectors.toList());
+		//	审批人员都同意 修改
+		if(!agrees.contains(false)){
+			flowRecruitTodoService.insertRecruitTodo(flowUserApplication.getFormId(), applyType);
+			entryResult = EntryApplyResult.ENTRY_AGREE.getState();
+		}
+		if(disagree.contains(true)){
+			entryResult = EntryApplyResult.ENTRY_DISAGREE.getState();
+		}
+		
 		/**
 		 * 	保存消息通知
 		 */
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
+			FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+			flowRecruit.setResult(entryResult);
+			this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
@@ -221,6 +242,13 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
+			
+			/**
+			 * 	修改状态
+			 */
+			FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+			entry.setResult(entryResult);
+			this.flowEntryMapper.updateByPrimaryKeySelective(entry);
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());

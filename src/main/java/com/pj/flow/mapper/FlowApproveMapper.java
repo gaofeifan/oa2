@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.pj.auth.pojo.AuthUser;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.flow.pojo.FlowApprove;
 
@@ -28,4 +27,13 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	int selectByApprove(@Param(value = "userid") Integer userid,@Param(value = "isapprove") Integer isapprove);
 	
 	int selectByUserid(@Param(value = "userid") Integer userid);
+
+	/**
+	 * 	查询下一个审批人员
+	 *	@author 	GFF
+	 *	@date		2017年7月11日下午3:06:06	
+	 * 	@param id
+	 * 	@param applyId
+	 */
+	FlowApprove selectNextApproval(@Param(value = "approveId") Integer id, @Param(value = "applyId") Integer applyId);
 }

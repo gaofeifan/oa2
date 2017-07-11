@@ -110,9 +110,9 @@ public class EntryController extends BaseController{
 		try {
 			String salarys = flowEntry.getSalaryJson();
 			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
-			flowEntry.setRecruitId(207);
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil("hujingjing@pj-l.com");
+			flowEntry.setRecruitId(flowEntry.getRecruitId());
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
 			flowEntry.setStatus(0);

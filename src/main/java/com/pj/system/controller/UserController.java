@@ -190,7 +190,7 @@ public class UserController extends BaseController {
 		try {
 //			List<Company> companys = this.companyService.selectNotDeleteALL();
 			// 查询所有部门
-//			List<Demp> demps = this.dempService.selectNotDeleteALL();
+//			List<Demp> demps = this.dempService.selectNotDeleteALL();0
 			Pagination pagination = this.userService.selectByQuery(pageNo, username, isstatus, dempid,
 					companyid, systemRoleid, terrace);
 			map.put("pagination", pagination);

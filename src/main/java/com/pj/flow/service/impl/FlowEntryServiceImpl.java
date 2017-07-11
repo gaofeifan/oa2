@@ -156,6 +156,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//保存日志表
 		FlowActionLog log = new FlowActionLog();
 		log.setRecruitId(recruitId);
+		log.setEntryId(entryId);
 		log.setOperater(flowEntry.getUsername());
 		log.setStatus(ActionLogOperation.COMMIT_ENTRY.getValue());
 		log.setOperateTime(new Date());

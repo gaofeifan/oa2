@@ -214,7 +214,9 @@ public class RecruitController extends BaseController{
 	}
 	
 	
+	
 	/**********************招聘待办**********************/
+	
 	
 	/**
 	 * 	招聘待办提示,得到待办个数
@@ -255,8 +257,8 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil("hujingjing@pj-l.com");
 
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
 			
@@ -283,7 +285,8 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
-			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(recruitId);
+			// TODO
+			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(229);
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.pj.system.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -203,9 +202,8 @@ public class CompanyController extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "根据用户权限查询所负责公司信息", httpMethod = "GET", response=String.class, notes ="根据用户权限查询所负责公司信息")
 	@RequestMapping(value = "/getCompanysByAuth.do",method=RequestMethod.GET)
-	public Map<String, Object> getCompanysByAuth(HttpServletResponse response,
+	public Object getCompanysByAuth(HttpServletResponse response,
 			HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			//得到当前登录用户  # TODO
 //			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
@@ -213,12 +211,11 @@ public class CompanyController extends SystemManageController{
 			
 //			List<Company> companys = companyService.getByAuthUser(user.getId());
 			List<Company> companys = companyService.selectNotDeleteALL();
-			map = this.success(companys);
+			return this.successJsonp(companys);
 		} catch (Exception e) {
 			logger.error("根据用户权限查询所负责公司信息" + e.getMessage());
-			throw new RuntimeException("根据用户权限查询所负责公司信息");			
+			return this.errorToJsonp("根据用户权限查询所负责公司信息" + e.getMessage());
 		}
-    	return map;
 	}
 	
 	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")
