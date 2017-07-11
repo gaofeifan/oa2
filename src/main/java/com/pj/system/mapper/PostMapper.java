@@ -36,4 +36,36 @@ public interface PostMapper extends MyMapper<Post>{
 	 */
 	List<Organization> selectLinealsByDempId(Integer dempId);
 
+	/**
+	 * 根据number得到数据
+	 * @author limr
+	 * @param number
+	 * @return
+	 */
+	Post selectByNumber(String number);
+
+	/**
+	 * 得到所有postid
+	 * @author limr
+	 * @param isdelete
+	 * @return
+	 */
+	List<Integer> selectAllPostId(int isdelete);
+
+	/**
+	 * 查询部门下直接的岗位num
+	 * @author limr
+	 * @param dempId
+	 * @return
+	 */
+	List<String> selectLinealNumsByCompanyId(Integer companyId);
+
+	/**
+	 * 查询部门下直接的岗位number，即dempid=dempId
+	 * @author limr
+	 * @param dempId
+	 * @return
+	 */
+	List<String> selectLinealNumsByDempId(Integer dempId);
+
 }

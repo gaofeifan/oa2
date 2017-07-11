@@ -1,6 +1,7 @@
 
 package com.pj.system.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.pj.config.base.service.BaseService;
@@ -60,4 +61,37 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 * @return
 	 */
 	List<Organization> selectOransNotDeleteALL();
+
+	/**
+	 * 查找各公司下边的直接部门或者公司下边直接的岗位
+	 * @author limr
+	 * @param organizations
+	 * @param type 值为post时，只需要得到岗位,all时得到所有部门和岗位
+	 * @return
+	 */
+	List<Organization> getDempsAndPosts(List<Organization> organizations, String type);
+	/** 
+     * @descript:递归部门 
+     * @author limr
+     * @param dempList 
+     * @param type 值为post时，只需要得到岗位 
+     * @return 
+     */  
+    public List<Organization> getDepts(List<Organization> dempList, String type);
+
+    /**
+	 * 查找各公司下边type=post时直接的岗位number
+	 * @author limr
+	 * @param organizations
+	 * @return
+	 */
+	List<String> getPostNumByCompanys(List<Organization> companys);
+
+	/** 
+     * @descript:递归部门 只需要得到岗位number
+     * @author limr
+     * @param dempList 
+     * @return 
+     */ 
+	Collection<? extends String> getDeptNums(List<Organization> dempList);
 }

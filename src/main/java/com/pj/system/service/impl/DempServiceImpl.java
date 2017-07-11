@@ -196,12 +196,12 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 
 	@Override
 	public List<Organization> selectOrgansByCompanyId(Integer companyId) {
-		return dempMapper.selectOrgansByCompanyId(companyId);
+		return dempMapper.selectOrgsByCompanyId(companyId);
 	}
 
 	@Override
 	public List<Organization> selectOrgansByPId(Integer dempId) {
-		return dempMapper.selectOrgansByPId(dempId);
+		return dempMapper.selectOrgsByPId(dempId);
 	}
 	
 	

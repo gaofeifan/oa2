@@ -2,10 +2,6 @@ package com.pj.system.pojo;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-
-import io.swagger.annotations.ApiModelProperty;
-
 /**
  * 项目名称：oa   
  * 类名称：Organization   
@@ -40,6 +36,11 @@ public class Organization implements Serializable {
      * 父节点,记录number
      */
     private String pNum;
+    
+    /**
+     * 组织机构num
+     */
+    private String signNum;
 
     /**
      * 是否删除 0未删除  1已删除
@@ -128,4 +129,13 @@ public class Organization implements Serializable {
 		this.choice = choice;
 	}
 
+	public String getSignNum() {
+		return signNum;
+	}
+
+	public void setSignNum(String signNum) {
+		this.signNum = signNum;
+	}
+
+	
 }

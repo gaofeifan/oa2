@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.CompanyMapper;
+import com.pj.system.mapper.DempMapper;
+import com.pj.system.mapper.PostMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Organization;
@@ -26,6 +28,12 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 
 	@Resource
 	private CompanyMapper companyMapper;
+	
+	@Resource
+	private DempMapper dempMapper;
+	
+	@Resource
+	private PostMapper postMapper;
 
 	@Resource 
 	private DempService dempService;
@@ -116,7 +124,101 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	public List<Organization> selectOransNotDeleteALL() {
 		return companyMapper.selectOransNotDeleteALL();
 	}
+	@Override
+	public List<Organization> getDempsAndPosts(List<Organization> companys, String type) {
+		List<Organization> organizations = new ArrayList<Organization>();
+		for(Organization company : companys){
+			Integer companyId = company.getId();
+			List<Organization> innerDempList = dempMapper.selectOrgsByCompanyId(companyId);
+			List<Organization> innerPostList = postMapper.selectLinealsByCompanyId(companyId);
+			
+			if(!"post".equals(type)){
+				organizations.addAll(innerDempList);
+			}
+			organizations.addAll(innerPostList);
+			
+			//查找子部门下的子部门或岗位
+//			organizations.addAll(getDepts(innerDempList, type));
+			for(Organization organization : innerDempList){
+				Integer dempId = organization.getId();
+				List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
+				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
+				
+				organizations.addAll(postList);
+				organizations.addAll(getDepts(dempList, type));
+			}
+			
+		}
+		return organizations;
+	}
 	
-	
+	/** 
+     * @descript:递归部门 
+     * @param dempList 
+     * @param type 值为post时，只需要得到岗位 
+     * @return 
+     */  
+    public List<Organization> getDepts(List<Organization> dempList, String type){  
+        List<Organization> deptVosList=new ArrayList<Organization>();  
+        if(!"post".equals(type)){
+        	deptVosList.addAll(dempList);
+        }
+        if(dempList != null && dempList.size() > 0){  
+        	for(Organization organization : dempList){  
+        		
+        		Integer dempId = organization.getId();
+				List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
+				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
+				deptVosList.addAll(postList);
+				getDepts(innerDempList, type);
+            }  
+        }  
+        return deptVosList;  
+    }
+    /** 
+     * @descript:递归部门得到岗位number
+     * @param dempList 
+     * @return 
+     */  
+    @Override
+    public List<String> getDeptNums(List<Organization> dempList){  
+    	List<String> deptVosList=new ArrayList<String>();  
+    	if(dempList != null && dempList.size() > 0){  
+    		for(Organization organization : dempList){  
+    			
+    			Integer dempId = organization.getId();
+    			List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
+    			List<String> postList = postMapper.selectLinealNumsByDempId(dempId);
+    			deptVosList.addAll(postList);
+    			getDeptNums(innerDempList);
+    		}  
+    	}  
+    	return deptVosList;  
+    }
+
+	@Override
+	public List<String> getPostNumByCompanys(List<Organization> companys) {
+		List<String> organizations = new ArrayList<String>();
+		for(Organization company : companys){
+			Integer companyId = company.getId();
+			List<Organization> innerDempList = dempMapper.selectOrgsByCompanyId(companyId);
+			List<String> innerPostList = postMapper.selectLinealNumsByCompanyId(companyId);
+			
+			organizations.addAll(innerPostList);
+			
+			//查找子部门下的子部门或岗位
+//			organizations.addAll(getDepts(innerDempList, type));
+			for(Organization organization : innerDempList){
+				Integer dempId = organization.getId();
+				List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
+				List<String> postList = postMapper.selectLinealNumsByDempId(dempId);
+				
+				organizations.addAll(postList);
+				organizations.addAll(getDeptNums(dempList));
+			}
+			
+		}
+		return organizations;
+	}  
 
 }

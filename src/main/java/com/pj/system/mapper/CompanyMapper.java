@@ -44,5 +44,20 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 * @return
 	 */
 	List<String> selectParentsById(Integer id);
+
+	/**
+	 * 根据number得到公司
+	 * @author limr
+	 * @param number
+	 * @return
+	 */
+	Organization selectByNumber(String number);
+	/**
+	 * 根据pId得到公司list
+	 * @author limr
+	 * @param pId
+	 * @return
+	 */
+	List<Organization> selectByPId(Integer pId);
 	
 }

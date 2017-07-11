@@ -73,4 +73,7 @@
 	<select id="selectByFid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select id from auth_menu where fid = #{fid} and auth = 1
 	</select>
+	<select id="selectByPostAndGrade" resultType="java.lang.Integer">
+		select id from auth_menu where post = #{post} and grade = #{grade}
+	</select>
 </mapper>

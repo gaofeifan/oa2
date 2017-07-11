@@ -19,7 +19,25 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	 * @param userid
 	 * @return
 	 */
-	List<AuthUser> selectByUserid(@Param(value = "userid") Integer userid);
+	List<AuthUser> selectByUserid(@Param(value = "userid") Integer userid, @Param(value = "type") String type);
+
+	/**
+	 * 根据userid和menuid删除数据
+	 * @author limr
+	 * @param userid
+	 * @param menuId
+	 * @param postid
+	 */
+	void deleteByUserMenuPost(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "postid") Integer postid);
+
+	/**
+	 * 根据用户和菜单id得到所有的岗位id
+	 * @author limr
+	 * @param userid
+	 * @param menuid
+	 * @return
+	 */
+	List<Integer> selectByMenuidAndUserid(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid);
 	
 	
 }

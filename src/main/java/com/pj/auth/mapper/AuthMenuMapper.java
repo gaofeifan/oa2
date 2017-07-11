@@ -27,4 +27,12 @@ public interface AuthMenuMapper extends MyMapper<AuthMenu> {
 	 * @return
 	 */
 	List<Integer> selectByFid(Integer fid);
+
+	/**
+	 * 根据是否需要岗位且级得到menuids
+	 * @param post
+	 * @param grade
+	 * @return
+	 */
+	List<Integer> selectByPostAndGrade(@Param(value="post") Integer post, @Param(value="grade") int grade);
 }

@@ -43,7 +43,17 @@ public class AuthUser {
 	@Column
 	private String menuids;
 	
+	@Column
+	private String type;
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getPostSignNum() {
 		return postSignNum;
 	}

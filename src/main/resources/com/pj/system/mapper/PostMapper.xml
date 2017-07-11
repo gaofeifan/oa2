@@ -22,6 +22,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="pNum" property="pNum" jdbcType="VARCHAR" />
+    <result column="signNum" property="signNum" jdbcType="VARCHAR" />
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
@@ -70,9 +71,23 @@
 	left join t_company c on c.id = p.company_id 
 	where p.company_id = #{cmpanyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
   </select>
+  <select id="selectLinealNumsByCompanyId" resultType="java.lang.String" parameterType="java.lang.Integer">
+	select p.number from t_post p
+	where p.company_id = #{cmpanyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
+  </select>
   <select id="selectLinealsByDempId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
 	select p.id, p.number, p.name, d.number as pNum, "post" as type from t_post p
 	left join t_demp d on d.id = p.demp_id 
 	where p.demp_id = #{dempId} and p.isdelete = 0
+  </select>
+  <select id="selectLinealNumsByDempId" resultType="java.lang.String" parameterType="java.lang.Integer">
+	select p.number from t_post p
+	where p.demp_id = #{dempId} and p.isdelete = 0
+  </select>
+  <select id="selectByNumber" resultMap="OrganizationMap" parameterType="java.lang.String">
+	select * from t_post where number = #{number} and isdelete = 0
+  </select>
+  <select id="selectAllPostId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select id from t_post where isdelete = #{isdelete}
   </select>
 </mapper>
