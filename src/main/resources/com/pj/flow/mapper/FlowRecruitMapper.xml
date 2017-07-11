@@ -145,7 +145,7 @@
 		LEFT JOIN t_post p ON p.id = r.post_id
 		LEFT JOIN t_position pt ON pt.id = r.position_id
 		LEFT JOIN t_user u ON u.id = r.leader_id
-		WHERE r.id = 1 AND r.STATUS = 0
+		WHERE r.id = #{id} AND r.STATUS = 0
 	</select>
 	<update id="updateStatus" parameterType="java.lang.Integer">
 	 update flow_recruit set status = 1 where id = #{id}

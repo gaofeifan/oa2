@@ -112,6 +112,7 @@ public class EntryController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
+			flowEntry.setRecruitId(207);
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
 			flowEntry.setStatus(0);
@@ -220,7 +221,8 @@ public class EntryController extends BaseController{
 			 							 @ApiParam(value = "时", required = true)@RequestParam(value = "hour", required = true)String  hour,
 			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue success = null;
-		try {															   
+		try {						
+			// TODO 修改发送offer人员
 			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,"gaofeifan@pj-l.com",hour);
 			success = this.successJsonp(null);
 		} catch (Exception e) {

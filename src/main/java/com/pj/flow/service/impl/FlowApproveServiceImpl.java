@@ -194,7 +194,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		record.setApplyId(flowUserApplication.getId());
 		List<FlowApprove> list = super.select(record );
 		List<Boolean> collect = list.stream().map(approve -> approve.getCheckstatus() != 0).collect(Collectors.toList());
-		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 0).collect(Collectors.toList());
+		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 2).collect(Collectors.toList());
 		//	审批人员都同意 修改
 		if(!agrees.contains(false)){
 			flowRecruitTodoService.insertRecruitTodo(flowUserApplication.getFormId(), applyType);
@@ -207,7 +207,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		 * 	保存消息通知
 		 */
 		MessageContent content = new MessageContent();
-		if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
+		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
@@ -220,7 +220,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setApplyTime(recruit.getApplyDate());
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
-		}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());
@@ -235,8 +235,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 					content.setApplicatPosition(position.getName());
 				}
 			}
-		}
-		messageContentService.addApprovedMessage(content , flowUserApplication.getId());
+		}messageContentService.addApprovedMessage(content , flowUserApplication.getId());
 	}
 
 	@Override

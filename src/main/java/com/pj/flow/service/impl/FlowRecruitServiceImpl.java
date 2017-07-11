@@ -126,9 +126,9 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		}else{
 			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
 		}
-		
 		return list;
 	}
+	
 	@Override
 	public void updateState(User loginUser, Integer recruitId, String reason, Integer state) {
 		FlowRecruit	 recruit = flowRecruitMapper.selectByPrimaryKey(recruitId);

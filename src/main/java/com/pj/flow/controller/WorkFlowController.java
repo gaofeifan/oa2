@@ -46,8 +46,8 @@ public class WorkFlowController {
 	@RequestMapping(value = "/getRecruitmentFlow.do", method = RequestMethod.GET)
 	@ResponseBody
 	public void getRecruitmentFlow(){
-		User user = this.userService.selectByPrimaryKey(342);
+		User user = this.userService.selectByPrimaryKey(345);
 		Position position = this.positionService.selectByPrimaryKey(user.getPositionid());
-		authAgencyService.selectApplicantAgency(user.getCompanyid(), user.getDempid(), user.getIsCompanyBoss(),user.getIsDepartmentHead(), position, RecruitApplyReason.STRAT.getReason(),2);
+		authAgencyService.selectApplicantAgency(user.getCompanyid(), user.getDempid(), user.getIsCompanyBoss(),user.getIsDepartmentHead(), position, RecruitApplyReason.BUSSNESS.getReason(),2);
 	}
 }

@@ -94,7 +94,6 @@ public class RecruitController extends BaseController{
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
 			}
-			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,6 +113,7 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
+			flowRecruit.setApplyId(1);
 			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			
@@ -229,10 +229,8 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
 			int number = flowRecruitTodoService.getNumByState(user.getId(), RecruitTodoState.IN_RECRUIT.getState());
-			
 			map = this.successJsonp(number);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,6 +239,7 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
+	
 	/**
 	 * 	招聘待办查询
 	 */
@@ -285,7 +284,6 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(recruitId);
-			
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
 			e.printStackTrace();

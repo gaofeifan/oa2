@@ -260,6 +260,9 @@ public class UserController extends BaseController {
 			mjv.setJsonpFunction(callback);
 		} catch (Exception e) {
 			map = this.error(e.getMessage());
+			
+			
+			
 			logger.error("根据email称获取user信息" + e.getMessage());
 			e.printStackTrace();
 		}

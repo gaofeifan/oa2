@@ -60,8 +60,12 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			Position position , Integer recruitApplyReason ,Integer applyId) {
 		AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
 		 Integer isCEO = 0;
-		 if(authAgency.getGrade() == 1){
-			isCEO = 1;
+		 if(authAgency != null){
+			 if(authAgency.getGrade() == 1){
+				isCEO = 1;
+			 }
+		 }else{
+			 throw new RuntimeException("在机构权限中未查询到当前申请的公司 部门");
 		 }
 		//	根据直属上级信息查询所属机构
 		selectAuthAgency(companyId,dempId,selectEndNode(position.getGrade(),recruitApplyReason) ,isCompanyLeader,isDempLeader,isCEO);
@@ -119,8 +123,6 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 						isDempLeader = 0;
 						companyId = company.getId();
 					}
-					
-					
 				}
 				this.selectAuthAgency(companyId, dempId, grade, isCompanyLeader, isDempLeader , isCEO);
 			}else{
@@ -134,6 +136,8 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 				List<User> list = this.userService.select(record );
 				if(list.size() != 0){
 					approvers.add(list.get(0));
+				}else{
+					grade = grade > 1 ? grade - 1 : grade;
 				}
 				if(authAgency.getGrade() > grade ){
 					this.selectAuthAgency(authAgency.getCompanyId(), authAgency.getDempId(), grade, isCompanyLeader, isDempLeader , isCEO);

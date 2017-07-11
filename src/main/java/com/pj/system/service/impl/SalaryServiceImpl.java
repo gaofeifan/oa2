@@ -89,9 +89,9 @@ public class SalaryServiceImpl extends AbstractBaseServiceImpl<Salary, Integer> 
 		Example example = new Example(Salary.class);
 		example.createCriteria().andCondition(fieldName+" = ", entryId);
 		List<Salary> list = selectByExample(example );
-//		for (Salary salary : list) {
-//			salary = (Salary)AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
-//		}
+		for (Salary salary : list) {
+			salary = (Salary)AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
+		}
 		return list;
 	}
 	
