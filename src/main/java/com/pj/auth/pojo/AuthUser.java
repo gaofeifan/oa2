@@ -37,6 +37,29 @@ public class AuthUser {
 	@Column
 	private Integer postid;
 	
+	@Column
+	private String postSignNum;
+	
+	@Column
+	private String menuids;
+	
+	
+	public String getPostSignNum() {
+		return postSignNum;
+	}
+
+	public void setPostSignNum(String postSignNum) {
+		this.postSignNum = postSignNum;
+	}
+
+	public String getMenuids() {
+		return menuids;
+	}
+
+	public void setMenuids(String menuids) {
+		this.menuids = menuids;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -66,4 +66,8 @@
 	left join t_company pc on pc.id = c.pId 
 	where c.isdelete = 0
 	</select>
+	<select id="selectParentsById" resultType="java.lang.String" parameterType="java.lang.Integer">
+		SELECT number FROM t_company 
+		WHERE FIND_IN_SET(id,getCompanyParentList(#{id})) and isdelete = 0
+	</select>
 </mapper>

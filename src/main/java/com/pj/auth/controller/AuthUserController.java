@@ -2,6 +2,7 @@ package com.pj.auth.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -10,13 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthUserService;
 import com.pj.config.web.controller.SystemManageController;
 
@@ -79,4 +78,21 @@ public class AuthUserController extends SystemManageController{
 		}
 
 	}
+	
+	@RequestMapping(value="/getSelectedMenuIds.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "得到选中状态的菜单id集合", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue getSelectedMenuIds(
+			@ApiParam(value = "菜单等级（1,2,3）", required = true, defaultValue = "1") @RequestParam(value = "grade", required = true, defaultValue = "1") Integer grade,
+			@ApiParam(value = "菜单ID", required = false) @RequestParam(value = "menuid", required = false) Integer menuid,
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			List<Integer> menuIds = authuserService.getSelectedMenuIds(grade, menuid, userid);
+			return this.successJsonp(menuIds);
+		} catch (Exception e) {
+			logger.error("【AuthUserController.getSelectedMenuIds】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("得到选中状态的菜单id集合失败"));
+	}
+	
 }
