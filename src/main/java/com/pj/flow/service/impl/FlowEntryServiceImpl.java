@@ -144,7 +144,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			flowRecruitTodoMapper.insert(hasCommitTodo);
 		}
 		//招聘中状态的数据减一,如只有一个则删除，多个则减一
-		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(166, RecruitTodoState.IN_RECRUIT.getState());
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
 		int num = inRecruitTodo.getNumber();
 		if(num > 1){
 			inRecruitTodo.setNumber(num - 1);
@@ -156,6 +156,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//保存日志表
 		FlowActionLog log = new FlowActionLog();
 		log.setRecruitId(recruitId);
+		log.setEntryId(entryId);
 		log.setOperater(flowEntry.getUsername());
 		log.setStatus(ActionLogOperation.COMMIT_ENTRY.getValue());
 		log.setOperateTime(new Date());
@@ -187,7 +188,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 * 	获取并保存审批人员
 		 * 
 		 */
-		FlowRecruit recruit = this.flowRecruitService.selectById(166);
+		FlowRecruit recruit = this.flowRecruitService.selectById(recruitId);
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
 		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),fa.getId());
 	}

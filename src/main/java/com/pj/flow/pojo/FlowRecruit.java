@@ -147,7 +147,6 @@ public class FlowRecruit implements Serializable {
     private String entryDateStr;
 	@Transient
     private Integer entryId;
-
     public Integer getEntryId() {
 		return entryId;
 	}

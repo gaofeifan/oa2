@@ -94,7 +94,6 @@ public class RecruitController extends BaseController{
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
 			}
-			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,6 +113,7 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
+			flowRecruit.setApplyId(1);
 			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			
@@ -214,7 +214,9 @@ public class RecruitController extends BaseController{
 	}
 	
 	
+	
 	/**********************招聘待办**********************/
+	
 	
 	/**
 	 * 	招聘待办提示,得到待办个数
@@ -229,10 +231,8 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
 			int number = flowRecruitTodoService.getNumByState(user.getId(), RecruitTodoState.IN_RECRUIT.getState());
-			
 			map = this.successJsonp(number);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,6 +241,7 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
+	
 	/**
 	 * 	招聘待办查询
 	 */
@@ -256,8 +257,8 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil("hujingjing@pj-l.com");
 
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
 			
@@ -284,8 +285,8 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
-			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(recruitId);
-			
+			// TODO
+			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(229);
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
 			e.printStackTrace();

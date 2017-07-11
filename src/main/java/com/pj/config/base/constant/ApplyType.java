@@ -13,7 +13,7 @@ package com.pj.config.base.constant;
  *
  */
 public enum ApplyType {
-
+	
 	RECRUIT("招聘申请", "recruit"),
 	ENTRY("入职申请", "entry"),
 	REGULAR("转正申请", "regular"),

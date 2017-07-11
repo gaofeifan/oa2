@@ -7,6 +7,7 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="apply_date" property="applyDate" jdbcType="DATE" />
     <result column="dempId" property="dempId" jdbcType="INTEGER" />
+    <result column="recruitId" property="recruitId" jdbcType="INTEGER" />
     <result column="companyName" property="companyName" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowEntry" >
@@ -124,11 +125,12 @@
 	where e.status = 0 and e.id = #{id}
   </select>
   <select id="selectApplyInfoById" parameterType="java.lang.Integer" resultMap="ApplyMap">
-  	select e.*, c.name AS companyName,
+  	select e.*, c.name AS companyName,e.recruit_id recruitId,r.position_id positionId,
 		u.dempid as dempId
   	from flow_entry e
 	LEFT JOIN t_user u ON e.apply_id = u.id
 	LEFT JOIN t_company c ON c.id = u.companyid
+	left join flow_recruit r on e.recruit_id = r.id
 	where e.status = 0 and e.id = #{id}
   </select>
   <select id="selectOfferDetailsByApplyId" parameterType="java.lang.Integer" resultMap="BaseResultMap_Offer">

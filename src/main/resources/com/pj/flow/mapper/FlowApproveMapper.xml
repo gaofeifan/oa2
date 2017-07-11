@@ -42,4 +42,7 @@
   	select COUNT(1) from flow_approve where userid=#{userid}  AND is_approve=0
   </select>
 
+<select id="selectNextApproval"  resultMap="BaseResultMap">
+	SELECT * FROM flow_approve WHERE apply_id = #{applyId} AND id > #{approveId} LIMIT 0,1
+</select>
 </mapper>

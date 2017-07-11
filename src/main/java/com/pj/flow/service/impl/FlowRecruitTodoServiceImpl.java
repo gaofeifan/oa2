@@ -52,7 +52,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		 * 存在则number+1，不存在则新增
 		 * 已审核，则会添加审核数据,原来已提交个数减一
 		 */
-		if("recruit".equals(applyType)){
+		if("recruit".equals(applyType.trim())){
 			FlowRecruitTodo todo = flowRecruitTodoMapper.selectByRecruitId(applyId, RecruitTodoState.IN_RECRUIT.getState());
 			if(todo != null){
 				int number = todo.getNumber();
@@ -65,7 +65,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 				todo.setState(RecruitTodoState.IN_RECRUIT.getState());
 				flowRecruitTodoMapper.insert(todo);
 			}
-		}else if("entry".equals(applyType)){
+		}else if("entry".equals(applyType.trim())){
 			//根据entryId得到招聘id
 			Integer recruitId = flowEntryMapper.selectApplyInfoById(applyId).getRecruitId();
 			FlowRecruitTodo hasApproveTodo = new FlowRecruitTodo();

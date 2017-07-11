@@ -1,4 +1,4 @@
-package com.pj.flow.controller;
+	package com.pj.flow.controller;
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
-import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -130,8 +129,8 @@ public class ApproveController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil("maqi@qq.com");
 			//0、审批中 1、不同意 2、同意
 			//如果是0，查询未处理的且 是否可审批(0 可审批  1 不可审批)为0的数据列表
 			
@@ -149,7 +148,6 @@ public class ApproveController extends BaseController{
 							 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
 						result = RecruitApplyResult.RECRUIT_AGREE.getState();
 					}
-					
 					//result = RecruitApplyState.valueOf(state).getStateName();
 				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 					//入职
@@ -158,7 +156,6 @@ public class ApproveController extends BaseController{
 				}
 				fa.setApplyResult(result);
 			}
-			
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -215,13 +212,11 @@ public class ApproveController extends BaseController{
 			//根据申请表id和申请类型得到中间表
 			FlowUserApplication flowUserApplication = flowUserApplicationService.selectByApplyIdAndType(formId,applyType);
 			if(flowUserApplication != null){
-				
 				flowApproveService.commitApprove(flowUserApplication,userid, checkstatus, handleidea, formId, applyType);
 				map = this.successJsonp("保存成功");
 			}else{
 				map = this.successJsonp("未找到相关数据，flowUserApplication is null");
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
@@ -240,7 +235,6 @@ public class ApproveController extends BaseController{
 	@RequestMapping(value = "/selectMyApply.do", method = RequestMethod.GET)
 	public @ResponseBody Object selectMyApply(){
 		return flowApproveService;
-		
 	}
 	
 }

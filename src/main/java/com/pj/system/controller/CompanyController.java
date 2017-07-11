@@ -1,7 +1,6 @@
 package com.pj.system.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +22,11 @@ import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Organization;
-import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.PostService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
-import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -205,21 +202,20 @@ public class CompanyController extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "根据用户权限查询所负责公司信息", httpMethod = "GET", response=String.class, notes ="根据用户权限查询所负责公司信息")
 	@RequestMapping(value = "/getCompanysByAuth.do",method=RequestMethod.GET)
-	public Map<String, Object> getCompanysByAuth(HttpServletResponse response,
+	public Object getCompanysByAuth(HttpServletResponse response,
 			HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
+			//得到当前登录用户  # TODO
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+//			User user = this.userService.selectByEamil("pek.yangguang@medilink.com.cn");
 			
-			List<Company> companys = companyService.getByAuthUser(user.getId());
-			map = this.success(companys);
+//			List<Company> companys = companyService.getByAuthUser(user.getId());
+			List<Company> companys = companyService.selectNotDeleteALL();
+			return this.successJsonp(companys);
 		} catch (Exception e) {
 			logger.error("根据用户权限查询所负责公司信息" + e.getMessage());
-			throw new RuntimeException("根据用户权限查询所负责公司信息");			
+			return this.errorToJsonp("根据用户权限查询所负责公司信息" + e.getMessage());
 		}
-    	return map;
 	}
 	
 	@ApiOperation(value = "查询公司  根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询公司  根据人事权限查询")

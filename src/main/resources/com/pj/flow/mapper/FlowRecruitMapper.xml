@@ -71,10 +71,11 @@
 	</select>
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
-		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
+		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,entry.id entryId,
 		c.name as companyName, pn.name as positionName
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
+			left join flow_entry entry on entry.recruit_id = r.id
 			inner join t_user u on u.id = r.apply_id
 				<if test="companyId != null" >
 			        and u.companyid = #{companyId}
@@ -93,7 +94,6 @@
 	    </if>
 		and r.post_id in 
 	  		(select au.postid from auth_user au where au.userid = #{userId})
-	
 	</select>
 	<select id="selectTodoByEntryQuery" resultMap="BaseResultMap">
 		select 
@@ -145,7 +145,7 @@
 		LEFT JOIN t_post p ON p.id = r.post_id
 		LEFT JOIN t_position pt ON pt.id = r.position_id
 		LEFT JOIN t_user u ON u.id = r.leader_id
-		WHERE r.id = 1 AND r.STATUS = 0
+		WHERE r.id = #{id} AND r.STATUS = 0
 	</select>
 	<update id="updateStatus" parameterType="java.lang.Integer">
 	 update flow_recruit set status = 1 where id = #{id}
