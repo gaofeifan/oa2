@@ -257,29 +257,11 @@ public class CompanyController extends SystemManageController{
 		Map<String, Object> map;
 		try {
 			List<Organization> organizations = new ArrayList<Organization>();
+			//得到所有的公司，包含子公司
 			List<Organization> companys = companyService.selectOransNotDeleteALL();
 			organizations.addAll(companys);
 			//查找各公司下边的直接部门或者公司下边直接的岗位
-			for(Organization company : companys){
-				Integer companyId = company.getId();
-				List<Organization> innerDempList = dempService.selectOrgansByCompanyId(companyId);
-				List<Organization> innerPostList = postService.selectLinealsByCompanyId(companyId);
-				
-				organizations.addAll(innerDempList);
-				organizations.addAll(innerPostList);
-				
-				//查找子部门下的子部门或岗位
-				for(Organization organization : innerDempList){
-					Integer dempId = organization.getId();
-					List<Organization> dempList = dempService.selectOrgansByPId(dempId);
-					List<Organization> postList = postService.selectLinealsByDempId(dempId);
-					
-					organizations.addAll(postList);
-					organizations.addAll(getDepts(dempList));
-				}
-				
-			}
-			
+			organizations.addAll(companyService.getDempsAndPosts(companys, "all"));
 			map = this.success(organizations);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -288,25 +270,5 @@ public class CompanyController extends SystemManageController{
 		}
     	return map;
 	}
-	
-	/** 
-     * @descript:递归部门 
-     * @param dempList 
-     * @return 
-     */  
-    public List<Organization> getDepts(List<Organization> dempList){  
-        List<Organization> deptVosList=new ArrayList<Organization>();  
-        deptVosList.addAll(dempList);
-        if(dempList != null && dempList.size() > 0){  
-        	for(Organization organization : dempList){  
-        		
-        		Integer dempId = organization.getId();
-				List<Organization> innerDempList = dempService.selectOrgansByPId(dempId);
-				List<Organization> postList = postService.selectLinealsByDempId(dempId);
-				deptVosList.addAll(postList);
-				getDepts(innerDempList);
-            }  
-        }  
-        return deptVosList;  
-    }  
+
 }

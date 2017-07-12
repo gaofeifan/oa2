@@ -55,14 +55,23 @@ public interface DempMapper extends MyMapper<Demp> {
 	 * @param companyId
 	 * @return
 	 */
-	List<Organization> selectOrgansByCompanyId(Integer companyId);
+	List<Organization> selectOrgsByCompanyId(Integer companyId);
 
 	/**
 	 * 子部门
+	 * @author limr
 	 * @param dempId
 	 * @return
 	 */
-	List<Organization> selectOrgansByPId(Integer id);
+	List<Organization> selectOrgsByPId(Integer id);
+
+	/**
+	 * 根据number得到数据
+	 * @author limr
+	 * @param number
+	 * @return
+	 */
+	Organization selectOrgByNumber(String number);
 	
 	
 }
