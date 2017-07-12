@@ -110,8 +110,8 @@ public class EntryController extends BaseController{
 		try {
 			String salarys = flowEntry.getSalaryJson();
 			//得到当前登录用户
-//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil("hujingjing@pj-l.com");
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
 			flowEntry.setRecruitId(flowEntry.getRecruitId());
 			flowEntry.setApplyId(user.getId());
 			flowEntry.setUsername(user.getUsername());
@@ -222,8 +222,8 @@ public class EntryController extends BaseController{
 			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue success = null;
 		try {						
-			// TODO 修改发送offer人员
-			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,"gaofeifan@pj-l.com",hour);
+			String email = getSession();
+			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,email,hour);
 			success = this.successJsonp(null);
 		} catch (Exception e) {
 			success = this.errorToJsonp(e.getMessage());

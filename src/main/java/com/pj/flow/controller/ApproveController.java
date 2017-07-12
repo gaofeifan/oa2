@@ -29,6 +29,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
+import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -129,8 +130,8 @@ public class ApproveController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
-//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil("maqi@qq.com");
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
 			//0、审批中 1、不同意 2、同意
 			//如果是0，查询未处理的且 是否可审批(0 可审批  1 不可审批)为0的数据列表
 			

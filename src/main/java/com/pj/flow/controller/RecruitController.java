@@ -257,17 +257,14 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
-//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil("hujingjing@pj-l.com");
-
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
-			
 			for(FlowRecruit flowRecruit : recruits){
 				Integer dempId = flowRecruit.getDempId();
 				//拼接上父部门的组合
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
-				
 			}
 			map = this.successJsonp(recruits);
 		} catch (Exception e) {
@@ -285,8 +282,7 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
-			// TODO
-			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(229);
+			FlowRecruit flowRecruit = flowRecruitService.getUserInfo(recruitId);
 			map = this.successJsonp(flowRecruit);
 		} catch (Exception e) {
 			e.printStackTrace();

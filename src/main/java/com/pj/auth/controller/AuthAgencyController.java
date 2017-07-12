@@ -1,9 +1,7 @@
 package com.pj.auth.controller;
 
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -13,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.web.controller.BaseController;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -94,6 +90,7 @@ public class AuthAgencyController extends BaseController{
 	public @ResponseBody MappingJacksonValue deleteAuthAgencyById(@ApiParam("权限id") @RequestParam(value = "id", required = true) Integer id){
 		try {
 			//	TODO 验证该机构是否正在审批流程中
+			AuthAgency authAgency = this.authAgencyService.selectByPrimaryKey(id);
 			if(true){
 				this.authAgencyService.deleteByPrimaryKeyToLogic(id);
 				return this.successJsonp(this.success());
@@ -137,12 +134,4 @@ public class AuthAgencyController extends BaseController{
 			return this.errorToJsonp("查询异常 ："+e.getMessage());
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }
