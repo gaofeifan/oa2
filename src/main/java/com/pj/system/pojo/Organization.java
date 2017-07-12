@@ -62,9 +62,18 @@ public class Organization implements Serializable {
      */
 	private String choice;
 	
+	private String hasChilds;
+	
     private static final long serialVersionUID = 1L;
 
-    
+	public String getHasChilds() {
+		return hasChilds;
+	}
+
+	public void setHasChilds(String hasChilds) {
+		this.hasChilds = hasChilds;
+	}
+
 	public String getType() {
 		return type;
 	}

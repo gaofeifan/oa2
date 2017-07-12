@@ -47,6 +47,17 @@ public class AuthMenu {
 	@Transient
 	private String choice;
 	
+	@Transient
+	private String hasChilds;
+	
+	public String getHasChilds() {
+		return hasChilds;
+	}
+
+	public void setHasChilds(String hasChilds) {
+		this.hasChilds = hasChilds;
+	}
+
 	public Integer getId() {
 		return id;
 	}

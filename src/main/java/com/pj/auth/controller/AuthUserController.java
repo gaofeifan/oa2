@@ -92,13 +92,13 @@ public class AuthUserController extends SystemManageController{
 	@RequestMapping(value="/getSelectedMenuIds.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "得到选中状态的菜单id集合", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue getSelectedMenuIds(
-			@ApiParam(value = "菜单等级（1,2,3,4）", required = true, defaultValue = "1") @RequestParam(value = "grade", required = true, defaultValue = "1") Integer grade,
+			@ApiParam(value = "菜单等级（1,2,3,4,超过总公司的一级都传5）", required = true, defaultValue = "1") @RequestParam(value = "grade", required = true, defaultValue = "1") Integer grade,
 			@ApiParam(value = "是否需要岗位(1为需要，0为不需要)", required = false, defaultValue = "0") @RequestParam(value = "post", required = false, defaultValue = "0") Integer post,
 			@ApiParam(value = "菜单ID", required = false) @RequestParam(value = "menuid", required = false) Integer menuid,
 			@ApiParam(value = "岗位编码", required = false) @RequestParam(value = "number", required = false) String number,
 			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
-			List<Integer> menuIds = authuserService.getSelectedMenuIds(grade, post, number, menuid, userid);
+			List<String> menuIds = authuserService.getSelectedMenuIds(grade, post, number, menuid, userid);
 			return this.successJsonp(menuIds);
 		} catch (Exception e) {
 			logger.error("【AuthUserController.getSelectedMenuIds】"+e.getMessage());

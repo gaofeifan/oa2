@@ -47,4 +47,12 @@
  	select postid from auth_user
  	 where userid = #{userid} and menuid = #{menuid} and type = "post"
  </select>
+ <select id="selectByUseridAndMenuids" resultMap="BaseResultMap">
+ 	select postid from auth_user
+ 	 where userid = #{userid} and menuids like #{menuids}
+ </select>
+ <select id="selectByUserMenuType" resultMap="BaseResultMap">
+ 	select * from auth_user
+ 	 where userid = #{userid} and menuid = #{menuid} and type = #{type}
+ </select>
 </mapper>

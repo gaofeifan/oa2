@@ -33,6 +33,6 @@ public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 	 * @param userid
 	 * @return
 	 */
-	List<Integer> getSelectedMenuIds(Integer grade, Integer post, String number, Integer menuId, Integer userid);
+	List<String> getSelectedMenuIds(Integer grade, Integer post, String number, Integer menuId, Integer userid);
 	
 }
