@@ -2,8 +2,6 @@ package com.pj.auth.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.auth.pojo.AuthUser;
 import com.pj.config.base.service.BaseService;
@@ -29,4 +27,5 @@ public interface AuthMenuService extends BaseService<AuthMenu, Integer> {
 	List<AuthMenu> GetTwoMenubyUserid(Integer userid,Integer fid);
 	  
 	int GetAuthMenubyUserid(String name,Integer userid);
+
 }

@@ -128,6 +128,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	public List<Organization> getDempsAndPosts(List<Organization> companys, String type) {
 		List<Organization> organizations = new ArrayList<Organization>();
 		for(Organization company : companys){
+			
 			Integer companyId = company.getId();
 			List<Organization> innerDempList = dempMapper.selectOrgsByCompanyId(companyId);
 			List<Organization> innerPostList = postMapper.selectLinealsByCompanyId(companyId);
@@ -145,7 +146,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
 				
 				organizations.addAll(postList);
-				organizations.addAll(getDepts(dempList, type));
+				organizations = getDepts(organizations, dempList, type);
 			}
 			
 		}
@@ -158,8 +159,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
      * @param type 值为post时，只需要得到岗位 
      * @return 
      */  
-    public List<Organization> getDepts(List<Organization> dempList, String type){  
-        List<Organization> deptVosList=new ArrayList<Organization>();  
+    public List<Organization> getDepts(List<Organization> deptVosList, List<Organization> dempList, String type){  
         if(!"post".equals(type)){
         	deptVosList.addAll(dempList);
         }
@@ -170,7 +170,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 				List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
 				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
 				deptVosList.addAll(postList);
-				getDepts(innerDempList, type);
+				deptVosList = getDepts(deptVosList, innerDempList, type);
             }  
         }  
         return deptVosList;  

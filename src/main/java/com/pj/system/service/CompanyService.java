@@ -77,7 +77,7 @@ public interface CompanyService extends BaseService<Company, Integer> {
      * @param type 值为post时，只需要得到岗位 
      * @return 
      */  
-    public List<Organization> getDepts(List<Organization> dempList, String type);
+    public List<Organization> getDepts(List<Organization> organizations, List<Organization> dempList, String type);
 
     /**
 	 * 查找各公司下边type=post时直接的岗位number

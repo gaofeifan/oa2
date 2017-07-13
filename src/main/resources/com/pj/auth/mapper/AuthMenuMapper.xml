@@ -10,12 +10,20 @@
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="auth" property="auth" jdbcType="INTEGER" />
     <result column="post" property="post" jdbcType="INTEGER" />
+    
+    <result column="hasChilds" property="hasChilds" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, img, href, fid, grade, auth, post
   </sql>
 	 <select id="GetMenu" resultMap="BaseResultMap" parameterType="com.pj.auth.pojo.AuthMenu">
-		select * from auth_menu
+		select * ,
+		case 
+			when grade=1 then 'yes'
+            when grade=2 then 'yes'
+            else 'no'
+        end hasChilds
+        from auth_menu
 		where 1=1
 		<if test="id != null">
 			AND id= #{id}

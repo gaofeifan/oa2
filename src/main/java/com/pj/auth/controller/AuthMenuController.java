@@ -50,7 +50,7 @@ public class AuthMenuController  extends BaseController{
 	
 	@RequestMapping(value="/Authlist.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue GetMenubyUserid(
+	public @ResponseBody MappingJacksonValue Authlist(
 			@ApiParam("菜单等级") @RequestParam(value = "grade", required = true) Integer grade,
 			@ApiParam("是否设置权限") @RequestParam(value = "auth", required = true) Integer auth,
 			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
@@ -65,8 +65,8 @@ public class AuthMenuController  extends BaseController{
 	}
 	
 	@RequestMapping(value="/OneAuthlist.do" , method=RequestMethod.GET)
-	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue GetOneMenubyUserid(
+	@ApiOperation(value = "查询一级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue OneAuthlist(
 			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			List<AuthMenu> authmenus = this.authMenuService.GetOneMenubyUserid(userid);
@@ -79,12 +79,12 @@ public class AuthMenuController  extends BaseController{
 	}
 	
 	@RequestMapping(value="/TwoAuthlist.do" , method=RequestMethod.GET)
-	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue GetMenubyUserid(
+	@ApiOperation(value = "查询二级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue TwoAuthlist(
 			@ApiParam("一级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
 			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
 		try {
-			List<AuthMenu> authmenus = this.authMenuService.GetTwoMenubyUserid( userid, fid);
+			List<AuthMenu> authmenus = this.authMenuService.GetTwoMenubyUserid(userid, fid);
 			return this.successJsonp(authmenus);
 		} catch (Exception e) {
 			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());

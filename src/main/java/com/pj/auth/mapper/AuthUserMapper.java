@@ -31,13 +31,30 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	void deleteByUserMenuPost(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "postid") Integer postid);
 
 	/**
-	 * 根据用户和菜单id得到所有的岗位id
+	 * 根据用户和菜单id type=post得到所有的岗位id
 	 * @author limr
 	 * @param userid
 	 * @param menuid
 	 * @return
 	 */
 	List<Integer> selectByMenuidAndUserid(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid);
+
+	/**
+	 * 根据用户和菜单id type得到权限
+	 * @author limr
+	 * @param userid
+	 * @param menuid
+	 * @return
+	 */
+	AuthUser selectByUserMenuType(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "type") String type);
+	
+	/**
+	 * 根据userid和like menuids查询
+	 * @param userid
+	 * @param string
+	 * @return
+	 */
+	List<AuthUser> selectByUseridAndMenuids(@Param(value = "userid") Integer userid, @Param(value = "menuids") String menuids);
 	
 	
 }
