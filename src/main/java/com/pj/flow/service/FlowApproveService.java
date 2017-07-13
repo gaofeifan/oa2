@@ -48,4 +48,12 @@ public interface FlowApproveService extends BaseService<FlowApprove, Integer> {
 	int selectByApprove(Integer userid,Integer isapprove);
 	
 	int selectByUserid(Integer userid);
+
+	/**
+	 * 	查询所有未审批的流程
+	 *	@author 	GFF
+	 *	@date		2017年7月12日下午4:18:36	
+	 * 	@return
+	 */
+	List<FlowApprove> selectNoApprovalAll();
 }

@@ -113,7 +113,7 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
-			flowRecruit.setApplyId(1);
+			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			

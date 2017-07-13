@@ -206,9 +206,15 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public int insertSelective(FlowRecruit t) {
 		int i = super.insertSelective(t);
 		//保存申请表和申请人的中间表
+		if(t.getApplyId() == null){
+			throw new RuntimeException("没有获取到申请人员id");
+		}
 		int userId = t.getApplyId();
 		//申请人
 		User user = this.userMapper.selectByPrimaryKey(userId);
+		if(user == null){
+			throw new RuntimeException("申请没有该用户");
+		}
 		//申请人部门
 		String names = this.dempService.selectDempParentNameById(user.getDempid());
 		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());

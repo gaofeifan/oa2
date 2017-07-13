@@ -26,6 +26,7 @@
   	left join t_position pt on fa.positionid = pt.id
   	where fa.apply_id in (select fu.id from flow_user_application fu 
   		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
+  	ORDER BY fa.id 
   </select>
   <select id="selectListByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   	select * from flow_approve
@@ -44,5 +45,12 @@
 
 <select id="selectNextApproval"  resultMap="BaseResultMap">
 	SELECT * FROM flow_approve WHERE apply_id = #{applyId} AND id > #{approveId} LIMIT 0,1
+</select>
+
+<select id="selectNoApprovalAll" resultMap="BaseResultMap">
+	SELECT app.* FROM flow_approve app INNER JOIN (
+
+select MAX(id) id FROM flow_approve WHERE checkstatus = 0 GROUP BY apply_id 
+) appGroup ON app.id in( appGroup.id) 
 </select>
 </mapper>

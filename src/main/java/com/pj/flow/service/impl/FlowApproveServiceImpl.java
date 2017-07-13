@@ -164,33 +164,27 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			FlowApprove innerApprove = list.get(i);
 			if(userid.equals(innerApprove.getUserid())){//当前审批人
 				delStartIndex = i + 1;
-				
 				innerApprove.setCheckstatus(checkstatus);
 				innerApprove.setHandledate(new Date());
 				innerApprove.setHandleidea(handleidea);
 				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
 				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
-			}
-			
-			if(checkstatus.equals(ApprovalResults.AGREE.getValue())){
-				FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
-				if(flowApprove != null){
-					flowApprove.setIsApprove(0);
-					this.updateByPrimaryKeySelective(innerApprove);
+
+				if(checkstatus .equals(ApprovalResults.NO_AGREE.getValue())){
+					//不同意，则接下来流程的审批人信息删除
+					for(int j = delStartIndex; j < list.size(); j++){
+						flowApproveMapper.delete(list.get(j));
+					}
+				}else if(checkstatus.equals(ApprovalResults.AGREE.getValue())){
+					FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
+					if(flowApprove != null){
+						flowApprove.setIsApprove(0);
+						this.flowApproveMapper.updateByPrimaryKeySelective(flowApprove);
+					}
 				}
 			}
 		}
 		
-		if(checkstatus == 1){
-			//不同意，则接下来流程的审批人信息删除
-			for(int i = delStartIndex; i < list.size(); i++){
-				flowApproveMapper.delete(list.get(i));
-			}
-		}else if(checkstatus == 2){
-			//同意,下一条值为0
-			//TODO
-			
-		}
 		isApproveComplete(flowUserApplication,applyType);
 	}
 
@@ -280,4 +274,11 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	public int selectByUserid(Integer userid) {
 		return flowApproveMapper.selectByUserid(userid);
 	}
+
+	@Override
+	public List<FlowApprove> selectNoApprovalAll() {
+		return this.flowApproveMapper.selectNoApprovalAll();
+	}
+	
+	
 }

@@ -1,6 +1,8 @@
 package com.pj.auth.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.service.FlowApproveService;
+import com.pj.system.pojo.User;
+import com.pj.system.service.UserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,6 +39,10 @@ public class AuthAgencyController extends BaseController{
 
 	@Resource
 	private AuthAgencyService authAgencyService;
+	@Resource
+	private UserService userService;
+	@Resource
+	private FlowApproveService flowApproveService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthAgencyController.class);
 	
@@ -89,12 +100,27 @@ public class AuthAgencyController extends BaseController{
 	@ApiOperation(value = "根据id删除权限机构", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue deleteAuthAgencyById(@ApiParam("权限id") @RequestParam(value = "id", required = true) Integer id){
 		try {
-			//	TODO 验证该机构是否正在审批流程中
 			AuthAgency authAgency = this.authAgencyService.selectByPrimaryKey(id);
-			if(true){
-				this.authAgencyService.deleteByPrimaryKeyToLogic(id);
-				return this.successJsonp(this.success());
+			// 获取所有审批未通过的流程
+			List<FlowApprove> approves = this.flowApproveService.selectNoApprovalAll();
+			User record = new User();
+			record.setCompanyid(authAgency.getCompanyId());
+			record.setDempid(authAgency.getDempId());
+			record.setIsdelete(0);
+			List<User> list = this.userService.select(record );
+			List<Integer> collect = list.stream().map(u -> u.getId()).collect(Collectors.toList());
+			for (FlowApprove approve : approves) {
+				FlowApprove flowApprove = new FlowApprove();
+				flowApprove.setApplyId(approve.getApplyId());
+				List<FlowApprove> select = this.flowApproveService.select(flowApprove);
+				for (FlowApprove flowapp : select) {
+					if(collect.contains(flowapp.getUserid())){
+						return this.successJsonp(this.error("该机构存在未处理的任务无法删除"));
+					}
+				}
 			}
+			this.authAgencyService.deleteByPrimaryKeyToLogic(id);
+			return this.successJsonp(this.success());
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.deleteAuthAgencyById】"+e.getMessage());
 			e.printStackTrace();

@@ -159,7 +159,6 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 			demps = this.selectNotDeleteALL();
 		}
 		List<Demp> deleteDemp = new ArrayList<>();
-		
 		for (Demp demp : demps) {
 			List<Post> deletePost = new ArrayList<>();
 			Post record = new Post();
