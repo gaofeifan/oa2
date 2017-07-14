@@ -130,6 +130,9 @@ public class UserController extends BaseController {
 	public @ResponseBody MappingJacksonValue selectUserByUsername(@ApiParam("用户名称") @RequestParam("username") String username){
 		try {
 			List<User> users = this.userService.selectUserByUsername(username);
+			if(users.size() == 0){
+				return this.errorToJsonp("该用户不存在");
+			}
 			return this.successJsonp(users);
 		} catch (Exception e) {
 			e.printStackTrace();

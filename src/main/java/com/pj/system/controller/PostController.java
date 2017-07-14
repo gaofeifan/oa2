@@ -107,7 +107,8 @@ public class PostController extends SystemManageController {
 	@ResponseBody
 	public Map<String, Object> updatePost(@ModelAttribute("post") Post post){
 		try {
-			this.postService.updateByPrimaryKeySelective(post);
+			post.setIsdelete(0);
+			this.postService.updateByPrimaryKey(post);
 		} catch (Exception e) {
 			logger.error("修改岗位信息异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		

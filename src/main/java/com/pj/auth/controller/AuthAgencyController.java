@@ -59,10 +59,10 @@ public class AuthAgencyController extends BaseController{
 		this.authAgencyService.insertSelective(authAgency);
 		try {
 			this.authAgencyService.insertSelective(authAgency);
-			return this.successJsonp(this.success());
+			return this.successJsonp("添加成功");
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.saveAuthAgency】"+e.getMessage());
-			return this.successJsonp(this.error("保存失败"+e.getMessage()));
+			return this.errorToJsonp("保存失败"+e.getMessage());
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class AuthAgencyController extends BaseController{
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.updateAuthAgencyById】"+e.getMessage());
 			e.printStackTrace();
-			return this.successJsonp(this.error("更新失败"+e.getMessage()));
+			return this.errorToJsonp("更新失败"+e.getMessage());
 		}
 	}
 	
@@ -115,17 +115,17 @@ public class AuthAgencyController extends BaseController{
 				List<FlowApprove> select = this.flowApproveService.select(flowApprove);
 				for (FlowApprove flowapp : select) {
 					if(collect.contains(flowapp.getUserid())){
-						return this.successJsonp(this.error("该机构存在未处理的任务无法删除"));
+						return this.errorToJsonp("该机构存在未处理的任务无法删除");
 					}
 				}
 			}
 			this.authAgencyService.deleteByPrimaryKeyToLogic(id);
-			return this.successJsonp(this.success());
+			return this.successJsonp("成功删除");
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.deleteAuthAgencyById】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("该机构存在未处理的任务无法删除"));
+		return this.errorToJsonp("该机构存在未处理的任务无法删除");
 	}
 
 	
@@ -146,7 +146,7 @@ public class AuthAgencyController extends BaseController{
 			logger.error("【AuthAgencyController.findAuthAgencyAll】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("查询机构异常"));
+		return this.errorToJsonp("查询机构异常");
 	}
 	
 	@RequestMapping(value="/selectInstitutionalLevel.do" , method=RequestMethod.GET)

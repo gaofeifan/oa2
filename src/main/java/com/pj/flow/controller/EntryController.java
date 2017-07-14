@@ -274,10 +274,7 @@ public class EntryController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-
 			List<FlowEntry> entrys = flowEntryService.selectByTodo(user.getId(), companyId, name);
-			
-			
 			map = this.successJsonp(entrys);
 		} catch (Exception e) {
 			e.printStackTrace();

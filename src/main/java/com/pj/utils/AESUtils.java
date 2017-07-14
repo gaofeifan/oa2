@@ -79,7 +79,6 @@ public class AESUtils {
 	 * @author panjianghong 2016-8-29
 	 */
 	public static String encryptHex(String content, String key) {
-
 		try {
 			byte[] byteConten = encrypt(content, key);
 			return byte2HexString(byteConten);
@@ -119,7 +118,6 @@ public class AESUtils {
 		} catch (BadPaddingException e) {
 			_log.error("获取加密数据的字节数组失败！");
 		}
-
 		return null;
 	}
 

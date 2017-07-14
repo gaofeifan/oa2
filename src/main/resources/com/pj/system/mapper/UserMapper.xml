@@ -139,6 +139,7 @@
 		left join t_user pUser on pUser.id = u.pid
 		<where>
 			u.isdelete = 0
+			AND u.username != "admin"
 			<if test="companyEmail != null">
 				AND u.company_email = #{companyEmail}
 			</if>

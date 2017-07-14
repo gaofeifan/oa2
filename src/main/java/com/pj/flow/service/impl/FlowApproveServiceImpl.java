@@ -236,7 +236,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
-			
 			/**
 			 * 	修改状态
 			 */
