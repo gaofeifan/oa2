@@ -56,7 +56,6 @@ public class AuthAgencyController extends BaseController{
 	@RequestMapping(value="/saveAuthAgency.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "添加机构权限", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue saveAuthAgency(@ModelAttribute("authAgency")AuthAgency authAgency ){
-		this.authAgencyService.insertSelective(authAgency);
 		try {
 			this.authAgencyService.insertSelective(authAgency);
 			return this.successJsonp("添加成功");

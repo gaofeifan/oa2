@@ -194,7 +194,7 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetails(@ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue successJsonp = null;
 		try {
-			String email = "gaofeifan@pj-l.com";
+			String email = getSession();
 			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , email);
 			successJsonp = this.successJsonp(flowOffer);
 		} catch (Exception e) {
@@ -231,7 +231,7 @@ public class EntryController extends BaseController{
 		return success;
 	}
 	
-/**********************建档待办**********************/
+	/**********************建档待办**********************/
 	
 	/**
 	 * 	建档待办提示,得到待办个数

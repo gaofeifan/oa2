@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
@@ -261,7 +262,11 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		if(StringUtils.isNoneBlank(usernames)){
 			flowEntry.setPeopleWhoCopied(usernames);
 		}
+		flowEntry.setState(EntryApplyState.IN_OFFER.getState());
 		this.flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
+		FlowRecruit flowRecruit = this.flowRecruitService.selectByPrimaryKey(flowEntry.getRecruitId());
+		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
+		this.flowRecruitService.updateByPrimaryKeySelective(flowRecruit);
 		
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
