@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.ApprovalResults;
 import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.MessageType;
+import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowApproveMapper;
@@ -184,9 +187,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				}
 			}
 		}
-		
 		isApproveComplete(flowUserApplication,applyType);
 	}
+
 
 	/**
 	 * 	审批完成的处理
@@ -220,9 +223,14 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		 */
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
-			FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-			flowRecruit.setResult(entryResult);
-			this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			if(entryResult != null){
+				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				flowRecruit.setResult(entryResult);
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setState(EntryApplyResult.ENTRY_DISAGREE.getState());
+				}
+				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			}
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
@@ -239,9 +247,26 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			/**
 			 * 	修改状态
 			 */
-			FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-			entry.setResult(entryResult);
-			this.flowEntryMapper.updateByPrimaryKeySelective(entry);
+			if(entryResult != null){
+				FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				entry.setResult(entryResult);
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					entry.setState(EntryApplyState.ENTRY_APPROVED.getState());
+				}
+				this.flowEntryMapper.updateByPrimaryKeySelective(entry);
+				
+				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(entry.getRecruitId());
+				if(flowRecruit == null){
+					throw new RuntimeException("更新招聘状态异常");
+				}
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setResult(RecruitApplyResult.ENTRY_AGREE.getState());
+					flowRecruit.setState(RecruitApplyState.ENTRY_APPROVED.getState());
+				}else if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setResult(RecruitApplyResult.ENTRY_DISAGREE.getState());
+				}
+				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			}
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());

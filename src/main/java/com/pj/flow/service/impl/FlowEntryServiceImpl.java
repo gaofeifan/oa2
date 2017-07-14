@@ -15,6 +15,7 @@ import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.MessageType;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.constant.SalaryType;
 import com.pj.config.base.mapper.MyMapper;
@@ -59,7 +60,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private FlowEntryMapper flowEntryMapper;
 	
 	@Resource
-	private FlowRecruitTodoMapper flowRecruitTodoMapper;
+	private FlowRecruitTodoMapper flowRecruitTodoMapper;	
 	@Resource
 	private SalaryMapper salaryMapper;
 	@Autowired
@@ -184,13 +185,17 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		messageContentService.addUnapprovedMessage(content);
 		
-		/**
-		 * 	获取并保存审批人员
-		 * 
-		 */
+		/**************************************/
+		/*************获取并保存审批人员*************/
+		/**************************************/
 		FlowRecruit recruit = this.flowRecruitService.selectById(recruitId);
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
 		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),fa.getId());
+		/**************************************/
+		/***************更新招聘状态***************/
+		/**************************************/
+		recruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
+		this.flowRecruitService.updateByPrimaryKeySelective(recruit);
 	}
 	
 	@Override

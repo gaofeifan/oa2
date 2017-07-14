@@ -246,7 +246,6 @@ public class EntryController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
 			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
 			

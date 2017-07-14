@@ -114,7 +114,7 @@ public class RecruitController extends BaseController{
 		try {
 			flowRecruit.setStatus(0);
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
-			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
+			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			
 			map = this.successJsonp("提交成功");

@@ -364,5 +364,9 @@ public class AESUtils {
 	         return false;
 	     }
 	}
-
+	
+	public static void main(String[] args) {
+		String hex = encryptHex("7777", ALGORITHM);
+		System.out.println(hex);
+	}
 }
