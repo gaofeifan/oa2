@@ -37,7 +37,7 @@
   <select id="selectByApprove" resultType="java.lang.Integer" >
   	 select COUNT(1) from flow_user_application 
 	inner join flow_approve on flow_user_application.id=flow_approve.apply_id AND flow_approve.id in (select  MAX(id) from flow_approve  GROUP BY apply_id)
-	where user_id=#{userid} and is_approve=#{isapprove} and apply_time>= date_sub(curdate(),interval 1 month) 
+	where user_id=#{userid} and checkstatus=#{checkstatus} and apply_time>= date_sub(curdate(),interval 1 month) 
   </select>
   <select id="selectByUserid" resultType="java.lang.Integer" >
   	select COUNT(1) from flow_approve where userid=#{userid}  AND is_approve=0
