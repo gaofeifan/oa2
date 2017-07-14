@@ -43,6 +43,7 @@
     <!-- 查询使用 -->
     <result column="offerRange" property="offerRange" jdbcType="VARCHAR" />
     <result column="leaderName" property="leaderName" jdbcType="VARCHAR" />
+    <result column="workAddress" property="workAddress" jdbcType="VARCHAR" />
 	<result column="dempName" property="dempName" jdbcType="VARCHAR" />
 	<result column="positionName" property="positionName" jdbcType="VARCHAR" />
 	<result column="positionId" property="positionId" jdbcType="INTEGER" />
@@ -113,7 +114,7 @@
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,pt.id positionId,p.id postId,c.id companyId,pt.name positionName,
-		r.leader_id pId
+		r.leader_id pId,r.work_address workAddress
   	from flow_entry e
   	left join t_salary s on s.entry_id = e.id
   	left join flow_recruit r on e.recruit_id = r.id

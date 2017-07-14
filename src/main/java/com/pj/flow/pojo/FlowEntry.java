@@ -135,6 +135,8 @@ public class FlowEntry implements Serializable {
     private Integer pId;
     @Transient
     private String applyDateStr;
+    @Transient
+    private String workAddress;
     
 	public String getSalaryJson() {
 		return salaryJson;
@@ -422,6 +424,14 @@ public class FlowEntry implements Serializable {
 
 	public void setpId(Integer pId) {
 		this.pId = pId;
+	}
+
+	public String getWorkAddress() {
+		return workAddress;
+	}
+
+	public void setWorkAddress(String workAddress) {
+		this.workAddress = workAddress;
 	}
 
 	@Override
