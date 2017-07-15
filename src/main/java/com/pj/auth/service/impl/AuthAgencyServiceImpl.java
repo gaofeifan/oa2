@@ -16,15 +16,15 @@ import com.pj.config.base.constant.ApprovalResults;
 import com.pj.config.base.constant.RecruitApplyReason;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.flow.mapper.FlowApproveMapper;
 import com.pj.flow.pojo.FlowApprove;
-import com.pj.flow.service.FlowApproveService;
+import com.pj.system.mapper.CompanyMapper;
+import com.pj.system.mapper.DempMapper;
+import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
-import com.pj.system.service.CompanyService;
-import com.pj.system.service.DempService;
-import com.pj.system.service.UserService;
 
 /**
  * @author GFF
@@ -40,13 +40,13 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	@Autowired
 	private AuthAgencyMapper authAgencyMapper;
 	@Autowired
-	private CompanyService companyService;
+	private CompanyMapper companyMapper;
 	@Autowired
-	private UserService userService;
+	private UserMapper userMapper;
 	@Autowired
-	private DempService dempService;
+	private DempMapper dempMapper;
 	@Autowired
-	private FlowApproveService flowApproveService;
+	private FlowApproveMapper flowApproveMapper;
 	
 	private List<User> approvers = new ArrayList<User>();
 
@@ -82,7 +82,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			approve.setUserid(approvers.get(i).getId());
 			approve.setPositionid(approvers.get(i).getPositionid());
 			approve.setCheckstatus(ApprovalResults.UNTREATED.getValue());
-			this.flowApproveService.insertSelective(approve);
+			this.flowApproveMapper.insertSelective(approve);
 		}
 		approvers.clear();
 		return null;
@@ -90,17 +90,17 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 
 	private void selectAuthAgency(Integer companyId, Integer dempId, Integer grade, Integer isCompanyLeader, Integer isDempLeader ,Integer isCEO) {
 		if(isDempLeader == 1){
-			Demp demp = this.dempService.selectParentDempById(dempId);
+			Demp demp = this.dempMapper.selectParentDempById(dempId);
 			if(demp != null){
 				dempId = demp.getId();
 			}else{
 				isCompanyLeader = 1;
 				isDempLeader = 0;
 				dempId = null;
-				companyId = this.companyService.selectByPrimaryKey(companyId).getId();
+				companyId = this.companyMapper.selectByPrimaryKey(companyId).getId();
 			}
 		}else if(isCompanyLeader == 1){
-			Company company = this.companyService.selectParentCompanyById(companyId);
+			Company company = this.companyMapper.selectParentCompanyById(companyId);
 			if(company != null){
 				companyId = company.getId();
 			}
@@ -117,7 +117,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
 			if(authAgency == null){
 				if(dempId == null){
-					Company company = this.companyService.selectByPrimaryKey(companyId);
+					Company company = this.companyMapper.selectByPrimaryKey(companyId);
 					if(company != null){
 						isCompanyLeader = 1;
 						isDempLeader = 0;
@@ -133,7 +133,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 				record.setIsDepartmentHead(isDempLeader);
 				record.setIsdelete(0);
 				
-				List<User> list = this.userService.select(record );
+				List<User> list = this.userMapper.select(record );
 				if(list.size() != 0){
 					approvers.add(list.get(0));
 				}else{
@@ -166,7 +166,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		User u = new User();
 		u.setIsCompanyBoss(1);
 		u.setCompanyid(com.pj.config.base.constant.Constant.PJWL);
-		List<User> list = this.userService.select(u);
+		List<User> list = this.userMapper.select(u);
 		approvers.add(list.get(0));
 	}
 

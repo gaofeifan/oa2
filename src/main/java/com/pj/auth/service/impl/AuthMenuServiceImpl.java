@@ -17,7 +17,6 @@ import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthMenuService;
-import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PostMapper;
@@ -30,8 +29,8 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 	@Resource
 	private AuthMenuMapper authMenuMapper;
 	
-	@Resource
-	private AuthUserService authUserService;
+//	@Resource
+//	private AuthUserService authUserService;
 	
 	@Resource
 	private AuthUserMapper authUserMapper;
@@ -74,7 +73,7 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 				for(Integer secondMenuid : secondMenuIds){
 					List<Integer> thirdMenuIds = authMenuMapper.selectByFid(secondMenuid);
 					for (int i = 0; i < thirdMenuIds.size(); i++) {
-						List<Integer> postIds = authUserMapper.selectByMenuidAndUserid(userid, thirdMenuIds.get(i));
+						List<Integer> postIds = authUserMapper.selectPostidByMenuidAndUserid(userid, thirdMenuIds.get(i));
 						//查询所有post
 						List<Integer> allPostIds = postMapper.selectAllPostId(0);
 						if(!compare(postIds, allPostIds)){
@@ -175,7 +174,7 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 	public List<AuthUser> selectUserByMessageCenterId() {
 		AuthUser record = new AuthUser();
 		record.setMenuid(messageCenterMenuId);
-		List<AuthUser> list = this.authUserService.select(record );
+		List<AuthUser> list = this.authUserMapper.select(record );
 		return list;
 	}
 	

@@ -22,6 +22,7 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="hasChilds" property="hasChilds" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_column"> 
   	id,name,frontrank,companyid,number,pId,isdelete,hierarchy
@@ -67,6 +68,22 @@
 	where 
 		FIND_IN_SET(id, getChildLst(#{id}))
   </select>
+  <select id="selectOrgChildListById" parameterType="java.lang.Integer" resultMap="OrganizationMap">
+	SELECT
+		* ,
+	CASE 
+		WHEN (pId IS NULL) THEN (SELECT number FROM t_company WHERE id = d.companyid)
+		ELSE (SELECT number FROM t_demp WHERE id = d.pId) END pNum,
+  	CASE 
+		WHEN (SELECT COUNT(*) FROM t_demp WHERE  pId = d.id AND isdelete = 0) > 0 THEN 'yes'
+		WHEN (SELECT COUNT(*) FROM t_post WHERE demp_id = d.id AND isdelete = 0) > 0 THEN 'yes'
+		ELSE 'no' END hasChilds
+	FROM 
+		t_demp d
+	WHERE
+		FIND_IN_SET(d.id, getChildLst(#{id})) AND d.isdelete = 0
+ 	
+  </select>
   
   <select id="selectParentDempById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   		select 
@@ -97,14 +114,25 @@
   </select>
   
   <select id="selectOrgsByCompanyId" parameterType="java.lang.Integer" resultMap="OrganizationMap">
-  	select d.id,d.name,d.number,c.number as pNum,"demp" as type from t_demp d
-  	left join t_company c on c.id = d.companyid 
+  	select d.id,d.name,d.number,c.number as pNum,"demp" as type,
+  	case 
+		when (select count(*) from t_demp where pId = d.id and isdelete = 0) > 0 then 'yes'
+		when (select count(*) from t_post where demp_id = d.id and isdelete = 0) > 0 then 'yes'
+		else 'no' end hasChilds 
+  	
+  	 from t_demp d
+  	left join t_company c on c.id = d.companyid and c.isdelete = 0
   	where d.companyid = #{companyId} 
   	and d.isdelete = 0 and (d.pId is null or d.pId = 0)
   </select>
   <select id="selectOrgsByPId" parameterType="java.lang.Integer" resultMap="OrganizationMap">
-  	select d.id,d.name,d.number,pd.number as pNum,"demp" as type from t_demp d
-  	left join t_demp pd on pd.id = d.pId 
+  	select d.id,d.name,d.number,pd.number as pNum,"demp" as type,
+  	case 
+		when (select count(*) from t_demp where pId = d.id and isdelete = 0) > 0 then 'yes'
+		when (select count(*) from t_post where demp_id = d.id and isdelete = 0) > 0 then 'yes'
+		else 'no' end hasChilds 
+  	 from t_demp d
+  	left join t_demp pd on pd.id = d.pId  and pd.isdelete = 0
   	where d.pId = #{id} 
   	and d.isdelete = 0
   </select>

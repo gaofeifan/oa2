@@ -37,6 +37,13 @@ public interface DempMapper extends MyMapper<Demp> {
 	 * 	@return
 	 */
 	List<Demp> selectDempChildListById(Integer id);
+	/**
+	 * 	获取所有的子集
+	 *	@author 	limr
+	 * 	@param id
+	 * 	@return
+	 */
+	List<Organization> selectOrgChildListById(Integer id);
 
 	/**
 	 * 	根据id查询上级

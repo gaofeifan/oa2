@@ -1,8 +1,9 @@
 
 package com.pj.system.service;
 
-import java.util.Collection;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.pj.config.base.service.BaseService;
 import com.pj.system.pojo.Company;
@@ -63,21 +64,23 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	List<Organization> selectOransNotDeleteALL();
 
 	/**
-	 * 查找各公司下边的直接部门或者公司下边直接的岗位
+	 * 查找各公司下边的直接部门或者公司下边直接的岗位,除去已经赋予除userid外的用户的权限
 	 * @author limr
-	 * @param organizations
-	 * @param type 值为post时，只需要得到岗位,all时得到所有部门和岗位
+	 * @param userid
+	 * @param menuid
+	 * @param company
+	 * @param type
 	 * @return
 	 */
-	List<Organization> getDempsAndPosts(List<Organization> organizations, String type);
+	List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company, String type);
 	/** 
      * @descript:递归部门 
      * @author limr
      * @param dempList 
-     * @param type 值为post时，只需要得到岗位 
+     * @param type 值为post，只需要得到岗位 
      * @return 
      */  
-    public List<Organization> getDepts(List<Organization> organizations, List<Organization> dempList, String type);
+    public List<Organization> getDepts(List<Organization> organizations, List<Organization> dempList);
 
     /**
 	 * 查找各公司下边type=post时直接的岗位number
@@ -93,5 +96,23 @@ public interface CompanyService extends BaseService<Company, Integer> {
      * @param dempList 
      * @return 
      */ 
-	Collection<? extends String> getDeptNums(List<Organization> dempList);
+	List<String> getDeptNums(List<String> numbers, List<Organization> dempList);
+
+	/**
+	 * 根据pId得到公司list
+	 * @author limr
+	 * @param pId,pid=null查询第一级
+	 * @return
+	 */
+	List<Organization> selectByPId(@Param(value = "pId") Integer pId);
+
+	/**
+	 * 
+	 * @param companys
+	 * @param string
+	 * @return
+	 */
+	List<Organization> getAllDempsAndPosts(List<Organization> companys);
+
+	
 }

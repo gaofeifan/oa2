@@ -37,7 +37,7 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	 * @param menuid
 	 * @return
 	 */
-	List<Integer> selectByMenuidAndUserid(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid);
+	List<Integer> selectPostidByMenuidAndUserid(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid);
 
 	/**
 	 * 根据用户和菜单id type得到权限
@@ -46,7 +46,7 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	 * @param menuid
 	 * @return
 	 */
-	AuthUser selectByUserMenuType(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "type") String type);
+	List<AuthUser> selectByUserMenuType(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "type") String type);
 	
 	/**
 	 * 根据userid和like menuids查询
@@ -55,6 +55,25 @@ public interface AuthUserMapper extends MyMapper<AuthUser> {
 	 * @return
 	 */
 	List<AuthUser> selectByUseridAndMenuids(@Param(value = "userid") Integer userid, @Param(value = "menuids") String menuids);
+
+	/**
+	 * 根据userid,菜单，以及postid查询一条数据，如果type=menu,则postid=null
+	 * @author limr
+	 * @param userid
+	 * @param menuid
+	 * @param postid
+	 * @return
+	 */
+	AuthUser selectByUserMenuPost(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid, @Param(value = "postid") Integer postid);
+
+	/**
+	 * 根据条件查询非userid的postid
+	 * @author limr
+	 * @param userid
+	 * @param menuid
+	 * @return
+	 */
+	List<Integer> selectByNotUserMenuPost(@Param(value = "userid") Integer userid, @Param(value = "menuid") Integer menuid);
 	
 	
 }

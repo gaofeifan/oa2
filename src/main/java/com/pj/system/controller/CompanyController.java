@@ -250,18 +250,21 @@ public class CompanyController extends SystemManageController{
 	 * @param Model
 	 * @return
 	 */
+	
 	@ResponseBody
 	@ApiOperation(value = "展示公司部门岗位联系列表", httpMethod = "GET", response=String.class, notes ="展示公司部门岗位联系列表")
 	@RequestMapping(value = "/listFrameTree.do",method=RequestMethod.GET)
-	public Map<String, Object> listFrameTree(){
+	public Map<String, Object> listFrameTree(
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid, 
+			@ApiParam(value = "三级菜单ID", required = true) @RequestParam(value = "menuid", required = true) Integer menuid){
 		Map<String, Object> map;
 		try {
 			List<Organization> organizations = new ArrayList<Organization>();
-			//得到所有的公司，包含子公司
-			List<Organization> companys = companyService.selectOransNotDeleteALL();
-			organizations.addAll(companys);
+//			//得到第一级公司
+			Organization company = companyService.selectByPId(null).get(0);
 			//查找各公司下边的直接部门或者公司下边直接的岗位
-			organizations.addAll(companyService.getDempsAndPosts(companys, "all"));
+			organizations = companyService.getDempsAndPosts(userid, menuid, company, "all");
+			System.out.println(organizations.size());
 			map = this.success(organizations);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,5 +273,5 @@ public class CompanyController extends SystemManageController{
 		}
     	return map;
 	}
-
+	
 }

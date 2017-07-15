@@ -130,8 +130,9 @@ public class AuthUserController extends SystemManageController{
 
 		try {
 			authuserService.insertAuthUser(type, id, grade, number, userid, isSelected);
-			return this.successJsonp(this.success());
+			return this.successJsonp("保存成功");
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("【AuthUserController.saveauth】"+e.getMessage());
 			return this.successJsonp(this.error("保存失败"+e.getMessage()));
 		}

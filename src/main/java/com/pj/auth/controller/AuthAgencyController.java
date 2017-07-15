@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.web.controller.BaseController;
@@ -37,7 +39,7 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "authAgency", description = "机构权限")
 public class AuthAgencyController extends BaseController{
 
-	@Resource
+	@Autowired
 	private AuthAgencyService authAgencyService;
 	@Resource
 	private UserService userService;

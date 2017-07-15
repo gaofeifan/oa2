@@ -43,12 +43,23 @@
  	select * from auth_user
  	 where userid = #{userid} and type = #{type}
  </select>
- <select id="selectByMenuidAndUserid" resultType="java.lang.Integer">
+ <select id="selectPostidByMenuidAndUserid" resultType="java.lang.Integer">
  	select postid from auth_user
  	 where userid = #{userid} and menuid = #{menuid} and type = "post"
  </select>
- <select id="selectByUseridAndMenuids" resultMap="BaseResultMap">
+ <select id="selectByUserMenuPost" resultMap="BaseResultMap">
+ 	select * from auth_user
+ 	 where userid = #{userid} and menuid = #{menuid}
+ 	 <if test="postid != null">
+ 	 and postid = #{postid}
+ 	 </if>
+ </select>
+ <select id="selectByNotUserMenuPost" resultMap="BaseResultMap">
  	select postid from auth_user
+ 	 where userid != #{userid} and menuid = #{menuid}
+ </select>
+ <select id="selectByUseridAndMenuids" resultMap="BaseResultMap">
+ 	select * from auth_user
  	 where userid = #{userid} and menuids like #{menuids}
  </select>
  <select id="selectByUserMenuType" resultMap="BaseResultMap">

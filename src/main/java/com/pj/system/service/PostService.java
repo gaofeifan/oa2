@@ -70,4 +70,17 @@ public interface PostService extends BaseService<Post, Integer> {
 	 */
 	public int insertSelective(Post post);
 
+	/**
+	 * 更新岗位的signNum
+	 */
+	void updateSignNum();
+
+	/**
+	 * 修改，增加机构编码
+	 * @author limr
+	 * @param post
+	 * @return
+	 */
+	void updatePost(Post post);
+
 }
