@@ -20,51 +20,74 @@ public class Organization implements Serializable {
      * id
      */
     private Integer id;
+    /**
+     * id
+     */
+	
+    private Integer pId;
 
     /**
      * 名称
      */
+    
     private String name;
 
 
     /**
      * 编号
      */
+    
     private String number;
 
     /**
      * 父节点,记录number
      */
+    
     private String pNum;
     
     /**
      * 组织机构num
      */
+    
     private String signNum;
 
     /**
      * 是否删除 0未删除  1已删除
      */
+    
     private Integer isdelete;
 
    /**
      * 层级
      */
+    
     private Integer level;
     
     /**
      * 类型（company,demp,post）
      */
+    
     private String type;
 
     /**
      * 是否选中（0：未选中，1：选中）
      */
+    
 	private String choice;
+	
 	
 	private String hasChilds;
 	
-    private static final long serialVersionUID = 1L;
+	
+    public Integer getpId() {
+		return pId;
+	}
+
+	public void setpId(Integer pId) {
+		this.pId = pId;
+	}
+
+	private static final long serialVersionUID = 1L;
 
 	public String getHasChilds() {
 		return hasChilds;

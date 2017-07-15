@@ -17,12 +17,14 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="INTEGER" />
     <result column="pNum" property="pNum" jdbcType="VARCHAR" />
     <result column="signNum" property="signNum" jdbcType="VARCHAR" />
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="hasChilds" property="hasChilds" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_column">
   	id,number,name,address,contact,pId,isdelete,hierarchy
@@ -46,7 +48,13 @@
 		select 
 			*
 		from 
-		t_company where pId = #{pId} and isdelete = 0
+		t_company where isdelete = 0
+		<if test="pId != null">
+			and pId = #{pId}
+		</if>
+		<if test="pId == null">
+			and pId is null
+		</if>
 	</select>
 	
 	<select id="selectByUserid" parameterType="int" resultMap="BaseResultMap">
@@ -70,13 +78,29 @@
 		group by t_company.id,t_company.name
 	</select>
 	<select id="selectOransNotDeleteALL" resultMap="OrganizationMap">
-		select c.id, c.number, c.name, pc.number as pNum, "company" as type from t_company c
+		select c.id, c.number, c.name, pc.number as pNum, "company" as type,
+		case 
+			when (select count(*) from t_company where pId = c.id and isdelete = 0) > 0 then 'yes'
+			when (select count(*) from t_demp where companyid = c.id and isdelete = 0) > 0 then 'yes'
+			when (select count(*) from t_post where company_id = c.id and isdelete = 0) > 0 then 'yes'
+			else 'no' end hasChilds 
+		 from t_company c
 	left join t_company pc on pc.id = c.pId 
 	where c.isdelete = 0
 	</select>
 	<select id="selectParentsById" resultType="java.lang.String" parameterType="java.lang.Integer">
 		SELECT number FROM t_company 
 		WHERE FIND_IN_SET(id,getCompanyParentList(#{id})) and isdelete = 0
+	</select>
+	<select id="selectChildsById" resultMap = "OrganizationMap" parameterType="java.lang.Integer">
+		SELECT * ,(SELECT number FROM t_company WHERE id = c.pId) as pNum,
+		case 
+			when (select count(*) from t_company where pId = c.id and isdelete = 0) > 0 then 'yes'
+			when (select count(*) from t_demp where companyid = c.id and isdelete = 0) > 0 then 'yes'
+			when (select count(*) from t_post where company_id = c.id and isdelete = 0) > 0 then 'yes'
+			else 'no' end hasChilds 
+		FROM t_company c
+		WHERE FIND_IN_SET(c.id,getCompanyChildList(#{id})) and c.isdelete = 0
 	</select>
 	<select id="selectByNumber" parameterType="java.lang.String" resultMap="OrganizationMap">
 		select * from t_company 

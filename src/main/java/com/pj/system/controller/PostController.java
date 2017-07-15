@@ -107,7 +107,7 @@ public class PostController extends SystemManageController {
 	@ResponseBody
 	public Map<String, Object> updatePost(@ModelAttribute("post") Post post){
 		try {
-			this.postService.updateByPrimaryKeySelective(post);
+			this.postService.updatePost(post);
 		} catch (Exception e) {
 			logger.error("修改岗位信息异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		
@@ -171,6 +171,18 @@ public class PostController extends SystemManageController {
 		try {
 			List<Post> post = this.postService.SelectByUserid(userid, menuid,dempid);
 			return this.success(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.error("查询异常"+e.getMessage());
+		}
+	}
+	@ApiOperation(value = "更新岗位signNum", httpMethod = "GET", response=Map.class, notes ="更新岗位signNum")
+	@RequestMapping(value="/updateSignNum.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> updateSignNum(){
+		try {
+			postService.updateSignNum();
+			return this.success(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.error("查询异常"+e.getMessage());

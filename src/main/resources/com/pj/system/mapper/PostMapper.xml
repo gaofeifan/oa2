@@ -27,6 +27,7 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="choice" property="choice" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="hasChilds" property="hasChilds" jdbcType="VARCHAR" />
   </resultMap>
  <select id="selectALL" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.Post">
   SELECT
@@ -67,17 +68,17 @@
 	GROUP BY  t_post.id,t_post.name,t_post.demp_id,t_post.company_id
   </select>
   <select id="selectLinealsByCompanyId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
-	select p.id, p.number, p.name, c.number as pNum, "post" as type from t_post p
-	left join t_company c on c.id = p.company_id 
-	where p.company_id = #{cmpanyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
+	select p.id, p.number, p.name, p.sign_num as signNum, c.number as pNum, "post" as type from t_post p
+	left join t_company c on c.id = p.company_id and c.isdelete = 0
+	where p.company_id = #{companyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
   </select>
   <select id="selectLinealNumsByCompanyId" resultType="java.lang.String" parameterType="java.lang.Integer">
 	select p.number from t_post p
-	where p.company_id = #{cmpanyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
+	where p.company_id = #{companyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
   </select>
   <select id="selectLinealsByDempId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
-	select p.id, p.number, p.name, d.number as pNum, "post" as type from t_post p
-	left join t_demp d on d.id = p.demp_id 
+	select p.id, p.number, p.name, d.number as pNum, "post" as type,p.sign_num as signNum, 'no' as hasChilds from t_post p
+	left join t_demp d on d.id = p.demp_id and d.isdelete = 0 
 	where p.demp_id = #{dempId} and p.isdelete = 0
   </select>
   <select id="selectLinealNumsByDempId" resultType="java.lang.String" parameterType="java.lang.Integer">
@@ -89,5 +90,11 @@
   </select>
   <select id="selectAllPostId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
 	select id from t_post where isdelete = #{isdelete}
+  </select>
+  <select id="selectAllDId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select DISTINCT(demp_id) from t_post where isdelete = #{isdelete}
+  </select>
+  <select id="selectAllCId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select DISTINCT(company_id) from t_post where isdelete = #{isdelete}
   </select>
 </mapper>

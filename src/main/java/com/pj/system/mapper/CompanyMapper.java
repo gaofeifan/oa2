@@ -44,6 +44,13 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 * @return
 	 */
 	List<String> selectParentsById(Integer id);
+	/**
+	 * 根据id得到所有子集级以及本机编号
+	 * @author limr
+	 * @param id
+	 * @return
+	 */
+	List<Organization> selectChildsById(Integer id);
 
 	/**
 	 * 根据number得到公司
@@ -58,6 +65,6 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 * @param pId
 	 * @return
 	 */
-	List<Organization> selectByPId(Integer pId);
+	List<Organization> selectByPId(@Param(value = "pId") Integer pId);
 	
 }

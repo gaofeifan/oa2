@@ -21,6 +21,7 @@
 		case 
 			when grade=1 then 'yes'
             when grade=2 then 'yes'
+            when grade=3 and post = 1 then 'yes'
             else 'no'
         end hasChilds
         from auth_menu

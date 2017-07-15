@@ -42,7 +42,7 @@ public interface PostMapper extends MyMapper<Post>{
 	 * @param number
 	 * @return
 	 */
-	Post selectByNumber(String number);
+	Organization selectByNumber(String number);
 
 	/**
 	 * 得到所有postid
@@ -67,5 +67,21 @@ public interface PostMapper extends MyMapper<Post>{
 	 * @return
 	 */
 	List<String> selectLinealNumsByDempId(Integer dempId);
+
+	/**
+	 * 得到所有companyid
+	 * @author limr
+	 * @param isdelete
+	 * @return
+	 */
+	List<Integer> selectAllCId(int isdelete);
+	/**
+	 * 得到所有demptid
+	 * @author limr
+	 * @param isdelete
+	 * @return
+	 */
+	List<Integer> selectAllDId(int isdelete);
+	
 
 }

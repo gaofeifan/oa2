@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +34,10 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 	@Resource
 	private AuthUserMapper authUserMapper;
 	
-	@Resource
+	@Autowired
 	private CompanyService companyService;
 	
-	@Resource
+	@Autowired
 	private PostService postService;
 	
 	@Resource
@@ -80,9 +81,13 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		 * 			若取消，则根据userid,menuid和number删除
 		 */
 		
-		if("menu".equals(type)){
-			//只需要保存或取消菜单权限
-			if(grade == 1){
+		switch (type) {
+		case "menu":
+
+			//只需要保存或取消菜单权限,查找数据库如果已存在，则不保存
+			switch (grade) {
+			case 1:
+
 				//选中，则保存
 				List<Integer>  secondMenuIds = authMenuMapper.selectByFid(menuId);
 				if(isSelected == 1){
@@ -103,7 +108,11 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						}
 					}
 				}
-			}else if(grade == 2){
+			
+				break;
+
+			case 2:
+
 				List<Integer> thirdMenuIds = authMenuMapper.selectByFid(menuId);
 				if(isSelected == 1){
 					//选中，则保存
@@ -120,7 +129,10 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						authUserMapper.deleteByUserMenuPost(userid, thirdMenuId, null);
 					}
 				}
-			}else if(grade == 3){
+			
+				break;
+			case 3:
+
 				if(isSelected == 1){
 					//选中，则保存
 					Integer fid = authMenuMapper.selectByPrimaryKey(menuId).getFid();
@@ -131,9 +143,14 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					//取消选中，删除
 					authUserMapper.deleteByUserMenuPost(userid, menuId, null);
 				}
+			
+				break;
 			}
 			
-		}else if("post".endsWith(type)){
+			break;
+
+		case "post":
+
 			/* 若是post,
 			 * grade==1,则得到所有的三级菜单全选，保存所有岗位,menuid均保存第三级id
 			 * 			如取消，得到所有三级thirdMenuId,则根据thirdMenuId和userid删除
@@ -151,7 +168,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			 * 		
 			 * 		
 			 */
-			if(grade == 1){
+			switch (grade) {
+			case 1:
+
 				List<Integer> secondMenuIds = authMenuMapper.selectByFid(menuId);
 				if(isSelected == 1){
 					for(Integer secondMenuId : secondMenuIds){
@@ -179,7 +198,10 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 					
 				}
-			}else if(grade == 2){
+			
+				break;
+			case 2:
+
 				List<Integer> thirdMenuIds = authMenuMapper.selectByFid(menuId);
 				if (isSelected == 1) {
 					Integer topFid = authMenuMapper.selectByPrimaryKey(menuId).getFid();
@@ -202,7 +224,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 				}
 				
-			}else if(grade == 3){
+				break;
+			case 3:
+
 				if(isSelected == 1){
 					Integer fid = authMenuMapper.selectByPrimaryKey(menuId).getFid();
 					Integer topFid = authMenuMapper.selectByPrimaryKey(fid).getFid();
@@ -220,7 +244,10 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				}else{
 					authUserMapper.deleteByUserMenuPost(userid, menuId, null);
 				}
-			}else if(grade > 3){
+			
+				break;
+			case 4: case 5:
+
 				Integer fid = authMenuMapper.selectByPrimaryKey(menuId).getFid();
 				Integer topFid = authMenuMapper.selectByPrimaryKey(fid).getFid();
 				String menuids = topFid + "-" + fid + "-" + menuId;
@@ -231,14 +258,14 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					//查找公司下边的直接部门或者公司下边直接的岗位
 					Integer companyId = company.getId();
 					//得到所有子公司,加上选中公司
-					List<Organization> companys = companyMapper.selectByPId(companyId);
-					if(companys != null && companys.size() > 0){
-						companys.add(company);
-					}else{
-						companys = new ArrayList<Organization>();
-						companys.add(company);
-					}
-					List<Organization> posts = companyService.getDempsAndPosts(companys, "post");
+					List<Organization> companys = companyMapper.selectChildsById(companyId);
+//					if(companys != null && companys.size() > 0){
+//						companys.add(company);
+//					}else{
+//						companys = new ArrayList<Organization>();
+//						companys.add(company);
+//					}
+					List<Organization> posts = companyService.getAllDempsAndPosts(companys);
 					
 					if(isSelected == 1){
 						//保存
@@ -259,27 +286,28 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					//根据number得到所有的子部门
 					Organization demp = dempMapper.selectOrgByNumber(number);
 					//查找公司下边的直接部门或者部门下边直接的岗位
-					List<Organization> demps = dempMapper.selectOrgsByPId(demp.getId());
-					//得到所有子部门,加上选中部门
-					if(demps != null && demps.size() > 0){
-						demps.add(demp);
-					}else{
-						demps = new ArrayList<Organization>();
-						demps.add(demp);
-					}
+					List<Organization> demps = dempMapper.selectOrgChildListById(demp.getId());
+//					//得到所有子部门,加上选中部门
+//					if(demps != null && demps.size() > 0){
+//						demps.add(demp);
+//					}else{
+//						demps = new ArrayList<Organization>();
+//						demps.add(demp);
+//					}
 					
 					List<Organization> posts = new ArrayList<Organization>();
 					
-					for(Organization organization : demps){
-						Integer dempId = organization.getId();
-						List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
-						List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
-						
-						posts.addAll(postList);
-						posts = companyService.getDepts(posts,dempList, "post");
-					}
+//					for(Organization organization : demps){
+//						Integer dempId = organization.getId();
+//						List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
+//						List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
+//						
+//						posts.addAll(postList);
+//						posts = companyService.getDepts(posts,dempList, "post");
+//					}
 					//TODO 找不同
-//					List<Organization> posts = companyService.getDepts(demps, "post");
+//					posts = companyService.getDepts(posts, demps, "post");
+					posts = companyService.getDepts(posts, demps);
 					
 					if(isSelected == 1){
 						//保存
@@ -297,7 +325,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 					
 				}else if (number.startsWith("ST")) {
-					Post post = postMapper.selectByNumber(number);
+					Organization post = postMapper.selectByNumber(number);
 					if(isSelected == 1){
 						insertAuthUserByPost(menuId, userid, menuids, post.getId(), post.getSignNum());
 					}else{
@@ -305,34 +333,44 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 					
 				}
+				break;
 			}
 			
+			break;
 		}
 		
 	}
 
 	//根据post保存权限
 	private void insertAuthUserByPost(Integer menuId, Integer userid, String menuids, Integer postId, String signNum) {
-		AuthUser authUser = new AuthUser();
-		authUser.setMenuid(menuId);
-		authUser.setMenuids(menuids);
-		authUser.setType("post");
-		authUser.setUserid(userid);
 		
-		authUser.setPostid(postId);
-		authUser.setPostSignNum(signNum);
-		
-		authUserMapper.insertSelective(authUser);
+		AuthUser sqlAuthUser = authUserMapper.selectByUserMenuPost(userid, menuId, postId);
+		if(sqlAuthUser == null){
+			AuthUser authUser = new AuthUser();
+			authUser.setMenuid(menuId);
+			authUser.setMenuids(menuids);
+			authUser.setType("post");
+			authUser.setUserid(userid);
+			
+			authUser.setPostid(postId);
+			authUser.setPostSignNum(signNum);
+			
+			authUserMapper.insertSelective(authUser);
+		}
 	}
 
 	//根据menu保存权限
 	private void insertAuthUser(Integer userid, Integer thirdMenuId, String menuids) {
-		AuthUser authUser = new AuthUser();
-		authUser.setMenuids(menuids);
-		authUser.setMenuid(thirdMenuId);
-		authUser.setUserid(userid);
-		authUser.setType("menu");
-		authUserMapper.insertSelective(authUser);
+		//保存之前先查询数据库是否存在，存在则不保存
+		AuthUser sqlAuthUser = authUserMapper.selectByUserMenuPost(userid, thirdMenuId, null);
+		if(sqlAuthUser == null){
+			AuthUser authUser = new AuthUser();
+			authUser.setMenuids(menuids);
+			authUser.setMenuid(thirdMenuId);
+			authUser.setUserid(userid);
+			authUser.setType("menu");
+			authUserMapper.insertSelective(authUser);
+		}
 	}
 
 	@Override
@@ -361,7 +399,6 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		 * 记录三级id
 		 */
 		
-		
 		if(grade == 1){
 			//得到需要岗位的权限
 			List<AuthUser> postAuthUsers = authUserMapper.selectByUserid(userid, "post");
@@ -379,9 +416,17 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					for(Integer secondMenuid : secondMenuIds){
 						List<Integer> thirdMenuIds = authMenuMapper.selectByFid(secondMenuid);
 						for (int i = 0; i < thirdMenuIds.size(); i++) {
-							List<Integer> postIds = authUserMapper.selectByMenuidAndUserid(userid, thirdMenuIds.get(i));
-							//查询所有post
+							List<Integer> postIds = authUserMapper.selectPostidByMenuidAndUserid(userid, thirdMenuIds.get(i));
+							//查询所有除去被其他用户选中的post
+							//已经占用的postid
+							List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuIds.get(i));
+							
+							//所有的postid
 							List<Integer> allPostIds = postMapper.selectAllPostId(0);
+							//除去已经占用的，得到要展示的postid 
+							allPostIds.removeAll(otherAuthPosts);
+							
+//							List<Integer> allPostIds = postMapper.selectAllPostId(0);
 							if(!compare(postIds, allPostIds)){
 								break first;
 							}
@@ -465,9 +510,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		}else {
 			 if (post == 1) {
 				 //有岗位
-				 getSelectedByPost(grade, post, number, menuId, userid);
+				 selectMenuIds = getSelectedByPost(grade, post, number, menuId, userid);
 			}else{
-				getSelectedByMenu(grade, post, number, menuId, userid);
+				selectMenuIds = getSelectedByMenu(grade, post, number, menuId, userid);
 			}
 		}
 		
@@ -517,7 +562,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			 * 循环,记录二级和三级菜单id
 			 */
 			
-			List<AuthUser> authUsersByPMenu = authUserMapper.selectByUseridAndMenuids(userid, menuId + "-*");
+			List<AuthUser> authUsersByPMenu = authUserMapper.selectByUseridAndMenuids(userid, menuId + "-%");
 			
 			for(AuthUser authUser : authUsersByPMenu){
 				String[] menuidArr = authUser.getMenuids().split("-");
@@ -559,7 +604,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			 */
 			List<Integer> childMenuids = authMenuMapper.selectByFid(menuId);
 			for(Integer childId : childMenuids){
-				AuthUser authUser = authUserMapper.selectByUserMenuType(userid, childId, "menu");
+				AuthUser authUser = authUserMapper.selectByUserMenuType(userid, childId, "menu").get(0);
 				if(authUser != null){
 					if(!selectMenuIds.contains(childId + "")){
 						selectMenuIds.add(childId + "");  
@@ -583,11 +628,19 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				for(Integer secondMenuid : secondMenuIds){
 					List<Integer> thirdMenuIds = authMenuMapper.selectByFid(secondMenuid);
 					for (int i = 0; i < thirdMenuIds.size(); i++) {
-						List<Integer> postIds = authUserMapper.selectByMenuidAndUserid(userid, thirdMenuIds.get(i));
+						List<Integer> postIds = authUserMapper.selectPostidByMenuidAndUserid(userid, thirdMenuIds.get(i));
 						//查询所有post
+//						List<Integer> allPostIds = postMapper.selectAllPostId(0);
+						//已经占用的postid
+						List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuIds.get(i));
+						
+						//所有的postid
 						List<Integer> allPostIds = postMapper.selectAllPostId(0);
+						//除去已经占用的，得到要展示的postid 
+						allPostIds.removeAll(otherAuthPosts);
+						
 						if(!compare(postIds, allPostIds)){
-							break second;
+							continue second;
 						}
 					}
 					selectOrgNums.add(secondMenuid + "");
@@ -597,9 +650,18 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			//如果是展示第三级,传入第二级menuid，查出子菜单，查出此三级菜单下所有岗位与组织机构所有权限对比
 			List<Integer> thirdMenuIds = authMenuMapper.selectByFid(menuId);
 			for(Integer thirdMenuId : thirdMenuIds){
-				List<Integer> postIds = authUserMapper.selectByMenuidAndUserid(userid, thirdMenuId);
+				List<Integer> postIds = authUserMapper.selectPostidByMenuidAndUserid(userid, thirdMenuId);
 				//查询所有post
+//				List<Integer> allPostIds = postMapper.selectAllPostId(0);
+				
+				//已经占用的postid
+				List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuId);
+				
+				//所有的postid
 				List<Integer> allPostIds = postMapper.selectAllPostId(0);
+				//除去已经占用的，得到要展示的postid 
+				allPostIds.removeAll(otherAuthPosts);
+				
 				if(compare(postIds, allPostIds)){
 					selectOrgNums.add(thirdMenuId + "");
 				}
@@ -607,16 +669,29 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			break;
 		case 4 :
 			//得到总公司，根据userid和menuid判断，查出此三级菜单下所有岗位与组织机构所有权限对
-			List<Integer> postIds = authUserMapper.selectByMenuidAndUserid(userid, menuId);
+			List<Integer> postIds = authUserMapper.selectPostidByMenuidAndUserid(userid, menuId);
 			//查询所有post
+//			List<Integer> allPostIds = postMapper.selectAllPostId(0);
+			
+			//已经占用的postid
+			List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, menuId);
+			
+			//所有的postid
 			List<Integer> allPostIds = postMapper.selectAllPostId(0);
+			//除去已经占用的，得到要展示的postid 
+			allPostIds.removeAll(otherAuthPosts);
+			
 			if(compare(postIds, allPostIds)){
-				selectOrgNums.add(menuId + "");
+				//加载总公司number
+				Organization company = companyMapper.selectByPId(null).get(0);
+				selectOrgNums.add(company.getNumber());
 			}
 			break;
 		case 5 :
+			//已经占用的postid
+			List<Integer> otherUserAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, menuId);
 //			List<String> selectOrgNums = new ArrayList<String>();
-			List<AuthUser> authUsers = authUserMapper.selectByUserid(userid, "post");
+			List<AuthUser> authUsers = authUserMapper.selectByUserMenuType(userid, menuId, "post");
 			//传入number,menuid,userid
 			
 			if(number.startsWith("ST")){
@@ -634,7 +709,6 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				 * 			与自己的所有自己及和比对，相同则选中，记录本子级的id
 				 * 		不包括则不处理
 				 */
-				List<String> childNums = new ArrayList<String>();
 				String pNumber = "";
 				Map<String, List<String>> map = new HashMap<String, List<String>>();
 				for(AuthUser authUser : authUsers){
@@ -648,8 +722,11 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							if(sNumArr.length > 2){
 								//至少两级
 								pNumber = sNumArr[1];
-								childNums = map.get(pNumber);
+								List<String> childNums = map.get(pNumber);
 								String postNum = sNumArr[sNumArr.length-1];
+								if(childNums == null){
+									childNums = new ArrayList<String>();
+								}
 								if(!childNums.contains(postNum)){
 									//记录最后一级，是岗位
 									childNums.add(postNum);
@@ -676,21 +753,25 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 								//查找公司下边的直接部门或者公司下边直接的岗位
 								Integer companyId = company.getId();
 								//得到所有子公司,加上选中公司
-								List<Organization> companys = companyMapper.selectByPId(companyId);
-								if(companys != null && companys.size() > 0){
-									companys.add(company);
-								}else{
-									companys = new ArrayList<Organization>();
-									companys.add(company);
-								}
+								List<Organization> companys = companyMapper.selectChildsById(companyId);
+//								if(companys != null && companys.size() > 0){
+//									companys.add(company);
+//								}else{
+//									companys = new ArrayList<Organization>();
+//									companys.add(company);
+//								}
 								
 								List<String> postNums = companyService.getPostNumByCompanys(companys);
+								
+								//除去已经占用的，得到要展示的postid 
+								postNums.removeAll(otherUserAuthPosts);
+								
 								if(compare(postNums, existPostNums)){
 									selectOrgNums.add(parentOrgNum);
 								}
 								
 							}else if(parentOrgNum.startsWith("DEMP")){
-								selectOrgNums.addAll(checkDemp(parentOrgNum, existPostNums));
+								selectOrgNums.addAll(checkDemp(otherUserAuthPosts, parentOrgNum, existPostNums));
 							}
 						}
 					}
@@ -703,7 +784,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							String parentOrgNum = entry.getKey();
 							List<String> existPostNums = entry.getValue();
 							//只能是部门
-							selectOrgNums.addAll(checkDemp(parentOrgNum, existPostNums));
+							selectOrgNums.addAll(checkDemp(otherUserAuthPosts, parentOrgNum, existPostNums));
 								
 						}
 					}
@@ -714,32 +795,37 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		return selectOrgNums; 
 	}
 
-	private List<String> checkDemp(String parentOrgNum, List<String> existPostNums) {
+	private List<String> checkDemp(List<Integer> otherUserAuthPosts, String parentOrgNum, List<String> existPostNums) {
 		List<String> selectOrgNums = new ArrayList<String>();
 		//得到部门下所有的岗位，与existPostNums比对
 		//根据number得到所有的子部门
 		Organization demp = dempMapper.selectOrgByNumber(parentOrgNum);
 		//查找公司下边的直接部门或者部门下边直接的岗位
-		List<Organization> demps = dempMapper.selectOrgsByPId(demp.getId());
-		//得到所有子部门,加上选中部门
-		if(demps != null && demps.size() > 0){
-			demps.add(demp);
-		}else{
-			demps = new ArrayList<Organization>();
-			demps.add(demp);
-		}
+		//得到所有子部门,根据选中部门得到岗位
+		List<Organization> demps = dempMapper.selectOrgChildListById(demp.getId());
+		
+//		if(demps != null && demps.size() > 0){
+//			demps.add(demp);
+//		}else{
+//			demps = new ArrayList<Organization>();
+//			demps.add(demp);
+//		}
 		
 		List<String> postNums = new ArrayList<String>();
+		//根据选中部门得到岗位
 		
 		for(Organization organization : demps){
-			Integer dempId = organization.getId();
-			List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
-			List<String> postList = postMapper.selectLinealNumsByDempId(dempId);
-			
-			postNums.addAll(postList);
-			postNums.addAll(companyService.getDeptNums(dempList));
+			List<String> pPostList = postMapper.selectLinealNumsByDempId(organization.getId());
+			postNums.addAll(pPostList);
+//			Integer dempId = organization.getId();
+//			List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
+//			List<String> postList = postMapper.selectLinealNumsByDempId(dempId);
+//			
+//			postNums.addAll(postList);
+//			postNums = companyService.getDeptNums(postNums, dempList);
 		}
-		
+		//除去已经占用的，得到要展示的postid 
+		postNums.removeAll(otherUserAuthPosts);
 		if(compare(postNums, existPostNums)){
 			selectOrgNums.add(parentOrgNum);
 		}
