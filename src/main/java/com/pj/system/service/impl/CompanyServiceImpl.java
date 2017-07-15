@@ -15,7 +15,6 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
-import com.pj.system.mapper.OrganizationMapper;
 import com.pj.system.mapper.PostMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
@@ -42,9 +41,6 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	
 	@Resource
 	private PostMapper postMapper;
-	
-	@Resource
-	private OrganizationMapper organizationMapper;
 
 	@Resource 
 	private DempService dempService;
