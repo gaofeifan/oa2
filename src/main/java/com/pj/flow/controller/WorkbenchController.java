@@ -31,9 +31,9 @@ public class WorkbenchController  extends BaseController{
 	public @ResponseBody MappingJacksonValue GetApprove(@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			Map<Integer,Integer> map = new HashMap<Integer, Integer>();
-			map.put(0, flowApproveService.selectByApprove(userid, 0));
-			map.put(1, flowApproveService.selectByApprove(userid, 1));
-			map.put(2, flowApproveService.selectByApprove(userid, 2));
+			map.put(0, flowApproveService.selectByCheckstatus(userid, 0));
+			map.put(1, flowApproveService.selectByCheckstatus(userid, 1));
+			map.put(2, flowApproveService.selectByCheckstatus(userid, 2));
 			return this.successJsonp(map);
 		} catch (Exception e) {
 			logger.error("【WorkbenchController.Approve】"+e.getMessage());

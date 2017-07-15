@@ -290,8 +290,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	}
 
 	@Override
-	public int selectByApprove(Integer userid, Integer isapprove) {
-		return flowApproveMapper.selectByApprove(userid, isapprove);
+	public int selectByCheckstatus(Integer userid, Integer checkstatus) {
+		return flowApproveMapper.selectByApprove(userid, checkstatus);
 	}
 
 	@Override

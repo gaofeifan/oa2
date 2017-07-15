@@ -24,7 +24,7 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	 */
 	List<FlowApprove> selectListByApplyId(Integer applyId);
 	
-	int selectByApprove(@Param(value = "userid") Integer userid,@Param(value = "isapprove") Integer isapprove);
+	int selectByApprove(@Param(value = "userid") Integer userid,@Param(value = "checkstatus") Integer checkstatus);
 	
 	int selectByUserid(@Param(value = "userid") Integer userid);
 
