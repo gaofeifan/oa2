@@ -116,13 +116,11 @@ public class RecruitController extends BaseController{
 		try {
 			flowRecruit.setStatus(0);
 			String[] strings = flowRecruit.getApplyReason().split(",");
+			flowRecruit.setApplyReason("");
 			for (int i = 0; i < strings.length; i++) {
 				if(StringUtils.isNoneBlank(strings[i])){
 					flowRecruit.setApplyReason(strings[i]);
 				}
-			}
-			if(flowRecruit.getApplyReason().trim().equals("")){
-				flowRecruit.setApplyReason("");
 			}
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
