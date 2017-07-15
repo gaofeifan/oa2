@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.ApprovalResults;
 import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.MessageType;
+import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowApproveMapper;
@@ -164,35 +167,29 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			FlowApprove innerApprove = list.get(i);
 			if(userid.equals(innerApprove.getUserid())){//当前审批人
 				delStartIndex = i + 1;
-				
 				innerApprove.setCheckstatus(checkstatus);
 				innerApprove.setHandledate(new Date());
 				innerApprove.setHandleidea(handleidea);
 				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
 				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
-			}
-			
-			if(checkstatus.equals(ApprovalResults.AGREE.getValue())){
-				FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
-				if(flowApprove != null){
-					flowApprove.setIsApprove(0);
-					this.updateByPrimaryKeySelective(innerApprove);
+
+				if(checkstatus .equals(ApprovalResults.NO_AGREE.getValue())){
+					//不同意，则接下来流程的审批人信息删除
+					for(int j = delStartIndex; j < list.size(); j++){
+						flowApproveMapper.delete(list.get(j));
+					}
+				}else if(checkstatus.equals(ApprovalResults.AGREE.getValue())){
+					FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
+					if(flowApprove != null){
+						flowApprove.setIsApprove(0);
+						this.flowApproveMapper.updateByPrimaryKeySelective(flowApprove);
+					}
 				}
 			}
 		}
-		
-		if(checkstatus == 1){
-			//不同意，则接下来流程的审批人信息删除
-			for(int i = delStartIndex; i < list.size(); i++){
-				flowApproveMapper.delete(list.get(i));
-			}
-		}else if(checkstatus == 2){
-			//同意,下一条值为0
-			//TODO
-			
-		}
 		isApproveComplete(flowUserApplication,applyType);
 	}
+
 
 	/**
 	 * 	审批完成的处理
@@ -226,9 +223,14 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		 */
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
-			FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-			flowRecruit.setResult(entryResult);
-			this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			if(entryResult != null){
+				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				flowRecruit.setResult(entryResult);
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setState(EntryApplyResult.ENTRY_DISAGREE.getState());
+				}
+				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			}
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
@@ -242,13 +244,29 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
-			
 			/**
 			 * 	修改状态
 			 */
-			FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-			entry.setResult(entryResult);
-			this.flowEntryMapper.updateByPrimaryKeySelective(entry);
+			if(entryResult != null){
+				FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				entry.setResult(entryResult);
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					entry.setState(EntryApplyState.ENTRY_APPROVED.getState());
+				}
+				this.flowEntryMapper.updateByPrimaryKeySelective(entry);
+				
+				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(entry.getRecruitId());
+				if(flowRecruit == null){
+					throw new RuntimeException("更新招聘状态异常");
+				}
+				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setResult(RecruitApplyResult.ENTRY_AGREE.getState());
+					flowRecruit.setState(RecruitApplyState.ENTRY_APPROVED.getState());
+				}else if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+					flowRecruit.setResult(RecruitApplyResult.ENTRY_DISAGREE.getState());
+				}
+				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+			}
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());
@@ -272,12 +290,19 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	}
 
 	@Override
-	public int selectByApprove(Integer userid, Integer isapprove) {
-		return flowApproveMapper.selectByApprove(userid, isapprove);
+	public int selectByCheckstatus(Integer userid, Integer checkstatus) {
+		return flowApproveMapper.selectByApprove(userid, checkstatus);
 	}
 
 	@Override
 	public int selectByUserid(Integer userid) {
 		return flowApproveMapper.selectByUserid(userid);
 	}
+
+	@Override
+	public List<FlowApprove> selectNoApprovalAll() {
+		return this.flowApproveMapper.selectNoApprovalAll();
+	}
+	
+	
 }

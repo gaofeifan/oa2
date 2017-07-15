@@ -26,6 +26,7 @@
   	left join t_position pt on fa.positionid = pt.id
   	where fa.apply_id in (select fu.id from flow_user_application fu 
   		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
+  	ORDER BY fa.id 
   </select>
   <select id="selectListByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   	select * from flow_approve
@@ -36,7 +37,7 @@
   <select id="selectByApprove" resultType="java.lang.Integer" >
   	 select COUNT(1) from flow_user_application 
 	inner join flow_approve on flow_user_application.id=flow_approve.apply_id AND flow_approve.id in (select  MAX(id) from flow_approve  GROUP BY apply_id)
-	where user_id=#{userid} and is_approve=#{isapprove} and apply_time>= date_sub(curdate(),interval 1 month) 
+	where user_id=#{userid} and checkstatus=#{checkstatus} and apply_time>= date_sub(curdate(),interval 1 month) 
   </select>
   <select id="selectByUserid" resultType="java.lang.Integer" >
   	select COUNT(1) from flow_approve where userid=#{userid}  AND is_approve=0
@@ -44,5 +45,12 @@
 
 <select id="selectNextApproval"  resultMap="BaseResultMap">
 	SELECT * FROM flow_approve WHERE apply_id = #{applyId} AND id > #{approveId} LIMIT 0,1
+</select>
+
+<select id="selectNoApprovalAll" resultMap="BaseResultMap">
+	SELECT app.* FROM flow_approve app INNER JOIN (
+
+select MAX(id) id FROM flow_approve WHERE checkstatus = 0 GROUP BY apply_id 
+) appGroup ON app.id in( appGroup.id) 
 </select>
 </mapper>

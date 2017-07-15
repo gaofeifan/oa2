@@ -48,6 +48,6 @@
 		auth_agency agency
 		left join t_company c on c.id = agency.company_id
 		left join t_demp d on d.id = agency.demp_id
-		where agency.grade = #{grade} 
+		where agency.grade = #{grade}  AND agency.isdelete = 0
 	</select>
 </mapper>

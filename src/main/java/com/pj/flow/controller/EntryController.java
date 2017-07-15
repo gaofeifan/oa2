@@ -141,8 +141,7 @@ public class EntryController extends BaseController{
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
 			
 			result.put("entry", flowEntry);
-			result.put("approves", list);
-			
+			result.put("approves", list); 
 			map = this.successJsonp(result);
 			
 		} catch (Exception e) {
@@ -162,13 +161,10 @@ public class EntryController extends BaseController{
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
-			
 			//审批列表
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
-			
 			//待办日志记录list
 			List<FlowActionLog> logList = flowActionLogService.selectByEntryId(entryId);
-			
 			result.put("entry", flowEntry);
 			result.put("approves", list);
 			result.put("logs", logList);
@@ -194,7 +190,7 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetails(@ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue successJsonp = null;
 		try {
-			String email = "gaofeifan@pj-l.com";
+			String email = getSession();
 			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , email);
 			successJsonp = this.successJsonp(flowOffer);
 		} catch (Exception e) {
@@ -231,7 +227,7 @@ public class EntryController extends BaseController{
 		return success;
 	}
 	
-/**********************建档待办**********************/
+	/**********************建档待办**********************/
 	
 	/**
 	 * 	建档待办提示,得到待办个数
@@ -246,7 +242,6 @@ public class EntryController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
 			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
 			
@@ -274,10 +269,7 @@ public class EntryController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-
 			List<FlowEntry> entrys = flowEntryService.selectByTodo(user.getId(), companyId, name);
-			
-			
 			map = this.successJsonp(entrys);
 		} catch (Exception e) {
 			e.printStackTrace();

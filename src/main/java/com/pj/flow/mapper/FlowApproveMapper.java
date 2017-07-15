@@ -24,7 +24,7 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	 */
 	List<FlowApprove> selectListByApplyId(Integer applyId);
 	
-	int selectByApprove(@Param(value = "userid") Integer userid,@Param(value = "isapprove") Integer isapprove);
+	int selectByApprove(@Param(value = "userid") Integer userid,@Param(value = "checkstatus") Integer checkstatus);
 	
 	int selectByUserid(@Param(value = "userid") Integer userid);
 
@@ -36,4 +36,12 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	 * 	@param applyId
 	 */
 	FlowApprove selectNextApproval(@Param(value = "approveId") Integer id, @Param(value = "applyId") Integer applyId);
+
+	/**
+	 * 	查询所有为审批的流程
+	 *	@author 	GFF
+	 *	@date		2017年7月12日下午4:19:57	
+	 * 	@return
+	 */
+	List<FlowApprove> selectNoApprovalAll();
 }

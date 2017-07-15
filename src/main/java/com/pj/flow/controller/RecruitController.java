@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -33,6 +34,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
+import com.pj.utils.AESUtils;
 import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
@@ -113,8 +115,17 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
-			flowRecruit.setApplyId(1);
-			flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
+			String[] strings = flowRecruit.getApplyReason().split(",");
+			for (int i = 0; i < strings.length; i++) {
+				if(StringUtils.isNoneBlank(strings[i])){
+					flowRecruit.setApplyReason(strings[i]);
+				}
+			}
+			if(flowRecruit.getApplyReason().trim().equals("")){
+				flowRecruit.setApplyReason("");
+			}
+			flowRecruit.setApplyId(flowRecruit.getApplyId());
+			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
 			
 			map = this.successJsonp("提交成功");
@@ -200,6 +211,8 @@ public class RecruitController extends BaseController{
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
+			String string = AESUtils.decryptHex(recruit.getReplaceOffer(), AESUtils.ALGORITHM);
+			recruit.setReplaceOffer(string);
 			//审批详情
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(recruit.getId(), ApplyType.RECRUIT.getApplyType());
 			result.put("recruit", recruit);
@@ -308,7 +321,6 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			flowRecruitService.updateState(user, recruitId, reason, state);
 			map = this.successJsonp(null);
 		} catch (Exception e) {

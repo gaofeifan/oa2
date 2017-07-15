@@ -37,7 +37,6 @@ public class Spider {
 
 	public static void main(String[] args) throws UnsupportedEncodingException, ParseException {
 		requestSimulate();
-		
 	}
 	
 	public static void requestSimulate(){
@@ -74,11 +73,11 @@ public class Spider {
 				}
 	        }
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
+	
+	
 	public static List<NameValuePair> getUrlParams(Map<String, Object> map){
 		Set<Entry<String,Object>> entrySet = map.entrySet();
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>(); 

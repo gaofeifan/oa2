@@ -67,6 +67,7 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	@Override
 	public Boolean isDeleteDemp(Integer id) {
 		Boolean flag = false;
+		
 		return flag;
 	}
 

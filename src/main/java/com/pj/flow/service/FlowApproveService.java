@@ -45,7 +45,15 @@ public interface FlowApproveService extends BaseService<FlowApprove, Integer> {
 	 */
 	void commitApprove(FlowUserApplication flowUserApplication, Integer userid, Integer checkstatus, String handleidea, Integer formId, String applyType);
 
-	int selectByApprove(Integer userid,Integer isapprove);
+	int selectByCheckstatus(Integer userid,Integer checkstatus);
 	
 	int selectByUserid(Integer userid);
+
+	/**
+	 * 	查询所有未审批的流程
+	 *	@author 	GFF
+	 *	@date		2017年7月12日下午4:18:36	
+	 * 	@return
+	 */
+	List<FlowApprove> selectNoApprovalAll();
 }

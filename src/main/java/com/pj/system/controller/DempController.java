@@ -248,8 +248,8 @@ public class DempController extends SystemManageController{
 			e.printStackTrace();
 			return this.error("查询异常"+e.getMessage());
 		}
-		
 	}
+	
 	
 	@ApiOperation(value = "查询部门 根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询部门 根据人事权限查询")
 	@RequestMapping(value="/selectDempByUserid.do" , method=RequestMethod.GET)

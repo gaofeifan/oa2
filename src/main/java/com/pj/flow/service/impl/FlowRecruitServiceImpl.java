@@ -32,6 +32,7 @@ import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.Company;
+import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
@@ -55,7 +56,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	
 	@Autowired
 	private CompanyMapper companyMapper;
-	
+
 	@Autowired
 	private DempMapper dempMapper;
 
@@ -78,6 +79,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public MyMapper<FlowRecruit> getMapper() {
 		return flowRecruitMapper;
 	}
+	
 	@Override
 	public User getLeader(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader) {
 		/**
@@ -86,33 +88,24 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		 * 2，dempId!=null,不是部门领导，找部门负责人
 		 * 				      是部门领导，找组织架构上级负责人
 		 */
-		User user = new User();
-		if(dempId == null){
-			if(isCompanyLeader == 0){
-				//不是公司领导(查找user表找到该公司下的负责人)
-				//（不用）查找部门表找出该公司下所有部门id,再去user表根据部门id找到公司负责人
-				user = userMapper.getCompanyLeader(companyId);
-			}else{
-				//是公司领导
-				//查找上级公司id
-				int pId = companyMapper.selectByPrimaryKey(companyId).getpId();
-				user = userMapper.getCompanyLeader(pId);
+		if(isDempLeader == 1 || isCompanyLeader == 1){
+			if(isDempLeader == 1){
+				Demp demp = this.dempMapper.selectParentDempById(dempId);
+				if(demp != null){
+					return this.userMapper.getDempLeader(demp.getId());
+				}
+			}else if(isCompanyLeader == 1){
+				Company company = this.companyMapper.selectParentCompanyById(companyId);
+				if(company == null){
+					throw new RuntimeException("没有查询到直属上级");
+				}
+				companyId = company.getId();
 			}
-		}else{
-			if(isDempLeader == 0){
-				//不是部门领导
-				//查询user表根据dempId得到部门负责人
-				user = userMapper.getDempLeader(dempId);
-			}else{
-				//部门领导
-				//查找上级部门id
-				int pId = dempMapper.selectByPrimaryKey(dempId).getpId();
-				user = userMapper.getDempLeader(pId);
-			}
+			return this.userMapper.getCompanyLeader(companyId);
 		}
-		
-		return user;
+		return this.userMapper.getDempLeader(dempId);
 	}
+	
 	@Override
 	public FlowRecruit selectById(Integer recruitId) {
 		return flowRecruitMapper.selectById(recruitId);
@@ -206,9 +199,15 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public int insertSelective(FlowRecruit t) {
 		int i = super.insertSelective(t);
 		//保存申请表和申请人的中间表
+		if(t.getApplyId() == null){
+			throw new RuntimeException("没有获取到申请人员id");
+		}
 		int userId = t.getApplyId();
 		//申请人
 		User user = this.userMapper.selectByPrimaryKey(userId);
+		if(user == null){
+			throw new RuntimeException("申请没有该用户");
+		}
 		//申请人部门
 		String names = this.dempService.selectDempParentNameById(user.getDempid());
 		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());

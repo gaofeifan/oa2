@@ -15,11 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pj.config.base.constant.ActionLogOperation;
+import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
+import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitApplyState;
+import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.base.tool.HttpClienTool;
+import com.pj.flow.mapper.FlowActionLogMapper;
+import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowEntry;
+import com.pj.flow.pojo.FlowRecruit;
+import com.pj.flow.pojo.FlowRecruitTodo;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.system.mapper.DempMapper;
@@ -38,6 +49,7 @@ import com.pj.system.service.PositionService;
 import com.pj.system.service.SalaryService;
 import com.pj.system.service.UserService;
 import com.pj.system.service.WorkExperienceService;
+import com.pj.utils.AESUtils;
 import com.pj.utils.DateUtils;
 
 import net.sf.json.JSONArray;
@@ -49,6 +61,8 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	
 	@Resource
 	private FlowRecruitService flowRecruitService;
+	@Resource
+	private FlowActionLogMapper flowActionLogMapper;
 	@Resource
 	private UserMapper userMapper;
 	@Resource
@@ -67,6 +81,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private FlowEntryService flowEntryService;
 	@Resource
 	private EducationService educationService;
+	@Resource
+	private FlowRecruitTodoMapper flowRecruitTodoMapper;
+	
 //	@Resource
 //	private ManageProperties manageProperties;
 	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
@@ -131,19 +148,55 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 				this.workExperienceService.insertSelective(workExperience);
 			}
 			
-			
-			
 			/**
-			 * 	修改招聘入职人数
+			 * 	更新申请单状态
 			 */
-			/*FlowRecruit recruit = this.flowRecruitService.selectEntryNum(t.getEntryId());
-			recruit.setEntryNum(recruit.getEntryNum() != null ?recruit.getEntryNum() +1 : 1);
-			this.flowRecruitService.updateByPrimaryKeySelective(recruit);*/
+			this.updateApplyState(t.getEntryId());
 			return i;
 		}
 		return 0;
 	}
 
+
+	private void updateApplyState(Integer entryId) {
+		if(entryId == null){
+			throw new RuntimeException("没有查询到入职申请单");
+		}
+		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
+		flowEntry.setState(EntryApplyResult.ENTRY_SUCCESS.getState());
+		flowEntry.setResult(EntryApplyState.FILING.getState());
+		flowEntry.setIsBookbuilding(1);
+		flowEntryService.updateByPrimaryKeySelective(flowEntry);
+		
+		FlowRecruit flowRecruit = this.flowRecruitService.selectByPrimaryKey(flowEntry.getRecruitId());
+		flowRecruit.setState(RecruitApplyState.FILING.getState());
+		flowRecruit.setResult(RecruitApplyResult.ENTRY_SUCCESS.getState());
+		
+		/**
+		 * 	更新入职人数
+		 */
+		int num = flowRecruit.getEntryNum() != null ? flowRecruit.getEntryNum() : 0;
+		num +=1;
+		flowRecruit.setEntryNum(num);
+		this.flowRecruitService.updateByPrimaryKeySelective(flowRecruit);
+		/**
+		 *	更新状态
+		 */
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruit.getId(), RecruitTodoState.IN_RECRUIT.getState());
+		int number = inRecruitTodo.getNumber();
+		if(number > 1){
+			inRecruitTodo.setNumber(number - 1);
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
+		}else{
+			flowRecruitTodoMapper.delete(inRecruitTodo);
+		}
+		FlowActionLog record = new FlowActionLog();
+		record.setRecruitId(flowRecruit.getId());
+		record.setEntryId(entryId);
+		record.setOperateTime(new Date());
+		record.setStatus(ActionLogOperation.ENTRY_END.getValue());
+		this.flowActionLogMapper.insert(record);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -280,6 +333,8 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 				user = list.get(0);
 			}
 		}
+		String hex = AESUtils.decryptHex(user.getReplaceOffer(), AESUtils.ALGORITHM);
+		user.setReplaceOffer(hex);
 		return user;
 	}
 	

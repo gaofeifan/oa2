@@ -192,6 +192,9 @@ public class ApproveController extends BaseController{
 			throw new RuntimeException("选择姓名跳转对应的申请详情页面" + e.getMessage());
 		}
 		return map;
+		
+		
+		
 	}
 	@ApiOperation(value = "提交审批", httpMethod = "GET", response=MappingJacksonValue.class, notes ="提交审批")
 	@RequestMapping(value = "/commitApprove.do", method = RequestMethod.GET)
