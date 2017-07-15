@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -114,6 +115,15 @@ public class RecruitController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			flowRecruit.setStatus(0);
+			String[] strings = flowRecruit.getApplyReason().split(",");
+			for (int i = 0; i < strings.length; i++) {
+				if(StringUtils.isNoneBlank(strings[i])){
+					flowRecruit.setApplyReason(strings[i]);
+				}
+			}
+			if(flowRecruit.getApplyReason().trim().equals("")){
+				flowRecruit.setApplyReason("");
+			}
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
