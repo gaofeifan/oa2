@@ -1,7 +1,9 @@
 package com.pj.auth.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.web.controller.BaseController;
+import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.service.FlowApproveService;
+import com.pj.system.pojo.User;
+import com.pj.system.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +41,10 @@ public class AuthAgencyController extends BaseController{
 
 	@Autowired
 	private AuthAgencyService authAgencyService;
+	@Resource
+	private UserService userService;
+	@Resource
+	private FlowApproveService flowApproveService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthAgencyController.class);
 	
@@ -48,13 +58,12 @@ public class AuthAgencyController extends BaseController{
 	@RequestMapping(value="/saveAuthAgency.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "添加机构权限", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue saveAuthAgency(@ModelAttribute("authAgency")AuthAgency authAgency ){
-		this.authAgencyService.insertSelective(authAgency);
 		try {
 			this.authAgencyService.insertSelective(authAgency);
-			return this.successJsonp(this.success());
+			return this.successJsonp("添加成功");
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.saveAuthAgency】"+e.getMessage());
-			return this.successJsonp(this.error("保存失败"+e.getMessage()));
+			return this.errorToJsonp("保存失败"+e.getMessage());
 		}
 	}
 	
@@ -76,7 +85,7 @@ public class AuthAgencyController extends BaseController{
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.updateAuthAgencyById】"+e.getMessage());
 			e.printStackTrace();
-			return this.successJsonp(this.error("更新失败"+e.getMessage()));
+			return this.errorToJsonp("更新失败"+e.getMessage());
 		}
 	}
 	
@@ -92,17 +101,32 @@ public class AuthAgencyController extends BaseController{
 	@ApiOperation(value = "根据id删除权限机构", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue deleteAuthAgencyById(@ApiParam("权限id") @RequestParam(value = "id", required = true) Integer id){
 		try {
-			//	TODO 验证该机构是否正在审批流程中
-//			AuthAgency authAgency = this.authAgencyService.selectByPrimaryKey(id);
-			if(true){
-				this.authAgencyService.deleteByPrimaryKeyToLogic(id);
-				return this.successJsonp(this.success());
+			AuthAgency authAgency = this.authAgencyService.selectByPrimaryKey(id);
+			// 获取所有审批未通过的流程
+			List<FlowApprove> approves = this.flowApproveService.selectNoApprovalAll();
+			User record = new User();
+			record.setCompanyid(authAgency.getCompanyId());
+			record.setDempid(authAgency.getDempId());
+			record.setIsdelete(0);
+			List<User> list = this.userService.select(record );
+			List<Integer> collect = list.stream().map(u -> u.getId()).collect(Collectors.toList());
+			for (FlowApprove approve : approves) {
+				FlowApprove flowApprove = new FlowApprove();
+				flowApprove.setApplyId(approve.getApplyId());
+				List<FlowApprove> select = this.flowApproveService.select(flowApprove);
+				for (FlowApprove flowapp : select) {
+					if(collect.contains(flowapp.getUserid())){
+						return this.errorToJsonp("该机构存在未处理的任务无法删除");
+					}
+				}
 			}
+			this.authAgencyService.deleteByPrimaryKeyToLogic(id);
+			return this.successJsonp("成功删除");
 		} catch (Exception e) {
 			logger.error("【AuthAgencyController.deleteAuthAgencyById】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("该机构存在未处理的任务无法删除"));
+		return this.errorToJsonp("该机构存在未处理的任务无法删除");
 	}
 
 	
@@ -123,7 +147,7 @@ public class AuthAgencyController extends BaseController{
 			logger.error("【AuthAgencyController.findAuthAgencyAll】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("查询机构异常"));
+		return this.errorToJsonp("查询机构异常");
 	}
 	
 	@RequestMapping(value="/selectInstitutionalLevel.do" , method=RequestMethod.GET)
