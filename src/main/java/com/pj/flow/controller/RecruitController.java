@@ -33,6 +33,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
+import com.pj.utils.AESUtils;
 import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
@@ -200,6 +201,8 @@ public class RecruitController extends BaseController{
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
+			String string = AESUtils.decryptHex(recruit.getReplaceOffer(), AESUtils.ALGORITHM);
+			recruit.setReplaceOffer(string);
 			//审批详情
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(recruit.getId(), ApplyType.RECRUIT.getApplyType());
 			result.put("recruit", recruit);
@@ -308,7 +311,6 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			
 			flowRecruitService.updateState(user, recruitId, reason, state);
 			map = this.successJsonp(null);
 		} catch (Exception e) {

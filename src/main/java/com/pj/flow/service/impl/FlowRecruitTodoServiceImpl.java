@@ -11,7 +11,9 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
+import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowRecruitTodo;
+import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowRecruitTodoService;
 
 @Transactional
@@ -23,6 +25,9 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	
 	@Autowired
 	private FlowEntryMapper flowEntryMapper; 
+
+	@Autowired
+	private FlowRecruitService flowRecruitService;
 	
 	@Override
 	public MyMapper<FlowRecruitTodo> getMapper() {
@@ -59,9 +64,10 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 				todo.setNumber(number + 1);
 				flowRecruitTodoMapper.updateByPrimaryKeySelective(todo);
 			}else{
+				FlowRecruit recruit = this.flowRecruitService.selectByPrimaryKey(applyId);
 				todo = new FlowRecruitTodo();
 				todo.setRecruitId(applyId);
-				todo.setNumber(1);
+				todo.setNumber(recruit.getNeedNum());
 				todo.setState(RecruitTodoState.IN_RECRUIT.getState());
 				flowRecruitTodoMapper.insert(todo);
 			}

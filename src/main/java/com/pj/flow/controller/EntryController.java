@@ -141,8 +141,7 @@ public class EntryController extends BaseController{
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
 			
 			result.put("entry", flowEntry);
-			result.put("approves", list);
-			
+			result.put("approves", list); 
 			map = this.successJsonp(result);
 			
 		} catch (Exception e) {
@@ -162,13 +161,10 @@ public class EntryController extends BaseController{
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
-			
 			//审批列表
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
-			
 			//待办日志记录list
 			List<FlowActionLog> logList = flowActionLogService.selectByEntryId(entryId);
-			
 			result.put("entry", flowEntry);
 			result.put("approves", list);
 			result.put("logs", logList);

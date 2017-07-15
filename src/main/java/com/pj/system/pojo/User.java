@@ -33,7 +33,7 @@ public class User implements Serializable {
      * 性别 
      */
 	@Column(name="sex")
-	@ApiModelProperty(value = "性别 男  女 ", required = false)
+	@ApiModelProperty(value = "性别 1 男 2 女  0不限 ", required = false)
     private String sex;
 
     /**

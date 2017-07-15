@@ -24,7 +24,6 @@ public class FlowEntry implements Serializable {
 	@Id
 	@GeneratedValue(generator = "JDBC")
     private Integer id;
-
 	
 	@Column
 	private Integer applyId;
@@ -90,6 +89,14 @@ public class FlowEntry implements Serializable {
     @ApiModelProperty(value = "申请结果")
     @Column
     private Integer result;
+
+    @ApiModelProperty(value = "查询状态")
+    @Column(name="is_send_offer")
+    private Integer isSendOffer;
+
+    @ApiModelProperty(value = "入职状态")
+    @Column
+    private Integer isBookbuilding;
 
     @ApiModelProperty(value = "工资信息(json格式[{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(1(实习))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(2(试用))},{'totalSalary(总工资)':'111','baseSalary(基本工资)':'10','postSalary(岗位工资)':'1','performanceSalary(绩效工资)':'200','reimbursement(报销金额)':'200','lunchAllowance(午餐补贴)':'200','communicationAllowance(通讯补贴)':'200','fullHours(全勤)':'200','salaryType':(3(转正))}])")
     @Transient
@@ -432,6 +439,22 @@ public class FlowEntry implements Serializable {
 
 	public void setWorkAddress(String workAddress) {
 		this.workAddress = workAddress;
+	}
+
+	public Integer getIsSendOffer() {
+		return isSendOffer;
+	}
+
+	public void setIsSendOffer(Integer isSendOffer) {
+		this.isSendOffer = isSendOffer;
+	}
+
+	public Integer getIsBookbuilding() {
+		return isBookbuilding;
+	}
+
+	public void setIsBookbuilding(Integer isBookbuilding) {
+		this.isBookbuilding = isBookbuilding;
 	}
 
 	@Override
