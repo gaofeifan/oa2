@@ -129,6 +129,11 @@ public class AuthUserController extends SystemManageController{
 			@ApiParam(value = "选中状态 0取消勾选，1为勾选", required = true) @RequestParam(value = "isSelected", required = true) Integer isSelected){
 
 		try {
+			if(grade > 3){
+				if ((number == null || "".equals(number)) || "menu".equals(type)) {
+					return this.successJsonp("参数不正确");
+				}
+			}
 			authuserService.insertAuthUser(type, id, grade, number, userid, isSelected);
 			return this.successJsonp("保存成功");
 		} catch (Exception e) {
