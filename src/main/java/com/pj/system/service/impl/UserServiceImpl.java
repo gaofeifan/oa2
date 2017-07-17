@@ -49,6 +49,7 @@ import com.pj.system.service.PositionService;
 import com.pj.system.service.SalaryService;
 import com.pj.system.service.UserService;
 import com.pj.system.service.WorkExperienceService;
+import com.pj.system.utils.GetJsonFileUtils;
 import com.pj.utils.AESUtils;
 import com.pj.utils.DateUtils;
 
@@ -83,7 +84,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private EducationService educationService;
 	@Resource
 	private FlowRecruitTodoMapper flowRecruitTodoMapper;
-	
 //	@Resource
 //	private ManageProperties manageProperties;
 	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
@@ -391,18 +391,30 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	public User selectUserDetail(Integer id) {
 		User user = this.selectById(id);
 		List<Salary> salary = this.salaryService.selectSalaryByUserId(user.getId());
+		if(salary.size() == 0 ){
+			salary = GetJsonFileUtils.getSalary();
+		}
 		user.setSalarys(salary);
 		WorkExperience workExperience = new WorkExperience();
 		workExperience.setUserId(user.getId());
 		List<WorkExperience> workExperiences = this.workExperienceService.select(workExperience );
+		if(workExperiences.size() == 0){
+			workExperiences = GetJsonFileUtils.getWorkExperience();
+		}
 		user.setWorkExperiences(workExperiences);
 		Education education = new Education();
 		education.setUserId(user.getId());
 		List<Education> educations = this.educationService.select(education );
+		if(educations.size() == 0){
+			educations = GetJsonFileUtils.getEducationList();
+		}
 		user.setEducations(educations);
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.setUserId(user.getId());
 		List<FamilyMember> familyMembers = this.familyMemberService.select(familyMember );
+		if(familyMembers.size() == 0){
+			familyMembers = GetJsonFileUtils.getFamilyMembers();
+		}
 		user.setFamilyMembers(familyMembers);
 		return user;
 	}
@@ -473,4 +485,5 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		Object[] objects = list.stream().map(user -> user.getCompanyEmail()).toArray();
 		return objects;
 	}
+	
 }

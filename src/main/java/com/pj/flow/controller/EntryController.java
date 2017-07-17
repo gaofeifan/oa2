@@ -3,6 +3,7 @@ package com.pj.flow.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -163,8 +164,12 @@ public class EntryController extends BaseController{
 			FlowEntry flowEntry = flowEntryService.selectById(entryId);
 			//审批列表
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(flowEntry.getId(), ApplyType.ENTRY.getApplyType());
-			//待办日志记录list
-			List<FlowActionLog> logList = flowActionLogService.selectByEntryId(entryId);
+			List<Boolean> collect = list.stream().map(approve -> approve.getIsApprove() == 1).collect(Collectors.toList());
+			List<FlowActionLog> logList = null;
+			if(!collect.contains(false)){
+				//待办日志记录list
+				logList = flowActionLogService.selectByEntryId(entryId);
+			}
 			result.put("entry", flowEntry);
 			result.put("approves", list);
 			result.put("logs", logList);

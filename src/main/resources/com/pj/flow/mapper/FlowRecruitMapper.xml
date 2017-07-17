@@ -71,7 +71,7 @@
 	</select>
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
-		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,entry.id entryId,
+		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,entry.id entryId,demp.name dempName,demp.id dempId,
 		c.name as companyName, pn.name as positionName
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
@@ -84,6 +84,7 @@
 			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 			LEFT JOIN t_position pn ON pn.id = u.positionid
+			LEFT JOIN t_demp demp on demp.id = u.dempid
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
@@ -97,12 +98,13 @@
 	</select>
 	<select id="selectTodoByEntryQuery" resultMap="BaseResultMap">
 		select 
-		r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
+		r.id, r.apply_id, e.username, r.need_num, r.entry_num, 
 			DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
 			DATE_FORMAT(e.entry_date,"%Y-%m-%d") as entryDateStr, 
-			c.name as companyName, pn.name as positionName, 
+			c.name as companyName, pn.name as positionName, demp.name dempName,demp.id dempId,
 			rt.entry_id as entryId from flow_recruit_todo rt
 		inner join flow_recruit r on r.id = rt.recruit_id 
+		LEFT JOIN t_demp demp on demp.id = r.demp_id
 			<if test="companyId != null" >
 		        and r.company_id = #{companyId}
 		    </if>

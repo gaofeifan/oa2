@@ -508,4 +508,24 @@ public class FlowRecruit implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+	@Override
+	public String toString() {
+		return "FlowRecruit [id=" + id + ", applyId=" + applyId + ", username=" + username + ", applyDate=" + applyDate
+				+ ", companyId=" + companyId + ", postId=" + postId + ", dempId=" + dempId + ", positionId="
+				+ positionId + ", isDempLeader=" + isDempLeader + ", isCompanyLeader=" + isCompanyLeader + ", needNum="
+				+ needNum + ", workAddress=" + workAddress + ", applyReasonType=" + applyReasonType
+				+ ", applyReasonChildType=" + applyReasonChildType + ", applyReason=" + applyReason + ", replaceId="
+				+ replaceId + ", channel=" + channel + ", sex=" + sex + ", age=" + age + ", education=" + education
+				+ ", duty=" + duty + ", technology=" + technology + ", knowledge=" + knowledge + ", businessAbility="
+				+ businessAbility + ", specialAbility=" + specialAbility + ", experience=" + experience
+				+ ", otherDemand=" + otherDemand + ", state=" + state + ", result=" + result + ", entryNum=" + entryNum
+				+ ", leaderId=" + leaderId + ", offerRange=" + offerRange + ", isCheck=" + isCheck + ", status="
+				+ status + ", replaceName=" + replaceName + ", replaceOffer=" + replaceOffer + ", leaderName="
+				+ leaderName + ", companyName=" + companyName + ", applyDempId=" + applyDempId + ", dempName="
+				+ dempName + ", postName=" + postName + ", positionName=" + positionName + ", applyDateStr="
+				+ applyDateStr + ", entryDateStr=" + entryDateStr + ", entryId=" + entryId + "]";
+	}
+    
+    
 }

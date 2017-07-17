@@ -121,7 +121,7 @@ public class RecruitController extends BaseController{
 				if(StringUtils.isNoneBlank(strings[i])){
 					flowRecruit.setApplyReason(strings[i]);
 				}
-			}
+			} 
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
 			flowRecruitService.insertSelective(flowRecruit);
@@ -209,8 +209,10 @@ public class RecruitController extends BaseController{
 			Map<String, Object> result = new HashMap<String, Object>();
 			//申请详情
 			FlowRecruit recruit = flowRecruitService.selectById(recruitId);
-			String string = AESUtils.decryptHex(recruit.getReplaceOffer(), AESUtils.ALGORITHM);
-			recruit.setReplaceOffer(string);
+			if(StringUtils.isNoneBlank(recruit.getReplaceOffer())){
+				String string = AESUtils.decryptHex(recruit.getReplaceOffer(), AESUtils.ALGORITHM);
+				recruit.setReplaceOffer(string);
+			}
 			//审批详情
 			List<FlowApprove> list = flowApproveService.selectByApplyIdAndType(recruit.getId(), ApplyType.RECRUIT.getApplyType());
 			result.put("recruit", recruit);
