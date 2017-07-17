@@ -54,7 +54,7 @@
  	 and postid = #{postid}
  	 </if>
  </select>
- <select id="selectByNotUserMenuPost" resultMap="BaseResultMap">
+ <select id="selectByNotUserMenuPost" resultType="java.lang.Integer">
  	select postid from auth_user
  	 where userid != #{userid} and menuid = #{menuid}
  </select>

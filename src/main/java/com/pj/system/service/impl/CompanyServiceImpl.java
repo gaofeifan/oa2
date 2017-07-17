@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.StringUtil;
 import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
