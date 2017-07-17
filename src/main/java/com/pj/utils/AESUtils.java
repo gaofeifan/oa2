@@ -343,7 +343,7 @@ public class AESUtils {
 						if (ENCRYPTHEX.equals(key)) {
 							field.set(obj, encryptHex(object.toString(), ALGORITHM));
 						} else {
-							if(!isNum(obj.toString())){
+							if(!isNum(object.toString())){
 								field.set(obj, decryptHex(object.toString(), ALGORITHM));
 							}
 						}
@@ -366,7 +366,7 @@ public class AESUtils {
 	}
 	
 	public static void main(String[] args) {
-		String hex = encryptHex("7777", ALGORITHM);
+		String hex = decryptHex("cb882a39dab8bee8f05cc33184b66a1b", ALGORITHM);
 		System.out.println(hex);
 	}
 }

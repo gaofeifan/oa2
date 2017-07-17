@@ -114,6 +114,12 @@ public class RecruitController extends BaseController{
 			@ModelAttribute("flowRecruit")FlowRecruit flowRecruit){
 		MappingJacksonValue map;
 		try {
+			if(flowRecruit.getIsDempLeader() == null){
+				flowRecruit.setIsDempLeader(0);
+			}
+			if(flowRecruit.getIsCompanyLeader() == null){
+				flowRecruit.setIsCompanyLeader(0);
+			}
 			flowRecruit.setStatus(0);
 			String[] strings = flowRecruit.getApplyReason().split(",");
 			flowRecruit.setApplyReason("");

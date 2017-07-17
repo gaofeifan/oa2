@@ -157,11 +157,11 @@
   		recruit.work_address workAddress,
   		pUser.username pUsername
   	from flow_entry entry 
-  	inner join flow_recruit recruit on entry.recruit_id = recruit.id
+  	left join flow_recruit recruit on entry.recruit_id = recruit.id
   	left join t_user pUser on pUser.id = recruit.leader_id 
-  	inner join t_company company on recruit.company_id = company.id
-  	inner join t_demp demp on recruit.demp_id = demp.id
-  	inner join t_post post on post.id = recruit.post_id
+  	left join t_company company on recruit.company_id = company.id
+  	left join t_demp demp on recruit.demp_id = demp.id
+  	left join t_post post on post.id = recruit.post_id
   	<where>
   		<if test="id != null">
   			 entry.id = #{id}
