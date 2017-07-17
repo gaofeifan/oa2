@@ -86,7 +86,7 @@
 	where p.demp_id = #{dempId} and p.isdelete = 0
   </select>
   <select id="selectByNumber" resultMap="OrganizationMap" parameterType="java.lang.String">
-	select * from t_post where number = #{number} and isdelete = 0
+	select *, sign_num as signNum from t_post where number = #{number} and isdelete = 0
   </select>
   <select id="selectAllPostId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
 	select id from t_post where isdelete = #{isdelete}
