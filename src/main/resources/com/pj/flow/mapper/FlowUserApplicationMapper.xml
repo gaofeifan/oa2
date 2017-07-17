@@ -28,6 +28,7 @@
 			<if test="checkstatus != null and checkstatus != 0">
 				and a.checkstatus != 0
 			</if>
+			ORDER BY ua.apply_time DESC
 	</select>
 	<select id="selectByApplyIdAndType" resultMap="BaseResultMap">
 		select * from flow_user_application 

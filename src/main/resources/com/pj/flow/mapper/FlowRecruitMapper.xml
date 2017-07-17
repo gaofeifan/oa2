@@ -95,6 +95,7 @@
 	    </if>
 		and r.post_id in 
 	  		(select au.postid from auth_user au where au.userid = #{userId})
+	  	ORDER BY r.apply_date DESC
 	</select>
 	<select id="selectTodoByEntryQuery" resultMap="BaseResultMap">
 		select 
@@ -120,6 +121,7 @@
 		where 
 			rt.state = #{state} 
 		AND e.is_send_offer = 0
+		ORDER BY e.apply_date DESC
 	</select>
 	<select id="selectByApplyId" resultMap="BaseResultMap">
 		SELECT r.id, r.apply_id, r.username, u.dempid as applyDempId, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
@@ -137,6 +139,7 @@
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%') 
 	    </if>
+	     ORDER BY r.apply_date DESC
 	</select>
 	<select id="getUserInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		SELECT r.id, r.company_id, r.post_id, r.position_id, r.demp_id, 

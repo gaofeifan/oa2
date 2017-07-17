@@ -147,7 +147,7 @@ public class PostController extends SystemManageController {
 			this.postService.deleteByPrimaryKeyToLogic(id);
 		} catch (Exception e) {
 			logger.error("删除岗位信息异常" + e.getMessage());
-			throw new RuntimeException("操作资源异常");		
+			return this.error(e.getMessage());
 		}
 		return this.success(null);
 	}

@@ -110,6 +110,7 @@
 		<if test="name != null and name != ''" >
 	        and e.name = #{name}
 	    </if>
+	    ORDER BY e.apply_date desc
   </select>
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
@@ -185,6 +186,7 @@
 		<if test="username != null and username != ''" >
 	        and e.username LIKE CONCAT('%',#{username},'%')
 	    </if>
+	    ORDER BY e.apply_date DESC
   </select>
   <insert id="insertEntry" parameterType="com.pj.flow.pojo.FlowEntry" useGeneratedKeys="true" keyProperty="id">
     insert into flow_entry

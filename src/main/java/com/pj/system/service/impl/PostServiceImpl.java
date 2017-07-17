@@ -18,7 +18,9 @@ import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
+import com.pj.system.pojo.User;
 import com.pj.system.service.PostService;
+import com.pj.system.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -34,6 +36,8 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	
 	@Resource
 	private DempMapper dempMapper;
+	@Resource
+	private UserService userService;
 
 	@Override
 	public MyMapper<Post> getMapper() {
@@ -66,9 +70,14 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	 */
 	@Override
 	public Boolean isDeleteDemp(Integer id) {
-		Boolean flag = false;
-		
-		return flag;
+		User record = new User();
+		record.setIsdelete(0);
+		record.setPostid(id);
+		List<User> list = this.userService.select(record );
+		if(list.size() != 0){
+			return false;
+		}
+		return true;
 	}
 
 

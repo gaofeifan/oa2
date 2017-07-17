@@ -144,7 +144,6 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 			flowRecruitMapper.updateByPrimaryKeySelective(recruit);
 			//修改状态为state的待办表
 			flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.HAS_CANCEL.getState(), reason);
-			
 			status = ActionLogOperation.CANCEL_RECRUIT.getValue();
 		
 		}else{
@@ -158,6 +157,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 				status = ActionLogOperation.PAUSE_RECRUIT.getValue();
 			}else if(state == 1){
 				//开始
+				recruit.setResult(RecruitApplyResult.RECRUIT_AGREE.getState());
+				flowRecruitMapper.updateByPrimaryKeySelective(recruit);
 				//修改状态待办表
 				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.IN_RECRUIT.getState(), reason);
 				//TODO
