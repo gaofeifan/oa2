@@ -99,7 +99,7 @@
 	</select>
 	<select id="selectTodoByEntryQuery" resultMap="BaseResultMap">
 		select 
-		r.id, r.apply_id, e.username, r.need_num, r.entry_num, 
+		r.id, r.apply_id, e.name username, r.need_num, r.entry_num, 
 			DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
 			DATE_FORMAT(e.entry_date,"%Y-%m-%d") as entryDateStr, 
 			c.name as companyName, pn.name as positionName, demp.name dempName,demp.id dempId,
