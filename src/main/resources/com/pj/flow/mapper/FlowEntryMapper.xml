@@ -31,7 +31,8 @@
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="apply_date" property="applyDate" jdbcType="DATE" />
     
-    <result column="dempId" property="dempId" jdbcType="INTEGER" />
+    <result column="isDempLeader" property="isDempLeader" jdbcType="INTEGER" />
+    <result column="isCompanyLeader" property="isCompanyLeader" jdbcType="INTEGER" />
     <result column="applyDateStr" property="applyDateStr" jdbcType="INTEGER" />
 	<result column="companyName" property="companyName" jdbcType="VARCHAR" />
 	<result column="postName" property="postName" jdbcType="VARCHAR" />
@@ -51,6 +52,8 @@
 	<result column="pId" property="pId" jdbcType="INTEGER" />
 	<result column="companyId" property="companyId" jdbcType="INTEGER" />
 	<result column="postId" property="postId" jdbcType="INTEGER" />
+	<result column="isCompanyLeader" property="isCompanyLeader" jdbcType="INTEGER" />
+	<result column="isDempLeader" property="isDempLeader" jdbcType="INTEGER" />
     <collection property="salarys" ofType="com.pj.system.pojo.Salary" >
     	<id column="s_id" property="id" jdbcType="INTEGER" />  
 	    <result column="total_salary" property="totalSalary" jdbcType="VARCHAR" />
@@ -95,7 +98,7 @@
   </select>
   <select id="selectByTodo" resultMap="BaseResultMap">
   select e.id, e.name, DATE_FORMAT(e.entry_date,"%Y-%m-%d") as applyDateStr, 
-		c.name as companyName, pn.name as positionName, p.name as postName
+		c.name as companyName, pn.name as positionName, p.name as postName,r.is_demp_leader isDempLeader,r.is_company_leader isCompanyLeader
 		from flow_entry e
 			inner join flow_recruit r on r.id = e.recruit_id
 				<if test="companyId != null" >
@@ -115,7 +118,7 @@
   <select id="selectById" parameterType="java.lang.Integer" resultMap="EntrySalaryResultMap">
   	select e.*, s.*, s.id s_id, s.user_id s_user_id, r.offer_range as offerRange, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName,d.id dempId,pt.id positionId,p.id postId,c.id companyId,pt.name positionName,
-		r.leader_id pId,r.work_address workAddress
+		r.leader_id pId,r.work_address workAddress,r.is_demp_leader isDempLeader,r.is_company_leader isCompanyLeader
   	from flow_entry e
   	left join t_salary s on s.entry_id = e.id
   	left join flow_recruit r on e.recruit_id = r.id

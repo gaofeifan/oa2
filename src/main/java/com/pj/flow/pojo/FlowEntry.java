@@ -144,6 +144,10 @@ public class FlowEntry implements Serializable {
     private String applyDateStr;
     @Transient
     private String workAddress;
+    @Transient
+    private Integer isCompanyLeader;
+    @Transient
+    private Integer isDempLeader;
     
 	public String getSalaryJson() {
 		return salaryJson;
@@ -455,6 +459,22 @@ public class FlowEntry implements Serializable {
 
 	public void setIsBookbuilding(Integer isBookbuilding) {
 		this.isBookbuilding = isBookbuilding;
+	}
+
+	public Integer getIsCompanyLeader() {
+		return isCompanyLeader;
+	}
+
+	public void setIsCompanyLeader(Integer isCompanyLeader) {
+		this.isCompanyLeader = isCompanyLeader;
+	}
+
+	public Integer getIsDempLeader() {
+		return isDempLeader;
+	}
+
+	public void setIsDempLeader(Integer isDempLeader) {
+		this.isDempLeader = isDempLeader;
 	}
 
 	@Override

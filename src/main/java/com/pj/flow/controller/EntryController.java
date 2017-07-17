@@ -195,9 +195,8 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetails(@ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue successJsonp = null;
 		try {
-//			String email = getSession();
-			
-			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , "gaofeifan@pj-l.com");
+			String email = getSession();
+			FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(applyId , email);
 			successJsonp = this.successJsonp(flowOffer);
 		} catch (Exception e) {
 			logger.error("【EntryController.selectOfferDetails】:" + e.getMessage());

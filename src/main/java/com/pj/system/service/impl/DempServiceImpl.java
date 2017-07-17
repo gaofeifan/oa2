@@ -61,22 +61,27 @@ public class DempServiceImpl extends AbstractBaseServiceImpl<Demp, Integer> impl
 	 */
 	@Override
 	public Boolean isDeleteDemp(Integer id) {
-		Boolean flag = true;
 		//	查询user
 		User user = new User();
 		user.setIsdelete(0);
 		user.setDempid(id);
 		List<User> userList = this.userService.select(user );
+		if(userList.size() != 0){
+			return false;
+		}
 		//	查询是否有子节点
 		List<Demp> dempList = selectDempChildListById(id);
+		if(dempList.size() > 1){
+			return false;
+		}
 		Post record = new Post();
 		record.setDempId(id);
 		record.setIsdelete(0);
 		List<Post> postList = this.postService.select(record );
-		if(userList.size() == 0 || dempList.size() < 2 || postList.size() == 0){
-			flag = false;
+		if(postList.size() != 0){
+			return false;
 		}
-		return flag;
+		return true;
 	}
 	
 	/**
