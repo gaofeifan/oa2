@@ -6,10 +6,12 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.StringUtil;
 import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -263,7 +265,6 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
     		for(Organization organization : dempList){  
     			
     			Integer dempId = organization.getId();
-    			System.out.println("================="+dempId);
     			List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
     			List<String> postList = postMapper.selectLinealNumsByDempId(dempId);
     			deptVosList.addAll(postList);
@@ -280,7 +281,6 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 		List<String> organizations = new ArrayList<String>();
 		for(Organization company : companys){
 			Integer companyId = company.getId();
-			System.out.println("+++++++comid===="+companyId);
 			List<Organization> innerDempList = dempMapper.selectOrgsByCompanyId(companyId);
 			List<String> innerPostList = postMapper.selectLinealNumsByCompanyId(companyId);
 			
@@ -428,72 +428,75 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 			postOrg.setHasChilds("no");
 			
 			String signNum = post.getSignNum();
-			//判断字符串中是否有部门，有则记录位置
-			int dempStartInx = signNum.indexOf("DEMP");
-			int postStartInx = signNum.indexOf("ST");
-			//公司字符串
-			String companysStr = "";
-			String dempsStr = "";
-			String postPNum = "";//岗位父num
-			if(dempStartInx != -1){
-				//有部门
-				companysStr = signNum.substring(0, dempStartInx - 1);
-				String dempPNum = getCompanyNum(organNums, companysStr);
-				//部门
-				dempsStr = signNum.substring(dempStartInx, postStartInx-1);
-				postPNum = dempsStr;
-				if (dempsStr.contains("-")) {
-					String[] dempArr = dempsStr.split("-");
-					postPNum = dempArr[dempArr.length - 1];
-					for (int i = 0; i < dempArr.length; i++) {
-						String dempNum = dempArr[i];
-						
-						if(!organNums.contains(dempNum)){
-							organNums.add(dempNum);
-							Organization organization = new Organization();
-							String name= dempMapper.selectOrgByNumber(dempNum).getName();
-							organization.setNumber(dempNum);
-							organization.setName(name);
-							if(i == 0){
-								organization.setpNum(dempPNum);
-							}else{
-								organization.setpNum(dempArr[i-1]);
-							}
-							organization.setHasChilds("yes");
-							RedisUtil.set("organ-"+dempNum, organization);
-//							organizationMapper.insertSelective(organization);
-						}
-					}
-				}else{
-					if(!organNums.contains(dempsStr)){
-						organNums.add(dempsStr);
-//						Organization demp = organizationMapper.seleByNumber(dempsStr);
-						Organization demp = (Organization) RedisUtil.get("organ-" + dempsStr);
-						if(demp == null){
-							demp = new Organization();
-							String name= dempMapper.selectOrgByNumber(dempsStr).getName();
-							demp.setNumber(dempsStr);
-							demp.setName(name);
-							demp.setpNum(dempPNum);
-							demp.setHasChilds("yes");
-						RedisUtil.set("organ-" + dempsStr, demp);
+			if(StringUtils.isNotBlank(signNum)){
+				
+				//判断字符串中是否有部门，有则记录位置
+				int dempStartInx = signNum.indexOf("DEMP");
+				int postStartInx = signNum.indexOf("ST");
+				//公司字符串
+				String companysStr = "";
+				String dempsStr = "";
+				String postPNum = "";//岗位父num
+				if(dempStartInx != -1){
+					//有部门
+					companysStr = signNum.substring(0, dempStartInx - 1);
+					String dempPNum = getCompanyNum(organNums, companysStr);
+					//部门
+					dempsStr = signNum.substring(dempStartInx, postStartInx-1);
+					postPNum = dempsStr;
+					if (dempsStr.contains("-")) {
+						String[] dempArr = dempsStr.split("-");
+						postPNum = dempArr[dempArr.length - 1];
+						for (int i = 0; i < dempArr.length; i++) {
+							String dempNum = dempArr[i];
 							
+							if(!organNums.contains(dempNum)){
+								organNums.add(dempNum);
+								Organization organization = new Organization();
+								String name= dempMapper.selectOrgByNumber(dempNum).getName();
+								organization.setNumber(dempNum);
+								organization.setName(name);
+								if(i == 0){
+									organization.setpNum(dempPNum);
+								}else{
+									organization.setpNum(dempArr[i-1]);
+								}
+								organization.setHasChilds("yes");
+								RedisUtil.set("organ-"+dempNum, organization);
+//							organizationMapper.insertSelective(organization);
+							}
+						}
+					}else{
+						if(!organNums.contains(dempsStr)){
+							organNums.add(dempsStr);
+//						Organization demp = organizationMapper.seleByNumber(dempsStr);
+							Organization demp = (Organization) RedisUtil.get("organ-" + dempsStr);
+							if(demp == null){
+								demp = new Organization();
+								String name= dempMapper.selectOrgByNumber(dempsStr).getName();
+								demp.setNumber(dempsStr);
+								demp.setName(name);
+								demp.setpNum(dempPNum);
+								demp.setHasChilds("yes");
+								RedisUtil.set("organ-" + dempsStr, demp);
+								
 //							organizationMapper.insertSelective(demp);
+							}
 						}
 					}
+					
+				}else{
+					
+					//无部门
+					companysStr = signNum.substring(0, postStartInx - 1);
+					postPNum = getCompanyNum(organNums, companysStr);
+					
 				}
+				postOrg.setpNum(postPNum);
 				
-			}else{
-				
-				//无部门
-				companysStr = signNum;
-				postPNum = getCompanyNum(organNums, companysStr);
-				
-			}
-			postOrg.setpNum(postPNum);
-			
-			RedisUtil.set("organ-"+post.getNumber(), postOrg);
+				RedisUtil.set("organ-"+post.getNumber(), postOrg);
 //			organizationMapper.insertSelective(postOrg);
+			}
 		}
 		
 		List<Organization> organizations = new ArrayList<Organization>();

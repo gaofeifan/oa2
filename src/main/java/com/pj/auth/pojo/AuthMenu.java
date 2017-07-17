@@ -42,12 +42,6 @@ public class AuthMenu {
 	private Integer auth;
 	
 	@Column
-	private Integer number;
-
-	@Column
-	private Integer pNum;
-	
-	@Column
 	private Integer post;
 	
 	@Transient
@@ -135,20 +129,4 @@ public class AuthMenu {
 		this.choice = choice;
 	}
 
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	public Integer getpNum() {
-		return pNum;
-	}
-
-	public void setpNum(Integer pNum) {
-		this.pNum = pNum;
-	}
-	
 }
