@@ -482,7 +482,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							//查询数据库中pMenuId菜单的所有子菜单三级
 							List<Integer> menuIds = authMenuMapper.selectByFid(secondMenuId);
 							if(compare(childAuthList,menuIds)){    
-								List<Integer> secondList = firstMap.get(secondMenuId);
+								List<Integer> secondList = firstMap.get(firstMenuId);
 								if(secondList != null && secondList.size() > 0){
 									if(!secondList.contains(secondMenuId)){
 										secondList.add(secondMenuId);
@@ -604,8 +604,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			 */
 			List<Integer> childMenuids = authMenuMapper.selectByFid(menuId);
 			for(Integer childId : childMenuids){
-				AuthUser authUser = authUserMapper.selectByUserMenuType(userid, childId, "menu").get(0);
-				if(authUser != null){
+				List<AuthUser> list = authUserMapper.selectByUserMenuType(userid, childId, "menu");
+				if(list != null && list.size() > 0){
+//					AuthUser authUser = list.get(0);
 					if(!selectMenuIds.contains(childId + "")){
 						selectMenuIds.add(childId + "");  
 					}
