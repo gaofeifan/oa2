@@ -23,6 +23,7 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowActionLogMapper;
 import com.pj.flow.mapper.FlowEntryMapper;
+import com.pj.flow.mapper.FlowRecruitMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.mapper.FlowUserApplicationMapper;
 import com.pj.flow.pojo.FlowActionLog;
@@ -33,7 +34,6 @@ import com.pj.flow.pojo.FlowRecruitTodo;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowActionLogService;
 import com.pj.flow.service.FlowEntryService;
-import com.pj.flow.service.FlowRecruitService;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
@@ -76,7 +76,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	@Autowired
 	private PositionService positionService;
 	@Autowired
-	private FlowRecruitService flowRecruitService;
+	private FlowRecruitMapper flowRecruitMapper;
 	@Autowired
 	private AuthAgencyService authAgencyService;
 	@Autowired
@@ -94,7 +94,16 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		return flowEntryMapper;
 	}
 	@Override
-	public void insertEntryAndSalary(FlowEntry flowEntry, String salarys) {
+	public void insertEntryAndSalary(String salarys) {
+		FlowEntry flowEntry = new FlowEntry();
+		FlowRecruit fRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
+		
+		flowEntry.setRecruitId(flowEntry.getRecruitId());
+		flowEntry.setApplyId(fRecruit.getApplyId());
+		flowEntry.setUsername(fRecruit.getUsername());
+		flowEntry.setStatus(0);
+		flowEntry.setState(EntryApplyState.IN_ENTRY_APPROVAL.getState());
+		
 		/**
 		 * 先保存入职申请信息
 		 * 得到入职表id,作为外键保存薪资表
@@ -174,7 +183,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 */
 		MessageContent content = new MessageContent();
 		//	查询招聘表
-		FlowRecruit flowRecruit = this.flowRecruitService.selectById(flowEntry.getRecruitId());
+		FlowRecruit flowRecruit = this.flowRecruitMapper.selectById(flowEntry.getRecruitId());
 		if(flowRecruit != null){
 			String names = this.dempService.selectDempParentNameById(flowRecruit.getDempId());
 			content.setApplicatDemp(names);
@@ -193,7 +202,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		/**************************************/
 		/*************获取并保存审批人员*************/
 		/**************************************/
-		FlowRecruit recruit = this.flowRecruitService.selectById(recruitId);
+		FlowRecruit recruit = this.flowRecruitMapper.selectById(recruitId);
 		Position position = this.positionService.selectByPrimaryKey(recruit.getPositionId());
 		this.authAgencyService.selectApplicantAgency(recruit.getCompanyId() , recruit.getDempId(), recruit.getIsCompanyLeader(), recruit.getIsDempLeader(), position, recruit.getApplyReasonType(),fa.getId());
 		/**************************************/
@@ -201,7 +210,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		/**************************************/
 		recruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 		recruit.setResult(null);
-		this.flowRecruitService.updateByPrimaryKey(recruit);
+		this.flowRecruitMapper.updateByPrimaryKey(recruit);
 	}
 	
 	@Override
@@ -269,10 +278,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		flowEntry.setIsSendOffer(1);
 		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
 		
-		FlowRecruit flowRecruit = this.flowRecruitService.selectByPrimaryKey(flowEntry.getRecruitId());
+		FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
 		flowRecruit.setResult(null);
-		this.flowRecruitService.updateByPrimaryKey(flowRecruit);
+		this.flowRecruitMapper.updateByPrimaryKey(flowRecruit);
 		
 		FlowActionLog record = new FlowActionLog();
 		record.setEntryId(flowEntry.getId());
