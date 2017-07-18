@@ -10,12 +10,10 @@
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="auth" property="auth" jdbcType="INTEGER" />
     <result column="post" property="post" jdbcType="INTEGER" />
+    <result column="default_auth" property="defaultAuth" jdbcType="INTEGER" />
     
     <result column="hasChilds" property="hasChilds" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, img, href, fid, grade, auth, post
-  </sql>
 	 <select id="GetMenu" resultMap="BaseResultMap" parameterType="com.pj.auth.pojo.AuthMenu">
 		select * ,
 		case 
@@ -84,5 +82,8 @@
 	</select>
 	<select id="selectByPostAndGrade" resultType="java.lang.Integer">
 		select id from auth_menu where post = #{post} and grade = #{grade}
+	</select>
+	<select id="selectDefaults" parameterType="int" resultMap="BaseResultMap">
+		select * from auth_menu where default_auth = 1 and grade = #{grade}
 	</select>
 </mapper>

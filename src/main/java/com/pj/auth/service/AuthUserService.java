@@ -34,5 +34,11 @@ public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 	 * @return
 	 */
 	List<String> getSelectedMenuIds(Integer grade, Integer post, String number, Integer menuId, Integer userid);
+
+	/**
+	 * 保存默认权限
+	 * @param userid
+	 */
+	void insertDefaultAuthUser(Integer userid);
 	
 }

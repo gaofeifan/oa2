@@ -44,12 +44,24 @@ public class AuthMenu {
 	@Column
 	private Integer post;
 	
+	@Column
+	private Integer defaultAuth;
+	
 	@Transient
 	private String choice;
 	
 	@Transient
 	private String hasChilds;
 	
+	
+	public Integer getDefaultAuth() {
+		return defaultAuth;
+	}
+
+	public void setDefaultAuth(Integer defaultAuth) {
+		this.defaultAuth = defaultAuth;
+	}
+
 	public String getHasChilds() {
 		return hasChilds;
 	}

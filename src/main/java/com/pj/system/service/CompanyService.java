@@ -81,14 +81,6 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 */
 	List<String> getPostNumByCompanys(List<Organization> companys);
 
-	/** 
-     * @descript:递归部门 只需要得到岗位number
-     * @author limr
-     * @param dempList 
-     * @return 
-     */ 
-	List<String> getDeptNums(List<String> numbers, List<Organization> dempList);
-
 	/**
 	 * 根据pId得到公司list
 	 * @author limr

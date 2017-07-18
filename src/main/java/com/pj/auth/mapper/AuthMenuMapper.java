@@ -35,4 +35,7 @@ public interface AuthMenuMapper extends MyMapper<AuthMenu> {
 	 * @return
 	 */
 	List<Integer> selectByPostAndGrade(@Param(value="post") Integer post, @Param(value="grade") int grade);
+
+	//得到默认菜单
+	List<AuthMenu> selectDefaults(int grade);
 }
