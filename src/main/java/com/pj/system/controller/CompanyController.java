@@ -263,7 +263,7 @@ public class CompanyController extends SystemManageController{
 //			//得到第一级公司
 			Organization company = companyService.selectByPId(null).get(0);
 			//查找各公司下边的直接部门或者公司下边直接的岗位
-			organizations = companyService.getDempsAndPosts(userid, menuid, company, "all");
+			organizations = companyService.getDempsAndPosts(userid, menuid, company);
 			System.out.println(organizations.size());
 			map = this.success(organizations);
 		} catch (Exception e) {

@@ -76,6 +76,10 @@
 	select p.number from t_post p
 	where p.company_id = #{companyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
   </select>
+  <select id="selectLinealIdsByCompanyId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select p.id from t_post p
+	where p.company_id = #{companyId} and (p.demp_id is null or p.demp_id = 0) and p.isdelete = 0
+  </select>
   <select id="selectLinealsByDempId" resultMap="OrganizationMap" parameterType="java.lang.Integer">
 	select p.id, p.number, p.name, d.number as pNum, "post" as type,p.sign_num as signNum, 'no' as hasChilds from t_post p
 	left join t_demp d on d.id = p.demp_id and d.isdelete = 0 
@@ -83,6 +87,10 @@
   </select>
   <select id="selectLinealNumsByDempId" resultType="java.lang.String" parameterType="java.lang.Integer">
 	select p.number from t_post p
+	where p.demp_id = #{dempId} and p.isdelete = 0
+  </select>
+  <select id="selectLinealIdsByDempId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select p.id from t_post p
 	where p.demp_id = #{dempId} and p.isdelete = 0
   </select>
   <select id="selectByNumber" resultMap="OrganizationMap" parameterType="java.lang.String">

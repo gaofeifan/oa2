@@ -25,7 +25,6 @@ import com.pj.system.mapper.PostMapper;
 import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.CompanyService;
-import com.pj.system.service.PostService;
 
 @Service
 @Transactional
@@ -36,9 +35,6 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 	
 	@Autowired
 	private CompanyService companyService;
-	
-	@Autowired
-	private PostService postService;
 	
 	@Resource
 	private CompanyMapper companyMapper;
@@ -178,14 +174,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						for (Integer thirdMenuId : thirdMenuIds) {
 							String menuids = menuId + "-" + secondMenuId + "-" + thirdMenuId;
 							
-							//得到所有的岗位
-							List<Post> posts = postService.selectNotDeleteALL();
-							for(Post post : posts){
-								Integer postId = post.getId();
-								String signNum = post.getSignNum();
-								//保存权限
-								insertAuthUserByPost(thirdMenuId, userid, menuids, postId, signNum);
-							}
+							insertButOther(userid, thirdMenuId, menuids);
+							
 						}
 					}
 				}else{
@@ -209,14 +199,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						
 						String menuids = topFid + "-" + menuId + "-" + thirdMenuId;
 						
-						//得到所有的岗位
-						List<Post> posts = postService.selectNotDeleteALL();
-						for(Post post : posts){
-							Integer postId = post.getId();
-							String signNum = post.getSignNum();
-							
-							insertAuthUserByPost(thirdMenuId, userid, menuids, postId, signNum);
-						}
+						insertButOther(userid, thirdMenuId, menuids);
 					}
 				}else{
 					for (Integer thirdMenuId : thirdMenuIds) {
@@ -232,15 +215,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					Integer topFid = authMenuMapper.selectByPrimaryKey(fid).getFid();
 					
 					String menuids = topFid + "-" + fid + "-" + menuId;
+					insertButOther(userid, menuId, menuids);
 					
-					//得到所有的岗位
-					List<Post> posts = postService.selectNotDeleteALL();
-					for(Post post : posts){
-						Integer postId = post.getId();
-						String signNum = post.getSignNum();
-						
-						insertAuthUserByPost(menuId, userid, menuids, postId, signNum);
-					}
 				}else{
 					authUserMapper.deleteByUserMenuPost(userid, menuId, null);
 				}
@@ -265,20 +241,25 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 //						companys = new ArrayList<Organization>();
 //						companys.add(company);
 //					}
-					List<Organization> posts = companyService.getAllDempsAndPosts(companys);
+					List<Integer> postIds = companyService.getAllPosts(companys);
+					//已经占用的postid
+					List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, menuId);
+					//除去已经占用的，得到要展示的postid 
+					postIds.removeAll(otherAuthPosts);
 					
 					if(isSelected == 1){
 						//保存
-						for(Organization post : posts){
-							Integer postId = post.getId();
-							String signNum = post.getSignNum();
+						for (Integer postId : postIds) {
+							Post innerPost = postMapper.selectByPrimaryKey(postId);
+							String signNum = innerPost.getSignNum();
 							
 							insertAuthUserByPost(menuId, userid, menuids, postId, signNum);
 						}
+						
 					}else{
 						//取消
-						for(Organization post : posts){
-							authUserMapper.deleteByUserMenuPost(userid, menuId, post.getId());
+						for(Integer postId : postIds){
+							authUserMapper.deleteByUserMenuPost(userid, menuId, postId);
 						}
 					}
 				}else if (number.startsWith("DEMP")) {
@@ -287,40 +268,26 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					Organization demp = dempMapper.selectOrgByNumber(number);
 					//查找公司下边的直接部门或者部门下边直接的岗位
 					List<Organization> demps = dempMapper.selectOrgChildListById(demp.getId());
-//					//得到所有子部门,加上选中部门
-//					if(demps != null && demps.size() > 0){
-//						demps.add(demp);
-//					}else{
-//						demps = new ArrayList<Organization>();
-//						demps.add(demp);
-//					}
-					
-					List<Organization> posts = new ArrayList<Organization>();
-					
-//					for(Organization organization : demps){
-//						Integer dempId = organization.getId();
-//						List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
-//						List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
-//						
-//						posts.addAll(postList);
-//						posts = companyService.getDepts(posts,dempList, "post");
-//					}
-					//TODO 找不同
-//					posts = companyService.getDepts(posts, demps, "post");
-					posts = companyService.getDepts(posts, demps);
+
+					List<Integer> postIds = new ArrayList<Integer>();
+					for(Organization innerdemp : demps){
+						List<Integer> postList = postMapper.selectLinealIdsByDempId(innerdemp.getId());
+						postIds.addAll(postList);
+					}
 					
 					if(isSelected == 1){
 						//保存
-						for(Organization post : posts){
-							Integer postId = post.getId();
-							String signNum = post.getSignNum();
+						for (Integer postId : postIds) {
+							Post innerPost = postMapper.selectByPrimaryKey(postId);
+							String signNum = innerPost.getSignNum();
 							
 							insertAuthUserByPost(menuId, userid, menuids, postId, signNum);
 						}
+						
 					}else{
 						//取消
-						for(Organization post : posts){
-							authUserMapper.deleteByUserMenuPost(userid, menuId, post.getId());
+						for(Integer postId : postIds){
+							authUserMapper.deleteByUserMenuPost(userid, menuId, postId);
 						}
 					}
 					
@@ -339,6 +306,22 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			break;
 		}
 		
+	}
+
+	private void insertButOther(Integer userid, Integer thirdMenuId, String menuids) {
+		//查询所有除去被其他用户选中的post
+		//已经占用的postid
+		List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuId);
+		//所有的postid
+		List<Integer> allPostIds = postMapper.selectAllPostId(0);
+		//除去已经占用的，得到要展示的postid 
+		allPostIds.removeAll(otherAuthPosts);
+		for(Integer postId : allPostIds){
+			Post post = postMapper.selectByPrimaryKey(postId);
+			String signNum = post.getSignNum();
+			//保存权限
+			insertAuthUserByPost(thirdMenuId, userid, menuids, postId, signNum);
+		}
 	}
 
 	//根据post保存权限

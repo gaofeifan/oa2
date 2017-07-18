@@ -176,14 +176,15 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 		return organizations;
 		
 	}
-//	//展示所有，包含没有岗位的
-	public List<Organization> getAllDempsAndPosts(List<Organization> companys) {
-		List<Organization> organizations = new ArrayList<Organization>();
+	@Override
+	public List<Integer> getAllPosts(List<Organization> companys) {
+		
+		List<Integer> organizations = new ArrayList<Integer>();
 		for(Organization company : companys){
 			
 			Integer companyId = company.getId();
 			List<Organization> innerDempList = dempMapper.selectOrgsByCompanyId(companyId);
-			List<Organization> innerPostList = postMapper.selectLinealsByCompanyId(companyId);
+			List<Integer> innerPostList = postMapper.selectLinealIdsByCompanyId(companyId);
 			
 			organizations.addAll(innerPostList);
 			
@@ -191,67 +192,20 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 //			organizations.addAll(getDepts(innerDempList, type));
 			for(Organization organization : innerDempList){
 				Integer dempId = organization.getId();
-				List<Organization> dempList = dempMapper.selectOrgsByPId(dempId);
-				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
+				List<Organization> childAllDempList = dempMapper.selectOrgChildListById(dempId);
 				
-				organizations.addAll(postList);
-				organizations.addAll(getAllDepts(dempList));
+				for(Organization demp : childAllDempList){
+					List<Integer> postList = postMapper.selectLinealIdsByDempId(demp.getId());
+					organizations.addAll(postList);
+				}
 			}
 			
 		}
 		return organizations;
 	}
-
-	/** 
-     * @descript:递归部门 
-     * @param dempList 
-     * @param type 值为post时，只需要得到岗位 
-     * @return 
-     */  
-    public List<Organization> getAllDepts(List<Organization> dempList){  
-        List<Organization> deptVosList=new ArrayList<Organization>();  
-        if(dempList != null && dempList.size() > 0){  
-        	for(Organization organization : dempList){  
-        		
-        		Integer dempId = organization.getId();
-				List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
-				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
-				deptVosList.addAll(postList);
-				getAllDepts(innerDempList);
-            }  
-        }  
-        return deptVosList;  
-    }
 	
-	/** 
-     * @descript:递归部门 
-     * @param dempList 
-     * @param type 值为post，只需要得到岗位 
-     * @return 
-     */  
-    public List<Organization> getDepts(List<Organization> deptVosList, List<Organization> dempList){  
-//        if(!"post".equals(type)){
-//        	deptVosList.addAll(dempList);
-//        }
-        if(dempList != null && dempList.size() > 0){  
-        	for(Organization organization : dempList){  
-        		
-        		Integer dempId = organization.getId();
-//				List<Organization> innerDempList = dempMapper.selectOrgsByPId(dempId);
-				List<Organization> postList = postMapper.selectLinealsByDempId(dempId);
-				
-//				if(!"post".equals(type)){
-//					if((innerDempList != null && innerDempList.size() > 0) && (postList != null && postList.size() > 0)){
-//						//部门下边没有岗位和子部门，则不展示
-//						deptVosList.add(organization);
-//					}
-//				}
-				deptVosList.addAll(postList);
-//				deptVosList = getDepts(deptVosList, innerDempList);
-            }  
-        }  
-        return deptVosList;  
-    }
+	
+	
     /** 
      * @descript:递归部门得到岗位number
      * @param dempList 
@@ -401,7 +355,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 	
 	
 	@Override
-	public List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company, String type) {
+	public List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company) {
 		
 		redisTemplate.delete(redisTemplate.keys("organ-*"));
 		//先删除Organization表

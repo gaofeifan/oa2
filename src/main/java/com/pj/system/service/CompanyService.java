@@ -69,18 +69,9 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 * @param userid
 	 * @param menuid
 	 * @param company
-	 * @param type
 	 * @return
 	 */
-	List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company, String type);
-	/** 
-     * @descript:递归部门 
-     * @author limr
-     * @param dempList 
-     * @param type 值为post，只需要得到岗位 
-     * @return 
-     */  
-    public List<Organization> getDepts(List<Organization> organizations, List<Organization> dempList);
+	List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company);
 
     /**
 	 * 查找各公司下边type=post时直接的岗位number
@@ -109,10 +100,9 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	/**
 	 * 
 	 * @param companys
-	 * @param string
 	 * @return
 	 */
-	List<Organization> getAllDempsAndPosts(List<Organization> companys);
+	List<Integer> getAllPosts(List<Organization> companys);
 
 	
 }
