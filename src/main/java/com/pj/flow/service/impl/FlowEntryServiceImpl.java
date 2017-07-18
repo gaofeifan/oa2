@@ -221,28 +221,25 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		User user = this.userService.selectByEamil(email);
 		FlowOffer flowOffer = this.flowEntryMapper.selectOfferDetailsByApplyId(applyId);
 		List<Salary> list = this.salaryService.selectSalaryByEntryId(applyId);
-//		for (Salary salary : list) {
-//			salary = (Salary) AESUtils.aesEncryptionOrDecryption(salary, AESUtils.DECRYPTHEX);
-//		}
 		Salary sySalary = list.stream().filter(salary -> salary.getSalaryType() == SalaryType.SY.getIndex()).findFirst().get();
 		@SuppressWarnings("unused")
 		Salary sxSalary = list.stream().filter(salary -> salary.getSalaryType() == SalaryType.SX.getIndex()).findFirst().get();
 		Salary zzSalary = list.stream().filter(salary -> salary.getSalaryType() == SalaryType.ZZ.getIndex()).findFirst().get();
 	
 		flowOffer.setBasePretaxSalaryForTrialPeriod(sySalary.getBaseSalary());
-		flowOffer.setBasePretaxSalaryForTrialPeriodUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(sySalary.getBaseSalary())));
+		flowOffer.setBasePretaxSalaryForTrialPeriodUpper(parseDouble(sySalary.getBaseSalary()));
 		flowOffer.setPre_taxSalary(zzSalary.getBaseSalary());
-		flowOffer.setPre_taxSalaryUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(zzSalary.getBaseSalary())));
+		flowOffer.setPre_taxSalaryUpper(parseDouble(zzSalary.getBaseSalary()));
 		
 		flowOffer.setTheSalaryOfTheUsePeriod(sySalary.getPostSalary());
-		flowOffer.setTheSalaryOfTheUsePeriodUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(sySalary.getPostSalary())));
+		flowOffer.setTheSalaryOfTheUsePeriodUpper(parseDouble(sySalary.getPostSalary()));
 		flowOffer.setPostAPostSalary(zzSalary.getPostSalary());
-		flowOffer.setPostAPostSalaryUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(zzSalary.getPostSalary())));
+		flowOffer.setPostAPostSalaryUpper(parseDouble(zzSalary.getPostSalary()));
 		
 		flowOffer.setProbationPerformanceSalary(sySalary.getPerformanceSalary());
-		flowOffer.setProbationPerformanceSalaryUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(sySalary.getPerformanceSalary())));
+		flowOffer.setProbationPerformanceSalaryUpper(parseDouble(sySalary.getPerformanceSalary()));
 		flowOffer.setTransferPerformancePay(zzSalary.getPerformanceSalary());
-		flowOffer.setTransferPerformancePayUpper(DigitalConversionUtils.number2CNMontrayUnit( Double.parseDouble(zzSalary.getPerformanceSalary())));
+		flowOffer.setTransferPerformancePayUpper(parseDouble(zzSalary.getPerformanceSalary()));
 		
 		flowOffer.setLunchAllowance(zzSalary.getLunchAllowance());
 		flowOffer.setPhoneAllowance(zzSalary.getCommunicationAllowance());
@@ -334,5 +331,12 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		return flowEntryMapper.selectByTodo(userId, companyId, name);
 	}
 
+	private String parseDouble(String str){
+		if(StringUtils.isBlank(str)){
+			return "";
+		}
+		double d = Double.parseDouble(str);
+		return DigitalConversionUtils.number2CNMontrayUnit(d);
+	}
 	
 }
