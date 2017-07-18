@@ -146,13 +146,7 @@ public class AuthUserController extends SystemManageController{
 	/**
 	 * 保存默认权限
 	 * @author limr
-	 * @param type
-	 * @param grade
-	 * @param id
-	 * @param number
 	 * @param userid
-	 * @param isSelected
-	 * @return
 	 */
 	@RequestMapping(value="/saveDefaultAuth.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "保存默认权限", httpMethod = "GET", response = MappingJacksonValue.class)
@@ -160,7 +154,6 @@ public class AuthUserController extends SystemManageController{
 			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		
 		try {
-			
 			authuserService.insertDefaultAuthUser(userid);
 			return this.successJsonp("保存成功");
 		} catch (Exception e) {
