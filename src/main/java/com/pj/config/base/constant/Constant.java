@@ -18,4 +18,5 @@ public interface Constant {
 	 * 	CHO 岗位
 	 */
 	public static final Integer CHO = 263;
+	
 }

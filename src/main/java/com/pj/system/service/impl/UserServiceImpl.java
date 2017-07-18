@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.EntryApplyState;
@@ -60,6 +61,8 @@ import tk.mybatis.mapper.entity.Example;
 @Service
 public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> implements UserService {
 	
+	
+	
 	@Resource
 	private FlowRecruitService flowRecruitService;
 	@Resource
@@ -84,7 +87,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private EducationService educationService;
 	@Resource
 	private FlowRecruitTodoMapper flowRecruitTodoMapper;
-//	@Resource
+	@Resource
+	private AuthUserService authUserService;
+	//	@Resource
 //	private ManageProperties manageProperties;
 	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
 	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
@@ -147,7 +152,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			for (WorkExperience workExperience : workExperienceList) {
 				this.workExperienceService.insertSelective(workExperience);
 			}
-			
+			authUserService.insertDefaultAuthUser(t.getId());
 			/**
 			 * 	更新申请单状态
 			 */
@@ -157,10 +162,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		return 0;
 	}
 
-
 	private void updateApplyState(Integer entryId) {
 		if(entryId == null){
 			throw new RuntimeException("没有查询到入职申请单");
+			
 		}
 		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
 		flowEntry.setState(EntryApplyResult.ENTRY_SUCCESS.getState());

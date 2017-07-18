@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.annotations.ApiModelProperty;
 
 @Table(name="t_user")
@@ -271,7 +273,6 @@ public class User implements Serializable {
 	 */
 	@Column(name="apply_regular_date")
 	@ApiModelProperty(value = "申请转正时间", required = false)
-	
 	private Date applyRegularDate;
 
 	/**
@@ -480,6 +481,7 @@ public class User implements Serializable {
 		this.filenumber = filenumber;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getHiredate() {
 		return hiredate;
 	}
@@ -528,6 +530,7 @@ public class User implements Serializable {
 		this.dempid = dempid;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getContractStartTime() {
 		return contractStartTime;
 	}
@@ -536,6 +539,7 @@ public class User implements Serializable {
 		this.contractStartTime = contractStartTime;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getContractStopTime() {
 		return contractStopTime;
 	}
@@ -560,6 +564,7 @@ public class User implements Serializable {
 		this.companyEmail = companyEmail;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getLeavedate() {
 		return leavedate;
 	}
@@ -728,7 +733,8 @@ public class User implements Serializable {
 	public void setEducation(Integer education) {
 		this.education = education;
 	}
-
+	
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getApplyRegularDate() {
 		return applyRegularDate;
 	}

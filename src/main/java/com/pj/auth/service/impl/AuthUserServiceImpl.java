@@ -777,7 +777,6 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 	@Override
 	public void insertDefaultAuthUser(Integer userid) {
 		List<AuthMenu> defaultMenus = authMenuMapper.selectDefaults(3);
-		
 		for(AuthMenu authMenu : defaultMenus){
 			Integer menuId = authMenu.getId();
 			Integer fid = authMenu.getFid();

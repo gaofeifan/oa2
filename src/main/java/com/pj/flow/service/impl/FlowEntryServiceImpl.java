@@ -200,7 +200,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		/***************更新招聘状态***************/
 		/**************************************/
 		recruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
-		this.flowRecruitService.updateByPrimaryKeySelective(recruit);
+		recruit.setResult(null);
+		this.flowRecruitService.updateByPrimaryKey(recruit);
 	}
 	
 	@Override
@@ -264,11 +265,14 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			flowEntry.setPeopleWhoCopied(usernames);
 		}
 		flowEntry.setState(EntryApplyState.IN_OFFER.getState());
+		flowEntry.setResult(null);
 		flowEntry.setIsSendOffer(1);
-		this.flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
+		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
+		
 		FlowRecruit flowRecruit = this.flowRecruitService.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
-		this.flowRecruitService.updateByPrimaryKeySelective(flowRecruit);
+		flowRecruit.setResult(null);
+		this.flowRecruitService.updateByPrimaryKey(flowRecruit);
 		
 		FlowActionLog record = new FlowActionLog();
 		record.setEntryId(flowEntry.getId());
@@ -295,7 +299,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//	获取offer模板
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 		offerTemp = OfferUtils.replaceOfferContent(offerTemp,offer);
-		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, offer.getCompany()+"offer", offerTemp, ccEmail);
+		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, "offer-【"+offer.getUsername()+"】 "+offer.getCompany(), offerTemp, ccEmail);
 	}
 
 	/**
