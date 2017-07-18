@@ -93,6 +93,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 //	private ManageProperties manageProperties;
 	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
 	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
+	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;
@@ -128,7 +129,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			list.stream().forEach(menber -> menber.setUserId(t.getId()));
 			for (FamilyMember familyMember : list) {
 				this.familyMemberService.insertSelective(familyMember);
-				
 			}
 			
 			/**
@@ -489,6 +489,21 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		}
 		Object[] objects = list.stream().map(user -> user.getCompanyEmail()).toArray();
 		return objects;
+	}
+
+	@Override
+	public String updateCompanyEmailOnPassword(String companyEmail, String password) {
+		Map<String, Object> map = new HashMap<>();
+		User user = this.selectByEamil(companyEmail);
+		if(!companyEmail.equals(user.getCompanyEmail())){
+			user.setCompanyEmail(password);
+			this.updateByPrimaryKey(user);
+			map.put("email", companyEmail);
+		}
+		map.put("password", password);
+		map.put("id", user.getSsoId());
+		map.put("ssoid", user.getSsoId());
+		return HttpClienTool.doGet(ssoUpdateUrl, map);
 	}
 	
 }

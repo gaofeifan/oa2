@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -344,5 +345,21 @@ public class UserController extends BaseController {
 			return this.successJsonp(new String[]{email});
 		}
 		return this.errorToJsonp("没有查询到CHO");
+	}
+	
+	/**
+	 * 	修改邮箱及密码
+	 */
+	@ApiOperation(value = "修改邮箱及密码", httpMethod = "GET", response = String.class, notes = "修改邮箱及密码")
+	@RequestMapping("updateCompanyEmailOnPassword.do")
+	@ResponseBody
+	public Object updateCompanyEmailOnPassword(@ApiParam("公司邮箱") @RequestParam("companyEmail") String companyEmail,@ApiParam("账号密码") @RequestParam("password") String password){
+		try {
+			String string = this.userService.updateCompanyEmailOnPassword(companyEmail,password);
+			return this.successJsonp(string);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp(e.getMessage());
+		}
 	}
 }

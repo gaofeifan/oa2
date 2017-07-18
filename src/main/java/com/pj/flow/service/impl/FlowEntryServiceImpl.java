@@ -258,6 +258,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision) {
 		User user = this.userService.selectByEamil(email);
 		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
+		
 		if(StringUtils.isNoneBlank(hour)){
 			flowEntry.setHour(hour);
 		}
@@ -282,8 +283,13 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		record.setOpinion(user.getUsername());
 		flowActionLogService.insert(record );
 		
+		Company company = this.companyMapper.selectByPrimaryKey(user.getCompanyid());
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
+		offer.setContactsPosition(user.getpUsername());
+		offer.setCompanyAddress(company.getAddress());
+		offer.setCompanyPhone(company.getContact());
+		offer.setContactsEmail(user.getCompanyEmail());
 		//	设置抄送人
 		Object[] ccEmail = null;
 		if(StringUtils.isNotBlank(usernames)){
