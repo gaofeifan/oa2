@@ -617,7 +617,6 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		return selectMenuIds;
 	}
 	public List<String> getSelectedByPost(Integer grade, Integer post, String number, Integer menuId, Integer userid) {
-		//待我审批
 //		List<Integer> selectMenuIds = new ArrayList<Integer>();
 		List<String> selectOrgNums = new ArrayList<String>();
 		//得到post的权限列表
@@ -640,7 +639,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						//除去已经占用的，得到要展示的postid 
 						allPostIds.removeAll(otherAuthPosts);
 						
-						if(!compare(postIds, allPostIds)){
+						if(allPostIds == null || allPostIds.size() == 0 || !compare(postIds, allPostIds)){
 							continue second;
 						}
 					}
@@ -663,7 +662,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				//除去已经占用的，得到要展示的postid 
 				allPostIds.removeAll(otherAuthPosts);
 				
-				if(compare(postIds, allPostIds)){
+				if(allPostIds != null && allPostIds.size() > 0 && compare(postIds, allPostIds)){
 					selectOrgNums.add(thirdMenuId + "");
 				}
 			}
