@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.EntryApplyResult;
-import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowApprove;
@@ -110,15 +109,8 @@ public class EntryController extends BaseController{
 		MappingJacksonValue map;
 		try {
 			String salarys = flowEntry.getSalaryJson();
-			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
-			flowEntry.setRecruitId(flowEntry.getRecruitId());
-			flowEntry.setApplyId(user.getId());
-			flowEntry.setUsername(user.getUsername());
-			flowEntry.setStatus(0);
-			flowEntry.setState(EntryApplyState.IN_ENTRY_APPROVAL.getState());
-			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
+			
+			flowEntryService.insertEntryAndSalary(salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
 			e.printStackTrace();

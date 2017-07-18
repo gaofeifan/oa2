@@ -12,10 +12,9 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 
 	/**
 	 * 提交申请
-	 * @param flowEntry
 	 * @param salarys
 	 */
-	void insertEntryAndSalary(FlowEntry flowEntry, String salarys);
+	void insertEntryAndSalary(String salarys);
 
 	/**
 	 * 组合查询得到详情
