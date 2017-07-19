@@ -122,4 +122,14 @@ public interface UserService extends BaseService<User, Integer> {
 	 */
 	Object[] selectPeopleWhoCopiedEmailByUsername(String username, Integer applyId);
 
+	/**
+	 * 	修改用户邮箱及密码
+	 *	@author 	GFF
+	 *	@date		2017年7月18日下午6:10:57	
+	 * 	@param companyEmail
+	 * 	@param password
+	 * @return 
+	 */
+	String updateCompanyEmailOnPassword(String companyEmail, String password);
+
 }

@@ -56,11 +56,9 @@ public class ApproveController extends BaseController{
 	private static final Logger logger = LoggerFactory.getLogger(ApproveController.class); 
 
 	@Autowired
-	private SessionProvider sessionProvider;
-
-	@Autowired
 	private UserService userService;
-	
+	@Autowired
+	private SessionProvider sessionProvider;
 	@Autowired
 	private FlowApproveService flowApproveService;
 	
@@ -144,15 +142,21 @@ public class ApproveController extends BaseController{
 				String applyType = fa.getApplyType();
 				if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
 					//招聘
-					result = flowRecruitService.selectByPrimaryKey(fa.getFormId()).getResult();
-					if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
-							 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
-						result = RecruitApplyResult.RECRUIT_AGREE.getState();
+					Integer integer = flowRecruitService.selectByPrimaryKey(fa.getFormId()).getResult();
+					if(integer != null){
+						result = integer;
+						if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
+								 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
+							result = RecruitApplyResult.RECRUIT_AGREE.getState();
+						}
 					}
 					//result = RecruitApplyState.valueOf(state).getStateName();
 				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 					//入职
-					result = flowEntryService.selectByPrimaryKey(fa.getFormId()).getResult();
+					Integer integer = flowEntryService.selectByPrimaryKey(fa.getFormId()).getResult();
+					if(integer != null){
+						result = integer;
+					}
 //					result = EntryApplyState.valueOf(state).getStateName();
 				}
 				fa.setApplyResult(result);

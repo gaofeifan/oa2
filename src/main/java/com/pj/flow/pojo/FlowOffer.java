@@ -196,6 +196,30 @@ public class FlowOffer {
 	@ApiModelProperty(value = "抄送人")
 	private String peopleWhoCopied;
 
+	/**
+	 *	发送人职位
+	 */
+	@ApiModelProperty(value = "发送人职位(当前操作人员)", notes = "<contactsPosition>")
+	private String contactsPosition;
+
+	/**
+	 *	公司地址
+	 */
+	@ApiModelProperty(value = "发送人工作地址(当前操作人员)", notes = "<companyAddress>")
+	private String companyAddress;
+
+	/**
+	 *	公司联系方式
+	 */
+	@ApiModelProperty(value = "公司联系方式", notes = "<companyPhone>")
+	private String companyPhone;
+
+	/**
+	 *	发送人邮箱
+	 */
+	@ApiModelProperty(value = "发送人邮箱(当前操作人员)", notes = "<contactsEmail>")
+	private String contactsEmail;
+
 	public String getUsername() {
 		return username;
 	}
@@ -436,7 +460,38 @@ public class FlowOffer {
 		this.peopleWhoCopied = peopleWhoCopied;
 	}
 
-	
+	public String getContactsPosition() {
+		return contactsPosition;
+	}
+
+	public void setContactsPosition(String contactsPosition) {
+		this.contactsPosition = contactsPosition;
+	}
+
+	public String getCompanyAddress() {
+		return companyAddress;
+	}
+
+	public void setCompanyAddress(String companyAddress) {
+		this.companyAddress = companyAddress;
+	}
+
+	public String getCompanyPhone() {
+		return companyPhone;
+	}
+
+	public void setCompanyPhone(String companyPhone) {
+		this.companyPhone = companyPhone;
+	}
+
+	public String getContactsEmail() {
+		return contactsEmail;
+	}
+
+	public void setContactsEmail(String contactsEmail) {
+		this.contactsEmail = contactsEmail;
+	}
+
 	@Override
 	public String toString() {
 		return "FlowOffer [username=" + username + ", company=" + company + ", postName="

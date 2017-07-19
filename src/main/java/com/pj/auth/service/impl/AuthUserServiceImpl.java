@@ -786,4 +786,5 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		}
 	}
 	
+	
 }
