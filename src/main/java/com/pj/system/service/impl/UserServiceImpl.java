@@ -503,7 +503,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("newPassword", password);
 		map.put("id", user.getId());
 		map.put("ssoid", user.getSsoId());
-		return HttpClienTool.doGet(ssoUpdateEmailOrPasswordUrl, map);
+		String string = HttpClienTool.doGet(ssoUpdateEmailOrPasswordUrl, map);
+		if(StringUtils.isBlank(string)){
+			throw new RuntimeException("请检测是否已存在该邮箱");
+		}
+		return string;
 	}
 	
 }
