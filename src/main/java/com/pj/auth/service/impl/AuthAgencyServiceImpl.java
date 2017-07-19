@@ -210,4 +210,12 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		authAgency.setGrade(authAgency.getGrade()+1);
 		return authAgency;
 	}
+
+	@Override
+	public List<AuthAgency> selectAuthAgencysByCompanyIdOrDempId(Integer companyId, Integer dempId) {
+		AuthAgency agency = new AuthAgency();
+		agency.setCompanyId(companyId);
+		agency.setDempId(dempId);
+		return this.authAgencyMapper.selectAuthAgencysByCompanyIdOrDempId(agency);
+	}
 }

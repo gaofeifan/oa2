@@ -42,4 +42,13 @@ public interface AuthAgencyMapper extends MyMapper<AuthAgency> {
 	 */
 	List<AuthAgency> selectAuthAgencyByGrade(@Param("grade")Integer grade);
 
+	/**
+	 * 	根据公司部门查询
+	 *	@author 	GFF
+	 *	@date		2017年7月19日下午4:18:21	
+	 * 	@param agency
+	 * 	@return
+	 */
+	List<AuthAgency> selectAuthAgencysByCompanyIdOrDempId(AuthAgency agency);
+
 }
