@@ -94,8 +94,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		return flowEntryMapper;
 	}
 	@Override
-	public void insertEntryAndSalary(String salarys) {
-		FlowEntry flowEntry = new FlowEntry();
+	public void insertEntryAndSalary(FlowEntry flowEntry, String salarys) {
 		FlowRecruit fRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		
 		flowEntry.setRecruitId(flowEntry.getRecruitId());
