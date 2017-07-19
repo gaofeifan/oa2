@@ -322,9 +322,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 					String name = companyMapper.selectByNumber(comNum).getName();
 					organization.setNumber(comNum);
 					organization.setName(name);
-					if (i == 0) {
-						organization.setpNum(dempPNum);
-					} else {
+					if (i != 0) {
 						organization.setpNum(companyArr[i - 1]);
 					}
 					organization.setHasChilds("yes");
