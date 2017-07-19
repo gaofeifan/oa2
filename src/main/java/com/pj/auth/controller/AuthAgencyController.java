@@ -102,6 +102,11 @@ public class AuthAgencyController extends BaseController{
 	public @ResponseBody MappingJacksonValue deleteAuthAgencyById(@ApiParam("权限id") @RequestParam(value = "id", required = true) Integer id){
 		try {
 			AuthAgency authAgency = this.authAgencyService.selectByPrimaryKey(id);
+			List<AuthAgency> list2 = this.authAgencyService.selectAuthAgencysByCompanyIdOrDempId(authAgency.getCompanyId(), authAgency.getDempId());
+			if(list2.size() > 1){
+				this.authAgencyService.deleteByPrimaryKeyToLogic(id);
+				return this.successJsonp("成功删除");
+			}
 			// 获取所有审批未通过的流程
 			List<FlowApprove> approves = this.flowApproveService.selectNoApprovalAll();
 			User record = new User();

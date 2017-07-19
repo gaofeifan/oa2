@@ -55,4 +55,14 @@ public interface AuthAgencyService extends BaseService<AuthAgency, Integer> {
 	 */
 	AuthAgency selectInstitutionalLevel();
 
+	/**
+	 * 	根据公司部门查询所有机构权限
+	 *	@author 	GFF
+	 *	@date		2017年7月19日下午4:15:27	
+	 * 	@param companyId
+	 * 	@param dempId
+	 * 	@param object
+	 */
+	List<AuthAgency> selectAuthAgencysByCompanyIdOrDempId(Integer companyId, Integer dempId);
+
 }

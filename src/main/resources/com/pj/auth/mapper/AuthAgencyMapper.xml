@@ -38,6 +38,31 @@
 			</choose>
 		</where>
 	</select>
+	<select id="selectAuthAgencysByCompanyIdOrDempId" parameterType="com.pj.auth.pojo.AuthAgency" resultMap="Result_base">
+		select 
+			<include refid="Base_column"/> 
+		from 
+		auth_agency 
+		<where>
+			isdelete = 0
+			<choose>
+				<when test="companyId != null">
+					AND	company_id=#{companyId} 
+				</when>
+				<otherwise>
+					AND company_id is null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="dempId != null">
+					AND demp_id=#{dempId}
+				</when>
+				<otherwise>
+					AND demp_id is null
+				</otherwise>
+			</choose>
+		</where>
+	</select>
 	<select id="selectAuthAgencyMaxGrade" resultMap="Result_base">
 		SELECT <include refid="Base_column"/> FROM auth_agency GROUP BY grade DESC limit 0,1
 	</select>
