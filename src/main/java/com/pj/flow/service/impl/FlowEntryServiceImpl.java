@@ -263,7 +263,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	 * 	发送offer
 	 */
 	@Override
-	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision) {
+	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision, String emailPassword) {
 		User user = this.userService.selectByEamil(email);
 		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
 		
@@ -313,7 +313,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//	获取offer模板
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 		offerTemp = OfferUtils.replaceOfferContent(offerTemp,offer);
-		SendEmailUtils.sendMessage(email, user.getCompanyEmailPassword(), iEamil, "offer-【"+offer.getUsername()+"】 "+offer.getCompany(), offerTemp, ccEmail);
+		SendEmailUtils.sendMessage(email,emailPassword, iEamil, "offer-【"+offer.getUsername()+"】 "+offer.getCompany(), offerTemp, ccEmail);
 	}
 
 	/**

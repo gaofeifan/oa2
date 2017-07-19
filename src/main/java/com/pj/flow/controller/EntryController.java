@@ -212,11 +212,12 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue sendOffer(@ApiParam(value = "个人邮箱", required = true)@RequestParam(value = "iEamil", required = true)String iEamil ,
 			 							 @ApiParam(value = "抄送人", required = false)@RequestParam(value = "usernames", required = true)String usernames ,
 			 							 @ApiParam(value = "时", required = true)@RequestParam(value = "hour", required = true)String  hour,
+			 							 @ApiParam(value = "发送人邮箱密码", required = true)@RequestParam(value = "emailPassword", required = true)String  emailPassword,
 			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
 		MappingJacksonValue success = null;
 		try {						
 			String email = getSession();
-			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,email,hour);
+			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,email,hour,emailPassword);
 			success = this.successJsonp(null);
 		} catch (Exception e) {
 			success = this.errorToJsonp(e.getMessage());
