@@ -1,7 +1,6 @@
 package com.pj.system.controller;
 
 import java.io.IOException;
-
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +37,7 @@ import com.pj.utils.RequestUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.sf.json.JSONObject;
 
 @RequestMapping("/user")
 @Controller
@@ -48,19 +47,14 @@ public class UserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Resource
 	private UserService userService;
-
 	@Resource
 	private CompanyService companyService;
-
 	@Resource
 	private DempService dempService;
-
 	@Resource
 	private PostService postService;
-
 	@Resource
 	private PositionService positionService;
-
 	@Resource
 	private SessionProvider sessionProvider;
 
@@ -353,12 +347,15 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "修改邮箱及密码", httpMethod = "GET", response = String.class, notes = "修改邮箱及密码")
 	@RequestMapping("updateCompanyEmailOnPassword.do")
 	@ResponseBody
-	public Object updateCompanyEmailOnPassword(@ApiParam("公司邮箱") @RequestParam("companyEmail") String companyEmail,@ApiParam("账号密码") @RequestParam("password") String password){
-		try {
-			String string = this.userService.updateCompanyEmailOnPassword(companyEmail,password);
-			return this.successJsonp(string);
+	public Object updateCompanyEmailOnPassword(@ApiParam("公司邮箱") @RequestParam("companyEmail") String companyEmail,@ApiParam("账号密码") @RequestParam("password") String password,@ApiParam("Id") @RequestParam("id") Integer id){
+		try {	
+			String string = this.userService.updateCompanyEmailOnPassword(companyEmail,password,id);
+			JSONObject bean = JSONObject.fromBean(string);
+			if(bean != null && bean.get("status").equals("200")){
+				return this.successJsonp("修改成功");
+			}
+			return this.errorToJsonp("保存异常请联系管理员");
 		} catch (Exception e) {
-			e.printStackTrace();
 			return this.errorToJsonp(e.getMessage());
 		}
 	}

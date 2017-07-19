@@ -56,7 +56,7 @@ public class DempController extends SystemManageController{
 		Map<String, Object> map;
 		try {
 			String number = this.numberUtils.getSingleNumber(dempService, four);
-			map = this.success(number);
+			map = this.success("DEMP"+number);
 		} catch (Exception e) {
 			logger.error("获取部门单号异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		

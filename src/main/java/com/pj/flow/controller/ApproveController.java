@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
@@ -142,20 +145,26 @@ public class ApproveController extends BaseController{
 				String applyType = fa.getApplyType();
 				if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
 					//招聘
-					Integer integer = flowRecruitService.selectByPrimaryKey(fa.getFormId()).getResult();
+					FlowRecruit recruit = flowRecruitService.selectByPrimaryKey(fa.getFormId());
+					Integer integer = recruit.getResult();
 					if(integer != null){
 						result = integer;
 						if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
 								 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
 							result = RecruitApplyResult.RECRUIT_AGREE.getState();
 						}
+					}else if(integer == null && recruit.getState() == RecruitApplyState.IN_OFFER.getState()){
+						result = RecruitApplyResult.RECRUIT_AGREE.getState();
 					}
 					//result = RecruitApplyState.valueOf(state).getStateName();
 				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 					//入职
-					Integer integer = flowEntryService.selectByPrimaryKey(fa.getFormId()).getResult();
+					FlowEntry entry = flowEntryService.selectByPrimaryKey(fa.getFormId());
+					Integer integer = entry.getResult();
 					if(integer != null){
 						result = integer;
+					}else if(integer == null && entry.getState() == EntryApplyState.IN_OFFER.getState()){
+						result = EntryApplyResult.ENTRY_DISAGREE.getState();
 					}
 //					result = EntryApplyState.valueOf(state).getStateName();
 				}

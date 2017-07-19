@@ -128,8 +128,9 @@ public interface UserService extends BaseService<User, Integer> {
 	 *	@date		2017年7月18日下午6:10:57	
 	 * 	@param companyEmail
 	 * 	@param password
+	 * @param id 
 	 * @return 
 	 */
-	String updateCompanyEmailOnPassword(String companyEmail, String password);
+	String updateCompanyEmailOnPassword(String companyEmail, String password, Integer id);
 
 }

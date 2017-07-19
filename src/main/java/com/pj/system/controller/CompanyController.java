@@ -68,7 +68,7 @@ public class CompanyController extends SystemManageController{
 		Map<String, Object> success = null;
 		try {
 			String number = this.numberTool.getSingleNumber(companyService, four);
-			success = this.success(number);
+			success = this.success("CO"+number);
 		} catch (Exception e) {
 			logger.error("获取公司单号异常" + e.getMessage());
 			success = this.error();

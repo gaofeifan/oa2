@@ -106,7 +106,7 @@ public class AccountManageController  extends BaseController{
 	@ResponseBody
 	public ResponseEntity<Map> SelectById(@RequestParam Integer id){
 		Map<String,Object> map = new HashMap<String,Object>();
-		User user = userService.selectByPrimaryKey(id);
+		User user = userService.selectById(id);
 		map.put("user", user);
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}

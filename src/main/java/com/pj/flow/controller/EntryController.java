@@ -115,7 +115,7 @@ public class EntryController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("提交入职申请");
+			throw new RuntimeException("提交入职申请"+e.getMessage());
 		}
 		return map;
 	}

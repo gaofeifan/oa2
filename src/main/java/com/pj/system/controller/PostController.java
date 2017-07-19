@@ -56,7 +56,8 @@ public class PostController extends SystemManageController {
 		try {
 	
 			String number = this.numberUtils.getSingleNumber(postService,four);
-			map = this.success(number);
+			
+			map = this.success("ST"+number);
 		} catch (Exception e) {
 			logger.error("获取岗位单号异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		

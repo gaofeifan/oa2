@@ -492,18 +492,18 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	}
 
 	@Override
-	public String updateCompanyEmailOnPassword(String companyEmail, String password) {
+	public String updateCompanyEmailOnPassword(String companyEmail, String password, Integer id) {
 		Map<String, Object> map = new HashMap<>();
-		User user = this.selectByEamil(companyEmail);
+		User user = this.selectByPrimaryKey(id);
 		if(!companyEmail.equals(user.getCompanyEmail())){
-			user.setCompanyEmail(password);
-			this.updateByPrimaryKey(user);
+			user.setCompanyEmail(companyEmail);
+			super.updateByPrimaryKeySelective(user);
 			map.put("email", companyEmail);
 		}
-		map.put("password", password);
-		map.put("id", user.getSsoId());
+		map.put("newPassword", password);
+		map.put("id", user.getId());
 		map.put("ssoid", user.getSsoId());
-		return HttpClienTool.doGet(ssoUpdateUrl, map);
+		return HttpClienTool.doGet(ssoUpdateEmailOrPasswordUrl, map);
 	}
 	
 }

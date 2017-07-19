@@ -52,7 +52,7 @@ public class PositionController extends SystemManageController {
 		Map<String, Object> map;
 		try {
 			String number = this.numberUtils.getSingleNumber(positionService, four);
-			map = this.success(number);
+			map = this.success("PO"+number);
 		} catch (Exception e) {
 			logger.error("获取职位单号异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		
