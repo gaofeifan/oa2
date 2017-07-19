@@ -55,6 +55,7 @@ public class SendEmailUtils {
 			e.printStackTrace();
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			throw new RuntimeException("邮箱密码有误");
 		}
 	}
 
@@ -87,7 +88,7 @@ public class SendEmailUtils {
 	}
 
 	public static void main(String[] args) {
-		sendMessage("gaofeifan@pj-l.com", "PJ.123456", "1315697146@qq.com", "中亚宝丰offer",
+		sendMessage("gaofeifan@pj-l.com", "PJ.1223456", "1315697146@qq.com", "中亚宝丰offer",
 				getResourceTemp("/temp/offer2"), new String[] { "xxx", "xxxx" });
 	}
 }

@@ -4,6 +4,7 @@ package com.pj.system.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.auth.pojo.AuthAgency;
+import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.properties.FtpProperties;
 import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.tool.NumberTool;
@@ -38,6 +41,8 @@ public class DempController extends SystemManageController{
 	private ManageProperties manageProperties;
 	@Resource
 	private FtpProperties ftpProperties;
+	@Resource
+	private AuthAgencyService authAgencyService;
 	//	日志对象
 	private static final Logger logger = LoggerFactory.getLogger(DempController.class); 
 	@Resource
@@ -227,15 +232,6 @@ public class DempController extends SystemManageController{
 		Map<String, Object> map = this.success(demps);
 		return map;
 	}
-	@RequestMapping(value="/getXxx.do" , method=RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> getXxx(){
-		Map<String, Object> map = new HashMap<>();
-		map.put("password", ftpProperties.getPassword());
-		map.put("url", manageProperties.ftpProperties.getUrl());
-		map.put("ssocreateUrl", manageProperties.httpClienUrlProperties.getSsoCreateUrl());
-		return map;
-	}
 	
 	@ApiOperation(value = "查询部门 根据人事权限查询", httpMethod = "GET", response=Map.class, notes ="查询部门 根据人事权限查询")
 	@RequestMapping(value="/selectDempByPersonnelAuthority.do" , method=RequestMethod.GET)
@@ -265,4 +261,30 @@ public class DempController extends SystemManageController{
 		
 	}
 	
+	/**
+	 * 	根据公司id查询所有的部门
+	 */
+	@ApiOperation(value = "根据公司id查询部门并排除已在机构的部门", httpMethod = "GET", response=Map.class, notes ="根据公司id查询所有的部门")
+	@RequestMapping(value="/selectDempsByCompanyIdAgency.do" , method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> selectDempsByCompanyIdAgency(@ApiParam("companyId") @RequestParam("companyId")Integer companyId){
+		Map<String, Object> map;
+		try {
+			Map<String, Object> hashMap = new HashMap<>();
+			List<Demp> demps = this.dempService.selectByCompanyId(companyId);
+			AuthAgency record = new AuthAgency();
+			record.setIsdelete(0);
+			record.setCompanyId(companyId);
+			List<AuthAgency> list = this.authAgencyService.select(record );
+			List<Integer> collect = list.stream().map(agency -> agency.getDempId()).collect(Collectors.toList());
+			List<Demp> list2 = demps.stream().filter(demp -> !collect.contains(demp.getId())).collect(Collectors.toList());
+			hashMap.put("demps", list2);
+			map = this.success(hashMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("根据公司id查询所有的部门" + e.getMessage());
+			throw new RuntimeException("操作资源异常");		
+		}
+    	return map;
+	}
 }
