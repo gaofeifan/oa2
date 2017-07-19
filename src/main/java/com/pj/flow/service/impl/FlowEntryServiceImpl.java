@@ -95,11 +95,11 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	}
 	@Override
 	public void insertEntryAndSalary(FlowEntry flowEntry, String salarys) {
-		FlowRecruit fRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
+		FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		
 		flowEntry.setRecruitId(flowEntry.getRecruitId());
-		flowEntry.setApplyId(fRecruit.getApplyId());
-		flowEntry.setUsername(fRecruit.getUsername());
+		flowEntry.setApplyId(flowRecruit.getApplyId());
+		flowEntry.setUsername(flowRecruit.getUsername());
 		flowEntry.setStatus(0);
 		flowEntry.setState(EntryApplyState.IN_ENTRY_APPROVAL.getState());
 		
@@ -109,6 +109,11 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 */
 		flowEntry.setApplyDate(new Date());
 		flowEntryMapper.insertEntry(flowEntry);
+		//更新招聘申请的状态:入职审批中，申请结果是空
+		flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
+		flowRecruit.setResult(0);
+		flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+		
 		//保存薪资表
 		Integer entryId = flowEntry.getId();
 		JSONArray array = JSONArray.fromObject(salarys);
@@ -182,7 +187,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 */
 		MessageContent content = new MessageContent();
 		//	查询招聘表
-		FlowRecruit flowRecruit = this.flowRecruitMapper.selectById(flowEntry.getRecruitId());
 		if(flowRecruit != null){
 			String names = this.dempService.selectDempParentNameById(flowRecruit.getDempId());
 			content.setApplicatDemp(names);

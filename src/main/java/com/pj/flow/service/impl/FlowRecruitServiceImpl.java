@@ -15,6 +15,7 @@ import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
+import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -114,7 +115,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
 		List<FlowRecruit> list = new ArrayList<FlowRecruit>();
 		if(state == 4){
-			//已审核，需要查出入职时间,且公司是入职人公司
+			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位（实际与申请人信息一致）
 			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
 		}else{
 			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
@@ -138,8 +139,9 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		//更新待办表状态
 		
 		if(state == 0){
-			//把招聘结果改为取消且status改为已删除
+			//把招聘结果改为取消，招聘状态改为已审批且status改为已删除
 			recruit.setResult(RecruitApplyResult.RECRUIT_CANCEL.getState());
+			recruit.setState(RecruitApplyState.RECRUIT_APPROVED.getState());
 			recruit.setStatus(1);
 			flowRecruitMapper.updateByPrimaryKeySelective(recruit);
 			//修改状态为state的待办表
@@ -150,14 +152,16 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 			if(state == 3){
 				//把招聘结果改为暂停
 				recruit.setResult(RecruitApplyResult.RECRUIT_PAUSE.getState());
+				recruit.setState(RecruitApplyState.RECRUIT_APPROVED.getState());
 				flowRecruitMapper.updateByPrimaryKeySelective(recruit);
 				//修改状态待办表
 				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.HAS_PAUSE.getState(), reason);
 				
 				status = ActionLogOperation.PAUSE_RECRUIT.getValue();
 			}else if(state == 1){
-				//开始
+				//开始，招聘状态改为招聘已审批，结果是招聘同意
 				recruit.setResult(RecruitApplyResult.RECRUIT_AGREE.getState());
+				recruit.setState(RecruitApplyState.RECRUIT_APPROVED.getState());
 				flowRecruitMapper.updateByPrimaryKeySelective(recruit);
 				//修改状态待办表
 				flowRecruitTodoMapper.updateState(recruitId, RecruitTodoState.IN_RECRUIT.getState(), reason);
