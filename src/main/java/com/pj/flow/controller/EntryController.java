@@ -110,7 +110,7 @@ public class EntryController extends BaseController{
 		try {
 			String salarys = flowEntry.getSalaryJson();
 			
-			flowEntryService.insertEntryAndSalary(salarys);
+			flowEntryService.insertEntryAndSalary(flowEntry, salarys);
 			map = this.successJsonp(null);
 		} catch (Exception e) {
 			e.printStackTrace();
