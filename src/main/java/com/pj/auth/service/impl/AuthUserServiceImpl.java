@@ -26,6 +26,7 @@ import com.pj.system.mapper.PostMapper;
 import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
 import com.pj.system.service.CompanyService;
+import com.pj.utils.redis.RedisUtil;
 
 @Service
 @Transactional
@@ -219,10 +220,15 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					Integer companyId = company.getId();
 					//得到所有子公司,加上选中公司
 					List<Organization> companys = companyMapper.selectChildsById(companyId);
-					List<Integer> postIds = companyService.getAllPosts(companys);
+					List<Integer> postIdsByCId = companyService.getAllPosts(companys);
 					//已经占用的postid
 					List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, menuId);
 					//除去已经占用的，得到要展示的postid 
+					
+					String key = "cId_" + companyId;
+					RedisUtil.setList(key, postIdsByCId);
+					List<Integer> postIds = RedisUtil.getList(key);
+					
 					postIds.removeAll(otherAuthPosts);
 					
 					if(isSelected == 1){
@@ -359,7 +365,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		 * 第三级，传来的是第二级的id
 		 * 记录三级id
 		 */
-		
+		List<Integer> all = postMapper.selectAllPostId(0);
+		RedisUtil.setList("allPostIds", all);
 		if(grade == 1){
 			//得到需要岗位的权限
 			List<AuthUser> postAuthUsers = authUserMapper.selectByUserid(userid, "post");
@@ -381,9 +388,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 							//查询所有除去被其他用户选中的post
 							//已经占用的postid
 							List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuIds.get(i));
-							
 							//所有的postid
-							List<Integer> allPostIds = postMapper.selectAllPostId(0);
+							List<Integer> allPostIds = RedisUtil.getList("allPostIds");
 							//除去已经占用的，得到要展示的postid 
 							allPostIds.removeAll(otherAuthPosts);
 							
@@ -581,6 +587,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 //		List<Integer> selectMenuIds = new ArrayList<Integer>();
 		List<String> selectOrgNums = new ArrayList<String>();
 		//得到post的权限列表
+		//所有的postid
+		List<Integer> all = postMapper.selectAllPostId(0);
+		RedisUtil.setList("allPostIds", all);
 		switch(grade){
 		case 2 :
 			//展示第二级，传入第一级id,查出子三级菜单的选中状态
@@ -596,7 +605,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuIds.get(i));
 						
 						//所有的postid
-						List<Integer> allPostIds = postMapper.selectAllPostId(0);
+						List<Integer> allPostIds = RedisUtil.getList("allPostIds");
 						//除去已经占用的，得到要展示的postid 
 						allPostIds.removeAll(otherAuthPosts);
 						
@@ -619,7 +628,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 				List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, thirdMenuId);
 				
 				//所有的postid
-				List<Integer> allPostIds = postMapper.selectAllPostId(0);
+				List<Integer> allPostIds = RedisUtil.getList("allPostIds");;
 				//除去已经占用的，得到要展示的postid 
 				allPostIds.removeAll(otherAuthPosts);
 				
@@ -638,7 +647,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			List<Integer> otherAuthPosts = authUserMapper.selectByNotUserMenuPost(userid, menuId);
 			
 			//所有的postid
-			List<Integer> allPostIds = postMapper.selectAllPostId(0);
+			List<Integer> allPostIds = RedisUtil.getList("allPostIds");
 			//除去已经占用的，得到要展示的postid 
 			allPostIds.removeAll(otherAuthPosts);
 			
@@ -701,6 +710,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 					
 				}
+				
 				if(number.startsWith("C")){
 					if(map != null && !map.isEmpty()){
 						for (Entry<String, List<String>> entry : map.entrySet()) {
@@ -716,7 +726,11 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 								//得到所有子公司,加上选中公司
 								List<Organization> companys = companyMapper.selectChildsById(companyId);
 								
-								List<String> postNums = companyService.getPostNumByCompanys(companys);
+								List<String> postNumsByCId = companyService.getPostNumByCompanys(companys);
+								
+								String key = "cId_" + companyId;
+								RedisUtil.setList(key, postNumsByCId);
+								List<String> postNums = RedisUtil.getList(key);
 								
 								//除去已经占用的，得到要展示的postid 
 								postNums.removeAll(otherUserAuthPosts);
@@ -759,13 +773,17 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		//得到所有子部门,根据选中部门得到岗位
 		List<Organization> demps = dempMapper.selectOrgChildListById(demp.getId());
 		
-		List<String> postNums = new ArrayList<String>();
+		List<String> postNumsByDId = new ArrayList<String>();
 		//根据选中部门得到岗位
 		
 		for(Organization organization : demps){
 			List<String> pPostList = postMapper.selectLinealNumsByDempId(organization.getId());
-			postNums.addAll(pPostList);
+			postNumsByDId.addAll(pPostList);
 		}
+		String key = "dId_" + demp.getId();
+		RedisUtil.setList(key, postNumsByDId);
+		List<String> postNums = RedisUtil.getList(key);
+		
 		//除去已经占用的，得到要展示的postid 
 		postNums.removeAll(otherUserAuthPosts);
 		if(compare(postNums, existPostNums)){

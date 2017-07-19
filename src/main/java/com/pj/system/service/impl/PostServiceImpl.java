@@ -215,4 +215,8 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 		String signNum = companyNums + dempNums + "-" + post.getNumber();
 		return signNum;
 	}
+
+	public List<Integer> selectAllPostId(int isdelete) {
+		return postMapper.selectAllPostId(isdelete);
+	}
 }
