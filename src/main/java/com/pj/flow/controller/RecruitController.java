@@ -1,5 +1,6 @@
 package com.pj.flow.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,7 @@ public class RecruitController extends BaseController{
 			} 
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
+			flowRecruit.setApplyDate(new Date());
 			flowRecruitService.insertSelective(flowRecruit);
 			
 			map = this.successJsonp("提交成功");
