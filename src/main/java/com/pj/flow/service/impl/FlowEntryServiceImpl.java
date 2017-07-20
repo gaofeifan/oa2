@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.MessageType;
+import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.constant.SalaryType;
@@ -359,6 +361,19 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		double d = Double.parseDouble(str);
 		return DigitalConversionUtils.number2CNMontrayUnit(d);
+	}
+	@Override
+	public void cancelEntry(Integer entryId) {
+		FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(entryId);
+		flowEntry.setResult(EntryApplyResult.ENTRY_CANCEL.getState());
+		flowEntry.setStatus(1);
+		
+		flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
+		
+		FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
+		flowRecruit.setResult(RecruitApplyResult.ENTRY_CANCEL.getState());
+		flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+		
 	}
 	
 }
