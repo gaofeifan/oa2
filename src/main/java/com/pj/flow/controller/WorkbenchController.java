@@ -38,6 +38,7 @@ public class WorkbenchController  extends BaseController{
 		} catch (Exception e) {
 			logger.error("【WorkbenchController.Approve】"+e.getMessage());
 			e.printStackTrace();
+			
 		}
 		return this.successJsonp(this.error("查询我的申请状态失败"));
 	}

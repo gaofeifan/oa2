@@ -109,7 +109,7 @@
 			LEFT JOIN t_company c ON c.id = r.company_id
 			LEFT JOIN t_post p ON p.id = r.post_id
 			LEFT JOIN t_position pn ON pn.id = r.position_id
-		where e.status = 0 and e.result = 1 and e.is_bookbuilding = 0 AND e.is_send_offer = 1
+		where e.status = 0 and e.result is null and e.is_bookbuilding = 0 AND e.is_send_offer = 1
 		<if test="name != null and name != ''" >
 	        and e.name = #{name}
 	    </if>
