@@ -67,7 +67,7 @@
 		LEFT JOIN t_demp d ON d.id = r.demp_id
 		LEFT JOIN t_post p ON p.id = r.post_id
 		LEFT JOIN t_position pn ON pn.id = r.position_id
-		where r.id = #{id} and status = 0
+		where r.id = #{id}
 	</select>
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
