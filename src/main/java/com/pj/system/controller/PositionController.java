@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.constant.Constant;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Position;
@@ -52,7 +53,7 @@ public class PositionController extends SystemManageController {
 		Map<String, Object> map;
 		try {
 			String number = this.numberUtils.getSingleNumber(positionService, four);
-			map = this.success("PO"+number);
+			map = this.success(Constant.POSITION+number);
 		} catch (Exception e) {
 			logger.error("获取职位单号异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		
@@ -77,6 +78,7 @@ public class PositionController extends SystemManageController {
 	@RequestMapping(value="/save.do" , method=RequestMethod.POST)
 	public Map<String, Object> savePosition(@ModelAttribute("position")Position position ){
 		try {
+			position.setNumber(Constant.POSITION+this.numberUtils.getSingleNumber(positionService, four));
 			this.positionService.insertSelective(position);
 		} catch (Exception e) {
 			logger.error("添加职位异常" + e.getMessage());

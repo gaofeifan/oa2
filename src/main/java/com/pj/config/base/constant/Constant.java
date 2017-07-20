@@ -19,4 +19,24 @@ public interface Constant {
 	 */
 	public static final Integer CHO = 263;
 	
+	/**
+	 * 	岗位编号
+	 */
+	public static final String POST = "ST";
+	
+	/**
+	 * 	部门编号
+	 */
+	public static final String DEMP = "DEMP";
+	
+	/**
+	 * 	公司编号
+	 */
+	public static final String COMPANY = "CO";
+	
+	/**
+	 * 	职位编号
+	 */
+	public static final String POSITION ="PO";
+	
 }

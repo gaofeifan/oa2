@@ -252,6 +252,7 @@ public class EntryController extends BaseController{
 		}
 		return map;
 	}
+	
 	/**
 	 * 	建档待办查询
 	 */
@@ -297,6 +298,7 @@ public class EntryController extends BaseController{
 		SendEmailUtils.sendMessage("gaofeifan@pj-l.com", "PJ.123456", "695096916@qq.com", flowOffer.getCompany()+"offer", string, null);
 		return null;
 	}
+	
 	/**
 	 * 	查询字段详情
 	 */

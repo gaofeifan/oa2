@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.auth.pojo.AuthAgency;
 import com.pj.auth.service.AuthAgencyService;
+import com.pj.config.base.constant.Constant;
 import com.pj.config.base.properties.FtpProperties;
 import com.pj.config.base.properties.ManageProperties;
 import com.pj.config.base.tool.NumberTool;
@@ -61,7 +62,7 @@ public class DempController extends SystemManageController{
 		Map<String, Object> map;
 		try {
 			String number = this.numberUtils.getSingleNumber(dempService, four);
-			map = this.success("DEMP"+number);
+			map = this.success(Constant.DEMP+number);
 		} catch (Exception e) {
 			logger.error("获取部门单号异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		
@@ -77,6 +78,8 @@ public class DempController extends SystemManageController{
 	@RequestMapping(value="/save.do" , method=RequestMethod.POST)
 	public Map<String, Object> saveDemp(@ModelAttribute("demp") Demp demp){
 		try {
+			String number = this.numberUtils.getSingleNumber(dempService, four);
+			demp.setNumber(Constant.DEMP+number);
 			this.dempService.insertSelective(demp);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -280,13 +280,17 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			flowEntry.setPeopleWhoCopied(usernames);
 		}
 		flowEntry.setState(EntryApplyState.IN_OFFER.getState());
-		flowEntry.setResult(null);
+		if(flowEntry.getResult() != null && flowEntry.getResult() != EntryApplyResult.ENTRY_CANCEL.getState()){
+			flowEntry.setResult(null);
+		}
 		flowEntry.setIsSendOffer(1);
 		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
 		
 		FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
-		flowRecruit.setResult(null);
+		if(flowRecruit.getResult() != null && flowRecruit.getResult() != RecruitApplyResult.ENTRY_CANCEL.getState()){
+			flowRecruit.setResult(null);
+		}
 		this.flowRecruitMapper.updateByPrimaryKey(flowRecruit);
 		
 		FlowActionLog record = new FlowActionLog();

@@ -54,9 +54,7 @@ public class PostController extends SystemManageController {
 	public Map<String , Object> getPostNumber(){
 		Map<String, Object> map;
 		try {
-	
 			String number = this.numberUtils.getSingleNumber(postService,four);
-			
 			map = this.success("ST"+number);
 		} catch (Exception e) {
 			logger.error("获取岗位单号异常" + e.getMessage());
@@ -73,6 +71,8 @@ public class PostController extends SystemManageController {
 	@RequestMapping(value="/save.do", method =RequestMethod.POST)
 	public Map<String, Object> savePost(@ModelAttribute("post")Post post){
 		try {
+			String number = this.numberUtils.getSingleNumber(postService,four);
+			post.setNumber("ST"+number);
 			this.postService.insertSelective(post);
 			
 		} catch (Exception e) {
