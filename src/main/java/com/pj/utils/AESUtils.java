@@ -60,7 +60,6 @@ public class AESUtils {
 	 * @author panjianghong 2016-8-29
 	 */
 	public static String encryptBin(String content, String key) {
-
 		try {
 			byte[] byteConten = encrypt(content, key);
 			return byte2BinString(byteConten);

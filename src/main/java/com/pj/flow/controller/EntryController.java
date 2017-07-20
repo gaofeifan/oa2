@@ -119,6 +119,7 @@ public class EntryController extends BaseController{
 		}
 		return map;
 	}
+	
 	@ApiOperation(value = "入职申请详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职申请详情")
 	@RequestMapping("/showEntryApply.do")
 	@ResponseBody
@@ -144,6 +145,7 @@ public class EntryController extends BaseController{
 		}
 		return map;
 	}
+	
 	@ApiOperation(value = "入职待办状态详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职待办状态详情")
 	@RequestMapping("/showApplyTodo.do")
 	@ResponseBody
@@ -166,7 +168,6 @@ public class EntryController extends BaseController{
 			result.put("approves", list);
 			result.put("logs", logList);
 			map = this.successJsonp(result);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());

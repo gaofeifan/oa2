@@ -49,7 +49,7 @@
 联系电话：<contactsPhone>    		 	                             身份证号：
                                                           联系电话：<phone>
 <contacts> | <contactsPosition>
-Cel：+86<contactsPhone> Tel：<companyPhone>
+Cel：+86 <contactsPhone> Tel：<companyPhone>
 Mail：<contactsEmail>
 Web：www.pj-l.com
 Add:<companyAddress>

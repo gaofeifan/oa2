@@ -229,6 +229,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
 					flowRecruit.setState(EntryApplyResult.ENTRY_DISAGREE.getState());
 				}
+				flowRecruit.setState(RecruitApplyState.RECRUIT_APPROVED.getState());
 				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
 			}
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
@@ -250,9 +251,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			if(entryResult != null){
 				FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 				entry.setResult(entryResult);
-				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
-					entry.setState(EntryApplyState.ENTRY_APPROVED.getState());
-				}
+				entry.setState(EntryApplyState.ENTRY_APPROVED.getState());
 				this.flowEntryMapper.updateByPrimaryKeySelective(entry);
 				
 				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(entry.getRecruitId());
@@ -261,10 +260,10 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				}
 				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
 					flowRecruit.setResult(RecruitApplyResult.ENTRY_AGREE.getState());
-					flowRecruit.setState(RecruitApplyState.ENTRY_APPROVED.getState());
 				}else if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
 					flowRecruit.setResult(RecruitApplyResult.ENTRY_DISAGREE.getState());
 				}
+				flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
 				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
 			}
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());

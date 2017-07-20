@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.User;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
@@ -39,6 +39,8 @@ public class AccountSetController {
 
 	@Autowired
 	private SessionProvider sessionProvider;
+	@Autowired
+	private UserMapper userMapper;
 	@Autowired
 	private UserService userService;
 	Map<String, Object> map = new HashMap<String, Object>();
@@ -64,19 +66,16 @@ public class AccountSetController {
 	@RequestMapping(value = "/phone" ,method=RequestMethod.POST,produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public ResponseEntity<T> editPhone(@RequestParam(required =false) @ApiParam(value="用户email") String email, @RequestParam(required =false) @ApiParam(value ="手机号") String phone,
-			@RequestParam(required =false) @ApiParam(value ="新手机号") String newphone
-			,@RequestParam(required =false) @ApiParam(value ="设置邮箱密码") String emailPassword
-			){
+			@RequestParam(required =false) @ApiParam(value ="新手机号") String newphone){
 		Map<String, String> map = new HashMap<String, String>();
-		if(phone !=null || StringUtils.isNoneBlank(emailPassword)){
+		if(phone !=null){
 			if(phone.equals(newphone)){
 				map.put("error", "原手机号与新手机号相同,请重新输入!");
 			}
 			//根据前台id查到用户所有信息
-			User u = this.userService.selectByEamil(email);
+			User u = this.userService.selectByEamil(email); 
 			u.setPhone(newphone);
-			u.setCompanyEmailPassword(emailPassword);
-			userService.updateByPrimaryKeySelective(u);
+			userMapper.updateByPrimaryKeySelective(u);
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}else{
 			return ResponseEntity.status(HttpStatus.OK).body(null);

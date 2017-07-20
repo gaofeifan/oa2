@@ -59,7 +59,6 @@ public class UserController extends BaseController {
 	@Resource
 	private SessionProvider sessionProvider;
 
-
 	/**
 	 * 添加用户
 	 * 
@@ -359,5 +358,16 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			return this.errorToJsonp(e.getMessage());
 		}
+	}
+	
+	@ApiOperation(value = "查询用户是否登录",httpMethod="get")
+	@RequestMapping(value = "/isLogin" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public Object isLogin(){
+		String session = this.getSession();
+		if(StringUtils.isBlank(session)){
+			this.errorToJsonp("请您登录后操作");
+		}
+		return this.successJsonp("用户登录成功");
 	}
 }
