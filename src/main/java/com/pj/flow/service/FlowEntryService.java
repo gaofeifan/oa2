@@ -74,4 +74,10 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 */
 	List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name);
 
+	/**
+	 * 撤回建档待办
+	 * @param entryId
+	 */
+	void cancelEntry(Integer entryId);
+
 }

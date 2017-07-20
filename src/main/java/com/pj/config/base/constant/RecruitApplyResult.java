@@ -20,7 +20,8 @@ public enum RecruitApplyResult {
 	RECRUIT_CANCEL("招聘取消", 4),
 	ENTRY_AGREE("入职同意", 5),
 	ENTRY_DISAGREE("入职不同意", 6),
-	ENTRY_SUCCESS("入职完结", 7);	
+	ENTRY_SUCCESS("入职完结", 7),
+	ENTRY_CANCEL("入职撤回", 8);	
 	
 	private RecruitApplyResult(String resultName, int result) {
 		this.resultName = resultName;

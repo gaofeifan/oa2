@@ -305,5 +305,23 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetail(@ModelAttribute("flowOffer") FlowOffer flowOffer ){
 		return null;
 	}
-	
+	/**
+	 * 	撤回
+	 */
+	@ApiOperation(value = "建档撤回", httpMethod = "GET", response=MappingJacksonValue.class, notes ="建档撤回")
+	@RequestMapping(value = "/cancelEntry.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue cancelEntry(
+			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = true) Integer entryId){
+		MappingJacksonValue map;
+		try {
+			flowEntryService.cancelEntry(entryId);
+			map = this.successJsonp(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("招聘待办状态改变" + e.getMessage());
+		}
+		return map;
+	}
 }

@@ -339,7 +339,4 @@ public class RecruitController extends BaseController{
 		return map;
 	}
 	
-	
-	
-	
 }

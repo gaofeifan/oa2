@@ -16,7 +16,8 @@ public enum EntryApplyResult {
 
 	ENTRY_AGREE("入职同意", 1),
 	ENTRY_DISAGREE("入职不同意", 2),
-	ENTRY_SUCCESS("入职完结", 3);	
+	ENTRY_SUCCESS("入职完结", 3),	
+	ENTRY_CANCEL("入职撤回", 4);	
 	
 	private EntryApplyResult(String resultName, int result) {
 		this.resultName = resultName;
