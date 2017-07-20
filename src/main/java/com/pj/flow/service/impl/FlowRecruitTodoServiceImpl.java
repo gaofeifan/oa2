@@ -33,14 +33,14 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	@Override
 	public int getNumByState(Integer userId, Integer state) {
 		List<FlowRecruitTodo> list = flowRecruitTodoMapper.getListByState(userId, state);
-		int num = 0;
-		for(int i = 0; i < list.size(); i ++){
-			Integer innerNum = list.get(i).getNumber();
-			if(innerNum != null){
-				num += innerNum;
-			}
-		}
-		return num;
+//		int num = 0;
+//		for(int i = 0; i < list.size(); i ++){
+//			Integer innerNum = list.get(i).getNumber();
+//			if(innerNum != null){
+//				num += innerNum;
+//			}
+//		}
+		return list.size();
 	}
 	
 	@Override
@@ -98,7 +98,15 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
 		flowRecruitTodo.setState(RecruitTodoState.IN_RECRUIT.getState());
 		
-		flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+		
+		FlowRecruitTodo exsitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
+		if(exsitTodo != null){
+			exsitTodo.setNumber(exsitTodo.getNumber() + 1);
+			flowRecruitTodoMapper.delete(flowRecruitTodo);
+		}else{
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+		}
+	
 	}
 		
 
