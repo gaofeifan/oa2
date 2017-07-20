@@ -117,6 +117,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		if(state == 4){
 			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位（实际与申请人信息一致）
 			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
+		}else if(state == 1){
+			list = flowRecruitMapper.selectTodoByInRecruit(userId, companyId, username, state);
 		}else{
 			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
 		}
