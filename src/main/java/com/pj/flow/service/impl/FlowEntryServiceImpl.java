@@ -36,6 +36,7 @@ import com.pj.flow.pojo.FlowRecruitTodo;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowActionLogService;
 import com.pj.flow.service.FlowEntryService;
+import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
@@ -89,6 +90,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private CompanyMapper companyMapper;
 	@Autowired
 	private FlowUserApplicationMapper flowUserApplicationMapper;
+	@Autowired
+	private FlowRecruitTodoService flowRecruitTodoService;
 	@Autowired
 	private FlowActionLogService flowActionLogService;
 	@Override
@@ -151,18 +154,18 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		//已提交的信息
 		Integer recruitId = flowEntry.getRecruitId();
 			
-		FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
-		if(hasCommitTodo != null){
-			hasCommitTodo.setNumber(hasCommitTodo.getNumber() + 1);
-			flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
-		}else{
-			hasCommitTodo = new FlowRecruitTodo();
-			hasCommitTodo.setRecruitId(recruitId);
-			hasCommitTodo.setEntryId(entryId);
-			hasCommitTodo.setState(RecruitTodoState.HAS_COMMIT.getState());
-			hasCommitTodo.setNumber(1);
-			flowRecruitTodoMapper.insert(hasCommitTodo);
-		}
+//		FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
+//		if(hasCommitTodo != null){
+//			hasCommitTodo.setNumber(hasCommitTodo.getNumber() + 1);
+//			flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
+//		}else{
+		FlowRecruitTodo hasCommitTodo = new FlowRecruitTodo();
+		hasCommitTodo.setRecruitId(recruitId);
+		hasCommitTodo.setEntryId(entryId);
+		hasCommitTodo.setState(RecruitTodoState.HAS_COMMIT.getState());
+		hasCommitTodo.setNumber(1);
+		flowRecruitTodoMapper.insert(hasCommitTodo);
+//		}
 		//招聘中状态的数据减一,如只有一个则删除，多个则减一
 		/*FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
 		int num = inRecruitTodo.getNumber();
@@ -377,7 +380,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setResult(RecruitApplyResult.ENTRY_CANCEL.getState());
 		flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
-		
+		//改变状态为招聘中
+		flowRecruitTodoService.changeState(entryId);
 	}
 	
 }

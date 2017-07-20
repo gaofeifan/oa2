@@ -30,5 +30,11 @@ public interface FlowRecruitTodoService extends BaseService<FlowRecruitTodo, Int
 	 * @param applyType(申请类型,招聘:recruit,入职:entry)
 	 */
 	void insertRecruitTodo(Integer applyId, String applyType);
+	
+	/**
+	 * 改变待办表的状态
+	 * @param entryId
+	 */
+	void changeState(Integer entryId);
 
 }

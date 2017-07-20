@@ -216,6 +216,10 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		}
 		if(disagree.contains(true)){
 			entryResult = EntryApplyResult.ENTRY_DISAGREE.getState();
+			if("entry".equals(applyType)){
+				//改变状态为招聘中
+				flowRecruitTodoService.changeState(flowUserApplication.getFormId());
+			}
 		}
 		
 		/**

@@ -33,4 +33,11 @@ public interface FlowRecruitTodoMapper extends MyMapper<FlowRecruitTodo> {
 	 */
 	FlowRecruitTodo selectByRecruitId(@Param(value = "recruitId") Integer recruitId, @Param(value = "todoState") Integer todoState);
 
+	/**
+	 * 根据入职表id得到待办信息
+	 * @param entryId
+	 * @return
+	 */
+	FlowRecruitTodo selectByEntryId(Integer entryId);
+
 }
