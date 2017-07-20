@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.constant.Constant;
 import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
@@ -68,7 +69,7 @@ public class CompanyController extends SystemManageController{
 		Map<String, Object> success = null;
 		try {
 			String number = this.numberTool.getSingleNumber(companyService, four);
-			success = this.success("CO"+number);
+			success = this.success(Constant.COMPANY+number);
 		} catch (Exception e) {
 			logger.error("获取公司单号异常" + e.getMessage());
 			success = this.error();
@@ -84,6 +85,7 @@ public class CompanyController extends SystemManageController{
 	public String add(){
 		return "company/add";
 	}
+	
 	/**
 	 * 	添加企业
 	 */
@@ -93,6 +95,8 @@ public class CompanyController extends SystemManageController{
 	public Map<String, Object> saveCompany(@ModelAttribute("company")Company company){
 		Map<String, Object> map;
 		try {
+			String number = this.numberTool.getSingleNumber(companyService, four);
+			company.setNumber(Constant.COMPANY+number);
 			this.companyService.insertSelective(company);
 			map = this.success(null);
 		} catch (Exception e) {

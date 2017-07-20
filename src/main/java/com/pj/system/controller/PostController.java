@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -55,9 +54,7 @@ public class PostController extends SystemManageController {
 	public Map<String , Object> getPostNumber(){
 		Map<String, Object> map;
 		try {
-	
 			String number = this.numberUtils.getSingleNumber(postService,four);
-			
 			map = this.success("ST"+number);
 		} catch (Exception e) {
 			logger.error("获取岗位单号异常" + e.getMessage());
