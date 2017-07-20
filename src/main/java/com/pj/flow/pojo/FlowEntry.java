@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pj.system.pojo.Salary;
 
 import io.swagger.annotations.ApiModel;
@@ -197,6 +198,7 @@ public class FlowEntry implements Serializable {
 		this.username = username;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getApplyDate() {
 		return applyDate;
 	}
@@ -309,6 +311,7 @@ public class FlowEntry implements Serializable {
         this.email = email == null ? null : email.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     public Date getEntryDate() {
         return entryDate;
     }
