@@ -294,7 +294,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			flowEntry.setResult(entryResult);
 			flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
 			
-			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(formId);
+			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 			flowRecruit.setState(entryReState);
 			flowRecruit.setResult(entryReResult);
 			flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
