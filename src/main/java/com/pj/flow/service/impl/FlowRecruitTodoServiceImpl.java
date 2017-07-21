@@ -12,6 +12,7 @@ import com.pj.auth.mapper.AuthMenuMapper;
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -106,19 +107,28 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	}
 	
 	@Override
-	public void changeState(Integer entryId) {
-		//状态改为招聘中
-		FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
-		flowRecruitTodo.setState(RecruitTodoState.IN_RECRUIT.getState());
-		
-		
-		FlowRecruitTodo exsitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
-		if(exsitTodo != null){
-			exsitTodo.setNumber(exsitTodo.getNumber() + 1);
+	public void changeState(Integer entryId, Integer entryState, Integer entryResult) {
+		if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+			//入职不同意，删除已提交
+			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
 			flowRecruitTodoMapper.delete(flowRecruitTodo);
-		}else{
-			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+		}else if(entryState == EntryApplyState.IN_OFFER.getState() && entryResult == null){
+			//已发offer
+			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
+			flowRecruitTodoMapper.delete(flowRecruitTodo);
 		}
+		//状态改为招聘中
+//		FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
+//		flowRecruitTodo.setState(RecruitTodoState.IN_RECRUIT.getState());
+//		
+//		
+//		FlowRecruitTodo exsitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
+//		if(exsitTodo != null){
+//			exsitTodo.setNumber(exsitTodo.getNumber() + 1);
+//			flowRecruitTodoMapper.delete(flowRecruitTodo);
+//		}else{
+//			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+//		}
 	
 	}
 

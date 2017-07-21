@@ -36,8 +36,11 @@ public interface FlowRecruitTodoService extends BaseService<FlowRecruitTodo, Int
 	/**
 	 * 改变待办表的状态
 	 * @param entryId
+	 * @param entryState
+	 * @param entryResult
+	 * @param object 
 	 */
-	void changeState(Integer entryId);
+	void changeState(Integer entryId, Integer entryState, Integer entryResult);
 
 	/**
 	 * 招聘待办和建档待办的个数
