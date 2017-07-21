@@ -65,7 +65,7 @@
 	</select>
 	
 	<select id="GetTwoMenubyUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select t2.id,t2.name,t2.href,t1.post,t1.default_auth from auth_menu t1
+		select t2.id,t2.name,t2.href,t2.post,t2.default_auth from auth_menu t1
 		LEFT JOIN auth_menu t2 on t1.id=t2.fid
 		LEFT JOIN auth_menu t3 on t2.id=t3.fid
 		where  t1.id=#{fid}  and t2.name !='消息中心' and t3.id in (select menuid from auth_user where userid=#{userid}) OR t1.auth=0 and t2.name is not null
