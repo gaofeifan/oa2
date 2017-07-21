@@ -60,9 +60,6 @@ import tk.mybatis.mapper.entity.Example;
 @Transactional
 @Service
 public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> implements UserService {
-	
-	
-	
 	@Resource
 	private FlowRecruitService flowRecruitService;
 	@Resource

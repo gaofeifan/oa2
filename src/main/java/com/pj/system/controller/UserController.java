@@ -61,7 +61,6 @@ public class UserController extends BaseController {
 
 	/**
 	 * 添加用户
-	 * 
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws ClientProtocolException
