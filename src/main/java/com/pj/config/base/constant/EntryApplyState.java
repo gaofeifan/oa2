@@ -15,7 +15,7 @@ package com.pj.config.base.constant;
 public enum EntryApplyState {
 
 	IN_ENTRY_APPROVAL("入职审批中", 1),
-	ENTRY_APPROVED("入职审批中", 2),
+	ENTRY_APPROVED("入职已审批", 2),
 	IN_OFFER("已发offer", 3),
 	FILING("已建档", 4);	
 	

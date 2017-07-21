@@ -324,7 +324,7 @@ public class EntryController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("招聘待办状态改变" + e.getMessage());
+			throw new RuntimeException("建档撤回" + e.getMessage());
 		}
 		return map;
 	}

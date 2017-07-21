@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
+import com.pj.config.base.constant.EntryApplyState;
 import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitApplyState;
@@ -20,10 +22,12 @@ import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowActionLogMapper;
+import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.mapper.FlowRecruitMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.mapper.FlowUserApplicationMapper;
 import com.pj.flow.pojo.FlowActionLog;
+import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowRecruitService;
@@ -48,6 +52,9 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	
 	@Autowired
 	private FlowRecruitMapper flowRecruitMapper;
+	
+	@Autowired
+	private FlowEntryMapper flowEntryMapper;
 	
 	@Autowired
 	private FlowRecruitTodoMapper flowRecruitTodoMapper;
@@ -117,6 +124,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		if(state == 4){
 			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位（实际与申请人信息一致）
 			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
+		}else if(state == 1){
+			list = flowRecruitMapper.selectTodoByInRecruit(userId, companyId, username, state);
 		}else{
 			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
 		}
@@ -260,7 +269,37 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	public FlowRecruit selectEntryNum(Integer entryId) {
 		return this.flowRecruitMapper.selectEntryNum(entryId);
 	}
-	
-	
+
+	@Override
+	public boolean checkState(Integer recruitId) {
+		List<FlowEntry> flowEntries = flowEntryMapper.selectByRecruitId(recruitId);
+		boolean flag = true;
+		/**
+			入职申请：
+			入职审批中-无
+			入职已审批-入职同意/入职不同意
+			已发offer- 无/入职撤回
+			已建档-入职完结
+		 */
+		for(FlowEntry flowEntry : flowEntries){
+			Integer state = flowEntry.getState();
+			Integer result = flowEntry.getResult();
+			if(state == EntryApplyState.IN_ENTRY_APPROVAL.getState()){
+				//入职审批中
+				flag = false;
+				break;
+			}else if(state == EntryApplyState.ENTRY_APPROVED.getState() && result == EntryApplyResult.ENTRY_AGREE.getState()){
+				//入职已审批-入职同意
+				flag = false;
+				break;
+			}else if(state == EntryApplyState.IN_OFFER.getState() && result == null){
+				//已发offer- 无
+				flag = false;
+				break;
+			}
+			
+		}
+		return flag;
+	}
 
 }

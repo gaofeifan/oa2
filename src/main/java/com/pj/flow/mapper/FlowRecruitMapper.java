@@ -24,6 +24,7 @@ public interface FlowRecruitMapper extends MyMapper<FlowRecruit> {
 	 * @return
 	 */
 	List<FlowRecruit> selectTodoByQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
+	List<FlowRecruit> selectTodoByInRecruit(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
 	List<FlowRecruit> selectTodoByEntryQuery(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "username") String username, @Param(value = "state") Integer state);
 	/**
 	 * 删除

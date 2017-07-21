@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
-import com.pj.flow.mapper.FlowEntryMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowRecruitTodo;
@@ -22,9 +21,6 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 
 	@Autowired
 	private FlowRecruitTodoMapper flowRecruitTodoMapper; 
-	
-	@Autowired
-	private FlowEntryMapper flowEntryMapper; 
 
 	@Autowired
 	private FlowRecruitService flowRecruitService;
@@ -37,14 +33,14 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	@Override
 	public int getNumByState(Integer userId, Integer state) {
 		List<FlowRecruitTodo> list = flowRecruitTodoMapper.getListByState(userId, state);
-		int num = 0;
-		for(int i = 0; i < list.size(); i ++){
-			Integer innerNum = list.get(i).getNumber();
-			if(innerNum != null){
-				num += innerNum;
-			}
-		}
-		return num;
+//		int num = 0;
+//		for(int i = 0; i < list.size(); i ++){
+//			Integer innerNum = list.get(i).getNumber();
+//			if(innerNum != null){
+//				num += innerNum;
+//			}
+//		}
+		return list.size();
 	}
 	
 	@Override
@@ -58,37 +54,60 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		 * 已审核，则会添加审核数据,原来已提交个数减一
 		 */
 		if("recruit".equals(applyType.trim())){
-			FlowRecruitTodo todo = flowRecruitTodoMapper.selectByRecruitId(applyId, RecruitTodoState.IN_RECRUIT.getState());
-			if(todo != null){
-				int number = todo.getNumber();
-				todo.setNumber(number + 1);
-				flowRecruitTodoMapper.updateByPrimaryKeySelective(todo);
-			}else{
+//			FlowRecruitTodo todo = flowRecruitTodoMapper.selectByRecruitId(applyId, RecruitTodoState.IN_RECRUIT.getState());
+//			if(todo != null){
+//				int number = todo.getNumber();
+//				todo.setNumber(number + 1);
+//				flowRecruitTodoMapper.updateByPrimaryKeySelective(todo);
+//			}else{
 				FlowRecruit recruit = this.flowRecruitService.selectByPrimaryKey(applyId);
-				todo = new FlowRecruitTodo();
+				FlowRecruitTodo todo = new FlowRecruitTodo();
 				todo.setRecruitId(applyId);
 				todo.setNumber(recruit.getNeedNum());
 				todo.setState(RecruitTodoState.IN_RECRUIT.getState());
 				flowRecruitTodoMapper.insert(todo);
-			}
+//			}
 		}else if("entry".equals(applyType.trim())){
+			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(applyId);
+			flowRecruitTodo.setState(RecruitTodoState.HAS_APPROVED.getState());
+			//修改状态为state的待办表
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+			
 			//根据entryId得到招聘id
-			Integer recruitId = flowEntryMapper.selectApplyInfoById(applyId).getRecruitId();
-			FlowRecruitTodo hasApproveTodo = new FlowRecruitTodo();
-			hasApproveTodo.setRecruitId(recruitId);
-			hasApproveTodo.setEntryId(applyId);
-			hasApproveTodo.setNumber(1);
-			hasApproveTodo.setState(RecruitTodoState.HAS_APPROVED.getState());
-			flowRecruitTodoMapper.insert(hasApproveTodo);
-			//根据招聘id得到已提交的招聘待办信息
-			FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
-			int num = hasCommitTodo.getNumber();
-			if(num > 1){
-				flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
-			}else{
-				flowRecruitTodoMapper.delete(hasCommitTodo);
-			}
+//			Integer recruitId = flowEntryMapper.selectApplyInfoById(applyId).getRecruitId();
+//			FlowRecruitTodo hasApproveTodo = new FlowRecruitTodo();
+//			hasApproveTodo.setRecruitId(recruitId);
+//			hasApproveTodo.setEntryId(applyId);
+//			hasApproveTodo.setNumber(1);
+//			hasApproveTodo.setState(RecruitTodoState.HAS_APPROVED.getState());
+//			flowRecruitTodoMapper.insert(hasApproveTodo);
+//			//根据招聘id得到已提交的招聘待办信息
+//			FlowRecruitTodo hasCommitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.HAS_COMMIT.getState());
+//			int num = hasCommitTodo.getNumber();
+//			if(num > 1){
+//				flowRecruitTodoMapper.updateByPrimaryKeySelective(hasCommitTodo);
+//			}else{
+//				flowRecruitTodoMapper.delete(hasCommitTodo);
+//			}
 		}
 	}
+	
+	@Override
+	public void changeState(Integer entryId) {
+		//状态改为招聘中
+		FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
+		flowRecruitTodo.setState(RecruitTodoState.IN_RECRUIT.getState());
+		
+		
+		FlowRecruitTodo exsitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
+		if(exsitTodo != null){
+			exsitTodo.setNumber(exsitTodo.getNumber() + 1);
+			flowRecruitTodoMapper.delete(flowRecruitTodo);
+		}else{
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
+		}
+	
+	}
+		
 
 }

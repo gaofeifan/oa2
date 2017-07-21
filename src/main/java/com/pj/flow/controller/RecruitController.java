@@ -338,5 +338,41 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
-	
+//	@ApiOperation(value = "入职审批通过后改变待办表的状态", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职审批通过后改变待办表的状态")
+//	@RequestMapping(value = "/changeApproveState.do", method = RequestMethod.GET)
+//	@ResponseBody
+//	public MappingJacksonValue changeApproveState(
+//			@ApiParam(value = "入职表id", required = true)@RequestParam(value = "entryId", required = true)Integer entryId){
+//		MappingJacksonValue map;
+//		try {
+//			flowRecruitTodoService.changeApproveState(entryId);
+//			map = this.successJsonp(null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error("异常" + e.getMessage());
+//			throw new RuntimeException("入职审批通过后改变待办表的状态" + e.getMessage());
+//		}
+//		return map;
+//	}
+	/**
+	 * 建档撤回，入职完结，或入职不同意才可以暂停或终止
+	 * @param recruitId
+	 * @return
+	 */
+	@ApiOperation(value = "待办点暂停或终止时判断是否有进行中的状态", httpMethod = "GET", response=MappingJacksonValue.class, notes ="待办点暂停或终止时判断是否有进行中的状态")
+	@RequestMapping(value = "/checkState.do", method = RequestMethod.GET)
+	@ResponseBody
+	public MappingJacksonValue checkState(
+			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
+		MappingJacksonValue map;
+		try {
+			flowRecruitService.checkState(recruitId);
+			map = this.successJsonp(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("异常" + e.getMessage());
+			throw new RuntimeException("招聘待办状态改变" + e.getMessage());
+		}
+		return map;
+	}
 }

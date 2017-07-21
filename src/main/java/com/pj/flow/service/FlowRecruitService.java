@@ -69,4 +69,11 @@ public interface FlowRecruitService extends BaseService<FlowRecruit, Integer> {
 	 */
 	FlowRecruit selectEntryNum(Integer entryId);
 
+	/**
+	 * 待办点暂停或终止时判断是否有进行中的状态
+	 * @param recruitId
+	 * @return 
+	 */
+	boolean checkState(Integer recruitId);
+
 }

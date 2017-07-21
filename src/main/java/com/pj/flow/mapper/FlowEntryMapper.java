@@ -61,4 +61,11 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 	 */
 	List<FlowEntry> selectByTodo(@Param(value = "userId") Integer userId, @Param(value = "companyId") Integer companyId, @Param(value = "name") String name);
 
+	/**
+	 * 根据招聘表id得到入职列表
+	 * @param recruitId
+	 * @return
+	 */
+	List<FlowEntry> selectByRecruitId(Integer recruitId);
+
 }

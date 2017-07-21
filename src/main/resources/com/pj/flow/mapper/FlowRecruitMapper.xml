@@ -69,10 +69,39 @@
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where r.id = #{id}
 	</select>
+	<select id="selectTodoByInRecruit" resultMap="BaseResultMap">
+		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
+		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
+		c.name as companyName, pn.name as positionName
+		<!-- ,entry.id entryId -->
+		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
+		from flow_recruit r
+			<!-- left join flow_entry entry on entry.recruit_id = r.id -->
+			inner join t_user u on u.id = r.apply_id
+				<if test="companyId != null" >
+			        and u.companyid = #{companyId}
+			    </if>
+			LEFT JOIN t_company c ON c.id = u.companyid
+			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
+			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
+			LEFT JOIN t_position pn ON pn.id = u.positionid
+			LEFT JOIN t_demp demp on demp.id = u.dempid
+		where r.status = 0 
+		and r.id in 
+			(select rt.recruit_id from flow_recruit_todo rt 
+			where rt.state = #{state})
+		
+		<if test="username != null and username != ''" >
+	        and r.username LIKE CONCAT('%',#{username},'%')
+	    </if>
+		and r.post_id in 
+	  		(select au.postid from auth_user au where au.userid = #{userId})
+	  	ORDER BY r.apply_date DESC
+	</select>
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
-		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,entry.id entryId,demp.name dempName,demp.id dempId,
-		c.name as companyName, pn.name as positionName
+		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
+		c.name as companyName, pn.name as positionName, entry.id entryId
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
 			left join flow_entry entry on entry.recruit_id = r.id
