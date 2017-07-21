@@ -55,6 +55,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		return authUserMapper;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void insertAuthUser(String type, Integer menuId, Integer grade, String number, Integer userid, Integer isSelected) {
 		/**
@@ -347,6 +348,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		return authUserMapper.deleteByUserid(authuser);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getSelectedMenuIds(Integer grade, Integer post, String number, Integer menuId, Integer userid) {
 
@@ -583,6 +585,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		}
 		return selectMenuIds;
 	}
+	@SuppressWarnings("unchecked")
 	public List<String> getSelectedByPost(Integer grade, Integer post, String number, Integer menuId, Integer userid) {
 //		List<Integer> selectMenuIds = new ArrayList<Integer>();
 		List<String> selectOrgNums = new ArrayList<String>();
@@ -764,6 +767,7 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		return selectOrgNums; 
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<String> checkDemp(List<Integer> otherUserAuthPosts, String parentOrgNum, List<String> existPostNums) {
 		List<String> selectOrgNums = new ArrayList<String>();
 		//得到部门下所有的岗位，与existPostNums比对

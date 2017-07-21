@@ -54,6 +54,8 @@ public class FlowApprove implements Serializable {
 	@Transient
 	private String positionName;//职位名
 	@Transient
+	private String postName;//岗位名称
+	@Transient
 	private String approveDateStr;//审批时间字符串
 
     public String getApproveName() {
@@ -166,6 +168,14 @@ public class FlowApprove implements Serializable {
 
 	public void setIsMessaging(Integer isMessaging) {
 		this.isMessaging = isMessaging;
+	}
+
+	public String getPostName() {
+		return postName;
+	}
+
+	public void setPostName(String postName) {
+		this.postName = postName;
 	}
 
 	@Override

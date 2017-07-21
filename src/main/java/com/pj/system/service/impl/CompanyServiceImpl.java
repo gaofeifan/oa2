@@ -359,6 +359,7 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Organization> getDempsAndPosts(Integer userid, Integer menuid, Organization company) {
 

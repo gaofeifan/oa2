@@ -14,16 +14,18 @@
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="is_messaging" property="isMessaging" jdbcType="INTEGER" />
     <result column="approveName" property="approveName" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
     <result column="positionName" property="positionName" jdbcType="VARCHAR" />
     <result column="approveDateStr" property="approveDateStr" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="selectByApplyIdAndType" resultMap="BaseResultMap">
   	select fa.*, pt.name as positionName,u.username as approveName ,
-  		DATE_FORMAT(fa.handledate,"%Y-%m-%d") AS approveDateStr 
+  		DATE_FORMAT(fa.handledate,"%Y-%m-%d") AS approveDateStr,p.name postName
   	from flow_approve fa 
   	left join t_user u on fa.userid = u.id
   	left join t_position pt on fa.positionid = pt.id
+  	left JOin t_post p on u.postid = p.id
   	where fa.apply_id in (select fu.id from flow_user_application fu 
   		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
   	ORDER BY fa.id 

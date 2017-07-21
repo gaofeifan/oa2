@@ -101,7 +101,6 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 
 	/**
 	 * 查询所有具有消息中心权限的的人员
-	 * 
 	 * @author GFF
 	 * @date 2017年6月26日上午11:44:40
 	 */
