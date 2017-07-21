@@ -7,6 +7,8 @@
     <result column="entry_id" property="entryId" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="need_num" property="needNum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getListByState" resultMap="BaseResultMap">

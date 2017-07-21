@@ -217,8 +217,10 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		//	审批人员都同意 修改
 		Integer formId = flowUserApplication.getFormId();
 		if(!agrees.contains(false)){
-			//更新状态
+			//更新待办信息
 			flowRecruitTodoService.insertRecruitTodo(formId, applyType);
+			
+			//更新申请状态
 			entryResult = EntryApplyResult.ENTRY_AGREE.getState();
 			entryState = EntryApplyState.ENTRY_APPROVED.getState();
 			entryReResult = RecruitApplyResult.ENTRY_AGREE.getState();
@@ -230,6 +232,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 					formId);
 		}
 		if(disagree.contains(true)){
+			//更新申请状态
 			entryResult = EntryApplyResult.ENTRY_DISAGREE.getState();
 			entryState = EntryApplyState.ENTRY_APPROVED.getState();
 			entryReResult = RecruitApplyResult.ENTRY_DISAGREE.getState();
@@ -241,7 +244,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 					formId);
 			
 			if(ApplyType.ENTRY.getApplyType().equals(applyType)){
-				//入职不同意，删除已提交的数据
+				//入职不同意，删除已提交的数据，招聘中number+1
 				flowRecruitTodoService.changeState(flowUserApplication.getFormId(), entryState, entryResult);
 			}
 		}

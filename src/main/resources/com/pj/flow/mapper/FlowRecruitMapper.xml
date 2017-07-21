@@ -89,7 +89,7 @@
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
-			where rt.state = #{state})
+			where rt.state = #{state} and rt.status = 0)
 		
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
@@ -117,7 +117,7 @@
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
-			where rt.state = #{state})
+			where rt.state = #{state} and rt.status = 0)
 		
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
@@ -149,7 +149,7 @@
 		LEFT JOIN t_company c ON c.id = u.companyid
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where 
-			rt.state = #{state} 
+			rt.state = #{state} and rt.status = 0
 		AND e.is_send_offer = 0
 		ORDER BY e.apply_date DESC
 	</select>

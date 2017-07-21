@@ -21,13 +21,24 @@ public class FlowRecruitTodo implements Serializable {
 
     private Integer state;
     
+    private Integer needNum;
+    
     private Integer number;
     
     private String reason;
     
     private Integer status;
 
-    public Integer getStatus() {
+    
+    public Integer getNeedNum() {
+		return needNum;
+	}
+
+	public void setNeedNum(Integer needNum) {
+		this.needNum = needNum;
+	}
+
+	public Integer getStatus() {
 		return status;
 	}
 
