@@ -9,9 +9,9 @@ import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -26,15 +26,13 @@ public class SendEmailUtils {
 	private static final String HOST = "smtp.pj-l.com";
 
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
-			String content, Object[] ccEmail) {
+			String content, Object[] ccEmail) throws AddressException, MessagingException  {
 		// 配置信息
 		Properties pro = new Properties();
 		pro.put("mail.host", HOST);
-
 		pro.put("mail.transport.protocol", "smtp");
 		pro.put("mail.smtp.auth", "true");
 		Session session = Session.getInstance(pro);
-		try {
 			Transport ts = session.getTransport();
 			ts.connect(sendEmail, sendPassword);
 			Message message = new MimeMessage(session);
@@ -51,12 +49,7 @@ public class SendEmailUtils {
 			message.setSubject(title);
 			message.setContent(content, "text/html;charset=utf-8");
 			ts.sendMessage(message, message.getAllRecipients());
-		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			throw new RuntimeException("邮箱密码有误");
-		}
+	
 	}
 
 	public static String getResourceTemp(String path) {
@@ -87,7 +80,7 @@ public class SendEmailUtils {
 		return null;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws AddressException, MessagingException {
 		sendMessage("gaofeifan@pj-l.com", "PJ.1223456", "1315697146@qq.com", "中亚宝丰offer",
 				getResourceTemp("/temp/offer2"), new String[] { "xxx", "xxxx" });
 	}

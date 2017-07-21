@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -215,15 +217,13 @@ public class EntryController extends BaseController{
 			 							 @ApiParam(value = "时", required = true)@RequestParam(value = "hour", required = true)String  hour,
 			 							 @ApiParam(value = "发送人邮箱密码", required = true)@RequestParam(value = "emailPassword", required = true)String  emailPassword,
 			 							 @ApiParam(value = "申请表单id", required = true)@RequestParam(value = "applyId", required = true)Integer applyId){
-		MappingJacksonValue success = null;
-		try {						
 			String email = getSession();
-			this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,email,hour,emailPassword);
-			success = this.successJsonp(null);
-		} catch (Exception e) {
-			success = this.errorToJsonp(e.getMessage());
-		}
-		return success;
+				try {
+					this.flowEntryService.sendOffer(iEamil,usernames,hour,applyId,email,hour,emailPassword);
+				} catch (Exception e) {
+					return this.errorToJsonp(e.getMessage());
+				}
+			return this.successJsonp(null);
 	}
 	
 	/**********************建档待办**********************/
@@ -288,14 +288,16 @@ public class EntryController extends BaseController{
 	 * 	@param CC
 	 * 	@param hour
 	 * 	@return
+	 * @throws MessagingException 
+	 * @throws AddressException 
 	 */
 	@ApiOperation(value = "发送offer", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
 	@RequestMapping("/testOffer.do")
-	public @ResponseBody MappingJacksonValue testOffer(){
+	public @ResponseBody MappingJacksonValue testOffer() throws AddressException, MessagingException{
 		FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(1, "hujingjing@pj-l.com");
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
-		SendEmailUtils.sendMessage("gaofeifan@pj-l.com", "PJ.123456", "695096916@qq.com", flowOffer.getCompany()+"offer", string, null);
+		SendEmailUtils.sendMessage("zhangyiteng@pj-l.com", "Zhang123456", "1315697146@qq.com", flowOffer.getCompany()+"offer", string, null);
 		return null;
 	}
 	

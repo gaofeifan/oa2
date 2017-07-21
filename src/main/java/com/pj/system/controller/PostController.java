@@ -178,6 +178,7 @@ public class PostController extends SystemManageController {
 			return this.error("查询异常"+e.getMessage());
 		}
 	}
+	
 	@ApiOperation(value = "更新岗位signNum", httpMethod = "GET", response=Map.class, notes ="更新岗位signNum")
 	@RequestMapping(value="/updateSignNum.do" , method=RequestMethod.GET)
 	@ResponseBody

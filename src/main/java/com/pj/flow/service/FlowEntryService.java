@@ -2,6 +2,9 @@ package com.pj.flow.service;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.pj.config.base.service.BaseService;
@@ -43,8 +46,10 @@ public interface FlowEntryService extends BaseService<FlowEntry, Integer> {
 	 * @param email    当前操作人员的邮箱
 	 * @param applyId  申请表单id
 	 * @param emailPassword 
+	 * @throws MessagingException 
+	 * @throws AddressException 
 	 */
-	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision, String emailPassword);
+	void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision, String emailPassword) ;
 
 	/**
 	 * 申请查询
