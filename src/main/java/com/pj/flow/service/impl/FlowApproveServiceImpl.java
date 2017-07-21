@@ -198,7 +198,12 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	 * 	@param flowUserApplication
 	 */
 	private void isApproveComplete(FlowUserApplication flowUserApplication , String applyType) {
+		Integer entryState = null;
 		Integer entryResult = null;
+		Integer entryReResult = null;
+		Integer entryReState = null;
+		Integer recruitState = null;
+		Integer recruitResult = null;
 		FlowApprove record = new FlowApprove();
 		record.setApplyId(flowUserApplication.getId());
 		List<FlowApprove> list = super.select(record );
@@ -210,13 +215,32 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		List<Boolean> agrees = list.stream().map(approve -> approve.getCheckstatus() == 2).collect(Collectors.toList());
 		List<Boolean> disagree = list.stream().map(approve -> approve.getCheckstatus() == 1).collect(Collectors.toList());
 		//	审批人员都同意 修改
+		Integer formId = flowUserApplication.getFormId();
 		if(!agrees.contains(false)){
-			flowRecruitTodoService.insertRecruitTodo(flowUserApplication.getFormId(), applyType);
+			
+			flowRecruitTodoService.insertRecruitTodo(formId, applyType);
 			entryResult = EntryApplyResult.ENTRY_AGREE.getState();
+			entryState = EntryApplyState.ENTRY_APPROVED.getState();
+			entryReResult = RecruitApplyResult.ENTRY_AGREE.getState();
+			entryReState = RecruitApplyState.ENTRY_APPROVED.getState();
+			recruitState = RecruitApplyState.RECRUIT_APPROVED.getState();
+			recruitResult = RecruitApplyResult.RECRUIT_AGREE.getState();
+			
+			updateForm(applyType, entryState, entryResult, entryReResult, entryReState, recruitState, recruitResult,
+					formId);
 		}
 		if(disagree.contains(true)){
 			entryResult = EntryApplyResult.ENTRY_DISAGREE.getState();
-			if("entry".equals(applyType)){
+			entryState = EntryApplyState.ENTRY_APPROVED.getState();
+			entryReResult = RecruitApplyResult.ENTRY_DISAGREE.getState();
+			entryReState = RecruitApplyState.ENTRY_APPROVED.getState();
+			recruitState = RecruitApplyState.RECRUIT_APPROVED.getState();
+			recruitResult = RecruitApplyResult.RECRUIT_DISAGREE.getState();
+			
+			updateForm(applyType, entryState, entryResult, entryReResult, entryReState, recruitState, recruitResult,
+					formId);
+			
+			if(ApplyType.ENTRY.getApplyType().equals(applyType)){
 				//改变状态为招聘中
 				flowRecruitTodoService.changeState(flowUserApplication.getFormId());
 			}
@@ -227,15 +251,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		 */
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
-			if(entryResult != null){
-				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-				flowRecruit.setResult(entryResult);
-				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
-					flowRecruit.setState(EntryApplyResult.ENTRY_DISAGREE.getState());
-				}
-				flowRecruit.setState(RecruitApplyState.RECRUIT_APPROVED.getState());
-				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
-			}
 			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
@@ -249,27 +264,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
-			/**
-			 * 	修改状态
-			 */
-			if(entryResult != null){
-				FlowEntry entry = this.flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
-				entry.setResult(entryResult);
-				entry.setState(EntryApplyState.ENTRY_APPROVED.getState());
-				this.flowEntryMapper.updateByPrimaryKeySelective(entry);
-				
-				FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(entry.getRecruitId());
-				if(flowRecruit == null){
-					throw new RuntimeException("更新招聘状态异常");
-				}
-				if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
-					flowRecruit.setResult(RecruitApplyResult.ENTRY_AGREE.getState());
-				}else if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
-					flowRecruit.setResult(RecruitApplyResult.ENTRY_DISAGREE.getState());
-				}
-				flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
-				this.flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
-			}
+			
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());
@@ -284,7 +279,31 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 					content.setApplicatPosition(position.getName());
 				}
 			}
-		}messageContentService.addApprovedMessage(content , flowUserApplication.getId());
+		}
+		messageContentService.addApprovedMessage(content , flowUserApplication.getId());
+	}
+
+	/**
+	 * 	修改状态
+	 */
+	private void updateForm(String applyType, Integer entryState, Integer entryResult, Integer entryReResult,
+			Integer entryReState, Integer recruitState, Integer recruitResult, Integer formId) {
+		if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+			FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(formId);
+			flowEntry.setState(entryState);
+			flowEntry.setResult(entryResult);
+			flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
+			
+			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(formId);
+			flowRecruit.setState(entryReState);
+			flowRecruit.setResult(entryReResult);
+			flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+		}else if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
+			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(formId);
+			flowRecruit.setState(recruitState);
+			flowRecruit.setResult(recruitResult);
+			flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
+		}
 	}
 
 	@Override

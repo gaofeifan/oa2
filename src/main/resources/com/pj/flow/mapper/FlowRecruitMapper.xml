@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="post_id" property="postId" jdbcType="INTEGER" />
     <result column="demp_id" property="dempId" jdbcType="INTEGER" />
@@ -70,7 +70,7 @@
 		where r.id = #{id}
 	</select>
 	<select id="selectTodoByInRecruit" resultMap="BaseResultMap">
-		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
+		select r.id, r.apply_id, r.apply_date, r.username, r.need_num, r.entry_num, 
 		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
 		c.name as companyName, pn.name as positionName
 		<!-- ,entry.id entryId -->

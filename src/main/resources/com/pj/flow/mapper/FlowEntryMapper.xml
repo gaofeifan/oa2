@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
 	<result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
     <result column="dempId" property="dempId" jdbcType="INTEGER" />
     <result column="recruitId" property="recruitId" jdbcType="INTEGER" />
     <result column="companyName" property="companyName" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="result" property="result" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
     
     <result column="isDempLeader" property="isDempLeader" jdbcType="INTEGER" />
     <result column="isCompanyLeader" property="isCompanyLeader" jdbcType="INTEGER" />
@@ -73,7 +73,7 @@
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="apply_date" property="applyDate" jdbcType="DATE" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
@@ -317,7 +317,7 @@
         #{number,jdbcType=VARCHAR},
       </if>
       <if test="applyDate != null" >
-        #{applyDate,jdbcType=DATE},
+        #{applyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="recruitId != null" >
         #{recruitId,jdbcType=INTEGER},
