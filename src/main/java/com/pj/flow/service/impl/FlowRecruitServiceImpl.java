@@ -121,13 +121,17 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	@Override
 	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
 		List<FlowRecruit> list = new ArrayList<FlowRecruit>();
-		if(state == 4){
+		switch (state) {
+		case 1:case 3:
+			list = flowRecruitMapper.selectTodoByInRecruit(userId, companyId, username, state);
+			break;
+		case 2:
+			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
+			break;
+		case 4:
 			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位（实际与申请人信息一致）
 			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
-		}else if(state == 1){
-			list = flowRecruitMapper.selectTodoByInRecruit(userId, companyId, username, state);
-		}else{
-			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
+			break;
 		}
 		return list;
 	}

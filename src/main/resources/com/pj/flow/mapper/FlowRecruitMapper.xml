@@ -104,7 +104,7 @@
 		c.name as companyName, pn.name as positionName, entry.id entryId
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
-			left join flow_entry entry on entry.recruit_id = r.id
+			left join flow_entry entry on entry.recruit_id = r.id AND entry.state=1
 			inner join t_user u on u.id = r.apply_id
 				<if test="companyId != null" >
 			        and u.companyid = #{companyId}
