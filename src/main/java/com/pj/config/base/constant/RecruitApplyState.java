@@ -41,13 +41,13 @@ public enum RecruitApplyState {
 	public void setState(int state) {
 		this.state = state;
 	}
-	/*public static String getResultName(int result) {
+	public static String getResultName(int state) {
 		for (RecruitApplyState recruitState : values()) {
-			if(recruitState.getState() == result){
-				return resultResult.getStateName();
+			if(recruitState.getState() == state){
+				return recruitState.getStateName();
 			}
 		}
 		return null;
-	}*/
+	}
 	
 }

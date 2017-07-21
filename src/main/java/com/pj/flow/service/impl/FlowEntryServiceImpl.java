@@ -1,8 +1,6 @@
 package com.pj.flow.service.impl;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
@@ -18,7 +16,6 @@ import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.EntryApplyState;
-import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
@@ -39,8 +36,6 @@ import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowActionLogService;
 import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitTodoService;
-import com.pj.message.pojo.MessageContent;
-import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.SalaryMapper;
 import com.pj.system.mapper.UserMapper;
@@ -74,8 +69,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private SalaryService salaryService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private MessageContentService messageContentService;
 	@Autowired
 	private DempService dempService;
 	@Autowired
@@ -192,7 +185,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		/**
 		 * 	保存入职消息通知
 		 */
-		MessageContent content = new MessageContent();
+		/*MessageContent content = new MessageContent();
 		//	查询招聘表
 		if(flowRecruit != null){
 			String names = this.dempService.selectDempParentNameById(flowRecruit.getDempId());
@@ -207,7 +200,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			content.setTitle(MessageType.ENTRY_MES.getDesc());
 			content.setType(MessageType.ENTRY_MES.getValue());
 		}
-		messageContentService.addUnapprovedMessage(content);
+		messageContentService.addUnapprovedMessage(content);*/
 		
 		/**************************************/
 		/*************获取并保存审批人员*************/
@@ -303,7 +296,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		FlowActionLog record = new FlowActionLog();
 		record.setEntryId(flowEntry.getId());
 		record.setRecruitId(flowEntry.getRecruitId());
-		record.setOperateTime(new Date());
+		record.setOperateTime(new Date());	
 		record.setStatus(ActionLogOperation.SEND_OFFER.getValue());
 		record.setOpinion(user.getUsername());
 		flowActionLogService.insert(record );
@@ -316,16 +309,15 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		offer.setCompanyPhone(company.getContact());
 		offer.setContactsEmail(user.getCompanyEmail());
 		//	设置抄送人
-		Object[] ccEmail = null;
+		String[] ccEmail = null;
 		if(StringUtils.isNotBlank(usernames)){
-			Set<String> set = new HashSet<>();
 			String[] emails = usernames.split(",");
+			ccEmail = new String[emails.length];
 			for (int i = 0; i < emails.length; i++) {
 				if(StringUtils.isNotBlank(emails[i].toString())){
-					set.add(emails[i]);
+					ccEmail[i] = emails[i].trim();
 				}
 			}
-			ccEmail = set.toArray();
 		}
 		//	获取offer模板
 		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");

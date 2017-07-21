@@ -41,4 +41,14 @@ public interface MessageContentService extends BaseService<MessageContent,Intege
 	 */
 	List<MessageContent> selectMessageAllByEamilAndNotificationType(String email, Integer notificationType);
 
+	/**
+	 * 	
+	 *	@author 	GFF
+	 *	@date		2017年7月21日下午5:42:50	
+	 * 	@param content
+	 * 	@param applicantId
+	 * 	@param postId
+	 */
+	public void addMessageNotifyingPeople(MessageContent content, Integer applicantId, Integer postId);
+
 }

@@ -39,4 +39,8 @@ public interface Constant {
 	 */
 	public static final String POSITION ="PO";
 	
+	/**
+	 * 	消息通知人员
+	 */
+	public static final Integer messageCenterMenuId = 46 ;
 }

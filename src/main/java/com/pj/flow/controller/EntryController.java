@@ -35,9 +35,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
-import com.pj.utils.OfferUtils;
 import com.pj.utils.RequestUtils;
-import com.pj.utils.SendEmailUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -294,10 +292,11 @@ public class EntryController extends BaseController{
 	@ApiOperation(value = "发送offer", httpMethod = "GET", response=MappingJacksonValue.class, notes ="发送offer")
 	@RequestMapping("/testOffer.do")
 	public @ResponseBody MappingJacksonValue testOffer() throws AddressException, MessagingException{
-		FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(1, "hujingjing@pj-l.com");
-		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
-		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
-		SendEmailUtils.sendMessage("zhangyiteng@pj-l.com", "Zhang123456", "1315697146@qq.com", flowOffer.getCompany()+"offer", string, null);
+//		FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(249, "zhangyiteng@pj-l.com");
+//		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
+//		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
+		flowEntryService.sendOffer("1315697146@qq.com", "gaofeifan@pj-l.com,limengyun@pj-l.com","9", 249, "zhangyiteng@pj-l.com", "9", "Zhang123456");
+//		SendEmailUtils.sendMessage("zhangyiteng@pj-l.com", "Zhang123456", "1315697146@qq.com", flowOffer.getCompany()+"offer", string, new String[]{"gaofeifan@pj-l.com","limengyun@pj-l.com"});
 		return null;
 	}
 	

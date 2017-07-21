@@ -17,6 +17,7 @@ import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthMenuService;
+import com.pj.config.base.constant.Constant;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.PostMapper;
@@ -38,7 +39,6 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 	@Resource
 	private PostMapper postMapper;
 	
-	private static final Integer messageCenterMenuId = 46 ;
 
 	@Override
 	public MyMapper<AuthMenu> getMapper() {
@@ -171,7 +171,7 @@ public class AuthMenuServiceImpl extends AbstractBaseServiceImpl<AuthMenu, Integ
 	@Override
 	public List<AuthUser> selectUserByMessageCenterId() {
 		AuthUser record = new AuthUser();
-		record.setMenuid(messageCenterMenuId);
+		record.setMenuid(Constant.messageCenterMenuId);
 		List<AuthUser> list = this.authUserMapper.select(record );
 		return list;
 	}

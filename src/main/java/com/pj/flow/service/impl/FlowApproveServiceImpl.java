@@ -249,18 +249,19 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		FlowRecruit recruit = null;
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
-			recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+			recruit = this.flowRecruitMapper.selectById(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
 			content.setApplicatName(user.getUsername());
-			content.setApplicatPosition(user.getPositionname());
-			if (user.getDempid() != null) {
-				String names = this.dempService.selectDempParentNameById(user.getDempid());
+			content.setApplicatPosition(recruit.getPositionName());
+			if (recruit.getApplyDempId() != null) {
+				String names = this.dempService.selectDempParentNameById(recruit.getApplyDempId());
 				content.setApplicatDemp(names);
 			}
 			content.setApplyTime(recruit.getApplyDate());
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
+			content.setCompanyName(recruit.getCompanyName());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
@@ -268,6 +269,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				content.setApplicatName(flowEntry.getUsername());
 				content.setTitle(MessageType.ENTRY_MES.getDesc());
 				content.setType(MessageType.ENTRY_MES.getValue());
+				content.setCompanyName(flowEntry.getCompanyName());
 				content.setApplicatId(flowUserApplication.getFormId());
 				String names = this.dempService.selectDempParentNameById(flowEntry.getDempId());
 				content.setApplicatDemp(names);
@@ -277,7 +279,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				}
 				recruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 			}
-		
 		}
 		if(recruit.getResult() != null){
 			String resultName = RecruitApplyResult.getResultName(recruit.getResult());
@@ -285,9 +286,11 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setResult(resultName);
 		}
 		if(recruit.getState() != null){
-			
+			String stateName = RecruitApplyState.getResultName(recruit.getState());
+			stateName = StringUtils.isNoneBlank(stateName) ? stateName : null;
+			content.setState(stateName);
 		}
-		messageContentService.addApprovedMessage(content , flowUserApplication.getId());
+		messageContentService.addMessageNotifyingPeople(content ,flowUserApplication.getUserId(), recruit.getPostId());
 	}
 
 	/**
@@ -300,7 +303,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			flowEntry.setState(entryState);
 			flowEntry.setResult(entryResult);
 			flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
-			
 			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(formId);
 			flowRecruit.setState(entryReState);
 			flowRecruit.setResult(entryReResult);
@@ -332,6 +334,4 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	public List<FlowApprove> selectNoApprovalAll() {
 		return this.flowApproveMapper.selectNoApprovalAll();
 	}
-	
-	
 }

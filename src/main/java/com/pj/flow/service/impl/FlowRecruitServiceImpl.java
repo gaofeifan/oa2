@@ -15,7 +15,6 @@ import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.EntryApplyState;
-import com.pj.config.base.constant.MessageType;
 import com.pj.config.base.constant.RecruitApplyResult;
 import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.base.constant.RecruitTodoState;
@@ -31,8 +30,6 @@ import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowUserApplication;
 import com.pj.flow.service.FlowRecruitService;
-import com.pj.message.pojo.MessageContent;
-import com.pj.message.service.MessageContentService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.UserMapper;
@@ -74,8 +71,6 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	@Resource
 	private PositionService positionService;
 	
-	@Autowired
-	private MessageContentService messageContentService;
 	
 	@Autowired
 	private AuthAgencyService authAgencyService;
@@ -245,7 +240,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		/**
 		 * 	保存提交申请的消息通知
 		 */
-		MessageContent content = new MessageContent();
+		/*MessageContent content = new MessageContent();
 		content.setApplicatDemp(names);
 		Position position = this.positionService.selectByPrimaryKey(user.getPositionid());
 		if(position != null){
@@ -256,7 +251,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		content.setApplicatName(t.getUsername());
 		content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 		content.setType(MessageType.RECRUITMENT_MES.getValue());
-		messageContentService.addUnapprovedMessage(content);
+		messageContentService.addUnapprovedMessage(content);*/
 		
 		/**
 		 * 	获取审批流程人员

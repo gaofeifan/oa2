@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthMenuService;
+import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.constant.NotificationType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -22,6 +23,8 @@ import com.pj.message.pojo.MessageContent;
 import com.pj.message.service.MessageContentService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.UserService;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author GFF
@@ -50,6 +53,9 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 	@Resource
 	private AuthMenuService authMenuService;
 
+	@Resource
+	private AuthUserService authUserService;
+	
 	@Override
 	public MyMapper<MessageContent> getMapper() {
 		return messageContentMapper;
@@ -94,7 +100,7 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 	public List<MessageContent> selectMessageAllByEamilAndNotificationType(String email, Integer notificationType) {
 		User user = this.userService.selectByEamil(email);
 		MessageContent mc = new MessageContent();
-		mc.setNotificationType(notificationType);
+//		mc.setNotificationType(notificationType);
 		mc.setApplicatId(user.getId());
 		return this.messageContentMapper.selectMessageContentByUserIdAndNotificationType(mc);
 	}
@@ -134,5 +140,36 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		formMessageTemplate.addMessageContent(content);
 		formMessageTemplate.addMessageViewers(ids);
 		formMessageTemplate.messageNotification();
+	}
+	
+	
+	/**
+	 * 添加消息通知人员
+	 * 
+	 * @author GFF
+	 * @date 2017年6月26日上午10:55:37
+	 * @param messageTemplate
+	 */
+	@Override
+	public void addMessageNotifyingPeople(MessageContent content, Integer applicantId,Integer postId) {
+		
+		// 根据表单id查询所有审批人员
+//		Set<Integer> ids = getAssessingOfficer(applyId);
+		// 查询所有具有消息中心权限的的人员
+		Set<Integer> ids = getMessageCenterAuthorizedPersonnel();
+		User user = selectPostprincipal(postId);
+		if(user != null){
+			ids.add(user.getId());
+		}
+		ids.add(applicantId);
+		saveMessageNotification(content, ids);
+	}
+	
+	
+	/**
+	 * 	获取当前岗位的招聘负责人
+	 */
+	private User selectPostprincipal(Integer postId){
+		return authUserService.getAuthUserByPost(postId, "recruit");
 	}
 }

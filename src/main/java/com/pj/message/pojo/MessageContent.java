@@ -40,6 +40,9 @@ public class MessageContent {
 	
 	@Column
 	private String applicatDemp;
+	
+	@Column
+	private String companyName;
 
 	@Column
 	private Integer notificationType;
@@ -136,6 +139,14 @@ public class MessageContent {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	@Override

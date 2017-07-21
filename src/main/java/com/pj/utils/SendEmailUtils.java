@@ -26,7 +26,7 @@ public class SendEmailUtils {
 	private static final String HOST = "smtp.pj-l.com";
 
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
-			String content, Object[] ccEmail) throws AddressException, MessagingException  {
+			String content, String[] ccEmail) throws AddressException, MessagingException  {
 		// 配置信息
 		Properties pro = new Properties();
 		pro.put("mail.host", HOST);
@@ -42,7 +42,7 @@ public class SendEmailUtils {
 			if (ccEmail != null && ccEmail.length != 0) {
 				InternetAddress[] addresss = new InternetAddress[ccEmail.length];
 				for (int i = 0; i < ccEmail.length; i++) {
-					addresss[i] = new InternetAddress(ccEmail[i].toString());
+					addresss[i] = new InternetAddress(ccEmail[i]);
 				}
 				message.setRecipients(Message.RecipientType.CC, addresss);
 			}
