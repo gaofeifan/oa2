@@ -236,9 +236,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						//保存
 						for (Integer postId : postIds) {
 							Post innerPost = postMapper.selectByPrimaryKey(postId);
-							String signNum = innerPost.getSignNum();
 							
-							insertAuthUserByPost(menuId, userid, menuids, postId, signNum);
+							insertAuthUserByPost(menuId, userid, menuids, innerPost);
 						}
 						
 					}else{
@@ -264,9 +263,8 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 						//保存
 						for (Integer postId : postIds) {
 							Post innerPost = postMapper.selectByPrimaryKey(postId);
-							String signNum = innerPost.getSignNum();
 							
-							insertAuthUserByPost(menuId, userid, menuids, postId, signNum);
+							insertAuthUserByPost(menuId, userid, menuids, innerPost);
 						}
 						
 					}else{
@@ -277,11 +275,12 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 					}
 					
 				}else if (number.startsWith("ST")) {
-					Organization post = postMapper.selectByNumber(number);
+					Organization organization = postMapper.selectByNumber(number);
 					if(isSelected == 1){
-						insertAuthUserByPost(menuId, userid, menuids, post.getId(), post.getSignNum());
+						Post post = postMapper.selectByPrimaryKey(organization.getId());
+						insertAuthUserByPost(menuId, userid, menuids, post);
 					}else{
-						authUserMapper.deleteByUserMenuPost(userid, menuId, post.getId());
+						authUserMapper.deleteByUserMenuPost(userid, menuId, organization.getId());
 					}
 					
 				}
@@ -303,16 +302,15 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 		allPostIds.removeAll(otherAuthPosts);
 		for(Integer postId : allPostIds){
 			Post post = postMapper.selectByPrimaryKey(postId);
-			String signNum = post.getSignNum();
 			//保存权限
-			insertAuthUserByPost(thirdMenuId, userid, menuids, postId, signNum);
+			insertAuthUserByPost(thirdMenuId, userid, menuids, post);
 		}
 	}
 
 	//根据post保存权限
-	private void insertAuthUserByPost(Integer menuId, Integer userid, String menuids, Integer postId, String signNum) {
+	private void insertAuthUserByPost(Integer menuId, Integer userid, String menuids, Post post) {
 		
-		AuthUser sqlAuthUser = authUserMapper.selectByUserMenuPost(userid, menuId, postId);
+		AuthUser sqlAuthUser = authUserMapper.selectByUserMenuPost(userid, menuId, post.getId());
 		if(sqlAuthUser == null){
 			AuthUser authUser = new AuthUser();
 			authUser.setMenuid(menuId);
@@ -320,8 +318,10 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			authUser.setType("post");
 			authUser.setUserid(userid);
 			
-			authUser.setPostid(postId);
-			authUser.setPostSignNum(signNum);
+			authUser.setPostid(post.getId());
+			authUser.setPostSignNum(post.getSignNum());
+			authUser.setCompanyid(post.getCompanyId());
+			authUser.setDempid(post.getDempId());
 			
 			authUserMapper.insertSelective(authUser);
 		}

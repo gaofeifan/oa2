@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
@@ -53,7 +54,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		 * 存在则number+1，不存在则新增
 		 * 已审核，则会添加审核数据,原来已提交个数减一
 		 */
-		if("recruit".equals(applyType.trim())){
+		if(ApplyType.RECRUIT.getApplyType().equals(applyType.trim())){
 //			FlowRecruitTodo todo = flowRecruitTodoMapper.selectByRecruitId(applyId, RecruitTodoState.IN_RECRUIT.getState());
 //			if(todo != null){
 //				int number = todo.getNumber();
@@ -67,7 +68,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 				todo.setState(RecruitTodoState.IN_RECRUIT.getState());
 				flowRecruitTodoMapper.insert(todo);
 //			}
-		}else if("entry".equals(applyType.trim())){
+		}else if(ApplyType.ENTRY.getApplyType().equals(applyType.trim())){
 			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(applyId);
 			flowRecruitTodo.setState(RecruitTodoState.HAS_APPROVED.getState());
 			//修改状态为state的待办表

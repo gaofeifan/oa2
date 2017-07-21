@@ -23,11 +23,13 @@ import com.pj.config.base.tool.NumberTool;
 import com.pj.config.web.controller.SystemManageController;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Organization;
+import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
 import com.pj.system.service.DempService;
 import com.pj.system.service.PostService;
 import com.pj.system.service.SessionProvider;
 import com.pj.system.service.UserService;
+import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -209,12 +211,12 @@ public class CompanyController extends SystemManageController{
 	public Object getCompanysByAuth(HttpServletResponse response,
 			HttpServletRequest request){
 		try {
-			//得到当前登录用户  # TODO
-//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-//			User user = this.userService.selectByEamil("pek.yangguang@medilink.com.cn");
+			//得到当前登录用户  
+			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+			User user = this.userService.selectByEamil(email);
 			
-//			List<Company> companys = companyService.getByAuthUser(user.getId());
-			List<Company> companys = companyService.selectNotDeleteALL();
+			List<Company> companys = companyService.getByAuthUser(user.getId());
+//			List<Company> companys = companyService.selectNotDeleteALL();
 			return this.successJsonp(companys);
 		} catch (Exception e) {
 			logger.error("根据用户权限查询所负责公司信息" + e.getMessage());

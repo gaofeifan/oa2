@@ -366,8 +366,8 @@ public class RecruitController extends BaseController{
 			@ApiParam(value = "招聘表id", required = true)@RequestParam(value = "recruitId", required = true)Integer recruitId){
 		MappingJacksonValue map;
 		try {
-			flowRecruitService.checkState(recruitId);
-			map = this.successJsonp(null);
+			boolean flag = flowRecruitService.checkState(recruitId);
+			map = this.successJsonp(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());

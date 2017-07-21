@@ -6,7 +6,7 @@
     <result column="recordid" property="recordid" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
     <result column="positionid" property="positionid" jdbcType="INTEGER" />
-    <result column="handledate" property="handledate" jdbcType="DATE" />
+    <result column="handledate" property="handledate" jdbcType="TIMESTAMP" />
     <result column="handleidea" property="handleidea" jdbcType="VARCHAR" />
     <result column="checkstatus" property="checkstatus" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />

@@ -17,7 +17,7 @@ public enum RecruitApplyState {
 	IN_RECRUIT_APPROVAL("招聘审批中", 1),
 	RECRUIT_APPROVED("招聘已审批", 2),
 	IN_ENTRY_APPROVAL("入职审批中", 3),
-	ENTRY_APPROVED("入职审批中", 4),
+	ENTRY_APPROVED("入职已审批", 4),
 	IN_OFFER("已发offer", 5),
 	FILING("已建档", 6);	
 	
