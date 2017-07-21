@@ -38,4 +38,11 @@ public interface AuthMenuMapper extends MyMapper<AuthMenu> {
 
 	//得到默认菜单
 	List<AuthMenu> selectDefaults(int grade);
+
+	/**
+	 * 根据菜单名得到菜单
+	 * @param name
+	 * @return
+	 */
+	AuthMenu selectByName(String name);
 }

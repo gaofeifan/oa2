@@ -194,7 +194,7 @@
 	    ORDER BY e.apply_date DESC
   </select>
   <select id="selectByRecruitId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	SELECT * from flow_recruit where recruit_id = #{recruitId}
+  	SELECT * from flow_entry where recruit_id = #{recruitId}
 	    ORDER BY apply_date DESC
   </select>
   <insert id="insertEntry" parameterType="com.pj.flow.pojo.FlowEntry" useGeneratedKeys="true" keyProperty="id">

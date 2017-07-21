@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.auth.service.AuthUserService;
 import com.pj.config.web.controller.SystemManageController;
+import com.pj.system.pojo.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -160,6 +161,22 @@ public class AuthUserController extends SystemManageController{
 			e.printStackTrace();
 			logger.error("【AuthUserController.saveDefaultAuth】"+e.getMessage());
 			return this.successJsonp(this.error("保存失败"+e.getMessage()));
+		}
+		
+	}
+	@RequestMapping(value="/getAuthUserByPost.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "得到负责岗位的人事user", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue getAuthUserByPost(
+			@ApiParam(value = "岗位ID", required = true) @RequestParam(value = "postId", required = true) Integer postId,
+			@ApiParam(value = "申请类型（招聘:recruit, 入职:entry）", required = true) @RequestParam(value = "type", required = true) String type){
+		
+		try {
+			User user = authuserService.getAuthUserByPost(postId, type);
+			return this.successJsonp(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("【AuthUserController.saveDefaultAuth】"+e.getMessage());
+			return this.successJsonp(this.error("得到负责岗位的人事user失败"+e.getMessage()));
 		}
 		
 	}

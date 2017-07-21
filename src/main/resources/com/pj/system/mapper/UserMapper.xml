@@ -236,5 +236,10 @@
 		and u.username = #{username} and u.isdelete = 0 -->
 		
 	</select>
+	<select id="getUserByAuthPost" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from t_user
+		where id = (select userid from auth_user where postid = #{postId} and menuid = #{menuId})
+	</select>
 </mapper>
 

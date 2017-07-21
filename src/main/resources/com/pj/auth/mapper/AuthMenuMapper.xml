@@ -86,4 +86,7 @@
 	<select id="selectDefaults" parameterType="int" resultMap="BaseResultMap">
 		select * from auth_menu where default_auth = 1 and grade = #{grade}
 	</select>
+	<select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from auth_menu where name = #{name}
+	</select>
 </mapper>

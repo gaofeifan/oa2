@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pj.auth.pojo.AuthUser;
 import com.pj.config.base.service.BaseService;
+import com.pj.system.pojo.User;
 
 public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 
@@ -40,5 +41,13 @@ public interface AuthUserService extends BaseService<AuthUser, Integer>  {
 	 * @param userid
 	 */
 	void insertDefaultAuthUser(Integer userid);
+
+	/**
+	 * 得到负责岗位的人事user
+	 * @param postId
+	 * @param type
+	 * @return
+	 */
+	User getAuthUserByPost(Integer postId, String type);
 	
 }
