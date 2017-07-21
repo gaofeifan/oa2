@@ -18,13 +18,16 @@ import com.pj.auth.mapper.AuthUserMapper;
 import com.pj.auth.pojo.AuthMenu;
 import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthUserService;
+import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.PostMapper;
+import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.Organization;
 import com.pj.system.pojo.Post;
+import com.pj.system.pojo.User;
 import com.pj.system.service.CompanyService;
 import com.pj.utils.redis.RedisUtil;
 
@@ -37,6 +40,9 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private UserMapper userMapper;
 	
 	@Resource
 	private CompanyMapper companyMapper;
@@ -806,6 +812,24 @@ public class AuthUserServiceImpl extends AbstractBaseServiceImpl<AuthUser, Integ
 			String menuids = topFid + "-" + fid + "-" + menuId;
 			insertAuthUser(userid, menuId, menuids);
 		}
+	}
+
+	@Override
+	public User getAuthUserByPost(Integer postId, String type) {
+		Integer menuId = null;
+		if(type.equals(ApplyType.RECRUIT.getApplyType())){
+			AuthMenu authMenu = authMenuMapper.selectByName("管理招聘待办");
+			if(authMenu != null){
+				menuId = authMenu.getId();
+				}
+		}else if(type.equals(ApplyType.ENTRY.getApplyType())){
+			AuthMenu authMenu = authMenuMapper.selectByName("管理建档待办");
+			if(authMenu != null){
+				menuId = authMenu.getId();
+				}
+		}
+		User user = userMapper.getUserByAuthPost(postId, menuId);
+		return user;
 	}
 	
 	

@@ -57,7 +57,7 @@
 		GROUP BY auth_menu.id,auth_menu.name,auth_menu.fid,auth_menu.post
 	</select>
 	<select id="GetOneMenubyUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select t1.id,t1.name,t1.img,t1.href from auth_menu t1
+		select t1.id,t1.name,t1.img,t1.href,t1.post,t1.default_auth from auth_menu t1
 		LEFT JOIN auth_menu t2 on t1.id=t2.fid
 		LEFT JOIN auth_menu t3 on t2.id=t3.fid
 		where t3.id in (select menuid from auth_user where userid=#{userid}) OR t1.auth=0 
@@ -65,12 +65,13 @@
 	</select>
 	
 	<select id="GetTwoMenubyUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select t2.id,t2.name,t2.href from auth_menu t1
+		select t2.id,t2.name,t2.href,t2.post,t2.default_auth from auth_menu t1
 		LEFT JOIN auth_menu t2 on t1.id=t2.fid
 		LEFT JOIN auth_menu t3 on t2.id=t3.fid
 		where  t1.id=#{fid}  and t2.name !='消息中心' and t3.id in (select menuid from auth_user where userid=#{userid}) OR t1.auth=0 and t2.name is not null
 		GROUP BY t2.id,t2.name,t2.href
 	</select>
+	
 	<select id="GetAuthMenubyUserid" resultType="java.lang.Integer" >
 		select COUNT(t3.id)as con  from auth_menu t1
 		LEFT JOIN auth_menu t2 on t1.id=t2.fid
@@ -85,5 +86,8 @@
 	</select>
 	<select id="selectDefaults" parameterType="int" resultMap="BaseResultMap">
 		select * from auth_menu where default_auth = 1 and grade = #{grade}
+	</select>
+	<select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from auth_menu where name = #{name}
 	</select>
 </mapper>

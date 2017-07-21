@@ -59,4 +59,13 @@ public interface UserMapper extends MyMapper<User> {
 	 * @return
 	 */
 	List<User> selectByNameAndCompanyId(@Param(value="companyid") Integer companyid, @Param(value="username") String username);
+
+	/**
+	 * 得到负责岗位的人事user
+	 * @author limr
+	 * @param postId
+	 * @param menuId
+	 * @return
+	 */
+	User getUserByAuthPost(@Param(value="postId")Integer postId, @Param(value="menuId") Integer menuId);
 }
