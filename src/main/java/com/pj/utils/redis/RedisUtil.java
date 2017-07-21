@@ -197,7 +197,8 @@ public class RedisUtil {
      */
 
 
-    public static void setList(String key, List value) {
+    @SuppressWarnings("rawtypes")
+	public static void setList(String key, List value) {
         try {
             if (!StringUtils.isEmpty(key) && value != null) {
                 byte[] bytes = SerializeUtil.serializeList(value);
@@ -229,7 +230,8 @@ public class RedisUtil {
      * @param key
      * @return
      */
-    public static List getList(String key) {
+    @SuppressWarnings("rawtypes")
+	public static List getList(String key) {
         List result = null;
         Jedis jedis = null;
         try {

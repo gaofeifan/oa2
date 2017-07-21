@@ -122,15 +122,25 @@ public class UserController extends BaseController {
 
 	@ApiOperation(value = "根据用户名称查询", httpMethod = "GET", response = MappingJacksonValue.class)
 	@RequestMapping(value = "/selectUserByUsername.do", method = RequestMethod.GET)
-	public @ResponseBody MappingJacksonValue selectUserByUsername(@ApiParam("用户名称") @RequestParam("username") String username){
+	public @ResponseBody MappingJacksonValue selectUserByUsername(@ApiParam("用户名称") @RequestParam("username") String username,@ApiParam("用户名称") @RequestParam(name="dempId",required=false) Integer dempId){
 		try {
 			List<User> users = this.userService.selectUserByUsername(username);
 			if(users.size() == 0){
 				return this.errorToJsonp("该用户不存在");
+			}else if(users.size() == 1){
+				return this.successJsonp(users.get(0));
+			}else {
+				User record = new User();
+				record.setUsername(username);
+				record.setIsdelete(0);
+				record.setDempid(dempId);
+				List<User> list = this.userService.select(record );
+				if(list.size() == 0){
+					return this.errorToJsonp("该部门下没有该用户");
+				}
+				return this.successJsonp(list.get(0));
 			}
-			return this.successJsonp(users);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return this.errorToJsonp("查询异常"+e.getMessage());
 		}
 	}
