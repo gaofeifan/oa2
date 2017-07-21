@@ -58,7 +58,7 @@ public class AuthMenuController  extends BaseController{
 			List<AuthMenu> authmenus = this.authMenuService.GetMenubyUserid(grade, auth, userid);
 			return this.successJsonp(authmenus);
 		} catch (Exception e) {
-			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
+			logger.error("【AuthMenuController.Authlist】"+e.getMessage());
 			e.printStackTrace();
 		}
 		return this.successJsonp(this.error("查询菜单信息失败"));
@@ -72,7 +72,7 @@ public class AuthMenuController  extends BaseController{
 			List<AuthMenu> authmenus = this.authMenuService.GetOneMenubyUserid(userid);
 			return this.successJsonp(authmenus);
 		} catch (Exception e) {
-			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
+			logger.error("【AuthMenuController.OneAuthlist】"+e.getMessage());
 			e.printStackTrace();
 		}
 		return this.successJsonp(this.error("查询菜单信息失败"));
@@ -87,10 +87,24 @@ public class AuthMenuController  extends BaseController{
 			List<AuthMenu> authmenus = this.authMenuService.GetTwoMenubyUserid(userid, fid);
 			return this.successJsonp(authmenus);
 		} catch (Exception e) {
-			logger.error("【AuthMenuController.GetMenubyUserid】"+e.getMessage());
+			logger.error("【AuthMenuController.TwoAuthlist】"+e.getMessage());
 			e.printStackTrace();
 		}
-		return this.successJsonp(this.error("查询菜单信息失败"));
+		return this.successJsonp(this.error("查询二级菜单信息失败"));
+	}
+	@RequestMapping(value="/ThreeAuthlist.do" , method=RequestMethod.GET)
+	@ApiOperation(value = "查询三级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
+	public @ResponseBody MappingJacksonValue ThreeAuthlist(
+			@ApiParam("二级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
+			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+		try {
+			List<AuthMenu> authmenus = this.authMenuService.GetThreeMenubyUserid(userid, fid);
+			return this.successJsonp(authmenus);
+		} catch (Exception e) {
+			logger.error("【AuthMenuController.ThreeAuthlist】"+e.getMessage());
+			e.printStackTrace();
+		}
+		return this.successJsonp(this.error("查询三级菜单信息失败"));
 	}
 	
 	@RequestMapping(value="/AuthUser.do" , method=RequestMethod.GET)

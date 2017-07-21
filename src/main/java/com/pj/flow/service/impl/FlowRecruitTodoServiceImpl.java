@@ -1,19 +1,25 @@
 package com.pj.flow.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.mapper.AuthMenuMapper;
+import com.pj.auth.pojo.AuthMenu;
 import com.pj.config.base.constant.ApplyType;
+import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
+import com.pj.flow.mapper.FlowEntryMapper;
+import com.pj.flow.mapper.FlowRecruitMapper;
 import com.pj.flow.mapper.FlowRecruitTodoMapper;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.pojo.FlowRecruitTodo;
-import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowRecruitTodoService;
 
 @Transactional
@@ -24,7 +30,13 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	private FlowRecruitTodoMapper flowRecruitTodoMapper; 
 
 	@Autowired
-	private FlowRecruitService flowRecruitService;
+	private FlowRecruitMapper flowRecruitMapper;
+	
+	@Autowired
+	private FlowEntryMapper flowEntryMapper;
+	
+	@Autowired
+	private AuthMenuMapper authMenuMapper;
 	
 	@Override
 	public MyMapper<FlowRecruitTodo> getMapper() {
@@ -61,7 +73,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 //				todo.setNumber(number + 1);
 //				flowRecruitTodoMapper.updateByPrimaryKeySelective(todo);
 //			}else{
-				FlowRecruit recruit = this.flowRecruitService.selectByPrimaryKey(applyId);
+				FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(applyId);
 				FlowRecruitTodo todo = new FlowRecruitTodo();
 				todo.setRecruitId(applyId);
 				todo.setNumber(recruit.getNeedNum());
@@ -108,6 +120,27 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(flowRecruitTodo);
 		}
 	
+	}
+
+	@Override
+	public Map<Integer, Object> getTodoTips(Integer userId) {
+		Map<Integer, Object> map = new HashMap<Integer, Object>();
+		//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
+		int recruitNum = getNumByState(userId, RecruitTodoState.IN_RECRUIT.getState());
+		//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
+		int entryNum = flowEntryMapper.getNumByAuthResult(userId, EntryApplyResult.ENTRY_AGREE.getState());
+		Integer menuId = null;
+		AuthMenu recruitMenu = authMenuMapper.selectByName("管理招聘待办");
+		if(recruitMenu != null){
+			menuId = recruitMenu.getId();
+			map.put(menuId, recruitNum);
+		}
+		AuthMenu entryMenu = authMenuMapper.selectByName("管理建档待办");
+		if(entryMenu != null){
+			menuId = entryMenu.getId();
+			map.put(menuId, entryNum);
+		}
+		return map;
 	}
 		
 

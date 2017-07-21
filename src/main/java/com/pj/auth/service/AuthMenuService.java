@@ -28,4 +28,13 @@ public interface AuthMenuService extends BaseService<AuthMenu, Integer> {
 	  
 	int GetAuthMenubyUserid(String name,Integer userid);
 
+	/**
+	 * 得到三级菜单
+	 * @author limr
+	 * @param userid
+	 * @param fid
+	 * @return
+	 */
+	List<AuthMenu> GetThreeMenubyUserid(Integer userid, Integer fid);
+
 }

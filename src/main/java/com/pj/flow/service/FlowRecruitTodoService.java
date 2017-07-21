@@ -1,5 +1,7 @@
 package com.pj.flow.service;
 
+import java.util.Map;
+
 import com.pj.config.base.service.BaseService;
 import com.pj.flow.pojo.FlowRecruitTodo;
 /**
@@ -36,5 +38,12 @@ public interface FlowRecruitTodoService extends BaseService<FlowRecruitTodo, Int
 	 * @param entryId
 	 */
 	void changeState(Integer entryId);
+
+	/**
+	 * 招聘待办和建档待办的个数
+	 * @param userId
+	 * @return
+	 */
+	Map<Integer, Object> getTodoTips(Integer userId);
 
 }
