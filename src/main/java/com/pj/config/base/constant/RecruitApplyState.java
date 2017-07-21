@@ -41,6 +41,13 @@ public enum RecruitApplyState {
 	public void setState(int state) {
 		this.state = state;
 	}
-
+	/*public static String getResultName(int result) {
+		for (RecruitApplyState recruitState : values()) {
+			if(recruitState.getState() == result){
+				return resultResult.getStateName();
+			}
+		}
+		return null;
+	}*/
 	
 }

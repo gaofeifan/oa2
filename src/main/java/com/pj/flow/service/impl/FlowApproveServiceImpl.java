@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -217,7 +218,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		//	审批人员都同意 修改
 		Integer formId = flowUserApplication.getFormId();
 		if(!agrees.contains(false)){
-			
 			flowRecruitTodoService.insertRecruitTodo(formId, applyType);
 			entryResult = EntryApplyResult.ENTRY_AGREE.getState();
 			entryState = EntryApplyState.ENTRY_APPROVED.getState();
@@ -225,7 +225,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			entryReState = RecruitApplyState.ENTRY_APPROVED.getState();
 			recruitState = RecruitApplyState.RECRUIT_APPROVED.getState();
 			recruitResult = RecruitApplyResult.RECRUIT_AGREE.getState();
-			
 			updateForm(applyType, entryState, entryResult, entryReResult, entryReState, recruitState, recruitResult,
 					formId);
 		}
@@ -236,10 +235,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			entryReState = RecruitApplyState.ENTRY_APPROVED.getState();
 			recruitState = RecruitApplyState.RECRUIT_APPROVED.getState();
 			recruitResult = RecruitApplyResult.RECRUIT_DISAGREE.getState();
-			
 			updateForm(applyType, entryState, entryResult, entryReResult, entryReState, recruitState, recruitResult,
 					formId);
-			
 			if(ApplyType.ENTRY.getApplyType().equals(applyType)){
 				//改变状态为招聘中
 				flowRecruitTodoService.changeState(flowUserApplication.getFormId());
@@ -249,9 +246,10 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		/**
 		 * 	保存消息通知
 		 */
+		FlowRecruit recruit = null;
 		MessageContent content = new MessageContent();
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
-			FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+			recruit = this.flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatId(user.getId());
 			content.setApplicatName(user.getUsername());
@@ -264,7 +262,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			content.setTitle(MessageType.RECRUITMENT_MES.getDesc());
 			content.setType(MessageType.RECRUITMENT_MES.getValue());
 		}else if(applyType.trim().equals(ApplyType.ENTRY.getApplyType())){
-			
 			FlowEntry flowEntry = this.flowEntryMapper.selectApplyInfoById(flowUserApplication.getFormId());
 			if(flowEntry != null){
 				content.setApplyTime(flowEntry.getApplyDate());
@@ -278,7 +275,17 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				if(position != null){
 					content.setApplicatPosition(position.getName());
 				}
+				recruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 			}
+		
+		}
+		if(recruit.getResult() != null){
+			String resultName = RecruitApplyResult.getResultName(recruit.getResult());
+			resultName = StringUtils.isNoneBlank(resultName) ? resultName : null;
+			content.setResult(resultName);
+		}
+		if(recruit.getState() != null){
+			
 		}
 		messageContentService.addApprovedMessage(content , flowUserApplication.getId());
 	}

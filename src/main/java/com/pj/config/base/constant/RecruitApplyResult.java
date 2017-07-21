@@ -43,5 +43,13 @@ public enum RecruitApplyResult {
 		this.result = result;
 	}
 
-	
+	public static String getResultName(int result) {
+		for (RecruitApplyResult resultResult : values()) {
+			if(resultResult.getState() == result){
+				return resultResult.getStateName();
+			}
+		}
+		return null;
+	}
+
 }

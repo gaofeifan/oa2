@@ -44,6 +44,12 @@ public class MessageContent {
 	@Column
 	private Integer notificationType;
 
+	@Column
+	private String result;
+	
+	@Column
+	private String state;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -114,6 +120,22 @@ public class MessageContent {
 
 	public void setNotificationType(Integer notificationType) {
 		this.notificationType = notificationType;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	@Override
