@@ -24,8 +24,18 @@ public class FlowRecruitTodo implements Serializable {
     private Integer number;
     
     private String reason;
+    
+    private Integer status;
 
-    public Integer getId() {
+    public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getId() {
         return id;
     }
 

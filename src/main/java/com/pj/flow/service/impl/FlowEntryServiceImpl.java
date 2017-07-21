@@ -169,15 +169,15 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		flowRecruitTodoMapper.insert(hasCommitTodo);
 //		}
 		//招聘中状态的数据减一,如只有一个则删除，多个则减一
-		/*FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
 		int num = inRecruitTodo.getNumber();
 		if(num > 1){
 			inRecruitTodo.setNumber(num - 1);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}else{
-			flowRecruitTodoMapper.delete(inRecruitTodo);
-		}*/
-		
+			inRecruitTodo.setStatus(1);
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
+		}
 		
 		//保存日志表
 		FlowActionLog log = new FlowActionLog();
