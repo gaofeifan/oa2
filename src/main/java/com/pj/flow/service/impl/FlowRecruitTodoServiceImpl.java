@@ -76,7 +76,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 				FlowRecruit recruit = this.flowRecruitMapper.selectByPrimaryKey(applyId);
 				FlowRecruitTodo todo = new FlowRecruitTodo();
 				todo.setRecruitId(applyId);
-				todo.setState(0);
+				todo.setStatus(0);
 				todo.setNeedNum(recruit.getNeedNum());
 				todo.setNumber(0);//已提交个数
 				todo.setState(RecruitTodoState.IN_RECRUIT.getState());
