@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.web.controller.BaseController;
 import com.pj.message.pojo.MessageContent;
+import com.pj.message.pojo.MessageContentUser;
 import com.pj.message.service.MessageContentService;
+import com.pj.message.service.MessageContentUserService;
+import com.pj.system.pojo.User;
 import com.pj.system.service.SessionProvider;
+import com.pj.system.service.UserService;
 import com.pj.utils.RequestUtils;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +42,11 @@ public class MessageContentController extends BaseController {
 	private  MessageContentService  messageContentService;
 	@Resource
 	private SessionProvider sessionProvider;
+	@Resource
+	private MessageContentUserService messageContentUserService;
+	@Resource
+	private UserService userService;
+	
 	@ApiOperation(value = "消息查询", httpMethod = "GET", response = MappingJacksonValue.class)
 	@RequestMapping(value="/selectMessageAll.do" , method=RequestMethod.GET)
 	public @ResponseBody MappingJacksonValue selectMessageAll(@ApiParam("消息类型 1(默认)申请已发送 2申请以审批") @RequestParam(name="notificationType",defaultValue="1",required=false) Integer notificationType ,HttpServletResponse response, HttpServletRequest request){
@@ -47,6 +56,25 @@ public class MessageContentController extends BaseController {
 			logger.debug("【MessageContentController.selectMessageAll】  邮箱"+email);
 			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp(e.getMessage());
+		}
+	}
+
+	@ApiOperation(value = "查询是否有未查看的消息", httpMethod = "GET", response = MappingJacksonValue.class)
+	@RequestMapping(value="/selectMessageIsFind.do" , method=RequestMethod.GET)
+	public @ResponseBody MappingJacksonValue selectMessageIsFind(){
+		try {
+			//得到当前登录用户
+			String email = this.getSession();
+			User user = this.userService.selectByEamil(email);
+			logger.debug("【MessageContentController.selectMessageAll】  邮箱"+email);
+			List<MessageContentUser> list = this.messageContentUserService.select(new MessageContentUser(user.getId(), null, 0));
+			if(list.size() > 0){
+				return this.successJsonp(true);
+			}
+			return this.successJsonp(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.errorToJsonp(e.getMessage());

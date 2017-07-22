@@ -17,9 +17,18 @@ public interface AuthMenuMapper extends MyMapper<AuthMenu> {
 	List<AuthMenu> GetOneMenubyUserid(@Param(value="userid") Integer userid);
 	
 	List<AuthMenu> GetTwoMenubyUserid(@Param(value="userid") Integer userid,@Param(value="fid") Integer fid);
-	  
+	
 	int GetAuthMenubyUserid(@Param(value="name") String name,@Param(value="userid") Integer userid);
 
+	/**
+	 * 得到三级菜单
+	 * @author limr
+	 * @param userid
+	 * @param fid
+	 * @return
+	 */
+	List<AuthMenu> GetThreeMenubyUserid(@Param(value="userid") Integer userid,@Param(value="fid") Integer fid);
+	
 	/**
 	 * 查询所有需要设置权限的子菜单
 	 * @author limr

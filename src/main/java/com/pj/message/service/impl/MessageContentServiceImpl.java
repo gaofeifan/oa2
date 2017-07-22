@@ -1,6 +1,7 @@
 package com.pj.message.service.impl;
 
 import java.util.List;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,9 @@ import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.service.FlowApproveService;
 import com.pj.message.mapper.MessageContentMapper;
 import com.pj.message.pojo.MessageContent;
+import com.pj.message.pojo.MessageContentUser;
 import com.pj.message.service.MessageContentService;
+import com.pj.message.service.MessageContentUserService;
 import com.pj.system.pojo.User;
 import com.pj.system.service.UserService;
 
@@ -55,6 +58,9 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 
 	@Resource
 	private AuthUserService authUserService;
+	
+	@Resource
+	private MessageContentUserService messageContentUserService;
 	
 	@Override
 	public MyMapper<MessageContent> getMapper() {
@@ -102,6 +108,11 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		MessageContent mc = new MessageContent();
 //		mc.setNotificationType(notificationType);
 		mc.setApplicatId(user.getId());
+		MessageContentUser record = new MessageContentUser();
+		record.setIsFind(1);
+		Example example = new Example(MessageContent.class);
+		example.createCriteria().andCondition("user_id = ", user.getId());
+		this.messageContentUserService.updateByExampleSelective(record ,  example);
 		return this.messageContentMapper.selectMessageContentByUserIdAndNotificationType(mc);
 	}
 

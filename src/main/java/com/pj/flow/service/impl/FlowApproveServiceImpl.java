@@ -238,8 +238,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			updateForm(applyType, entryState, entryResult, entryReResult, entryReState, recruitState, recruitResult,
 					formId);
 			if(ApplyType.ENTRY.getApplyType().equals(applyType)){
-				//改变状态为招聘中
-				flowRecruitTodoService.changeState(flowUserApplication.getFormId());
+				//入职不同意，删除已提交的数据
+				flowRecruitTodoService.changeState(flowUserApplication.getFormId(), entryState, entryResult);
 			}
 		}
 		
@@ -303,7 +303,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			flowEntry.setState(entryState);
 			flowEntry.setResult(entryResult);
 			flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
-			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(formId);
+			
+			FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 			flowRecruit.setState(entryReState);
 			flowRecruit.setResult(entryReResult);
 			flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);

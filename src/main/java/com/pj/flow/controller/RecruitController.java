@@ -24,11 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.RecruitApplyState;
-import com.pj.config.base.constant.RecruitTodoState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowApproveService;
+import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitService;
 import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.pojo.User;
@@ -64,6 +64,9 @@ public class RecruitController extends BaseController{
 	private static final Logger logger = LoggerFactory.getLogger(RecruitController.class); 
 	@Resource
 	private FlowRecruitService flowRecruitService;
+
+	@Resource
+	private FlowEntryService flowEntryService;
 	
 	@Resource
 	private FlowRecruitTodoService flowRecruitTodoService;
@@ -242,7 +245,7 @@ public class RecruitController extends BaseController{
 	/**
 	 * 	招聘待办提示,得到待办个数
 	 */
-	@ApiOperation(value = "招聘待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办提示,得到待办个数")
+	@ApiOperation(value = "招聘待办和建档待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘待办提示,得到待办个数")
 	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
 	@ResponseBody
 	public MappingJacksonValue todoTips(
@@ -252,13 +255,14 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
-			//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
-			int number = flowRecruitTodoService.getNumByState(user.getId(), RecruitTodoState.IN_RECRUIT.getState());
-			map = this.successJsonp(number);
+			
+			Map<Integer, Object> numMap = flowRecruitTodoService.getTodoTips(user.getId());
+			
+			map = this.successJsonp(numMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("招聘待办提示" + e.getMessage());
+			throw new RuntimeException("待办个数" + e.getMessage());
 		}
 		return map;
 	}

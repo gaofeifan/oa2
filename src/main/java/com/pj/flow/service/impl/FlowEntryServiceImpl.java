@@ -286,6 +286,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		flowEntry.setIsSendOffer(1);
 		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
 		
+		//已发送offer删除已审批数据
+		flowRecruitTodoService.changeState(applyId, EntryApplyState.IN_OFFER.getState(), null);
+		
+		
 		FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
 		if(flowRecruit.getResult() != null && flowRecruit.getResult() != RecruitApplyResult.ENTRY_CANCEL.getState()){
@@ -382,8 +386,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setResult(RecruitApplyResult.ENTRY_CANCEL.getState());
 		flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
-		//改变状态为招聘中
-		flowRecruitTodoService.changeState(entryId);
+		//入职撤回，招聘
+//		flowRecruitTodoService.changeState(entryId, EntryApplyResult.ENTRY_CANCEL.getState());
 	}
 	
 }
