@@ -84,12 +84,12 @@
 			LEFT JOIN t_company c ON c.id = u.companyid
 			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
-			LEFT JOIN t_position pn ON pn.id = u.positionid
-			LEFT JOIN t_demp demp on demp.id = u.dempid
+			LEFT JOIN t_position pn ON pn.id = r.position_id
+			LEFT JOIN t_demp demp on demp.id = r.demp_id
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
-			where rt.state = #{state})
+			where rt.state = #{state} and rt.status = 0)
 		
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
@@ -112,12 +112,12 @@
 			LEFT JOIN t_company c ON c.id = u.companyid
 			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
-			LEFT JOIN t_position pn ON pn.id = u.positionid
-			LEFT JOIN t_demp demp on demp.id = u.dempid
+			LEFT JOIN t_position pn ON pn.id = r.position_id
+			LEFT JOIN t_demp demp on demp.id = r.demp_id
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
-			where rt.state = #{state})
+			where rt.state = #{state} and rt.status = 0)
 		
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
@@ -134,6 +134,7 @@
 			c.name as companyName, pn.name as positionName, demp.name dempName,demp.id dempId,
 			rt.entry_id as entryId from flow_recruit_todo rt
 		inner join flow_recruit r on r.id = rt.recruit_id 
+		
 		LEFT JOIN t_demp demp on demp.id = r.demp_id
 			<if test="companyId != null" >
 		        and r.company_id = #{companyId}
@@ -148,7 +149,7 @@
 		LEFT JOIN t_company c ON c.id = u.companyid
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		where 
-			rt.state = #{state} 
+			rt.state = #{state} and rt.status = 0
 		AND e.is_send_offer = 0
 		ORDER BY e.apply_date DESC
 	</select>

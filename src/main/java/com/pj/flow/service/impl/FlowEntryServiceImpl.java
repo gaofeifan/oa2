@@ -161,16 +161,17 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		hasCommitTodo.setNumber(1);
 		flowRecruitTodoMapper.insert(hasCommitTodo);
 //		}
-		//招聘中状态的数据减一,如只有一个则删除，多个则减一
-		/*FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
+		//招聘中状态的数据减一,如只有一个则更改状态status为1，多个则减一
+		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(recruitId, RecruitTodoState.IN_RECRUIT.getState());
 		int num = inRecruitTodo.getNumber();
 		if(num > 1){
 			inRecruitTodo.setNumber(num - 1);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}else{
-			flowRecruitTodoMapper.delete(inRecruitTodo);
-		}*/
-		
+			inRecruitTodo.setStatus(1);
+			inRecruitTodo.setNumber(0);
+			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
+		}
 		
 		//保存日志表
 		FlowActionLog log = new FlowActionLog();
@@ -386,8 +387,8 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
 		flowRecruit.setResult(RecruitApplyResult.ENTRY_CANCEL.getState());
 		flowRecruitMapper.updateByPrimaryKeySelective(flowRecruit);
-		//入职撤回，招聘
-//		flowRecruitTodoService.changeState(entryId, EntryApplyResult.ENTRY_CANCEL.getState());
+		//入职撤回，招聘中+1
+		flowRecruitTodoService.changeState(entryId, EntryApplyState.IN_OFFER.getState(), EntryApplyResult.ENTRY_CANCEL.getState());
 	}
 	
 }

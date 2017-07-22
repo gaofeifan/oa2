@@ -124,7 +124,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 			list = flowRecruitMapper.selectTodoByQuery(userId, companyId, username, state);
 			break;
 		case 4:
-			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位（实际与申请人信息一致）
+			//已审核，需要查出入职时间,且公司是入职人公司,入职人部门，入职人岗位
 			list = flowRecruitMapper.selectTodoByEntryQuery(userId, companyId, username, state);
 			break;
 		}
