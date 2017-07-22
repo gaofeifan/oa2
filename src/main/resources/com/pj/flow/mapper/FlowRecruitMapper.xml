@@ -58,7 +58,7 @@
   <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		SELECT r.*, pn.name AS positionName, c.name AS companyName,
 		d.name AS dempName, p.name AS postName, ul.username AS leaderName, 
-		ur.username AS replaceName, s.total_salary AS replaceOffer FROM flow_recruit r,d.id demp_id
+		ur.username AS replaceName, s.total_salary AS replaceOffer,r.demp_id demp_id FROM flow_recruit r
 		<!-- LEFT JOIN t_user u ON r.apply_id = u.id -->
 		LEFT JOIN t_user ur ON r.replace_id = ur.id
 		LEFT JOIN t_salary s ON s.user_id = ur.id AND s.salary_type = 3

@@ -301,9 +301,11 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		try {
 			SendEmailUtils.sendMessage(email,emailPassword, iEamil, "offer-【"+offer.getUsername()+"】 "+offer.getCompany(), offerTemp, ccEmail);
 		} catch (AddressException e) {
-			throw new RuntimeException("邮箱格式有误 如:个人邮箱 lisi@163.com  抄送人 lisi@163.com,wangwu@163.com");
+			throw new RuntimeException(e.getMessage());
 		} catch (MessagingException e) {
-			throw new RuntimeException("邮箱密码错误");
+			throw new RuntimeException(e.getMessage());
+		} catch (RuntimeException e) {
+			throw new RuntimeException(e.getMessage());
 		}
 		
 		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);

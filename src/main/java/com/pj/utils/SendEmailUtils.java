@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -26,30 +27,62 @@ public class SendEmailUtils {
 	private static final String[] HOST = new String[] {"smtp.pj-l.com","smtp.medilink.com.cn"};
 	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
-		String content, String[] ccEmail) throws AddressException, MessagingException  {
-		for (String email : ccEmail) {
-		/*	if(){
-				
-			}*/
-			
+		String content, String[] ccEmail) throws AddressException, MessagingException , RuntimeException{
+		String []pjEmail = new String[ccEmail.length];
+		String []medilinkEmail = new String[ccEmail.length];
+		for (int i = 0; i < ccEmail.length; i++) {
+			if(ccEmail[i].contains(HOST[0])){
+				pjEmail[i] = ccEmail[i];
+			}else if(ccEmail[i].contains(HOST[1])){
+				medilinkEmail[i] = (ccEmail[i]);
+			}else{
+				throw new RuntimeException("抄送邮箱非企业邮箱，请填写企业邮箱");
+			}
 		}
-		
+		if(pjEmail.length > 0){
+			sendMessages(sendEmail, sendPassword, recipientEmail, title, content, pjEmail, HOST[0]);
+		}
+		if(medilinkEmail.length > 0){
+			sendMessages(sendEmail, sendPassword, recipientEmail, title, content, medilinkEmail, HOST[1]);
+		}
 	}
 	
 	private static void sendMessages(String sendEmail, String sendPassword, String recipientEmail, String title,
-			String content, String[] ccEmail) throws AddressException, MessagingException  {
+			String content, String[] ccEmail,String host)throws AddressException, MessagingException , RuntimeException   {
 		// 配置信息
 		Properties pro = new Properties();
-		pro.put("mail.host", HOST);
+		pro.put("mail.host", host);
 		pro.put("mail.transport.protocol", "smtp");
 		pro.put("mail.smtp.auth", "true");
 		Session session = Session.getInstance(pro);
-			Transport ts = session.getTransport();
+		Transport ts = null;
+		try {
+			ts = session.getTransport();
+		} catch (NoSuchProviderException e1) {
+			e1.printStackTrace();
+		}
+		try {
 			ts.connect(sendEmail, sendPassword);
-			Message message = new MimeMessage(session);
+		} catch (MessagingException e) {
+			throw new RuntimeException("账号或密码错误");
+		}
+		Message message = new MimeMessage(session);
+		try {
 			message.setFrom(new InternetAddress(sendEmail));
+		} catch (AddressException e) {
+			throw new RuntimeException("发送人邮箱有误");
+		} catch (MessagingException e) {
+			throw new RuntimeException("账号或密码错误");
+		}
+		try {
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-			// 设置抄送人z
+		} catch (AddressException e) {
+			throw new RuntimeException("收件人邮箱格式有误");
+		} catch (MessagingException e) {
+			throw new RuntimeException("账号或密码错误");
+		}
+		// 设置抄送人z
+		try {
 			if (ccEmail != null && ccEmail.length != 0) {
 				InternetAddress[] addresss = new InternetAddress[ccEmail.length];
 				for (int i = 0; i < ccEmail.length; i++) {
@@ -57,9 +90,16 @@ public class SendEmailUtils {
 				}
 				message.setRecipients(Message.RecipientType.CC, addresss);
 			}
+		} catch (MessagingException e) {
+			throw new RuntimeException("抄送人邮箱或邮箱格式有误");
+		}
+		try {
 			message.setSubject(title);
 			message.setContent(content, "text/html;charset=utf-8");
 			ts.sendMessage(message, message.getAllRecipients());
+		} catch (MessagingException e) {
+			throw new RuntimeException("账号或密码错误");
+		}
 	
 	}
 
