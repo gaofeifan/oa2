@@ -153,12 +153,12 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
 		int entryNum = flowEntryMapper.getNumByAuthResult(userId, EntryApplyResult.ENTRY_AGREE.getState());
 		Integer menuId = null;
-		AuthMenu recruitMenu = authMenuMapper.selectByName("管理招聘待办");
+		AuthMenu recruitMenu = authMenuMapper.selectByName("招聘待办");
 		if(recruitMenu != null){
 			menuId = recruitMenu.getId();
 			map.put(menuId, recruitNum);
 		}
-		AuthMenu entryMenu = authMenuMapper.selectByName("管理建档待办");
+		AuthMenu entryMenu = authMenuMapper.selectByName("建档待办");
 		if(entryMenu != null){
 			menuId = entryMenu.getId();
 			map.put(menuId, entryNum);
