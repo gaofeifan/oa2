@@ -94,7 +94,7 @@
   	left join flow_recruit r on r.id = e.recruit_id
   		and r.post_id in 
 	  		(select au.postid from auth_user au where au.userid = #{userId})
-  	where e.state = #{state} and e.status = 0
+  	where e.state = #{state} and e.status = 0 and e.is_bookbuilding = 0 AND e.is_send_offer = 1
   	<choose>
         <when test="result != null">
             and e.result = #{result}
