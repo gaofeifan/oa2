@@ -167,6 +167,43 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		}
 		return map;
 	}
+//	public Map<String, Object> getTodoTips(Integer userId) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
+//		int recruitNum = getNumByState(userId, RecruitTodoState.IN_RECRUIT.getState());
+//		//根据当前用户id得到所负责的岗位的入职状态为已发offer，结果是null的个数
+//		int entryNum = flowEntryMapper.getNumByAuthResult(userId, EntryApplyState.IN_OFFER.getState(), null);
+//		AuthMenu recruitMenu = authMenuMapper.selectByName("招聘待办");
+//		
+//		getTodo(userId, map, recruitNum, recruitMenu, ApplyType.RECRUIT.getApplyType());
+//		
+//		AuthMenu entryMenu = authMenuMapper.selectByName("建档待办");
+//		
+//		getTodo(userId, map, entryNum, entryMenu, ApplyType.ENTRY.getApplyType());
+//		
+//		return map;
+//	}
+//
+//	private void getTodo(Integer userId, Map<String, Object> map, int recruitNum, AuthMenu recruitMenu, String type) {
+//		FlowMenuUser flowMenuUser = flowMenuUserMapper.selectByUserMenuType(userId, recruitMenu.getId(), type);
+//		Integer menuId = recruitMenu.getId();
+//		if(flowMenuUser == null){
+//			map.put(menuId + "", recruitNum);
+//			map.put(type, 0);
+//			
+//			flowMenuUser = new FlowMenuUser();
+//			flowMenuUser.setIsread(1);
+//			flowMenuUser.setUserid(userId);
+//			flowMenuUser.setMenuid(menuId);
+//			flowMenuUser.setType(type);
+//			flowMenuUserMapper.insert(flowMenuUser);
+//		}else{
+//			map.put(menuId + "", recruitNum);
+//			map.put(type, flowMenuUser.getIsread());
+//			flowMenuUser.setIsread(1);
+//			flowMenuUserMapper.updateByPrimaryKeySelective(flowMenuUser);
+//		}
+//	}
 		
 
 }

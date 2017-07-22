@@ -52,8 +52,7 @@ public class AuthMenu {
 	
 	@Transient
 	private String hasChilds;
-	
-	
+
 	public Integer getDefaultAuth() {
 		return defaultAuth;
 	}

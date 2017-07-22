@@ -45,8 +45,18 @@ public class FlowUserApplication {
 	private String applyDateStr;
 	@Transient
 	private Integer applyResult;
+	@Transient
+	private Integer applyState;
 
-    public Integer getApproveId() {
+    public Integer getApplyState() {
+		return applyState;
+	}
+
+	public void setApplyState(Integer applyState) {
+		this.applyState = applyState;
+	}
+
+	public Integer getApproveId() {
 		return approveId;
 	}
 

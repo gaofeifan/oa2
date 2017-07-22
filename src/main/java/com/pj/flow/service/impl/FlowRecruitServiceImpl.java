@@ -115,6 +115,23 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 	}
 	@Override
 	public List<FlowRecruit> selectByQuery(Integer userId, Integer companyId, String username, Integer state) {
+		
+//		//把待办的置为已读
+//		AuthMenu recruitMenu = authMenuMapper.selectByName("招聘待办");
+//		
+//		FlowMenuUser flowMenuUser = flowMenuUserMapper.selectByUserMenuType(userId, recruitMenu.getId(), ApplyType.RECRUIT.getApplyType());
+//		if(flowMenuUser == null){
+//			flowMenuUser = new FlowMenuUser();
+//			flowMenuUser.setIsread(1);
+//			flowMenuUser.setUserid(userId);
+//			flowMenuUser.setMenuid(recruitMenu.getId());
+//			flowMenuUser.setType(ApplyType.RECRUIT.getApplyType());
+//			flowMenuUserMapper.insert(flowMenuUser);
+//		}else{
+//			flowMenuUser.setIsread(1);
+//			flowMenuUserMapper.updateByPrimaryKeySelective(flowMenuUser);
+//		}
+		
 		List<FlowRecruit> list = new ArrayList<FlowRecruit>();
 		switch (state) {
 		case 1:case 3:

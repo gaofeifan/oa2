@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pj.auth.mapper.AuthMenuMapper;
 import com.pj.auth.service.AuthAgencyService;
 import com.pj.config.base.constant.ActionLogOperation;
 import com.pj.config.base.constant.ApplyType;
@@ -60,6 +61,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 
 	@Resource
 	private FlowEntryMapper flowEntryMapper;
+	
+	@Resource
+	private AuthMenuMapper authMenuMapper;
 	
 	@Resource
 	private FlowRecruitTodoMapper flowRecruitTodoMapper;	
@@ -367,6 +371,24 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 //	}
 	@Override
 	public List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name) {
+//		//把待办的置为已读
+//		AuthMenu entryMenu = authMenuMapper.selectByName("建档待办");
+//		FlowMenuUser flowMenuUser = flowMenuUserMapper.selectByUserMenuType(userId, entryMenu.getId(), ApplyType.ENTRY.getApplyType());
+//		if(flowMenuUser != null){
+//			Integer isread = flowMenuUser.getIsread();
+//			if(isread != null && isread == 0){
+//				flowMenuUser.setIsread(1);
+//				flowMenuUserMapper.updateByPrimaryKeySelective(flowMenuUser);
+//			}
+//		}else{
+//			flowMenuUser = new FlowMenuUser();
+//			flowMenuUser.setIsread(1);
+//			flowMenuUser.setUserid(userId);
+//			flowMenuUser.setMenuid(entryMenu.getId());
+//			flowMenuUser.setType(ApplyType.ENTRY.getApplyType());
+//			flowMenuUserMapper.insert(flowMenuUser);
+//		}
+		
 		return flowEntryMapper.selectByTodo(userId, companyId, name);
 	}
 
