@@ -63,7 +63,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private FlowEntryMapper flowEntryMapper;
 	@Resource
 	private AuthMenuMapper authMenuMapper;
-	
+	@Resource
 	private FlowRecruitTodoMapper flowRecruitTodoMapper;	
 	@Resource
 	private SalaryMapper salaryMapper;
