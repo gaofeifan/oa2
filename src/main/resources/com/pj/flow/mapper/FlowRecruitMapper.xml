@@ -134,7 +134,7 @@
 			DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
 			DATE_FORMAT(e.entry_date,"%Y-%m-%d") as entryDateStr, 
 			c.name as companyName, pn.name as positionName, demp.name dempName,demp.id dempId,
-			rt.entry_id as entryId from flow_recruit_todo rt,post.name postName
+			rt.entry_id as entryId,post.name postName from flow_recruit_todo rt
 		inner join flow_recruit r on r.id = rt.recruit_id 
 		
 		LEFT JOIN t_demp demp on demp.id = r.demp_id
