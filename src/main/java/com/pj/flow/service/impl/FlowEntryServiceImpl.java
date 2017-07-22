@@ -377,6 +377,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		double d = Double.parseDouble(str);
 		return DigitalConversionUtils.number2CNMontrayUnit(d);
 	}
+	
 	@Override
 	public void cancelEntry(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(entryId);

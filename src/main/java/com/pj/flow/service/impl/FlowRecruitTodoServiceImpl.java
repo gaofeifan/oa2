@@ -109,7 +109,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 	
 	@Override
 	public void changeState(Integer entryId, Integer entryState, Integer entryResult) {
-		if(entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
+		if(entryResult != null && entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
 			//入职不同意，删除已提交的数据，招聘中 number+1
 			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
 			flowRecruitTodoMapper.delete(flowRecruitTodo);
@@ -123,7 +123,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			//已发offer,删除已审批
 			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
 			flowRecruitTodoMapper.delete(flowRecruitTodo);
-		}else if(entryState == EntryApplyState.IN_OFFER.getState() && entryResult == EntryApplyResult.ENTRY_CANCEL.getState()){
+		}else if(entryState != null && entryState == EntryApplyState.IN_OFFER.getState() && entryResult == EntryApplyResult.ENTRY_CANCEL.getState()){
 			FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(entryId);
 			//入职撤回，招聘中+1
 			FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowEntry.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());

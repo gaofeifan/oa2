@@ -222,8 +222,8 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 			throw new RuntimeException("申请没有该用户");
 		}
 		//申请人部门
-		String names = this.dempService.selectDempParentNameById(user.getDempid());
-		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+		String names = this.dempService.selectDempParentNameById(t.getDempId());
+		Company company = companyMapper.selectByPrimaryKey(t.getCompanyId());
 		
 		//保存中间表
 		FlowUserApplication fa = new FlowUserApplication();

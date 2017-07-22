@@ -157,14 +157,14 @@
 		ORDER BY e.apply_date DESC
 	</select>
 	<select id="selectByApplyId" resultMap="BaseResultMap">
-		SELECT r.id, r.apply_id, r.username, u.dempid as applyDempId, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
+		SELECT r.id, r.apply_id, r.username, r.demp_id as applyDempId, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, r.state, r.result
 		FROM flow_recruit r 
 		inner JOIN t_user u ON u.id = r.apply_id
 		<if test="companyId != null" >
 	        and u.companyid = #{companyId}
 	    </if>
-		LEFT JOIN t_company c ON c.id = u.companyid
+		LEFT JOIN t_company c ON c.id = r.company_id
 		WHERE 1 = 1
 		<if test="applyId != null" >
 	        and r.apply_id = #{applyId}
