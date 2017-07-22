@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
-import com.pj.config.base.constant.EntryApplyResult;
-import com.pj.config.base.constant.EntryApplyState;
-import com.pj.config.base.constant.RecruitApplyResult;
-import com.pj.config.base.constant.RecruitApplyState;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowRecruit;
@@ -136,39 +132,39 @@ public class ApproveController extends BaseController{
 			//如果是0，查询未处理的且 是否可审批(0 可审批  1 不可审批)为0的数据列表
 			
 			List<FlowUserApplication> list = flowApproveService.searchMyApproves(user.getId(), checkstatus);		
-			for(FlowUserApplication fa : list){
-				//申请结果
-				int result = 0;
-				//根据applyType判断是招聘还是入职,
-				//如果是招聘，则判断result是（5入职同意6入职不同意 7入职完结）,则是（1招聘同意）
-				String applyType = fa.getApplyType();
-				if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
-					//招聘
-					FlowRecruit recruit = flowRecruitService.selectByPrimaryKey(fa.getFormId());
-					Integer integer = recruit.getResult();
-					if(integer != null){
-						result = integer;
-						if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
-								 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
-							result = RecruitApplyResult.RECRUIT_AGREE.getState();
-						}
-					}else if(integer == null && recruit.getState() == RecruitApplyState.IN_OFFER.getState()){
-						result = RecruitApplyResult.RECRUIT_AGREE.getState();
-					}
-					//result = RecruitApplyState.valueOf(state).getStateName();
-				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
-					//入职
-					FlowEntry entry = flowEntryService.selectByPrimaryKey(fa.getFormId());
-					Integer integer = entry.getResult();
-					if(integer != null){
-						result = integer;
-					}else if(integer == null && entry.getState() == EntryApplyState.IN_OFFER.getState()){
-						result = EntryApplyResult.ENTRY_DISAGREE.getState();
-					}
-//					result = EntryApplyState.valueOf(state).getStateName();
-				}
-				fa.setApplyResult(result);
-			}
+//			for(FlowUserApplication fa : list){
+//				//申请结果
+//				int result = 0;
+//				//根据applyType判断是招聘还是入职,
+//				//如果是招聘，则判断result是（5入职同意6入职不同意 7入职完结）,则是（1招聘同意）
+//				String applyType = fa.getApplyType();
+//				if (applyType.equals(ApplyType.RECRUIT.getApplyType())) {
+//					//招聘
+//					FlowRecruit recruit = flowRecruitService.selectByPrimaryKey(fa.getFormId());
+//					Integer integer = recruit.getResult();
+//					if(integer != null){
+//						result = integer;
+//						if((result == RecruitApplyResult.ENTRY_AGREE.getState()) || (result == RecruitApplyResult.ENTRY_DISAGREE.getState())
+//								 || (result == RecruitApplyResult.ENTRY_SUCCESS.getState())){
+//							result = RecruitApplyResult.RECRUIT_AGREE.getState();
+//						}
+//					}else if(integer == null && recruit.getState() == RecruitApplyState.IN_OFFER.getState()){
+//						result = RecruitApplyResult.RECRUIT_AGREE.getState();
+//					}
+//					//result = RecruitApplyState.valueOf(state).getStateName();
+//				}else if(applyType.equals(ApplyType.ENTRY.getApplyType())){
+//					//入职
+//					FlowEntry entry = flowEntryService.selectByPrimaryKey(fa.getFormId());
+//					Integer integer = entry.getResult();
+//					if(integer != null){
+//						result = integer;
+//					}else if(integer == null && entry.getState() == EntryApplyState.IN_OFFER.getState()){
+//						result = EntryApplyResult.ENTRY_DISAGREE.getState();
+//					}
+////					result = EntryApplyState.valueOf(state).getStateName();
+//				}
+//				fa.setApplyResult(result);
+//			}
 			map = this.successJsonp(list);
 		} catch (Exception e) {
 			e.printStackTrace();
