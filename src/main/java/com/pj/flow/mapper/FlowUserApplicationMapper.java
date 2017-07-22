@@ -23,8 +23,8 @@ public interface FlowUserApplicationMapper extends MyMapper<FlowUserApplication>
 	 * @param checkstatus
 	 * @return
 	 */
-	List<FlowUserApplication> searchMyRecruitApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus, @Param(value = "type") String type);
-	List<FlowUserApplication> searchMyEntryApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus, @Param(value = "type") String type);
+	List<FlowUserApplication> searchMyApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus);
+//	List<FlowUserApplication> searchMyEntryApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus, @Param(value = "type") String type);
 
 	/**
 	 * 根据申请表id和申请类型查询
