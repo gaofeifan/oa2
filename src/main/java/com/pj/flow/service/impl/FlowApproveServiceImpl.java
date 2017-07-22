@@ -88,8 +88,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	@Override
 	public List<FlowUserApplication> searchMyApproves(Integer userid, Integer checkstatus) {
 		List<FlowUserApplication> list = new ArrayList<FlowUserApplication>();
-		List<FlowUserApplication> recruitList = flowUserApplicationMapper.searchMyApproves(userid, checkstatus, ApplyType.RECRUIT.getApplyType());
-		List<FlowUserApplication> entryList = flowUserApplicationMapper.searchMyApproves(userid, checkstatus, ApplyType.ENTRY.getApplyType());
+		List<FlowUserApplication> recruitList = flowUserApplicationMapper.searchMyRecruitApproves(userid, checkstatus, ApplyType.RECRUIT.getApplyType());
+		List<FlowUserApplication> entryList = flowUserApplicationMapper.searchMyEntryApproves(userid, checkstatus, ApplyType.ENTRY.getApplyType());
 		list.addAll(recruitList);
 		list.addAll(entryList);
 		return list;
