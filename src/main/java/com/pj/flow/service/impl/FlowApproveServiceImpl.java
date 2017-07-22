@@ -1,6 +1,5 @@
 package com.pj.flow.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,11 +86,20 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 
 	@Override
 	public List<FlowUserApplication> searchMyApproves(Integer userid, Integer checkstatus) {
-		List<FlowUserApplication> list = new ArrayList<FlowUserApplication>();
-		List<FlowUserApplication> recruitList = flowUserApplicationMapper.searchMyRecruitApproves(userid, checkstatus, ApplyType.RECRUIT.getApplyType());
-		List<FlowUserApplication> entryList = flowUserApplicationMapper.searchMyEntryApproves(userid, checkstatus, ApplyType.ENTRY.getApplyType());
-		list.addAll(recruitList);
-		list.addAll(entryList);
+		List<FlowUserApplication> list = flowUserApplicationMapper.searchMyApproves(userid, checkstatus);
+		for(FlowUserApplication flowUserApplication : list){
+			String applyType = flowUserApplication.getApplyType();
+			if(applyType == ApplyType.ENTRY.getApplyType()){
+				//入职
+				FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				flowUserApplication.setApplyState(flowEntry.getState());
+				flowUserApplication.setApplyResult(flowEntry.getResult());
+			}else if(applyType == ApplyType.RECRUIT.getApplyType()){
+				FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
+				flowUserApplication.setApplyState(flowRecruit.getState());
+				flowUserApplication.setApplyResult(flowRecruit.getResult());
+			}
+		}
 		return list;
 	}
 

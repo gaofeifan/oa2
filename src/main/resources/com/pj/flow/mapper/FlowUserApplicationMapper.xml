@@ -20,8 +20,8 @@
 		<result column="applyResult" property="applyResult" jdbcType="INTEGER" />
 	</resultMap>
 
-	<select id="searchMyRecruitApproves" resultMap="BaseResultMap">
-		select ua.*,r.state as applyState, r.result as applyResult, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
+	<select id="searchMyApproves" resultMap="BaseResultMap">
+		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
 		a.id as approveId from flow_user_application ua
 		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
 		
@@ -32,11 +32,9 @@
 				and a.checkstatus != 0
 			</if>
 		
-		left join flow_recruit r on r.id = ua.form_id
-		where apply_type = #{type}
 		ORDER BY ua.apply_time DESC
 	</select>
-	<select id="searchMyEntryApproves" resultMap="BaseResultMap">
+	<!-- <select id="searchMyEntryApproves" resultMap="BaseResultMap">
 		select ua.*,r.state as applyState, r.result as applyResult, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
 		a.id as approveId from flow_user_application ua
 		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
@@ -51,7 +49,7 @@
 		left join flow_entry r on r.id = ua.form_id
 		where apply_type = #{type}
 		ORDER BY ua.apply_time DESC
-	</select>
+	</select> -->
 	<select id="selectByApplyIdAndType" resultMap="BaseResultMap">
 		select * from flow_user_application 
 		where form_id = #{formId} and apply_type = #{applyType}
