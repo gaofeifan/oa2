@@ -24,7 +24,6 @@ import javax.mail.internet.MimeMessage;
  */
 public class SendEmailUtils {
 	private static final String HOST = "smtp.pj-l.com";
-
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
 			String content, String[] ccEmail) throws AddressException, MessagingException  {
 		// 配置信息

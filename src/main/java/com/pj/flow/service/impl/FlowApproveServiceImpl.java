@@ -253,7 +253,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		if(applyType.trim().equals(ApplyType.RECRUIT.getApplyType())){
 			recruit = this.flowRecruitMapper.selectById(flowUserApplication.getFormId());
 			User user = this.userService.selectById(recruit.getApplyId());
-			content.setApplicatId(user.getId());
 			content.setApplicatName(user.getUsername());
 			content.setApplicatPosition(recruit.getPositionName());
 			if (recruit.getApplyDempId() != null) {
@@ -272,7 +271,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				content.setTitle(MessageType.ENTRY_MES.getDesc());
 				content.setType(MessageType.ENTRY_MES.getValue());
 				content.setCompanyName(flowEntry.getCompanyName());
-				content.setApplicatId(flowUserApplication.getFormId());
 				String names = this.dempService.selectDempParentNameById(flowEntry.getDempId());
 				content.setApplicatDemp(names);
 				Position position = this.positionService.selectByPrimaryKey(flowEntry.getPositionId());
@@ -292,6 +290,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			stateName = StringUtils.isNoneBlank(stateName) ? stateName : null;
 			content.setState(stateName);
 		}
+		content.setApplicatId(flowUserApplication.getFormId());
 		content.setPostName(recruit.getPostName());
 		messageContentService.addMessageNotifyingPeople(content ,flowUserApplication.getUserId(), recruit.getPostId());
 	}
