@@ -112,7 +112,10 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		if(entryResult != null && entryResult == EntryApplyResult.ENTRY_DISAGREE.getState()){
 			//入职不同意，删除已提交的数据，招聘中 number+1
 			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
-			flowRecruitTodoMapper.delete(flowRecruitTodo);
+			if(flowRecruitTodo != null){
+				flowRecruitTodoMapper.delete(flowRecruitTodo);
+				
+			}
 			//招聘中的数据
 			FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
 			inRecruitTodo.setNumber(inRecruitTodo.getNumber() + 1);

@@ -26,6 +26,17 @@ public class SendEmailUtils {
 	private static final String[] HOST = new String[] {"smtp.pj-l.com","smtp.medilink.com.cn"};
 	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
+		String content, String[] ccEmail) throws AddressException, MessagingException  {
+		for (String email : ccEmail) {
+		/*	if(){
+				
+			}*/
+			
+		}
+		
+	}
+	
+	private static void sendMessages(String sendEmail, String sendPassword, String recipientEmail, String title,
 			String content, String[] ccEmail) throws AddressException, MessagingException  {
 		// 配置信息
 		Properties pro = new Properties();

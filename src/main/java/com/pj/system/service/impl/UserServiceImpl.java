@@ -191,7 +191,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			inRecruitTodo.setNeedNum(inRecruitTodo.getNeedNum() - 1);;
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}else{
-			flowRecruitTodoMapper.delete(inRecruitTodo);
+			if(inRecruitTodo != null){
+				flowRecruitTodoMapper.delete(inRecruitTodo);
+			}
 		}
 		FlowActionLog record = new FlowActionLog();
 		record.setRecruitId(flowRecruit.getId());

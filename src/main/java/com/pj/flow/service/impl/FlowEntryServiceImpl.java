@@ -276,40 +276,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	public void sendOffer(String iEamil, String usernames, String hour, Integer applyId, String email , String timeDivision, String emailPassword){
 		User user = this.userService.selectByEamil(email);
 	
-	
-		
-		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
-		if(StringUtils.isNoneBlank(hour)){
-			flowEntry.setHour(hour);
-		}
-		if(StringUtils.isNoneBlank(usernames)){
-			flowEntry.setPeopleWhoCopied(usernames);
-		}
-		flowEntry.setState(EntryApplyState.IN_OFFER.getState());
-		if(flowEntry.getResult() != null && flowEntry.getResult() != EntryApplyResult.ENTRY_CANCEL.getState()){
-			flowEntry.setResult(null);
-		}
-		flowEntry.setIsSendOffer(1);
-		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
-		
-		//已发送offer删除已审批数据
-		flowRecruitTodoService.changeState(applyId, EntryApplyState.IN_OFFER.getState(), null);
-		
-		
-		FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
-		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
-		if(flowRecruit.getResult() != null && flowRecruit.getResult() != RecruitApplyResult.ENTRY_CANCEL.getState()){
-			flowRecruit.setResult(null);
-		}
-		this.flowRecruitMapper.updateByPrimaryKey(flowRecruit);
-		
-		FlowActionLog record = new FlowActionLog();
-		record.setEntryId(flowEntry.getId());
-		record.setRecruitId(flowEntry.getRecruitId());
-		record.setOperateTime(new Date());	
-		record.setStatus(ActionLogOperation.SEND_OFFER.getValue());
-		record.setOpinion(user.getUsername());
-		flowActionLogService.insert(record );
 		Company company = this.companyMapper.selectByPrimaryKey(user.getCompanyid());
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
@@ -338,6 +304,37 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		} catch (MessagingException e) {
 			throw new RuntimeException("邮箱密码错误");
 		}
+		
+		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
+		if(StringUtils.isNoneBlank(hour)){
+			flowEntry.setHour(hour);
+		}
+		if(StringUtils.isNoneBlank(usernames)){
+			flowEntry.setPeopleWhoCopied(usernames);
+		}
+		flowEntry.setState(EntryApplyState.IN_OFFER.getState());
+		if(flowEntry.getResult() != null && flowEntry.getResult() != EntryApplyResult.ENTRY_CANCEL.getState()){
+			flowEntry.setResult(null);
+		}
+		flowEntry.setIsSendOffer(1);
+		this.flowEntryMapper.updateByPrimaryKey(flowEntry);
+		
+		//已发送offer删除已审批数据
+		flowRecruitTodoService.changeState(applyId, EntryApplyState.IN_OFFER.getState(), null);
+		FlowRecruit flowRecruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
+		flowRecruit.setState(RecruitApplyState.IN_OFFER.getState());
+		if(flowRecruit.getResult() != null && flowRecruit.getResult() != RecruitApplyResult.ENTRY_CANCEL.getState()){
+			flowRecruit.setResult(null);
+		}
+		this.flowRecruitMapper.updateByPrimaryKey(flowRecruit);
+		
+		FlowActionLog record = new FlowActionLog();
+		record.setEntryId(flowEntry.getId());
+		record.setRecruitId(flowEntry.getRecruitId());
+		record.setOperateTime(new Date());	
+		record.setStatus(ActionLogOperation.SEND_OFFER.getValue());
+		record.setOpinion(user.getUsername());
+		flowActionLogService.insert(record );
 	}
 
 	/**
