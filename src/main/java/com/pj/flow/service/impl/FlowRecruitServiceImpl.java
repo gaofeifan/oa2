@@ -131,7 +131,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 //			flowMenuUser.setIsread(1);
 //			flowMenuUserMapper.updateByPrimaryKeySelective(flowMenuUser);
 //		}
-		
+		//1:招聘中,2:已提交,3:已暂停,4:已审批
 		List<FlowRecruit> list = new ArrayList<FlowRecruit>();
 		switch (state) {
 		case 1:case 3:
