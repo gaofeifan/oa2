@@ -185,9 +185,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		 *	更新状态
 		 */
 		FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruit.getId(), RecruitTodoState.IN_RECRUIT.getState());
-		int number = inRecruitTodo.getNumber();
-		if(number > 1){
-			inRecruitTodo.setNumber(number - 1);
+		int needNum = inRecruitTodo.getNeedNum();
+		if(needNum > 1){
+//			inRecruitTodo.setNumber(number - 1);
+			inRecruitTodo.setNeedNum(inRecruitTodo.getNeedNum() - 1);;
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}else{
 			flowRecruitTodoMapper.delete(inRecruitTodo);

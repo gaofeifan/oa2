@@ -176,6 +176,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}else{
 			inRecruitTodo.setStatus(1);
+			inRecruitTodo.setNumber(0);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 		}
 		

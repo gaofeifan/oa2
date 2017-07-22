@@ -116,6 +116,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			//招聘中的数据
 			FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowRecruitTodo.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
 			inRecruitTodo.setNumber(inRecruitTodo.getNumber() + 1);
+			inRecruitTodo.setStatus(0);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 			
 		}else if(entryState == EntryApplyState.IN_OFFER.getState() && entryResult == null){
@@ -127,6 +128,7 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			//入职撤回，招聘中+1
 			FlowRecruitTodo inRecruitTodo = flowRecruitTodoMapper.selectByRecruitId(flowEntry.getRecruitId(), RecruitTodoState.IN_RECRUIT.getState());
 			inRecruitTodo.setNumber(inRecruitTodo.getNumber() + 1);
+			inRecruitTodo.setStatus(0);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 	}
 		
