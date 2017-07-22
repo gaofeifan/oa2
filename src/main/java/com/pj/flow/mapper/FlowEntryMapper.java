@@ -44,12 +44,12 @@ public interface FlowEntryMapper extends MyMapper<FlowEntry> {
 
 	/**
 	 * 根据当前用户id得到所负责的岗位
-	 * 入职结果为已同意的个数
 	 * @param userId
+	 * @param state
 	 * @param result
 	 * @return
 	 */
-	int getNumByAuthResult(@Param(value = "userId") Integer userId, @Param(value = "result") Integer result);
+	int getNumByAuthResult(@Param(value = "userId") Integer userId, @Param(value = "state") Integer state, @Param(value = "result") Integer result);
 
 	/**
 	 * 根据负责的公司和入职人姓名

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pj.config.base.constant.ApplyType;
-import com.pj.config.base.constant.EntryApplyResult;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowApprove;
@@ -229,27 +228,27 @@ public class EntryController extends BaseController{
 	/**
 	 * 	建档待办提示,得到待办个数
 	 */
-	@ApiOperation(value = "建档待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="建档待办提示,得到待办个数")
-	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
-	@ResponseBody
-	public MappingJacksonValue todoTips(
-			HttpServletResponse response, HttpServletRequest request){
-		MappingJacksonValue map;
-		try {
-			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
-			User user = this.userService.selectByEamil(email);
-			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
-			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
-			
-			map = this.successJsonp(number);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("建档待办提示");
-		}
-		return map;
-	}
+//	@ApiOperation(value = "建档待办提示,得到待办个数", httpMethod = "GET", response=MappingJacksonValue.class, notes ="建档待办提示,得到待办个数")
+//	@RequestMapping(value = "/todoTips.do", method = RequestMethod.GET)
+//	@ResponseBody
+//	public MappingJacksonValue todoTips(
+//			HttpServletResponse response, HttpServletRequest request){
+//		MappingJacksonValue map;
+//		try {
+//			//得到当前登录用户
+//			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
+//			User user = this.userService.selectByEamil(email);
+//			//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
+//			int number = flowEntryService.getNumByAuthResult(user.getId(), EntryApplyResult.ENTRY_AGREE.getState());
+//			
+//			map = this.successJsonp(number);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error("异常" + e.getMessage());
+//			throw new RuntimeException("建档待办提示");
+//		}
+//		return map;
+//	}
 	
 	/**
 	 * 	建档待办查询
