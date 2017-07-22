@@ -400,7 +400,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	public void cancelEntry(Integer entryId) {
 		FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(entryId);
 		flowEntry.setResult(EntryApplyResult.ENTRY_CANCEL.getState());
-		flowEntry.setStatus(1);
+//		flowEntry.setStatus(1);
 		
 		flowEntryMapper.updateByPrimaryKeySelective(flowEntry);
 		
