@@ -119,10 +119,12 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 			inRecruitTodo.setStatus(0);
 			flowRecruitTodoMapper.updateByPrimaryKeySelective(inRecruitTodo);
 			
-		}else if(entryState == EntryApplyState.IN_OFFER.getState() && entryResult == null){
+		}else if(entryResult == null && entryState == EntryApplyState.IN_OFFER.getState()){
 			//已发offer,删除已审批
 			FlowRecruitTodo flowRecruitTodo = flowRecruitTodoMapper.selectByEntryId(entryId);
-			flowRecruitTodoMapper.delete(flowRecruitTodo);
+			if(flowRecruitTodo != null){
+				flowRecruitTodoMapper.delete(flowRecruitTodo);
+			}
 		}else if(entryState != null && entryState == EntryApplyState.IN_OFFER.getState() && entryResult == EntryApplyResult.ENTRY_CANCEL.getState()){
 			FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(entryId);
 			//入职撤回，招聘中+1

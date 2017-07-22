@@ -43,11 +43,12 @@
      如果您确认并同意上述条款，请在2个工作日内与我公司人力资源部邮件或电话确认，若超过时限则该聘用意向书自动失效。
   祝您事业成功，工作愉快！
 <company>              
-注：如您有任何疑问，请与人力资源部联系                  本人知悉并同意以上条款，并确                                            
-                                                                               认到岗时间为： <hiredate>    
-联系人：   <contacts>                            姓名：	  <username>
-联系电话：<contactsPhone>    		 	                             身份证号：
-                                                          联系电话：<phone>
+注：如您有任何疑问，请与人力资源部联系，本人知悉并同意以上条款，并确认到岗时间为： <hiredate>    
+联系人：<contacts>                            
+联系电话：<contactsPhone>
+姓名：<username>
+联系电话：<phone>
+身份证号：
 <contacts> | <contactsPosition>
 Cel：+86 <contactsPhone> Tel：<companyPhone>
 Mail：<contactsEmail>
