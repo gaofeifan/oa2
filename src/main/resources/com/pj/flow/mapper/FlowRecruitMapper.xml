@@ -72,7 +72,7 @@
 	<select id="selectTodoByInRecruit" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.apply_date, r.username, r.need_num, r.entry_num, 
 		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
-		c.name as companyName, pn.name as positionName
+		c.name as companyName, pn.name as positionName,post.name postName
 		<!-- ,entry.id entryId -->
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
@@ -86,6 +86,7 @@
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 			LEFT JOIN t_position pn ON pn.id = r.position_id
 			LEFT JOIN t_demp demp on demp.id = r.demp_id
+			LEFT JOIN t_post post on r.post_id = post.id
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
@@ -101,7 +102,7 @@
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
 		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
-		c.name as companyName, pn.name as positionName, entry.id entryId
+		c.name as companyName, pn.name as positionName, entry.id entryId,post.name postName
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
 			left join flow_entry entry on entry.recruit_id = r.id AND entry.state=1
@@ -114,6 +115,7 @@
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 			LEFT JOIN t_position pn ON pn.id = r.position_id
 			LEFT JOIN t_demp demp on demp.id = r.demp_id
+			LEFT JOIN t_post post on post.id = r.post_id
 		where r.status = 0 
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
@@ -132,7 +134,7 @@
 			DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr, 
 			DATE_FORMAT(e.entry_date,"%Y-%m-%d") as entryDateStr, 
 			c.name as companyName, pn.name as positionName, demp.name dempName,demp.id dempId,
-			rt.entry_id as entryId from flow_recruit_todo rt
+			rt.entry_id as entryId from flow_recruit_todo rt,post.name postName
 		inner join flow_recruit r on r.id = rt.recruit_id 
 		
 		LEFT JOIN t_demp demp on demp.id = r.demp_id
@@ -148,6 +150,7 @@
 		left join t_user u on u.id = r.apply_id
 		LEFT JOIN t_company c ON c.id = u.companyid
 		LEFT JOIN t_position pn ON pn.id = r.position_id
+		LEFT JOIN t_post post ON post.id = r.post_id
 		where 
 			rt.state = #{state} and rt.status = 0
 		AND e.is_send_offer = 0
