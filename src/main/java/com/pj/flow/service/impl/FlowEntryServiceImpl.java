@@ -159,6 +159,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		hasCommitTodo.setEntryId(entryId);
 		hasCommitTodo.setState(RecruitTodoState.HAS_COMMIT.getState());
 		hasCommitTodo.setNumber(1);
+		hasCommitTodo.setStatus(0);
 		flowRecruitTodoMapper.insert(hasCommitTodo);
 //		}
 		//招聘中状态的数据减一,如只有一个则更改状态status为1，多个则减一
