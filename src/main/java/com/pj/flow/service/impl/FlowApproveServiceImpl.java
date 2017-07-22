@@ -173,7 +173,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				innerApprove.setHandleidea(handleidea);
 				innerApprove.setIsApprove(1);//审批完状态更改为不可审批
 				flowApproveMapper.updateByPrimaryKeySelective(innerApprove);
-
 				if(checkstatus .equals(ApprovalResults.NO_AGREE.getValue())){
 					//不同意，则接下来流程的审批人信息删除
 					for(int j = delStartIndex; j < list.size(); j++){
@@ -220,7 +219,6 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		if(!agrees.contains(false)){
 			//更新待办信息
 			flowRecruitTodoService.insertRecruitTodo(formId, applyType);
-			
 			//更新申请状态
 			entryResult = EntryApplyResult.ENTRY_AGREE.getState();
 			entryState = EntryApplyState.ENTRY_APPROVED.getState();
@@ -294,6 +292,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			stateName = StringUtils.isNoneBlank(stateName) ? stateName : null;
 			content.setState(stateName);
 		}
+		content.setPostName(recruit.getPostName());
 		messageContentService.addMessageNotifyingPeople(content ,flowUserApplication.getUserId(), recruit.getPostId());
 	}
 

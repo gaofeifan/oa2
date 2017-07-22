@@ -52,6 +52,9 @@ public class MessageContent {
 	
 	@Column
 	private String state;
+
+	@Column
+	private String postName;
 	
 	public Integer getId() {
 		return id;
@@ -147,6 +150,14 @@ public class MessageContent {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getPostName() {
+		return postName;
+	}
+
+	public void setPostName(String postName) {
+		this.postName = postName;
 	}
 
 	@Override

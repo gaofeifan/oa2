@@ -58,8 +58,15 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	@Override
 	public List<User> selectApplicantAgency(Integer companyId, Integer dempId, Integer isCompanyLeader, Integer isDempLeader,
 			Position position , Integer recruitApplyReason ,Integer applyId) {
-		AuthAgency authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
-		 Integer isCEO = 0;
+		
+		AuthAgency authAgency = null;
+		try {
+			authAgency = selectAuthAgencyByCompanyIdOrDempId(companyId, dempId, null);
+		} catch (Exception e) {
+			throw new RuntimeException("机构权限中有重复数据请进行整改");
+		}
+		
+		Integer isCEO = 0;
 		 if(authAgency != null){
 			 if(authAgency.getGrade() == 1){
 				isCEO = 1;
