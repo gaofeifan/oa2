@@ -24,7 +24,7 @@ import javax.mail.internet.MimeMessage;
  * @since 1.8
  */
 public class SendEmailUtils {
-	private static final String[] HOST = new String[] {"smtp.pj-l.com","smtp.medilink.com.cn"};
+	private static final String[] HOST = new String[] {"pj-l.com","medilink.com.cn"};
 	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
 		String content, String[] ccEmail) throws AddressException, MessagingException , RuntimeException{
@@ -51,7 +51,7 @@ public class SendEmailUtils {
 			String content, String[] ccEmail,String host)throws AddressException, MessagingException , RuntimeException   {
 		// 配置信息
 		Properties pro = new Properties();
-		pro.put("mail.host", host);
+		pro.put("mail.host", "smtp."+host);
 		pro.put("mail.transport.protocol", "smtp");
 		pro.put("mail.smtp.auth", "true");
 		Session session = Session.getInstance(pro);

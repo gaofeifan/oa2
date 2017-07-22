@@ -133,4 +133,13 @@ public interface UserService extends BaseService<User, Integer> {
 	 */
 	String updateCompanyEmailOnPassword(String companyEmail, String password, Integer id);
 
+	/**
+	 * 	批量修改密码
+	 *	@author 	GFF
+	 *	@date		2017年7月22日下午7:40:23	
+	 * 	@param emails
+	 * 	@param newPassword
+	 */
+	void resetPasswords(String emails, String newPassword);
+
 }

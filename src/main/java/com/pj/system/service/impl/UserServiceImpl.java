@@ -498,8 +498,8 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		if(!companyEmail.equals(user.getCompanyEmail())){
 			user.setCompanyEmail(companyEmail);
 			super.updateByPrimaryKeySelective(user);
-			map.put("email", companyEmail);
 		}
+		map.put("email", companyEmail);
 		map.put("newPassword", password);
 		map.put("id", user.getId());
 		map.put("ssoid", user.getSsoId());
@@ -508,6 +508,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			throw new RuntimeException("请检测是否已存在该邮箱");
 		}
 		return string;
+	}
+
+	@Override
+	public void resetPasswords(String emails, String newPassword) {
 	}
 	
 }

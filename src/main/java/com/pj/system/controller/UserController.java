@@ -379,4 +379,12 @@ public class UserController extends BaseController {
 		}
 		return this.successJsonp("用户登录成功");
 	}
+	
+	@ApiOperation(value = "重置密码",httpMethod="get")
+	@RequestMapping(value = "/resetPasswords" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public Object resetPasswords(@ApiParam("邮箱") @RequestParam("emails") String emails,@ApiParam("新密码") @RequestParam("newPassword") String newPassword){
+		this.userService.resetPasswords(emails,newPassword);
+		return this.successJsonp("用户登录成功");
+	}
 }

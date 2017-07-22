@@ -294,7 +294,11 @@ public class EntryController extends BaseController{
 //		FlowOffer flowOffer = this.flowEntryService.selectOfferDetailsByApplyIdAndEmail(249, "zhangyiteng@pj-l.com");
 //		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 //		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
-		flowEntryService.sendOffer("1315697146@qqq.com", "1315697146@qq.com","9", 296, "gaofeifan@pj-l.com", "9", "qwe.1234");
+		try {
+			flowEntryService.sendOffer("1315697146@qq.com", "shihuayong@pj-l.com","9", 410, "gaofeifan@pj-l.com", "9", "qwe1234");
+		} catch (Exception e) {
+			return this.errorToJsonp(e.getMessage());
+		}
 //		SendEmailUtils.sendMessage("zhangyiteng@pj-l.com", "Zhang123456", "1315697146@qq.com", flowOffer.getCompany()+"offer", string, new String[]{"gaofeifan@pj-l.com","limengyun@pj-l.com"});
 		return null;
 	}
