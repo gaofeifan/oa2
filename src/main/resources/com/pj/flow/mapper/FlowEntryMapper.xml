@@ -94,7 +94,15 @@
   	left join flow_recruit r on r.id = e.recruit_id
   		and r.post_id in 
 	  		(select au.postid from auth_user au where au.userid = #{userId})
-  	where e.result = #{result} and e.status = 0
+  	where e.state = #{state} and e.status = 0
+  	<choose>
+        <when test="result != null">
+            and result = #{result}
+        </when>
+        <otherwise>
+            and result is null
+        </otherwise>
+    </choose>
   </select>
   <select id="selectByTodo" resultMap="BaseResultMap">
   select e.id, e.name, DATE_FORMAT(e.entry_date,"%Y-%m-%d") as applyDateStr, 

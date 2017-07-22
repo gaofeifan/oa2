@@ -361,10 +361,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	public List<FlowEntry> searchEntrys(Integer companyId, String username, Integer userId) {
 		return flowEntryMapper.searchEntrys(companyId, username, userId);
 	}
-	@Override
-	public int getNumByAuthResult(Integer userId, int result) {
-		return flowEntryMapper.getNumByAuthResult(userId, result);
-	}
+//	@Override
+//	public int getNumByAuthResult(Integer userId, int result) {
+//		return flowEntryMapper.getNumByAuthResult(userId, result);
+//	}
 	@Override
 	public List<FlowEntry> selectByTodo(Integer userId, Integer companyId, String name) {
 		return flowEntryMapper.selectByTodo(userId, companyId, name);

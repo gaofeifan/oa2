@@ -154,8 +154,8 @@ public class FlowRecruitTodoServiceImpl extends AbstractBaseServiceImpl<FlowRecr
 		Map<Integer, Object> map = new HashMap<Integer, Object>();
 		//根据当前用户id得到所负责的岗位的招聘状态为招聘中的个数
 		int recruitNum = getNumByState(userId, RecruitTodoState.IN_RECRUIT.getState());
-		//根据当前用户id得到所负责的岗位的入职结果为已同意的个数
-		int entryNum = flowEntryMapper.getNumByAuthResult(userId, EntryApplyResult.ENTRY_AGREE.getState());
+		//根据当前用户id得到所负责的岗位的入职状态为已发offer，结果是null的个数
+		int entryNum = flowEntryMapper.getNumByAuthResult(userId, EntryApplyState.IN_OFFER.getState(), null);
 		Integer menuId = null;
 		AuthMenu recruitMenu = authMenuMapper.selectByName("招聘待办");
 		if(recruitMenu != null){
