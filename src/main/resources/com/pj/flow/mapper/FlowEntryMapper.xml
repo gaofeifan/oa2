@@ -97,10 +97,10 @@
   	where e.state = #{state} and e.status = 0
   	<choose>
         <when test="result != null">
-            and result = #{result}
+            and e.result = #{result}
         </when>
         <otherwise>
-            and result is null
+            and e.result is null
         </otherwise>
     </choose>
   </select>

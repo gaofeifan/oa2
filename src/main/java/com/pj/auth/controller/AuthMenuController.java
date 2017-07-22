@@ -51,9 +51,9 @@ public class AuthMenuController  extends BaseController{
 	@RequestMapping(value="/Authlist.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue Authlist(
-			@ApiParam("菜单等级") @RequestParam(value = "grade", required = true) Integer grade,
-			@ApiParam("是否设置权限") @RequestParam(value = "auth", required = true) Integer auth,
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+			@ApiParam(value = "菜单等级", required = true) @RequestParam(value = "grade", required = true) Integer grade,
+			@ApiParam(value = "是否设置权限", required = true) @RequestParam(value = "auth", required = true) Integer auth,
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			List<AuthMenu> authmenus = this.authMenuService.GetMenubyUserid(grade, auth, userid);
 			return this.successJsonp(authmenus);
@@ -67,7 +67,7 @@ public class AuthMenuController  extends BaseController{
 	@RequestMapping(value="/OneAuthlist.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询一级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue OneAuthlist(
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			List<AuthMenu> authmenus = this.authMenuService.GetOneMenubyUserid(userid);
 			return this.successJsonp(authmenus);
@@ -81,8 +81,8 @@ public class AuthMenuController  extends BaseController{
 	@RequestMapping(value="/TwoAuthlist.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询二级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue TwoAuthlist(
-			@ApiParam("一级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+			@ApiParam(value = "一级菜单id", required = true) @RequestParam(value = "fid", required = true) Integer fid,
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			List<AuthMenu> authmenus = this.authMenuService.GetTwoMenubyUserid(userid, fid);
 			return this.successJsonp(authmenus);
@@ -95,8 +95,8 @@ public class AuthMenuController  extends BaseController{
 	@RequestMapping(value="/ThreeAuthlist.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询三级菜单信息", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue ThreeAuthlist(
-			@ApiParam("二级菜单id") @RequestParam(value = "fid", required = true) Integer fid,
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+			@ApiParam(value = "二级菜单id", required = true) @RequestParam(value = "fid", required = true) Integer fid,
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			List<AuthMenu> authmenus = this.authMenuService.GetThreeMenubyUserid(userid, fid);
 			return this.successJsonp(authmenus);
@@ -110,8 +110,8 @@ public class AuthMenuController  extends BaseController{
 	@RequestMapping(value="/AuthUser.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "查询用户权限", httpMethod = "GET", response = MappingJacksonValue.class)
 	public @ResponseBody MappingJacksonValue GetAuthMenubyUserid(
-			@ApiParam("菜单名称") @RequestParam(value = "name", required = true) String name,
-			@ApiParam("用户ID") @RequestParam(value = "userid", required = true) Integer userid){
+			@ApiParam(value = "菜单名称", required = true) @RequestParam(value = "name", required = true) String name,
+			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		try {
 			int num = this.authMenuService.GetAuthMenubyUserid( name, userid);
 			return this.successJsonp(num);
