@@ -23,7 +23,8 @@ import javax.mail.internet.MimeMessage;
  * @since 1.8
  */
 public class SendEmailUtils {
-	private static final String HOST = "smtp.pj-l.com";
+	private static final String[] HOST = new String[] {"smtp.pj-l.com","smtp.medilink.com.cn"};
+	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
 			String content, String[] ccEmail) throws AddressException, MessagingException  {
 		// 配置信息

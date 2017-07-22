@@ -201,9 +201,11 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 		for (int i = 1; i <= grade; i++) {
 			List<AuthAgency> list = this.authAgencyMapper.selectAuthAgencyByGrade(i);
 			Map<String,Object> map = new HashMap<>();
-			map.put("grade", i);
-			map.put("data", list);
-			data.add(map);
+			if(list.size() != 0){
+				map.put("grade", i);
+				map.put("data", list);
+				data.add(map);
+			}
 		}
 		return data;
 	}
