@@ -125,13 +125,13 @@ public class RecruitController extends BaseController{
 				flowRecruit.setIsCompanyLeader(0);
 			}
 			flowRecruit.setStatus(0);
-			String[] strings = flowRecruit.getApplyReason().split(",");
-			flowRecruit.setApplyReason("");
-			for (int i = 0; i < strings.length; i++) {
-				if(StringUtils.isNoneBlank(strings[i])){
-					flowRecruit.setApplyReason(strings[i]);
-				}
-			} 
+//			String[] strings = flowRecruit.getApplyReason().split(",");
+//			flowRecruit.setApplyReason("");
+//			for (int i = 0; i < strings.length; i++) {
+//				if(StringUtils.isNoneBlank(strings[i])){
+//					flowRecruit.setApplyReason(strings[i]);
+//				}
+//			} 
 			flowRecruit.setApplyId(flowRecruit.getApplyId());
 			flowRecruit.setState(RecruitApplyState.IN_RECRUIT_APPROVAL.getState());
 			flowRecruit.setApplyDate(new Date());
