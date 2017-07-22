@@ -1,5 +1,6 @@
 package com.pj.flow.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +87,12 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 
 	@Override
 	public List<FlowUserApplication> searchMyApproves(Integer userid, Integer checkstatus) {
-		return flowUserApplicationMapper.searchMyApproves(userid, checkstatus);
+		List<FlowUserApplication> list = new ArrayList<FlowUserApplication>();
+		List<FlowUserApplication> recruitList = flowUserApplicationMapper.searchMyApproves(userid, checkstatus, ApplyType.RECRUIT.getApplyType());
+		List<FlowUserApplication> entryList = flowUserApplicationMapper.searchMyApproves(userid, checkstatus, ApplyType.ENTRY.getApplyType());
+		list.addAll(recruitList);
+		list.addAll(entryList);
+		return list;
 	}
 
 //	public void commitApprove(Integer userid, Integer checkstatus, String handleidea, Integer formId,
@@ -217,6 +223,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		//	审批人员都同意 修改
 		Integer formId = flowUserApplication.getFormId();
 		if(!agrees.contains(false)){
+			//待办数字提示 TODO
 			//更新待办信息
 			flowRecruitTodoService.insertRecruitTodo(formId, applyType);
 			//更新申请状态
