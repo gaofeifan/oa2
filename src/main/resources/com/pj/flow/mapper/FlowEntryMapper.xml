@@ -180,7 +180,7 @@
   	</where>
   </select>
   <select id="searchEntrys" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	SELECT e.id, e.recruit_id, applyU.username, u.dempid AS dempId, 
+  	SELECT e.id, e.recruit_id, u.username, u.dempid AS dempId, 
   		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, e.state, e.result
 		FROM flow_entry e
@@ -190,7 +190,6 @@
 		<if test="companyId != null" >
 	        and u.companyid = #{companyId}
 	    </if>
-		<!-- LEFT JOIN flow_recruit r ON r.apply_id = #{userId} AND r.status = 0 AND r.id = e.recruit_id -->
 		LEFT JOIN t_company c ON c.id = u.companyid
 		WHERE 1 = 1 
 		<if test="applyId != null" >
