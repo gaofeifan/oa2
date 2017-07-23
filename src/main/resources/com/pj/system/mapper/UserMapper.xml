@@ -187,7 +187,7 @@
 				</choose>
 			</if>
 			<if test="username != null">
-				AND u.username LIKE #{username},
+				AND u.username LIKE #{username}
 			</if>
 			<if test="isStatus != null">
 				AND u.is_status = #{isStatus}
@@ -198,7 +198,7 @@
 			<if test="companyid != null">
 				AND u.companyid = #{companyid}
 			</if>
-			ORDER BY u.id ASC
+		ORDER BY u.id
 		</where>
 	</select>
 	<select id="getCompanyLeader" parameterType="java.lang.Integer"
