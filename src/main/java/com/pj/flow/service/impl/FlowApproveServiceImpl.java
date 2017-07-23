@@ -89,12 +89,12 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 		List<FlowUserApplication> list = flowUserApplicationMapper.searchMyApproves(userid, checkstatus);
 		for(FlowUserApplication flowUserApplication : list){
 			String applyType = flowUserApplication.getApplyType();
-			if(applyType == ApplyType.ENTRY.getApplyType()){
+			if(applyType.equals(ApplyType.ENTRY.getApplyType())){
 				//入职
 				FlowEntry flowEntry = flowEntryMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 				flowUserApplication.setApplyState(flowEntry.getState());
 				flowUserApplication.setApplyResult(flowEntry.getResult());
-			}else if(applyType == ApplyType.RECRUIT.getApplyType()){
+			}else if(applyType.equals(ApplyType.RECRUIT.getApplyType())){
 				FlowRecruit flowRecruit = flowRecruitMapper.selectByPrimaryKey(flowUserApplication.getFormId());
 				flowUserApplication.setApplyState(flowRecruit.getState());
 				flowUserApplication.setApplyResult(flowRecruit.getResult());
