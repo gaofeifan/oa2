@@ -74,8 +74,7 @@ public class UserController extends BaseController {
 			this.userService.insertSelective( user);
 			map = this.success(null);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("添加用户失败" + e.getMessage());
+			logger.error( e.getMessage());
 			map = this.error();
 		}
 		return map;
@@ -268,9 +267,6 @@ public class UserController extends BaseController {
 			mjv.setJsonpFunction(callback);
 		} catch (Exception e) {
 			map = this.error(e.getMessage());
-			
-			
-			
 			logger.error("根据email称获取user信息" + e.getMessage());
 			e.printStackTrace();
 		}

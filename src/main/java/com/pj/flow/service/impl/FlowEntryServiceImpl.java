@@ -39,7 +39,6 @@ import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.SalaryMapper;
-import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Salary;
@@ -82,8 +81,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	@Autowired
 	private FlowActionLogMapper flowActionLogMapper;
 	@Autowired
-	private UserMapper userMapper;
-	@Autowired
 	private CompanyMapper companyMapper;
 	@Autowired
 	private FlowUserApplicationMapper flowUserApplicationMapper;
@@ -110,6 +107,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 * 得到入职表id,作为外键保存薪资表
 		 */
 		flowEntry.setApplyDate(new Date());
+		if(StringUtils.isBlank(flowEntry.getRemark())){
+			flowEntry.setRemark(null);
+		}
 		flowEntryMapper.insertEntry(flowEntry);
 		//更新招聘申请的状态:入职审批中，申请结果是空
 		flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
@@ -127,10 +127,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		//申请人
 		Integer userId = flowEntry.getApplyId();
-		User user = this.userMapper.selectByPrimaryKey(userId);
+//		User user = this.userMapper.selectByPrimaryKey(userId);
 		//申请人部门
-		String dempName = this.dempService.selectDempParentNameById(user.getDempid());
-		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+		String dempName = this.dempService.selectDempParentNameById(flowEntry.getDempId());
+		Company company = companyMapper.selectByPrimaryKey(flowEntry.getCompanyId());
 		
 		//保存中间表
 		FlowUserApplication fa = new FlowUserApplication();

@@ -157,8 +157,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			 */
 			this.updateApplyState(t.getEntryId());
 			return i;
+		}else{
+			throw new RuntimeException("该企业邮箱已经存在");
 		}
-		return 0;
 	}
 
 	private void updateApplyState(Integer entryId) {
@@ -372,6 +373,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("username", user.getUsername());
 		map.put("email", user.getCompanyEmail());
 		map.put("phone", user.getPhone());
+		map.put("roleId", user.getPositionid());
 		map.put("id", user.getSsoId());
 		map.put("openid", user.getOpenid());
 		return HttpClienTool.doGet(ssoUpdateUrl, map);
