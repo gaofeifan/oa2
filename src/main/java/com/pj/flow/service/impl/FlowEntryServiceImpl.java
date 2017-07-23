@@ -316,6 +316,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		
 		FlowEntry flowEntry = this.flowEntryMapper.selectByPrimaryKey(applyId);
+		
+		if(StringUtils.isNoneBlank(iEamil)){
+			flowEntry.setRecipientsEmail(iEamil);
+		}
 		if(StringUtils.isNoneBlank(hour)){
 			flowEntry.setHour(hour);
 		}

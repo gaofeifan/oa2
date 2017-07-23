@@ -485,6 +485,15 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 */
 	@Override
 	public Object[] selectPeopleWhoCopiedEmailByUsername(String username, Integer applyId) {
+		
+		if(StringUtils.isNoneBlank(username)){
+			List<User> list = this.selectUserByUsername(username);
+			if(list.size() > 0 ){
+				return new String[]{list.get(0).getCompanyEmail()};
+			}else{
+				throw new RuntimeException("不存在该用户");
+			}
+		}
 		FlowEntry flowEntry = this.flowEntryService.selectById(applyId);
 		if(flowEntry == null){
 			throw new RuntimeException("没有查询到申请单");
@@ -495,7 +504,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		record.setIsdelete(0);
 		List<User> list = this.select(record );
 		if(list.size() == 0){
-			throw new RuntimeException("不存在该用户");
+			List<User> emails = this.selectUserByUsername(username);
+			Object[] objects = emails.stream().map(email -> email.getCompanyEmail()).toArray();
+			return objects;
 		}
 		Object[] objects = list.stream().map(user -> user.getCompanyEmail()).toArray();
 		return objects;

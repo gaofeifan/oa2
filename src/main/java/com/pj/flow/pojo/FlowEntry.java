@@ -115,6 +115,9 @@ public class FlowEntry implements Serializable {
     @Column
     private String peopleWhoCopied;
     
+    @Column(name="recipients_email")
+    private String recipientsEmail;
+    
     @Transient
     private List<Salary> salarys;
 
@@ -478,6 +481,14 @@ public class FlowEntry implements Serializable {
 
 	public void setIsDempLeader(Integer isDempLeader) {
 		this.isDempLeader = isDempLeader;
+	}
+
+	public String getRecipientsEmail() {
+		return recipientsEmail;
+	}
+
+	public void setRecipientsEmail(String recipientsEmail) {
+		this.recipientsEmail = recipientsEmail;
 	}
 
 	@Override
