@@ -16,7 +16,7 @@
   		where td.recruit_id in 
   			(select fr.id from flow_recruit fr where fr.post_id in 
   				(select au.postid from auth_user au where au.userid = #{userId}) and fr.status = 0) 
-  			and td.state = #{state} and status = 0
+  			and td.state = #{state} and td.status = 0
   </select>
   <select id="selectByRecruitId" resultMap="BaseResultMap">
   	select * from flow_recruit_todo 
