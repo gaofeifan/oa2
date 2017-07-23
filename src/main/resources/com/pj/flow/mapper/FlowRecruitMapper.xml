@@ -126,7 +126,7 @@
 	    </if>
 		and r.post_id in 
 	  		(select au.postid from auth_user au where au.userid = #{userId})
-	  	ORDER BY r.apply_date DESC
+	  	ORDER BY entry.apply_date DESC
 	</select>
 	<select id="selectTodoByEntryQuery" resultMap="BaseResultMap">
 		select 
