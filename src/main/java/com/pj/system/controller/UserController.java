@@ -74,8 +74,7 @@ public class UserController extends BaseController {
 			this.userService.insertSelective( user);
 			map = this.success(null);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("添加用户失败" + e.getMessage());
+			logger.error( e.getMessage());
 			map = this.error();
 		}
 		return map;

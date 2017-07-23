@@ -79,7 +79,6 @@
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
     <result column="probation" property="probation" jdbcType="VARCHAR" />
     <result column="service_years" property="serviceHours" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="companyName" property="company" jdbcType="VARCHAR" />
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
     <result column="postName" property="postName" jdbcType="VARCHAR" />

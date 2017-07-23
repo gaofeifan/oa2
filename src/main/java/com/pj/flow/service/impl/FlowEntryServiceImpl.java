@@ -110,6 +110,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		 * 得到入职表id,作为外键保存薪资表
 		 */
 		flowEntry.setApplyDate(new Date());
+		if(StringUtils.isBlank(flowEntry.getRemark())){
+			flowEntry.setRemark(null);
+		}
 		flowEntryMapper.insertEntry(flowEntry);
 		//更新招聘申请的状态:入职审批中，申请结果是空
 		flowRecruit.setState(RecruitApplyState.IN_ENTRY_APPROVAL.getState());
