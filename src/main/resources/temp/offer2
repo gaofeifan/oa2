@@ -49,6 +49,7 @@
 姓名：<username>
 联系电话：<phone>
 身份证号：
+
 <contacts> | <contactsPosition>
 Cel：+86 <contactsPhone> Tel：<companyPhone>
 Mail：<contactsEmail>

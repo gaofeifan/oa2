@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  *	@author		GFF
  *	@date		2017年6月20日下午5:56:48
@@ -80,6 +82,7 @@ public class MessageContent {
 		this.title = title;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getApplyTime() {
 		return applyTime;
 	}

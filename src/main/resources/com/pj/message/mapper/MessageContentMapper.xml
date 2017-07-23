@@ -10,6 +10,10 @@
     <result column="applicat_name" property="applicatName" jdbcType="VARCHAR" />
     <result column="applicat_position" property="applicatPosition" jdbcType="VARCHAR" />
     <result column="applicat_demp" property="applicatDemp" jdbcType="VARCHAR" />
+    <result column="postName" property="postName" jdbcType="VARCHAR" />
+    <result column="companyName" property="companyName" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="notification_type" property="notificationType" jdbcType="INTEGER" />
   </resultMap>
 	
@@ -19,6 +23,7 @@
 	<select id="selectMessageContentByUserIdAndNotificationType" parameterType="com.pj.message.pojo.MessageContent" resultMap="BaseResultMap">
 		select 
 			mc.id id,mc.type type,mc.apply_time apply_time,mc.applicat_id applicat_id,mc.applicat_name applicat_name,mc.applicat_position applicat_position,mc.applicat_demp applicat_demp,mc.notification_type notification_type
+			,result,state,company_name companyName,post_name postName
 		FROM message_content mc 
 		INNER JOIN message_content_user mcu ON mcu.message_id = mc.id 
 		<where>

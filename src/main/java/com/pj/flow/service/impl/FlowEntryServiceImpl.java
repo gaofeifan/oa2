@@ -283,6 +283,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		offer.setCompanyAddress(company.getAddress());
 		offer.setCompanyPhone(company.getContact());
 		offer.setContactsEmail(user.getCompanyEmail());
+		if(StringUtils.isNoneBlank(hour)){
+			offer.setTimeDivision(hour);
+		}
 		//	设置抄送人
 		String[] ccEmail = null;
 		if(StringUtils.isNotBlank(usernames)){

@@ -440,7 +440,9 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
 		Date date = flowEntry.getEntryDate();
 		Date startDate = DateUtils.updateDateByCondition(date, null, null, 1, null);
+		System.out.println(DateUtils.convert(startDate, DateUtils.DATE_FORMAT_C));
 		Date endDate = DateUtils.updateDateByCondition(date, null, null, 31, null);
+		System.out.println(DateUtils.convert(endDate, DateUtils.DATE_FORMAT_C));
 		Example example = new Example(User.class);
 		example.createCriteria().andCondition(" hiredate >= " , startDate).andCondition(" hiredate <= ", endDate);
 		example.orderBy(" hiredate ").desc();
