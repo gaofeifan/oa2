@@ -270,8 +270,8 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 			User user = this.userService.selectById(recruit.getApplyId());
 			content.setApplicatName(user.getUsername());
 			content.setApplicatPosition(recruit.getPositionName());
-			if (recruit.getApplyDempId() != null) {
-				String names = this.dempService.selectDempParentNameById(recruit.getApplyDempId());
+			if (recruit.getDempId() != null) {
+				String names = this.dempService.selectDempParentNameById(recruit.getDempId());
 				content.setApplicatDemp(names);
 			}
 			content.setApplyTime(recruit.getApplyDate());
@@ -292,7 +292,7 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 				if(position != null){
 					content.setApplicatPosition(position.getName());
 				}
-				recruit = this.flowRecruitMapper.selectByPrimaryKey(flowEntry.getRecruitId());
+				recruit = this.flowRecruitMapper.selectById(flowEntry.getRecruitId());
 			}
 		}
 		if(recruit.getResult() != null){

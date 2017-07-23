@@ -381,7 +381,7 @@ public class UserController extends BaseController {
 	}
 	
 	@ApiOperation(value = "重置密码", httpMethod = "get")
-	@RequestMapping(value = "/resetPasswords", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@RequestMapping(value = "/resetPasswords.do", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public Object resetPasswords(@ApiParam("邮箱") @RequestParam("emails") String emails,
 			@ApiParam("新密码") @RequestParam("newPassword") String newPassword) {

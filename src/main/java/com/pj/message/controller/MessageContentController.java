@@ -52,7 +52,8 @@ public class MessageContentController extends BaseController {
 	public @ResponseBody MappingJacksonValue selectMessageAll(@ApiParam("消息类型 1(默认)申请已发送 2申请以审批") @RequestParam(name="notificationType",defaultValue="1",required=false) Integer notificationType ,HttpServletResponse response, HttpServletRequest request){
 		try {
 			//得到当前登录用户
-			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request,response));
+			String email =
+					this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request,response));
 			logger.debug("【MessageContentController.selectMessageAll】  邮箱"+email);
 			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);

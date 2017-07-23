@@ -182,7 +182,6 @@ public class HttpClienTool {
 				}
 			} catch (Exception e) {
 				throw new RuntimeException(e);
-
 			} finally {
 				// 关闭连接 ,释放资源
 				try {
