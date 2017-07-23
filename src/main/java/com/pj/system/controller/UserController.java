@@ -380,11 +380,20 @@ public class UserController extends BaseController {
 		return this.successJsonp("用户登录成功");
 	}
 	
-	@ApiOperation(value = "重置密码",httpMethod="get")
-	@RequestMapping(value = "/resetPasswords" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
+	@ApiOperation(value = "重置密码", httpMethod = "get")
+	@RequestMapping(value = "/resetPasswords", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public Object resetPasswords(@ApiParam("邮箱") @RequestParam("emails") String emails,@ApiParam("新密码") @RequestParam("newPassword") String newPassword){
-		this.userService.resetPasswords(emails,newPassword);
-		return this.successJsonp("用户登录成功");
+	public Object resetPasswords(@ApiParam("邮箱") @RequestParam("emails") String emails,
+			@ApiParam("新密码") @RequestParam("newPassword") String newPassword) {
+		try {
+			String string = this.userService.resetPasswords(emails, newPassword);
+			JSONObject bean = JSONObject.fromBean(string);
+			if (bean.length() != 0 && bean.get("status").equals("200")) {
+				return this.successJsonp("批量更新成功");
+			}
+			return this.errorToJsonp("更新失败");
+		} catch (Exception e) {
+			return this.errorToJsonp(e.getMessage());
+		}
 	}
 }

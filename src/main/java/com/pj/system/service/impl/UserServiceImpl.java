@@ -91,6 +91,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
 	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
 	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
+	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8082/sso/accountManage/batchUpdate";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;
@@ -511,7 +512,23 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	}
 
 	@Override
-	public void resetPasswords(String emails, String newPassword) {
+	public String resetPasswords(String emails, String newPassword) {
+		String[] strings = emails.split(",");
+		String[] email = new String[strings.length];
+		if(strings == null || strings.length == 0 ){
+			throw new RuntimeException("邮箱不能为空");
+		}
+		for (int i = 0; i < strings.length; i++) {
+			if(StringUtils.isNoneBlank(strings[i].trim())){
+				email[i] = strings[i];
+			}
+		}
+		emails = StringUtils.join(email, ",");
+		emails = emails.substring(1);
+		Map<String, Object> map = new HashMap<>();
+		map.put("emails", emails);
+		map.put("newPassword", newPassword);
+		return HttpClienTool.doGet(ssoUpdateBatchUpdate, map);
 	}
 	
 }

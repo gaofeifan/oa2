@@ -64,7 +64,7 @@
 		</where>
 	</select>
 	<select id="selectAuthAgencyMaxGrade" resultMap="Result_base">
-		SELECT <include refid="Base_column"/> FROM auth_agency GROUP BY grade DESC limit 0,1
+		SELECT * FROM auth_agency where isdelete = 0 GROUP BY grade DESC limit 0,1
 	</select>
 	<select id="selectAuthAgencyByGrade" parameterType="java.lang.Integer" resultMap="Result_base">
 		SELECT 

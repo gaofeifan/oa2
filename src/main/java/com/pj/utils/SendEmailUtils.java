@@ -28,35 +28,9 @@ public class SendEmailUtils {
 	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
 		String content, String[] ccEmail) throws AddressException, MessagingException , RuntimeException{
-		int sizi = ccEmail !=  null ? ccEmail.length : 1;
-		String []pjEmail = new String[sizi];
-		String []medilinkEmail = new String[sizi];
-		if(ccEmail != null){
-			for (int i = 0; i < ccEmail.length; i++) {
-				if(ccEmail[i].contains(HOST[0])){
-					pjEmail[i] = ccEmail[i];
-				}else if(ccEmail[i].contains(HOST[1])){
-					medilinkEmail[i] = (ccEmail[i]);
-				}else{
-					throw new RuntimeException("抄送邮箱非企业邮箱，请填写企业邮箱");
-				}
-			}
-			if(pjEmail.length > 0){
-				sendMessages(sendEmail, sendPassword, recipientEmail, title, content, pjEmail, HOST[0]);
-			}
-			if(medilinkEmail.length > 0){
-				sendMessages(sendEmail, sendPassword, recipientEmail, title, content, medilinkEmail, HOST[1]);
-			}
-		}else{
-			sendMessages(sendEmail, sendPassword, recipientEmail, title, content, ccEmail, HOST[0]);
-		}
-	}
-	
-	private static void sendMessages(String sendEmail, String sendPassword, String recipientEmail, String title,
-			String content, String[] ccEmail,String host)throws AddressException, MessagingException , RuntimeException   {
 		// 配置信息
 		Properties pro = new Properties();
-		pro.put("mail.host", "smtp."+host);
+		pro.put("mail.host", "smtp."+HOST[0]);
 		pro.put("mail.transport.protocol", "smtp");
 		pro.put("mail.smtp.auth", "true");
 		Session session = Session.getInstance(pro);

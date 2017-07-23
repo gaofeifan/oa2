@@ -139,7 +139,8 @@ public interface UserService extends BaseService<User, Integer> {
 	 *	@date		2017年7月22日下午7:40:23	
 	 * 	@param emails
 	 * 	@param newPassword
+	 * @return 
 	 */
-	void resetPasswords(String emails, String newPassword);
+	String resetPasswords(String emails, String newPassword);
 
 }
