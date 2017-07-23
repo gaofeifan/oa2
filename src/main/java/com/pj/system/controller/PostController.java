@@ -109,7 +109,7 @@ public class PostController extends SystemManageController {
 	public Map<String, Object> updatePost(@ModelAttribute("post") Post post){
 		try {
 			post.setIsdelete(0);
-			this.postService.updateByPrimaryKey(post);
+			this.postService.updatePost(post);
 		} catch (Exception e) {
 			logger.error("修改岗位信息异常" + e.getMessage());
 			throw new RuntimeException("操作资源异常");		
