@@ -219,6 +219,11 @@ public class FlowOffer {
 	 */
 	@ApiModelProperty(value = "发送人邮箱(当前操作人员)", notes = "<contactsEmail>")
 	private String contactsEmail;
+	
+	/**
+	 *	收件人
+	 */
+	private String recipientsEmail;
 
 	public String getUsername() {
 		return username;
@@ -490,6 +495,14 @@ public class FlowOffer {
 
 	public void setContactsEmail(String contactsEmail) {
 		this.contactsEmail = contactsEmail;
+	}
+
+	public String getRecipientsEmail() {
+		return recipientsEmail;
+	}
+
+	public void setRecipientsEmail(String recipientsEmail) {
+		this.recipientsEmail = recipientsEmail;
 	}
 
 	@Override

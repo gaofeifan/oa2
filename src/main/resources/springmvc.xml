@@ -15,9 +15,19 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/task
    		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
-   		
-   	<!-- 定时器开关 -->
-	<task:annotation-driven/>
+
+	<!-- 定时器开关 -->
+	<task:annotation-driven />
+<!-- 	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.pj.config.web.interceptor.LoginInterceptor">
+				<property name="outsideOfficeHoursPage">
+					<value>http://10.0.0.18:8081/www/Sign-in.html</value>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -29,63 +39,63 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	
+
 	<!-- swagger -->
 	<bean class="com.pj.config.swagger.SwaggerConfig" />
 	<!-- 扫描所有包下的注解 -->
 	<context:component-scan base-package="com.pj.*" />
-	
+
 	<!-- 注解驱动(包括注解映射器和注解适配器) -->
-	<mvc:annotation-driven  conversion-service="conversionService"/>
+	<mvc:annotation-driven conversion-service="conversionService" />
 
 	<!-- 静态资源访问配置 -->
-	<mvc:default-servlet-handler/> 
-	 <mvc:resources location="/res/js/" mapping="/res/js/**" />
+	<mvc:default-servlet-handler />
+	<mvc:resources location="/res/js/" mapping="/res/js/**" />
 	<mvc:resources location="/res/css/" mapping="/res/css/**" />
 	<mvc:resources location="/res/images/" mapping="/res/images/**" />
 	<mvc:resources location="/api-doc/" mapping="/api-doc/**" />
-	
+
 	<!-- 视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		 <property name="prefix" value="/WEB-INF/jsp/" /> 
+		<property name="prefix" value="/WEB-INF/jsp/" />
 		<!-- <property name="prefix" value="/wabapp/res/" /> -->
 		<property name="suffix" value=".jsp" />
 	</bean>
-   
-    <!-- 全局异常处理 -->
-    <bean id="exceptionResolver" class="com.pj.config.web.exception.ExceptionHandler"/>
-    
+
+	<!-- 全局异常处理 -->
+	<bean id="exceptionResolver" class="com.pj.config.web.exception.ExceptionHandler" />
+
 	<!-- 配置转换器 -->
-	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
 			<set>
 				<bean class="com.pj.config.web.converter.DateConverter" />
 				<bean class="com.pj.config.web.converter.CustomParamsConverter" />
-			</set> 
-			
+			</set>
 		</property>
 	</bean>
 
-	
+
 	<!-- 配置文件上传 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding">
 			<value>UTF-8</value>
 		</property>
 		<property name="maxUploadSize">
 			<value>32505856</value><!-- 上传文件大小限制为31M，31*1024*1024 -->
 		</property>
-		<property name="maxInMemorySize" >
+		<property name="maxInMemorySize">
 			<value>4096</value>
 		</property>
 	</bean>
-	
-	<bean id="messageTimer" class="com.pj.config.base.timer.MessageTimer"/>
-	
-		<!-- 每天上午十点触发 -->
-<!-- 	<task:scheduled-tasks>
-        <task:scheduled ref="messageTimer" method="messageDetails" cron=" 0 0 10 * * ?"/>
-        <task:scheduled ref="messageTimer" method="approveMessageTime" cron="0 * 1 * * *"/>
-    </task:scheduled-tasks> -->
+
+	<bean id="messageTimer" class="com.pj.config.base.timer.MessageTimer" />
+
+	<!-- 每天上午十点触发 -->
+	<!-- <task:scheduled-tasks> <task:scheduled ref="messageTimer" method="messageDetails" 
+		cron=" 0 0 10 * * ?"/> <task:scheduled ref="messageTimer" method="approveMessageTime" 
+		cron="0 * 1 * * *"/> </task:scheduled-tasks> -->
 </beans>

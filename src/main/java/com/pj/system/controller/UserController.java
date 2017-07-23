@@ -369,11 +369,15 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/isLogin" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public Object isLogin(){
-		String session = this.getSession();
-		if(StringUtils.isBlank(session)){
-			this.errorToJsonp("请您登录后操作");
+		try {
+			String session = this.getSession();
+			if(StringUtils.isBlank(session)){
+				return this.errorToJsonp("请您登录后操作");
+			}
+			return this.successJsonp("用户登录成功");
+		} catch (Exception e) {
+			return this.errorToJsonp("请您登录后操作");
 		}
-		return this.successJsonp("用户登录成功");
 	}
 	
 	@ApiOperation(value = "重置密码", httpMethod = "get")

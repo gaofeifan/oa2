@@ -98,7 +98,6 @@ public class AccountManageController  extends BaseController{
 	}
 
 
-
 	//查询工账号信息
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value="查询用户信息",notes="通过用户id查询到用户信息",httpMethod="GET")

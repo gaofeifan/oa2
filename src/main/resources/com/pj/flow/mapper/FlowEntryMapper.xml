@@ -78,6 +78,7 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="entry_date" property="hiredate" jdbcType="DATE" />
     <result column="probation" property="probation" jdbcType="VARCHAR" />
+    <result column="recipients_email" property="recipientsEmail" jdbcType="VARCHAR" />
     <result column="service_years" property="serviceHours" jdbcType="VARCHAR" />
     <result column="companyName" property="company" jdbcType="VARCHAR" />
     <result column="dempName" property="dempName" jdbcType="VARCHAR" />
@@ -160,6 +161,7 @@
   		entry.state ,
   		entry.status ,
   		entry.hour,
+  		entry.recipients_email,
   		entry.people_who_copied people_who_copied,
   		company.name companyName,
   		demp.name dempName,

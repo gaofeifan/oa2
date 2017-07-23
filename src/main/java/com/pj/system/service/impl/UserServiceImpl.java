@@ -354,12 +354,16 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	 * 	@return
 	 */
 	private Integer saveSSOSystem(User t) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("username", t.getUsername());
-		map.put("email", t.getCompanyEmail());
-		map.put("phone", t.getPhone());
-		String id = HttpClienTool.doGet(ssoCreateUrl, map);
-		return StringUtils.isNoneBlank(id) ? Integer.decode(id) : null;
+		try {
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("username", t.getUsername());
+			map.put("email", t.getCompanyEmail());
+			map.put("phone", t.getPhone());
+			String id = HttpClienTool.doGet(ssoCreateUrl, map);
+			return StringUtils.isNoneBlank(id) ? Integer.decode(id) : null;
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("该企业邮箱已经存在");
+		}
 	}
 
 	/**
