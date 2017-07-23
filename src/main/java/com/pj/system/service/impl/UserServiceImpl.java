@@ -1,5 +1,6 @@
 package com.pj.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -514,17 +515,16 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	@Override
 	public String resetPasswords(String emails, String newPassword) {
 		String[] strings = emails.split(",");
-		String[] email = new String[strings.length];
+		List<String> email = new ArrayList<>();
 		if(strings == null || strings.length == 0 ){
 			throw new RuntimeException("邮箱不能为空");
 		}
 		for (int i = 0; i < strings.length; i++) {
 			if(StringUtils.isNoneBlank(strings[i].trim())){
-				email[i] = strings[i];
+				email.add(strings[i]);
 			}
 		}
 		emails = StringUtils.join(email, ",");
-		emails = emails.substring(1);
 		Map<String, Object> map = new HashMap<>();
 		map.put("emails", emails);
 		map.put("newPassword", newPassword);

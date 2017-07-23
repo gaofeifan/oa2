@@ -186,7 +186,7 @@
 		FROM flow_entry e
 		inner join t_user u on u.id = e.apply_id
 		LEFT JOIN flow_recruit r ON  e.recruit_id = r.id
-		left join t_user applyU on applyU.id = r.apply_id		
+		INNER join t_user applyU on applyU.id = r.apply_id		
 		<if test="companyId != null" >
 	        and u.companyid = #{companyId}
 	    </if>
