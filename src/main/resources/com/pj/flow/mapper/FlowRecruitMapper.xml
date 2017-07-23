@@ -77,11 +77,9 @@
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
 			<!-- left join flow_entry entry on entry.recruit_id = r.id -->
-			inner join t_user u on u.id = r.apply_id
-				<if test="companyId != null" >
-			        and u.companyid = #{companyId}
-			    </if>
-			LEFT JOIN t_company c ON c.id = u.companyid
+			<!-- inner join t_user u on u.id = r.apply_id -->
+				
+			LEFT JOIN t_company c ON c.id = r.company_id
 			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 			LEFT JOIN t_position pn ON pn.id = r.position_id
@@ -91,7 +89,9 @@
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
 			where rt.state = #{state} and rt.status = 0)
-		
+		<if test="companyId != null" >
+	        and r.company_id = #{companyId}
+	    </if>
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
 	    </if>
@@ -106,11 +106,9 @@
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
 			left join flow_entry entry on entry.recruit_id = r.id AND entry.state=1
-			inner join t_user u on u.id = r.apply_id
-				<if test="companyId != null" >
-			        and u.companyid = #{companyId}
-			    </if>
-			LEFT JOIN t_company c ON c.id = u.companyid
+			<!-- inner join t_user u on u.id = r.apply_id -->
+				
+			LEFT JOIN t_company c ON c.id = r.company_id
 			<!-- LEFT JOIN t_demp d ON d.id = r.demp_id
 			LEFT JOIN t_demp pd ON d.pId is not null and pd.id = d.pId -->
 			LEFT JOIN t_position pn ON pn.id = r.position_id
@@ -120,7 +118,9 @@
 		and r.id in 
 			(select rt.recruit_id from flow_recruit_todo rt 
 			where rt.state = #{state} and rt.status = 0)
-		
+		<if test="companyId != null" >
+	        and r.company_id = #{companyId}
+	    </if>
 		<if test="username != null and username != ''" >
 	        and r.username LIKE CONCAT('%',#{username},'%')
 	    </if>
@@ -146,8 +146,8 @@
 		  		(select au.postid from auth_user au where au.userid = #{userId})
 		LEFT JOIN t_demp demp on demp.id = r.demp_id
 		left join flow_entry e on e.id = rt.entry_id
-		left join t_user u on u.id = r.apply_id
-		LEFT JOIN t_company c ON c.id = u.companyid
+		<!-- left join t_user u on u.id = r.apply_id -->
+		LEFT JOIN t_company c ON c.id = r.company_id
 		LEFT JOIN t_position pn ON pn.id = r.position_id
 		LEFT JOIN t_post post ON post.id = r.post_id
 		where 
@@ -159,12 +159,15 @@
 		SELECT r.id, r.apply_id, r.username, r.demp_id as applyDempId, DATE_FORMAT(r.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, r.state, r.result
 		FROM flow_recruit r 
-		inner JOIN t_user u ON u.id = r.apply_id
+		<!-- inner JOIN t_user u ON u.id = r.apply_id
 		<if test="companyId != null" >
 	        and u.companyid = #{companyId}
-	    </if>
+	    </if> -->
 		LEFT JOIN t_company c ON c.id = r.company_id
 		WHERE 1 = 1
+		<if test="companyId != null" >
+	        and r.company_id = #{companyId}
+	    </if>
 		<if test="applyId != null" >
 	        and r.apply_id = #{applyId}
 	    </if>

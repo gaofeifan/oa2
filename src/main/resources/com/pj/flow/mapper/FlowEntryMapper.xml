@@ -180,17 +180,17 @@
   	</where>
   </select>
   <select id="searchEntrys" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	SELECT e.id, e.recruit_id, u.username, u.dempid AS dempId, 
+  	SELECT e.id, e.recruit_id, u.username, r.demp_id AS dempId, 
   		DATE_FORMAT(e.apply_date,"%Y-%m-%d") AS applyDateStr,
 		c.name AS companyName, e.state, e.result
 		FROM flow_entry e
 		inner join t_user u on u.id = e.apply_id
-		LEFT JOIN flow_recruit r ON  e.recruit_id = r.id
-		INNER join t_user applyU on applyU.id = r.apply_id		
+		
+		inner JOIN flow_recruit r ON  e.recruit_id = r.id
 		<if test="companyId != null" >
-	        and u.companyid = #{companyId}
+	        and r.company_id = #{companyId}
 	    </if>
-		LEFT JOIN t_company c ON c.id = u.companyid
+		LEFT JOIN t_company c ON c.id = r.company_id
 		WHERE 1 = 1 
 		<if test="applyId != null" >
 	        and e.apply_id = #{applyId}
