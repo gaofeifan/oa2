@@ -39,7 +39,6 @@ import com.pj.flow.service.FlowEntryService;
 import com.pj.flow.service.FlowRecruitTodoService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.SalaryMapper;
-import com.pj.system.mapper.UserMapper;
 import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.Salary;
@@ -89,8 +88,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 	private FlowRecruitTodoService flowRecruitTodoService;
 	@Autowired
 	private FlowActionLogService flowActionLogService;
-	@Autowired
-	private UserMapper userMapper;
 	@Override
 	public MyMapper<FlowEntry> getMapper() {
 		return flowEntryMapper;
@@ -130,10 +127,14 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		}
 		//申请人
 		Integer userId = flowEntry.getApplyId();
-		User user = this.userMapper.selectByPrimaryKey(userId);
+//		User user = this.userMapper.selectByPrimaryKey(userId);
 		//申请人部门
-		String dempName = this.dempService.selectDempParentNameById(user.getDempid());
-		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+//		String dempName = this.dempService.selectDempParentNameById(user.getDempid());
+//		Company company = companyMapper.selectByPrimaryKey(user.getCompanyid());
+		
+		//招聘部门
+		Company entryCompany = companyMapper.selectByPrimaryKey(flowRecruit.getCompanyId());
+		String entryDempName = this.dempService.selectDempParentNameById(flowRecruit.getDempId());
 		
 		//保存中间表
 		FlowUserApplication fa = new FlowUserApplication();
@@ -143,8 +144,9 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		fa.setApplyName(flowEntry.getUsername());
 		fa.setApplyTime(flowEntry.getApplyDate());
 		fa.setApplyType(ApplyType.ENTRY.getApplyType());
-		fa.setApplyDempName(dempName);
-		fa.setApplyCompanyName(company.getName());
+		fa.setApplyDempName(entryDempName);
+		
+		fa.setApplyCompanyName(entryCompany.getName());
 		flowUserApplicationMapper.insertSelective(fa);
 		
 		
