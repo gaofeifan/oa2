@@ -151,7 +151,7 @@ public class AuthUserController extends SystemManageController{
 	 */
 	@RequestMapping(value="/saveDefaultAuth.do" , method=RequestMethod.GET)
 	@ApiOperation(value = "保存默认权限", httpMethod = "GET", response = MappingJacksonValue.class)
-	public @ResponseBody MappingJacksonValue saveAuth(
+	public @ResponseBody MappingJacksonValue saveDefaultAuth(
 			@ApiParam(value = "用户ID", required = true) @RequestParam(value = "userid", required = true) Integer userid){
 		
 		try {

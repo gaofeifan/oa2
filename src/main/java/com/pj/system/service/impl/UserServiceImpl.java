@@ -166,8 +166,8 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			
 		}
 		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
-		flowEntry.setState(EntryApplyResult.ENTRY_SUCCESS.getState());
-		flowEntry.setResult(EntryApplyState.FILING.getState());
+		flowEntry.setState(EntryApplyState.FILING.getState());
+		flowEntry.setResult(EntryApplyResult.ENTRY_SUCCESS.getState());
 		flowEntry.setIsBookbuilding(1);
 		flowEntryService.updateByPrimaryKeySelective(flowEntry);
 		
