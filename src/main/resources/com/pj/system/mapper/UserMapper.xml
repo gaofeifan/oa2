@@ -102,7 +102,7 @@
 		<result column="deposit_bank" property="depositBank" jdbcType="VARCHAR" />
 		<result column="bankcard" property="bankcard" jdbcType="VARCHAR" />
 		<result column="isdelete" property="isdelete" jdbcType="INTEGER" />
-		<result column="ssoId" property="ssoId" jdbcType="INTEGER" />
+		<result column="sso_id" property="ssoId" jdbcType="INTEGER" />
 		<result column="openid" property="openid" jdbcType="VARCHAR" />
 		<result column="is_department_head" property="isDepartmentHead" jdbcType="INTEGER" />
 		<result column="is_company_boss" property="isCompanyBoss" jdbcType="INTEGER" />

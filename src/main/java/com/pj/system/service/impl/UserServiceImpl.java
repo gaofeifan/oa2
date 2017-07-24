@@ -407,6 +407,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		if(salary.size() == 0 ){
 			salary = GetJsonFileUtils.getSalary();
 		}
+		salary.stream().forEach(sa -> sa.setUserId(user.getId()));
 		user.setSalarys(salary);
 		WorkExperience workExperience = new WorkExperience();
 		workExperience.setUserId(user.getId());
@@ -414,6 +415,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		if(workExperiences.size() == 0){
 			workExperiences = GetJsonFileUtils.getWorkExperience();
 		}
+		workExperiences.stream().forEach(work -> work.setUserId(user.getId()));
 		user.setWorkExperiences(workExperiences);
 		Education education = new Education();
 		education.setUserId(user.getId());
@@ -421,6 +423,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		if(educations.size() == 0){
 			educations = GetJsonFileUtils.getEducationList();
 		}
+		educations.stream().forEach( edu -> edu.setUserId(user.getId()));
 		user.setEducations(educations);
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.setUserId(user.getId());
@@ -428,6 +431,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		if(familyMembers.size() == 0){
 			familyMembers = GetJsonFileUtils.getFamilyMembers();
 		}
+		familyMembers.stream().forEach(family -> family.setUserId(user.getId()));
 		user.setFamilyMembers(familyMembers);
 		return user;
 	}

@@ -462,7 +462,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<redis.pass>pj@redis_oa</redis.pass>
 			</properties>
 		</profile>
-		<!-- 测式环境 -->
+		<!-- 验收环境 -->
 		<profile>
 			<id>dev</id>
 			<properties>
@@ -483,6 +483,26 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+		</profile>
+		
+		<!-- 测试环境 -->
+		<profile>
+			<id>dev_test</id>
+			<properties>
+				<http.sso.create.url>http://10.0.0.18:8085/sso/userSync/add</http.sso.create.url>
+				<http.sso.update.url>http://10.0.0.18:8085/sso/userSync/update</http.sso.update.url>
+				<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+				<jdbc.url>jdbc:mysql://10.0.0.18:3306/oa</jdbc.url>
+				<jdbc.username>root</jdbc.username>
+				<jdbc.password>root</jdbc.password>
+				<redis.host>10.0.0.18</redis.host>
+				<redis.port>6377</redis.port>
+				<redis.pass>redis</redis.pass>
+				<ftp.url>139.129.236.180</ftp.url>
+				<ftp.username>ftp</ftp.username>
+				<ftp.password>pj!@#123oa</ftp.password>
+				<ftp.port>2221</ftp.port>
+			</properties>
 		</profile>
 	</profiles>
 
