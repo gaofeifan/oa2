@@ -74,12 +74,11 @@ public class SendEmailUtils {
 		}
 		try {
 			message.setSubject(title);
-			message.setContent(content, "text/html;charset=utf-8");
+			message.setContent(content, "text/plain;charset=utf-8");
 			ts.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException e) {
 			throw new RuntimeException("账号或密码错误");
 		}
-	
 	}
 
 	public static String getResourceTemp(String path) {
@@ -93,13 +92,14 @@ public class SendEmailUtils {
 			while ((line = bufferedReader.readLine()) != null) {
 				for (int i = 0; i < line.length(); i++) {
 					char charAt = line.charAt(i);
-					if (charAt == ' ') {
-						sb.append("&nbsp");
-					} else {
+				/*	if (charAt == ' ') {
+						sb.append("&nbsp;");
+					} else {*/
 						sb.append(charAt);
-					}
+					//}
 				}
-				sb.append("</br>");
+//				sb.append("</br>");
+				sb.append("\r\n");
 			}
 			return sb.toString();
 		} catch (UnsupportedEncodingException e) {

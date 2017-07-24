@@ -100,7 +100,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 			}else if(isCompanyLeader == 1){
 				Company company = this.companyMapper.selectParentCompanyById(companyId);
 				if(company == null){
-					throw new RuntimeException("没有查询到直属上级");
+					return null;
 				}
 				companyId = company.getId();
 			}
