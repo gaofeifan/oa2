@@ -228,10 +228,10 @@ public class User implements Serializable {
     private Integer isSocialSecurityCards;
 
     /**
-     * 	合同类型		1劳动合同   2 实习合同  3 劳务合同
+     * 	合同类型		 0劳动合同  1实习合同  2劳务合同
      */
 	@Column(name="contract_type")
-	@ApiModelProperty(value = "合同类型 1劳动合同  0  实习合同 3 劳务合同", required = false)
+	@ApiModelProperty(value = "合同类型 0劳动合同  1实习合同  2劳务合同", required = false)
     private Integer contractType;
 
 	/**

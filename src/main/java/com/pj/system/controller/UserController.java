@@ -75,7 +75,7 @@ public class UserController extends BaseController {
 			map = this.success(null);
 		} catch (Exception e) {
 			logger.error( e.getMessage());
-			map = this.error();
+			map = this.error(e.getMessage());
 		}
 		return map;
 	}

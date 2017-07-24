@@ -90,7 +90,7 @@ public class BaseController extends AdvanceControllerSupport{
 		datas.put("status",false);
 		datas.put("msg",data);
 		datas.put("code","400");
-		datas.put("data","操作失败:"+data);
+		datas.put("data",data);
 		return datas;
 	}
 	
