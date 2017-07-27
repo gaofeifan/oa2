@@ -445,6 +445,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<redis.host>127.0.0.1</redis.host>
 				<redis.port>6379</redis.port>
 				<redis.pass>redis</redis.pass>
+				<redis.db.number>0</redis.db.number>
 			</properties>
 		</profile>
 		<!-- 生产环境 -->
@@ -460,6 +461,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<redis.host>139.129.236.180</redis.host>
 				<redis.port>6379</redis.port>
 				<redis.pass>pj@redis_oa</redis.pass>
+				<redis.db.number>0</redis.db.number>
 			</properties>
 		</profile>
 		<!-- 验收环境 -->
@@ -475,6 +477,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<redis.host>10.0.0.18</redis.host>
 				<redis.port>6379</redis.port>
 				<redis.pass>redis</redis.pass>
+				<redis.db.number>0</redis.db.number>
 				<ftp.url>139.129.236.180</ftp.url>
 				<ftp.username>ftp</ftp.username>
 				<ftp.password>pj!@#123oa</ftp.password>
