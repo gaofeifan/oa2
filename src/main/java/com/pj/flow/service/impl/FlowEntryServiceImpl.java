@@ -267,6 +267,10 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		flowOffer.setPhoneAllowance(zzSalary.getCommunicationAllowance());
 		flowOffer.setPresentAtDutyEveryDay(zzSalary.getFullHours());
 		
+		flowOffer.setLunchAllowanceUpper(parseDouble(zzSalary.getLunchAllowance()));
+		flowOffer.setPhoneAllowanceUpper(parseDouble(zzSalary.getCommunicationAllowance()));
+		flowOffer.setPresentAtDutyEveryDayUpper(parseDouble(zzSalary.getFullHours()));
+		
 		flowOffer.setContacts(user.getUsername());
 		flowOffer.setContactsPhone(user.getPhone());
 		return flowOffer;

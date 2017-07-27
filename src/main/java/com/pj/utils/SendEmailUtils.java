@@ -46,11 +46,12 @@ public class SendEmailUtils {
 			throw new RuntimeException("账号或密码错误");
 		}
 		Message message = new MimeMessage(session);
+//		message.
 		try {
 			message.setFrom(new InternetAddress(sendEmail));
 		} catch (AddressException e) {
 			throw new RuntimeException("发送人邮箱有误");
-		} catch (MessagingException e) {
+		} catch (MessagingException e) {	
 			throw new RuntimeException("账号或密码错误");
 		}
 		try {

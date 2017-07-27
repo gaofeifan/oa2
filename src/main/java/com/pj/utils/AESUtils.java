@@ -340,10 +340,10 @@ public class AESUtils {
 					Object object = field.get(obj);
 					if (object != null) {
 						if (ENCRYPTHEX.equals(key)) {
-							field.set(obj, encryptHex(object.toString(), ALGORITHM));
+							field.set(obj, encryptHex(object.toString().trim(), ALGORITHM));
 						} else {
 							if(!isNum(object.toString())){
-								field.set(obj, decryptHex(object.toString(), ALGORITHM));
+								field.set(obj, decryptHex(object.toString().trim(), ALGORITHM));
 							}
 						}
 					}
@@ -365,7 +365,7 @@ public class AESUtils {
 	}
 	
 	public static void main(String[] args) {
-		String hex = decryptHex("cb882a39dab8bee8f05cc33184b66a1b", ALGORITHM);
+		String hex = decryptHex("b0cc8a7cafdf6bce5a6554e5beb22f7c", ALGORITHM);
 		System.out.println(hex);
 	}
 }

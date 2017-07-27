@@ -137,16 +137,34 @@ public class FlowOffer {
 	private String lunchAllowance;
 
 	/**
+	 * 午餐补贴大写
+	 */
+	@ApiModelProperty(value = "午餐补贴大写", notes = "<lunchAllowanceUpper>")
+	private String lunchAllowanceUpper;
+
+	/**
 	 * 通讯补贴
 	 */
 	@ApiModelProperty(value = "通讯补贴", notes = "<phoneAllowance>")
 	private String phoneAllowance;
 
 	/**
+	 * 通讯补贴大写
+	 */
+	@ApiModelProperty(value = "通讯补贴大写", notes = "<phoneAllowanceUpper>")
+	private String phoneAllowanceUpper;
+
+	/**
 	 * 考勤工资
 	 */
 	@ApiModelProperty(value = "考勤工资", notes = "<presentAtDutyEveryDay>")
 	private String presentAtDutyEveryDay;
+	
+	/**
+	 * 考勤工资大写
+	 */
+	@ApiModelProperty(value = "考勤工资大写", notes = "<presentAtDutyEveryDayUpper>")
+	private String presentAtDutyEveryDayUpper;
 
 	/**
 	 * ，试用期为
@@ -503,6 +521,30 @@ public class FlowOffer {
 
 	public void setRecipientsEmail(String recipientsEmail) {
 		this.recipientsEmail = recipientsEmail;
+	}
+	
+	public String getLunchAllowanceUpper() {
+		return lunchAllowanceUpper;
+	}
+
+	public void setLunchAllowanceUpper(String lunchAllowanceUpper) {
+		this.lunchAllowanceUpper = lunchAllowanceUpper;
+	}
+
+	public String getPhoneAllowanceUpper() {
+		return phoneAllowanceUpper;
+	}
+
+	public void setPhoneAllowanceUpper(String phoneAllowanceUpper) {
+		this.phoneAllowanceUpper = phoneAllowanceUpper;
+	}
+
+	public String getPresentAtDutyEveryDayUpper() {
+		return presentAtDutyEveryDayUpper;
+	}
+
+	public void setPresentAtDutyEveryDayUpper(String presentAtDutyEveryDayUpper) {
+		this.presentAtDutyEveryDayUpper = presentAtDutyEveryDayUpper;
 	}
 
 	@Override

@@ -294,7 +294,7 @@ public class EntryController extends BaseController{
 //		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 //		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
 		try {
-			flowEntryService.sendOffer("shy.gentleman@163.com", "gaofeifan@pj-l.com,zhengpengfei@pj-l.com","9", 557, "gaofeifan@pj-l.com", "9", "qwe.1234");
+			flowEntryService.sendOffer("gaofeifan_java@163.com", "gaofeifan@pj-l.com,zhangyiteng@pj-l.com,limengyun@pj-l.com","9", 567, "gaofeifan@pj-l.com", "9", "qwe.1234");
 		} catch (Exception e) {
 			return this.errorToJsonp(e.getMessage());
 		}

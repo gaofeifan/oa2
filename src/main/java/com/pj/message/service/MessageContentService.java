@@ -2,6 +2,7 @@ package com.pj.message.service;
 
 import java.util.List;
 
+import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.base.service.BaseService;
 import com.pj.message.pojo.MessageContent;
 
@@ -50,5 +51,15 @@ public interface MessageContentService extends BaseService<MessageContent,Intege
 	 * 	@param postId
 	 */
 	public void addMessageNotifyingPeople(MessageContent content, Integer applicantId, Integer postId);
+
+	/**
+	 * 	查询消息(进行分页)
+	 *	@author 	GFF
+	 *	@date		2017年7月27日上午11:13:21	
+	 * 	@param email
+	 * 	@param pageNo
+	 * 	@return
+	 */
+	public Pagination selectQueryMessage(String email, Integer pageNo);
 
 }

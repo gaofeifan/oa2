@@ -89,10 +89,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private AuthUserService authUserService;
 	//	@Resource
 //	private ManageProperties manageProperties;
-	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
-	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
-	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
-	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8082/sso/accountManage/batchUpdate";
+	private static String  ssoCreateUrl = "http://10.0.0.18:8085/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://10.0.0.18:8085/sso/userSync/update";
+	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8085/sso/accountManage/saveManage";
+	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8085/sso/accountManage/batchUpdate";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;
@@ -165,7 +165,6 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private void updateApplyState(Integer entryId) {
 		if(entryId == null){
 			throw new RuntimeException("没有查询到入职申请单");
-			
 		}
 		FlowEntry flowEntry = this.flowEntryService.selectByPrimaryKey(entryId);
 		flowEntry.setState(EntryApplyState.FILING.getState());
@@ -215,14 +214,28 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		String salaryJson = user.getSalaryJson();
 		JSONArray salaryArray = JSONArray.fromString(salaryJson);
 		List<Salary> salaryList = JSONArray.toList(salaryArray, Salary.class);
-		salaryList.stream().forEach(salary -> this.salaryService.updateByPrimaryKeySelective(salary));
+		for (Salary salary : salaryList) {
+			salary.setUserId(user.getId());
+			if(salary.getId() == null){
+				 this.salaryService.insertSelective(salary);
+			}else{
+				this.salaryService.updateByPrimaryKeySelective(salary);
+			}
+		}
 		/**
 		 * 	家庭成员
 		 */
 		String familyMemberJson = user.getFamilyMembersJson();
 		JSONArray jsonArray = JSONArray.fromString(familyMemberJson);
 		List<FamilyMember> list = JSONArray.toList(jsonArray, FamilyMember.class);
-		list.stream().forEach(familyMember -> this.familyMemberService.updateByPrimaryKeySelective(familyMember));
+		for (FamilyMember familyMember : list) {
+			familyMember.setUserId(user.getId());
+			if(familyMember.getId() == null){
+				this.familyMemberService.insertSelective(familyMember);
+			}else{
+				this.familyMemberService.updateByPrimaryKeySelective(familyMember);
+			}
+		}
 		
 		/**
 		 * 	教育经历
@@ -230,7 +243,14 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		String educationJson = user.getEducationJson();
 		JSONArray educationArray = JSONArray.fromString(educationJson);
 		List<Education> educationList = JSONArray.toList(educationArray, Education.class);
-		educationList.stream().forEach(education -> this.educationService.updateByPrimaryKeySelective(education));
+		for (Education education : educationList) {
+			education.setUserId(user.getId());
+			if(education.getId() == null){
+				this.educationService.insertSelective(education);
+			}else{
+				this.educationService.updateByPrimaryKeySelective(education);
+			}
+		}
 		
 		/**
 		 * 	工作经历
@@ -238,7 +258,14 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		String workExperienceJson = user.getWorkExperienceJson();
 		JSONArray workExperienceArray = JSONArray.fromString(workExperienceJson);
 		List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
-		workExperienceList.stream().forEach(work -> this.workExperienceService.updateByPrimaryKeySelective(work));
+		for (WorkExperience workExperience : workExperienceList) {
+			workExperience.setUserId(user.getId());
+			if(workExperience.getId() == null){
+				this.workExperienceService.insertSelective(workExperience);
+			}else{
+				this.workExperienceService.updateByPrimaryKeySelective(workExperience);
+			}
+		}
 		updateSSOSystem(user);
 		return super.updateByPrimaryKeySelective(user);
 	}

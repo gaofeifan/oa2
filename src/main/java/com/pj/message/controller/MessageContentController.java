@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.web.controller.BaseController;
 import com.pj.message.pojo.MessageContent;
 import com.pj.message.pojo.MessageContentUser;
@@ -57,6 +58,21 @@ public class MessageContentController extends BaseController {
 			logger.debug("【MessageContentController.selectMessageAll】  邮箱"+email);
 			List<MessageContent> list = this.messageContentService.selectMessageAllByEamilAndNotificationType(email, notificationType);
 			return this.successJsonp(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.errorToJsonp(e.getMessage());
+		}
+	}
+	
+	@ApiOperation(value = "消息查询(分页)", httpMethod = "GET", response = MappingJacksonValue.class)
+	@RequestMapping(value="/selectQueryMessage.do" , method=RequestMethod.GET)
+	public @ResponseBody MappingJacksonValue selectQueryMessage(@ApiParam("查询页码") @RequestParam(value = "pageNo", required = false) Integer pageNo ){
+		try {
+			//得到当前登录用户
+			String email = this.getSession();
+			logger.debug("【MessageContentController.selectMessage】  邮箱"+email);
+			Pagination pagination = this.messageContentService.selectQueryMessage(email, pageNo);
+			return this.successJsonp(pagination);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.errorToJsonp(e.getMessage());

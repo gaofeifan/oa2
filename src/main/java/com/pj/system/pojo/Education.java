@@ -27,7 +27,7 @@ public class Education {
 	@Column
 	private String education;
 	@Column
-	private Integer isFullTime;
+	private String isFullTime;
 	@Column
 	private Integer userId;
 	public Integer getId() {
@@ -60,10 +60,11 @@ public class Education {
 	public void setEducation(String education) {
 		this.education = education;
 	}
-	public Integer getIsFullTime() {
+
+	public String getIsFullTime() {
 		return isFullTime;
 	}
-	public void setIsFullTime(Integer isFullTime) {
+	public void setIsFullTime(String isFullTime) {
 		this.isFullTime = isFullTime;
 	}
 	public Integer getUserId() {

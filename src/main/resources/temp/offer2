@@ -7,15 +7,16 @@
 四、工作地点： <workAddress>
 五、薪资福利，具体条款如下：
 （一）预期现金收入为税前人民币
-1、基本工资：试用期内每月税前为<basePretaxSalaryForTrialPeriod>元整（人民币大写：<basePretaxSalaryForTrialPeriodUpper>）。
-             转正后每月税前为<pre_taxSalary>元整（人民币大写：<pre_taxSalaryUpper>）。
-2、岗位工资：试用期内每月税前为<theSalaryOfTheUsePeriod>元整（人民币大写： <theSalaryOfTheUsePeriodUpper>）。
-             转正后每月税前为<postAPostSalary>元整（人民币大写：<postAPostSalaryUpper>）。
-3、绩效工资：试用期每月税前为<probationPerformanceSalary>元整（人民币大写：<probationPerformanceSalaryUpper>）。
-             转正后每月税前为<transferPerformancePay>元整（人民币大写：<transferPerformancePayUpper>）。
+1、基本工资：试用期内每月税前为￥<basePretaxSalaryForTrialPeriod>元整（人民币大写：税前<basePretaxSalaryForTrialPeriodUpper>）。
+             转正后每月税前为￥<pre_taxSalary>元整（人民币大写：税前<pre_taxSalaryUpper>）。
+2、岗位工资：试用期内每月税前为￥<theSalaryOfTheUsePeriod>元整（人民币大写：税前<theSalaryOfTheUsePeriodUpper>）。
+             转正后每月税前为￥<postAPostSalary>元整（人民币大写：税前<postAPostSalaryUpper>）。
+3、绩效工资：试用期每月税前为￥<probationPerformanceSalary>元整（人民币大写：税前<probationPerformanceSalaryUpper>）。
+             转正后每月税前为￥<transferPerformancePay>元整（人民币大写：税前<transferPerformancePayUpper>）。
  根据员工每月工作任务完成情况，部门核定并计算员工当月绩效工资金额。具体工作目标由您的主管领导确定。
 4、业绩提成（仅限有业绩提成员工填写）：根据每月业绩完成情况部门核定并计算员工当月业绩提成金额。
-5、每月各种补贴：午餐补贴<lunchAllowance>元整；通讯补贴<phoneAllowance>元整，考勤工资<presentAtDutyEveryDay>元整。
+5、每月各种补贴：午餐补贴￥<lunchAllowance>元整（人民币大写：税前<lunchAllowanceUpper>）；通讯补贴￥<phoneAllowance>元整（人民币大写：税前<phoneAllowanceUpper>），
+      考勤工资￥<presentAtDutyEveryDay>元整（人民币大写：税前<presentAtDutyEveryDayUpper>）。
 （二）福利
       公司将按照法律规定为您缴纳社会保险。
 （三）个人所得税
@@ -29,9 +30,10 @@
 （3）近期一寸免冠白底冲印彩色照片2张，用于存档；
 （4）相关职称证书、技术等级证书等原件；
 （5）原公司离职证明（重要）；
-（6）本人银行卡；
-（7）体检报告（项目包括：一般检查、心电图、血常规、尿常规、肝功）；
-（8）电子版一寸白底免冠彩色照片，照片为JPG格式，宽358像素、高441像素，文件大小在9KB与20KB之间。
+（6）体检报告（项目包括：一般检查、心电图、血常规、尿常规、肝功、胸透）；
+          应到当地一级（含）以上医保定点医疗机构参加体检；
+（7）电子版一寸白底免冠彩色照片，照片为JPG格式，宽358像素、高441像素，文件大小在9KB与20KB之间。
+（8）本人银行卡；
 八、其他事项
 （一）签署本文件不视为您与公司建立了正式劳动关系，双方签署书面劳动合同后，方视为双方建立了劳动关系。同时，请您就本聘用意向书的内容进行保密。
 （二）如您加入我公司可能会违反您与相关单位的竞业限制约定或其他义务的，请您及时告知我公司。
@@ -44,11 +46,8 @@
   祝您事业成功，工作愉快！
 <company>              
 注：如您有任何疑问，请与人力资源部联系，本人知悉并同意以上条款，并确认到岗时间为： <hiredate>    
-联系人：<contacts>                            
-联系电话：<contactsPhone>
-姓名：<username>
-联系电话：<phone>
-身份证号：
+联系人：<contacts>                           姓名：<username>    身份证号：                     
+联系电话：<contactsPhone>                联系电话：<phone>
 
 <contacts> | <contactsPosition>
 Cel：+86 <contactsPhone> Tel：<companyPhone>

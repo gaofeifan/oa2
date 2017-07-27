@@ -10,11 +10,14 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.pj.auth.pojo.AuthUser;
 import com.pj.auth.service.AuthMenuService;
 import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.constant.NotificationType;
 import com.pj.config.base.mapper.MyMapper;
+import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.config.template.FormMessageTemplate;
 import com.pj.flow.pojo.FlowApprove;
@@ -182,5 +185,23 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 	 */
 	private User selectPostprincipal(Integer postId){
 		return authUserService.getAuthUserByPost(postId, "recruit");
+	}
+
+	/**
+	 * 	查询消息(分页展示)
+	 */
+	@Override
+	public Pagination selectQueryMessage(String email, Integer pageNo) {
+		User user = this.userService.selectByEamil(email);
+		MessageContent mc = new MessageContent();
+		mc.setApplicatId(user.getId());
+		MessageContentUser record = new MessageContentUser();
+		record.setIsFind(1);
+		Example example = new Example(MessageContent.class);
+		example.createCriteria().andCondition("user_id = ", user.getId());
+		this.messageContentUserService.updateByExampleSelective(record ,  example);
+		Page<MessageContent> page = PageHelper.startPage(Pagination.cpn(pageNo), 3, true);
+		List<MessageContent> list = this.messageContentMapper.selectMessageContentByUserIdAndNotificationType(mc);
+		return new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), list);
 	}
 }
