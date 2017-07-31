@@ -90,12 +90,15 @@ public class RecruitController extends BaseController{
 	@ApiOperation(value = "招聘申请查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="招聘申请查询")
 	@RequestMapping(value = "/searchRecruits.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue searchRecruits(HttpServletResponse response, HttpServletRequest request){
+	public MappingJacksonValue searchRecruits(HttpServletResponse response, HttpServletRequest request,
+			@ApiParam(value = "页码", required = false, defaultValue = "1") @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+			@ApiParam(value = "每页的个数", required = false, defaultValue = "10") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize){
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
+			Page<FlowRecruit> page = PageHelper.startPage(Pagination.cpn(pageNo), pageSize, true);
 			List<FlowRecruit> list = flowRecruitService.searchRecruits(null, null, user.getId());		
 			for(FlowRecruit flowRecruit : list){
 				Integer dempId = flowRecruit.getApplyDempId();
@@ -103,7 +106,8 @@ public class RecruitController extends BaseController{
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
 			}
-			map = this.successJsonp(list);
+			Pagination pagination = new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), list);
+			map = this.successJsonp(pagination);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
