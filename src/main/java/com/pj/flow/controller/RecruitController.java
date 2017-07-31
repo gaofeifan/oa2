@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.pj.config.base.constant.ApplyType;
 import com.pj.config.base.constant.RecruitApplyState;
+import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.web.controller.BaseController;
 import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowRecruit;
@@ -276,6 +279,8 @@ public class RecruitController extends BaseController{
 	public MappingJacksonValue listRecruitTodo(
 			HttpServletResponse response,
 			HttpServletRequest request,
+			@ApiParam(value = "页码", required = false, defaultValue = "1") @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+			@ApiParam(value = "每页的个数", required = false, defaultValue = "10") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
 			@ApiParam(value = "招聘待办状态（1:招聘中,2:已提交,3:已暂停,4:已审批）", required = true)@RequestParam(value = "state", required = true)Integer state,
 			@ApiParam(value = "公司id", required = false)@RequestParam(value = "companyId", required = false)Integer companyId,
 			@ApiParam(value = "申请人姓名", required = false)@RequestParam(value = "username", required = false)String username){
@@ -284,6 +289,7 @@ public class RecruitController extends BaseController{
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
+			Page<FlowRecruit> page = PageHelper.startPage(Pagination.cpn(pageNo), pageSize, true);
 			List<FlowRecruit> recruits = flowRecruitService.selectByQuery(user.getId(), companyId, username, state);
 			for(FlowRecruit flowRecruit : recruits){
 				Integer dempId = flowRecruit.getDempId();
@@ -291,7 +297,8 @@ public class RecruitController extends BaseController{
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowRecruit.setDempName(dempName);
 			}
-			map = this.successJsonp(recruits);
+			Pagination pagination = new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), recruits);
+			map = this.successJsonp(pagination);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());

@@ -101,7 +101,7 @@
 	</select>
 	<select id="selectTodoByQuery" resultMap="BaseResultMap">
 		select r.id, r.apply_id, r.username, r.need_num, r.entry_num, 
-		DATE_FORMAT(r.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
+		DATE_FORMAT(entry.apply_date,"%Y-%m-%d") as applyDateStr,demp.name dempName,demp.id dempId,
 		c.name as companyName, pn.name as positionName, entry.id entryId,post.name postName
 		<!-- COALESCE (pd.name + "-", d.name) as dempName,  -->
 		from flow_recruit r
