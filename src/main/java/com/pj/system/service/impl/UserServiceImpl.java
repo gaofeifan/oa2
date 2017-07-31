@@ -267,7 +267,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			}
 		}
 		updateSSOSystem(user);
-		return super.updateByPrimaryKeySelective(user);
+		return super.updateByPrimaryKey(user);
 	}
 
 

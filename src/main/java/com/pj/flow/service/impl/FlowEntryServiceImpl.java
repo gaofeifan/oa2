@@ -288,7 +288,7 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		Company company = this.companyMapper.selectByPrimaryKey(user.getCompanyid());
 		//	获取offer内容
 		FlowOffer offer = this.selectOfferDetailsByApplyIdAndEmail(applyId, email);
-		offer.setContactsPosition(user.getPositionname());
+		offer.setContactsPosition(user.getPostname());
 		offer.setCompanyAddress(company.getAddress());
 		offer.setCompanyPhone(company.getContact());
 		offer.setContactsEmail(user.getCompanyEmail());

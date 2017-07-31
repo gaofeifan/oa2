@@ -217,6 +217,7 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 		
 		return flowRecruitMapper.selectByApplyId(companyId, username, applyId);
 	}
+	
 	@Override
 	public FlowRecruit getUserInfo(Integer recruitId) {
 		return flowRecruitMapper.getUserInfo(recruitId);
@@ -313,7 +314,6 @@ public class FlowRecruitServiceImpl extends AbstractBaseServiceImpl<FlowRecruit,
 				flag = false;
 				break;
 			}
-			
 		}
 		return flag;
 	}

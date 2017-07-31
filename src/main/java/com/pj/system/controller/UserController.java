@@ -106,17 +106,18 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "根据id查询用户详情", httpMethod = "GET", response = String.class, notes = "修改用户回现相关信息")
 	@RequestMapping(value = "/selectUserDetail.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> selectUserDetail(@ApiParam("主键") @RequestParam("id") Integer id) {
-		Map<String, Object> map;
+	public Object selectUserDetail(@ApiParam("主键") @RequestParam("id") Integer id) {
+		String session = this.getSession();
+		if(StringUtils.isBlank(session)){
+			this.errorToJsonp("请先进行登录");
+		}
 		try {
 			User user = this.userService.selectUserDetail(id);
-			map = this.success(user);
-			return map;
+			return this.successJsonp(user);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			map = this.error("获取用户信息异常" + e.getMessage());
+			return this.errorToJsonp(e.getMessage());
 		}
-		return map;
 	}
 
 	@ApiOperation(value = "根据用户名称查询", httpMethod = "GET", response = MappingJacksonValue.class)
@@ -164,6 +165,7 @@ public class UserController extends BaseController {
 	/**
 	 * 更新用户
 	 */
+	
 	@ApiOperation(value = "更新用户", httpMethod = "POST", response = String.class, notes = "更新用户")
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -397,5 +399,15 @@ public class UserController extends BaseController {
 		} catch (Exception e) {
 			return this.errorToJsonp(e.getMessage());
 		}
+	}
+	@ApiOperation(value = "登录页面",httpMethod="get")
+	@RequestMapping(value = "/index" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public String index(HttpServletResponse response){
+//		try {
+//			response.sendRedirect("http://10.0.0.18:8083/www/Sign-in.html");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		return "Sign-in";
 	}
 }

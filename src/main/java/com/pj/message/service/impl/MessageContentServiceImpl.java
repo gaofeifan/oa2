@@ -200,7 +200,7 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		Example example = new Example(MessageContent.class);
 		example.createCriteria().andCondition("user_id = ", user.getId());
 		this.messageContentUserService.updateByExampleSelective(record ,  example);
-		Page<MessageContent> page = PageHelper.startPage(Pagination.cpn(pageNo), 3, true);
+		Page<MessageContent> page = PageHelper.startPage(Pagination.cpn(pageNo), 10, true);
 		List<MessageContent> list = this.messageContentMapper.selectMessageContentByUserIdAndNotificationType(mc);
 		return new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), list);
 	}

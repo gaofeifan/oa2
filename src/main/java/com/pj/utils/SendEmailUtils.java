@@ -15,6 +15,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
 
 /**
  * @author GFF
@@ -74,7 +75,12 @@ public class SendEmailUtils {
 			throw new RuntimeException("抄送人邮箱或邮箱格式有误");
 		}
 		try {
-			message.setSubject(title);
+			try {
+				message.setSubject((MimeUtility.encodeText(title,MimeUtility.mimeCharset("gb2312"), null)));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			message.setContent(content, "text/plain;charset=utf-8");
 			ts.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException e) {

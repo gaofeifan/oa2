@@ -18,12 +18,13 @@
 
 	<!-- 定时器开关 -->
 	<task:annotation-driven />
+	<!-- 拦截器 -->
 <!-- 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<bean class="com.pj.config.web.interceptor.LoginInterceptor">
 				<property name="outsideOfficeHoursPage">
-					<value>http://10.0.0.18:8081/www/Sign-in.html</value>
+					<value>http://10.0.0.18:8083/www/Sign-in.html</value>
 				</property>
 			</bean>
 		</mvc:interceptor>
@@ -60,7 +61,7 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<!-- <property name="prefix" value="/wabapp/res/" /> -->
-		<property name="suffix" value=".jsp" />
+		<property name="suffix" value=".html" />
 	</bean>
 
 	<!-- 全局异常处理 -->
