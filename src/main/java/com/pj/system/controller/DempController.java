@@ -116,8 +116,7 @@ public class DempController extends SystemManageController{
 	@ApiOperation(value = "保存修改部门后的信息", httpMethod = "POST", response=String.class, notes ="保存修改部门后的信息")
 	public Map<String, Object> updateDemp( @ModelAttribute("demp")Demp demp){
 		try {
-		
-			this.dempService.updateByPrimaryKeySelective(demp);
+			this.dempService.updateByPrimaryKey(demp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("修改部门信息异常" + e.getMessage());
@@ -174,12 +173,22 @@ public class DempController extends SystemManageController{
 	@ApiOperation(value = "根据公司id查询所有的部门", httpMethod = "GET", response=Map.class, notes ="根据公司id查询所有的部门")
 	@RequestMapping(value="/findDemps.do" , method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> findDempsByCompanyId(@ApiParam("companyId") @RequestParam("companyId")Integer companyId){
+	public Map<String, Object> findDempsByCompanyId(@ApiParam("companyId") @RequestParam("companyId")Integer companyId,
+			@ApiParam(value="id",required=false) @RequestParam(value="id",required=false)Integer id
+			){
 		Map<String, Object> map;
 		try {
 			Map<String, Object> hashMap = new HashMap<>();
 			List<Demp> demps = this.dempService.selectByCompanyId(companyId);
 			List<Company> companys = this.companyService.selectNotDeleteALL();
+			if(id != null){
+				List<Demp> list = this.dempService.selectDempParentListById(id);
+				for (Demp demp : demps) {
+					if(list.contains(demp)){
+						demp.setOpen(true);
+					}
+				}
+			}
 			hashMap.put("demps", demps);
 			hashMap.put("companys", companys);
 			map = this.success(hashMap);

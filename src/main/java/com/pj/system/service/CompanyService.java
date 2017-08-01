@@ -96,5 +96,14 @@ public interface CompanyService extends BaseService<Company, Integer> {
 	 */
 	List<Integer> getAllPosts(List<Organization> companys);
 
+	/**
+	 * 	根据公司查询所有的父集
+	 *	@author 	GFF
+	 *	@date		2017年8月1日下午3:01:23	
+	 * 	@param id
+	 * 	@return
+	 */
+	List<Company> selectCompanyParentsById(Integer id);
+
 	
 }

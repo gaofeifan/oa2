@@ -92,6 +92,9 @@
 		SELECT number FROM t_company 
 		WHERE FIND_IN_SET(id,getCompanyParentList(#{id})) and isdelete = 0
 	</select>
+	<select id="selectCompanyParentsById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	select * from t_company where FIND_IN_SET(id,getCompanyParentList(#{id}))  and isdelete = 0
+	</select>
 	<select id="selectChildsById" resultMap = "OrganizationMap" parameterType="java.lang.Integer">
 		SELECT * ,(SELECT number FROM t_company WHERE id = c.pId) as pNum,
 		case 

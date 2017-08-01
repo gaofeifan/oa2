@@ -485,4 +485,12 @@ public class CompanyServiceImpl extends AbstractBaseServiceImpl<Company, Integer
 
 	}
 
+	/**
+	 * 	查询公司的所有父集
+	 */
+	@Override
+	public List<Company> selectCompanyParentsById(Integer id) {
+		return this.companyMapper.selectCompanyParentsById(id);
+	}
+
 }

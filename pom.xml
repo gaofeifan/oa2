@@ -10,6 +10,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- 设置统一控制版本 -->
 	<properties>
 		<java-version>1.8</java-version>
+		<lombok.version>1.16.6</lombok.version>
 		<shiro-version>1.2.2</shiro-version>
 		<org.mybatis-version>3.4.0</org.mybatis-version>
 		<org.mybatis-spring-version>1.3.0</org.mybatis-spring-version>
@@ -426,6 +427,14 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 			<version>0.0.1</version>
 		</dependency>
 
+		<!-- lombok生成get set -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 
@@ -484,7 +493,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<ftp.port>2221</ftp.port>
 			</properties>
 		</profile>
-		
+
 		<!-- 测试环境 -->
 		<profile>
 			<id>dev_test</id>

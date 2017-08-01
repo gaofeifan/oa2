@@ -136,7 +136,7 @@ public class CompanyController extends SystemManageController{
 	public Map<String,Object> updateCompany(@ModelAttribute("company")Company company){
 		try {
 			this.companyService.updateByPrimaryKeySelective(company);
-			return this.success(null);
+			return this.success(company.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("更新企业异常" + e.getMessage());
@@ -150,10 +150,18 @@ public class CompanyController extends SystemManageController{
 	@ResponseBody
 	@ApiOperation(value = "查询所有企业信息", httpMethod = "GET", response=String.class, notes ="查询所有企业信息")
 	@RequestMapping(value = "/list.do",method=RequestMethod.GET)
-	public Map<String, Object> findCompanyList(Model Model){
+	public Map<String, Object> findCompanyList(@ApiParam(value="id",required=false) @RequestParam(value="id",required=false)Integer id){
 		Map<String, Object> map;
 		try {
 			List<Company> companys = this.companyService.selectNotDeleteALL();
+			if(id != null){
+				List<Company> lists = this.companyService.selectCompanyParentsById(id);
+				for (Company company : companys) {
+					if(lists.contains(company)){
+						company.setOpen(true);
+					}
+				}
+			}
 			map = this.success(companys);
 		} catch (Exception e) {
 			logger.error("查询所有的企业信息异常" + e.getMessage());

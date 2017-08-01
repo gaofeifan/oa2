@@ -30,6 +30,7 @@ import com.pj.flow.pojo.FlowActionLog;
 import com.pj.flow.pojo.FlowApprove;
 import com.pj.flow.pojo.FlowEntry;
 import com.pj.flow.pojo.FlowOffer;
+import com.pj.flow.pojo.FlowRecruit;
 import com.pj.flow.service.FlowActionLogService;
 import com.pj.flow.service.FlowApproveService;
 import com.pj.flow.service.FlowEntryService;
@@ -72,12 +73,16 @@ public class EntryController extends BaseController{
 	@ApiOperation(value = "入职申请查询", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职申请查询")
 	@RequestMapping(value = "/searchEntrys.do", method = RequestMethod.GET)
 	@ResponseBody
-	public MappingJacksonValue searchEntrys(HttpServletResponse response, HttpServletRequest request){
+	public MappingJacksonValue searchEntrys(HttpServletResponse response, HttpServletRequest request,
+			@ApiParam(value = "页码", required = false, defaultValue = "1") @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+			@ApiParam(value = "每页的个数", required = false, defaultValue = "10") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize){
 		MappingJacksonValue map;
 		try {
 			//得到当前登录用户
 			String email = this.sessionProvider.getAttibute(RequestUtils.getCSESSIONID(request, response));
 			User user = this.userService.selectByEamil(email);
+			
+			Page<FlowRecruit> page = PageHelper.startPage(Pagination.cpn(pageNo), pageSize, true);
 			
 			List<FlowEntry> list = flowEntryService.searchEntrys(null, null, user.getId());		
 			for(FlowEntry flowEntry : list){
@@ -86,7 +91,8 @@ public class EntryController extends BaseController{
 				String dempName = dempService.selectDempParentNameById(dempId);
 				flowEntry.setDempName(dempName);
 			}
-		map = this.successJsonp(list);
+			Pagination pagination = new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), list);
+			map = this.successJsonp(pagination);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
@@ -244,6 +250,8 @@ public class EntryController extends BaseController{
 //			
 //			map = this.successJsonp(number);
 //		} catch (Exception e) {
+	
+	
 //			e.printStackTrace();
 //			logger.error("异常" + e.getMessage());
 //			throw new RuntimeException("建档待办提示");
@@ -273,7 +281,6 @@ public class EntryController extends BaseController{
 			List<FlowEntry> entrys = flowEntryService.selectByTodo(user.getId(), companyId, name);
 			Pagination pagination = new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), entrys);
 			map = this.successJsonp(pagination);
-//			map = this.successJsonp(entrys);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
@@ -301,7 +308,7 @@ public class EntryController extends BaseController{
 //		String offerTemp = SendEmailUtils.getResourceTemp("/temp/offer2");
 //		String string = OfferUtils.replaceOfferContent(offerTemp, flowOffer);
 		try {
-			flowEntryService.sendOffer("gaofeifan_java@163.com", "gaofeifan@pj-l.com","9", 557, "gaofeifan@pj-l.com", "9", "qwe.1234");
+			flowEntryService.sendOffer("gaofeifan_java@163.com", "gaofeifan@pj-l.com,pek.sunzhi@medilink.com.cn","9", 557, "gaofeifan@pj-l.com", "9", "PJgff.1234");
 		} catch (Exception e) {
 			return this.errorToJsonp(e.getMessage());
 		}
@@ -317,6 +324,7 @@ public class EntryController extends BaseController{
 	public @ResponseBody MappingJacksonValue selectOfferDetail(@ModelAttribute("flowOffer") FlowOffer flowOffer ){
 		return null;
 	}
+	
 	/**
 	 * 	撤回
 	 */

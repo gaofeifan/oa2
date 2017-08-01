@@ -26,7 +26,6 @@ import javax.mail.internet.MimeUtility;
  */
 public class SendEmailUtils {
 	private static final String[] HOST = new String[] {"pj-l.com","medilink.com.cn"};
-	
 	public static void sendMessage(String sendEmail, String sendPassword, String recipientEmail, String title,
 		String content, String[] ccEmail) throws AddressException, MessagingException , RuntimeException{
 		// 配置信息
@@ -84,7 +83,7 @@ public class SendEmailUtils {
 			message.setContent(content, "text/plain;charset=utf-8");
 			ts.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException e) {
-			throw new RuntimeException("账号或密码错误");
+			throw new RuntimeException("抄送人邮箱格式不正确");
 		}
 	}
 

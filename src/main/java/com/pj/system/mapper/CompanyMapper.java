@@ -45,6 +45,13 @@ public interface CompanyMapper extends MyMapper<Company> {
 	 */
 	List<String> selectParentsById(Integer id);
 	/**
+	 * 根据id查询所有的父集
+	 * @author limr
+	 * @param id
+	 * @return
+	 */
+	List<Company> selectCompanyParentsById(Integer id);
+	/**
 	 * 根据id得到所有子集级以及本机编号
 	 * @author limr
 	 * @param id
