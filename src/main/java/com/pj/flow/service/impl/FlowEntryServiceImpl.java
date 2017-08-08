@@ -138,7 +138,6 @@ public class FlowEntryServiceImpl extends AbstractBaseServiceImpl<FlowEntry, Int
 		
 		//保存中间表
 		FlowUserApplication fa = new FlowUserApplication();
-		
 		fa.setFormId(entryId);
 		fa.setUserId(userId);
 		fa.setApplyName(flowEntry.getUsername());

@@ -5,6 +5,7 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="form_id" property="formId" jdbcType="INTEGER" />
+		<result column="checkstatus" property="checkstatus" jdbcType="INTEGER" />
 		<result column="apply_type" property="applyType" jdbcType="VARCHAR" />
 		<result column="apply_name" property="applyName" jdbcType="VARCHAR" />
 		<result column="apply_demp_name" property="applyDempName"
@@ -15,6 +16,7 @@
 		<result column="username" property="username" jdbcType="VARCHAR" />
 
 		<result column="applyDateStr" property="applyDateStr" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
 		<result column="approveId" property="approveId" jdbcType="INTEGER" />
 		<result column="applyState" property="applyState" jdbcType="INTEGER" />
 		<result column="applyResult" property="applyResult" jdbcType="INTEGER" />
@@ -30,6 +32,32 @@
 			</if>
 			<if test="checkstatus != null and checkstatus != 0">
 				and a.checkstatus != 0
+			</if>
+		
+		ORDER BY ua.apply_time DESC
+	</select>
+	<select id="searchMyApprovesApp" resultMap="BaseResultMap">
+		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
+		a.id as approveId,a.checkstatus checkstatus,
+		 concat(
+			"申请摘要：",
+			IFNULL(ua.apply_company_name, ''),
+			IFNULL("  ", ''),
+			IFNULL(ua.apply_demp_name, '')
+		) AS content
+		from flow_user_application ua
+		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
+			<if test="checkstatus != null and checkstatus == 0">
+				and a.checkstatus = 0 and a.is_approve = 0
+			</if>
+			<if test="checkstatus != null and checkstatus != 0">
+				and a.checkstatus != 0
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[ ua.apply_time >= #{startDate} ]]>   
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[ ua.apply_time <= #{endDate}]]>   
 			</if>
 		
 		ORDER BY ua.apply_time DESC

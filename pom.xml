@@ -546,7 +546,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-
 			<!-- 跳过test -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -565,7 +564,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-
 		<!-- maven打包后的项目名 -->
 		<finalName>oa</finalName>
 	</build>

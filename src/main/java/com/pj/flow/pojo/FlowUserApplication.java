@@ -28,7 +28,7 @@ public class FlowUserApplication {
 
 	@Column
     private String applyDempName;
-
+	
 	@Column
     private Date applyTime;
 
@@ -42,11 +42,16 @@ public class FlowUserApplication {
 	@Transient
 	private Integer approveId;
 	@Transient
+	private Integer checkstatus;
+	@Transient
 	private String applyDateStr;
 	@Transient
 	private Integer applyResult;
 	@Transient
 	private Integer applyState;
+	
+	@Transient
+	private String content;
 
     public Integer getApplyState() {
 		return applyState;
@@ -151,4 +156,22 @@ public class FlowUserApplication {
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
     }
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getCheckstatus() {
+		return checkstatus;
+	}
+
+	public void setCheckstatus(Integer checkstatus) {
+		this.checkstatus = checkstatus;
+	}
+
+	
 }

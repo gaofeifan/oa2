@@ -188,7 +188,9 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 	}
 
 	/**
+	 * 
 	 * 	查询消息(分页展示)
+	 * 
 	 */
 	@Override
 	public Pagination selectQueryMessage(String email, Integer pageNo) {
@@ -200,7 +202,7 @@ public class MessageContentServiceImpl extends AbstractBaseServiceImpl<MessageCo
 		Example example = new Example(MessageContent.class);
 		example.createCriteria().andCondition("user_id = ", user.getId());
 		this.messageContentUserService.updateByExampleSelective(record ,  example);
-		Page<MessageContent> page = PageHelper.startPage(Pagination.cpn(pageNo), 10, true);
+		Page<MessageContent> page = PageHelper.startPage(Pagination.cpn(pageNo), 12, true);
 		List<MessageContent> list = this.messageContentMapper.selectMessageContentByUserIdAndNotificationType(mc);
 		return new Pagination(page.getPageNum(), page.getPageSize(), (int) page.getTotal(), list);
 	}

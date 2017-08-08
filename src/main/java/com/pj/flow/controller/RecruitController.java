@@ -243,6 +243,15 @@ public class RecruitController extends BaseController{
 		}
 		return map;
 	}
+	/**
+	 * 	查询接口 申请单详情
+	 */
+	@ApiOperation(value = "查询接口 申请单详情", httpMethod = "GET", response=Map.class, notes ="申请单详情")
+	@RequestMapping(value = "/showApplyDetails.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void showApplyDetails(
+			@ModelAttribute("recruit") FlowRecruit recruit ){
+	}
 	
 	
 	

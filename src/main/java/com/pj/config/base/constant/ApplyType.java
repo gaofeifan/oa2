@@ -42,5 +42,12 @@ public enum ApplyType {
 	public void setApplyType(String applyType) {
 		this.applyType = applyType;
 	}
-    
+	public static boolean isConsist(String type){
+		for(ApplyType applyType:values() ){
+			if(applyType.equals(type)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

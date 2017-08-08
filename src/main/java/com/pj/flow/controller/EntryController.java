@@ -152,6 +152,12 @@ public class EntryController extends BaseController{
 		}
 		return map;
 	}
+	@ApiOperation(value = "查询 入职申请详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职申请详情")
+	@RequestMapping("/showEntryApplyDetails.do")
+	@ResponseBody
+	public void showEntryApplyDetails(
+			@ModelAttribute("entry") FlowEntry entry){
+	}
 	
 	@ApiOperation(value = "入职待办状态详情", httpMethod = "GET", response=MappingJacksonValue.class, notes ="入职待办状态详情")
 	@RequestMapping("/showApplyTodo.do")

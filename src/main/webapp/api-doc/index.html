@@ -37,11 +37,9 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-
-        url = "http://localhost:8080/oa/v2/api-docs";
-
-      }
-
+         var host = window.location.host
+       var url = "http://"+host+"/oa/v2/api-docs";
+      } 
       hljs.configure({
         highlightSizeThreshold: 5000
       });
@@ -78,7 +76,6 @@
         defaultModelRendering: 'schema',
         showRequestHeaders: false
       });
-
       window.swaggerUi.load();
 
       function log() {

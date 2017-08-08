@@ -1,5 +1,6 @@
 package com.pj.flow.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -24,6 +25,14 @@ public interface FlowUserApplicationMapper extends MyMapper<FlowUserApplication>
 	 * @return
 	 */
 	List<FlowUserApplication> searchMyApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus);
+	/**
+	 * 我的审批查询(异动端)
+	 * @author limr
+	 * @param userid
+	 * @param checkstatus
+	 * @return
+	 */
+	List<FlowUserApplication> searchMyApprovesApp(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus, @Param(value = "startDate") Date startDate ,@Param(value = "endDate") Date endDate );
 //	List<FlowUserApplication> searchMyEntryApproves(@Param(value = "userid") Integer userid, @Param(value = "checkstatus") Integer checkstatus, @Param(value = "type") String type);
 
 	/**
