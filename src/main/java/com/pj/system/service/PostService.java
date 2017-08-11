@@ -83,4 +83,12 @@ public interface PostService extends BaseService<Post, Integer> {
 	 */
 	void updatePost(Post post);
 
+	/**
+	 * 权限模块根据部门或公司查询岗位
+	 * @author limr
+	 * @param post
+	 * @return
+	 */
+	List<Post> selectByComOrDemp(Post post);
+
 }

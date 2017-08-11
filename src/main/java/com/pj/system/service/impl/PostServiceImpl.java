@@ -219,4 +219,10 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 	public List<Integer> selectAllPostId(int isdelete) {
 		return postMapper.selectAllPostId(isdelete);
 	}
+
+	@Override
+	public List<Post> selectByComOrDemp(Post post) {
+		List<Post> posts = this.postMapper.selectByComOrDemp(post);
+		return posts;
+	}
 }

@@ -97,6 +97,14 @@ public interface PostMapper extends MyMapper<Post>{
 	 * @return
 	 */
 	List<Integer> selectLinealIdsByDempId(Integer dempId);
+
+	/**
+	 * 权限模块根据部门或公司查询岗位
+	 * @author limr
+	 * @param post
+	 * @return
+	 */
+	List<Post> selectByComOrDemp(Post post);
 	
 
 }

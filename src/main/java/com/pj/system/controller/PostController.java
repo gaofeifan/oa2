@@ -136,6 +136,28 @@ public class PostController extends SystemManageController {
 		}
     	return map;
 	}
+	/**
+	 * 权限模块根据部门或公司查询岗位
+	 * @author limr
+	 * @param post
+	 * @return
+	 */
+	@ResponseBody
+	@ApiOperation(value = "权限模块根据部门或公司查询岗位", httpMethod = "GET", response=String.class, notes ="权限模块根据部门或公司查询岗位")
+	@RequestMapping(value="/findByComOrDemp.do", method =RequestMethod.GET)
+	public Map<String, Object> findPost(@ModelAttribute("post")Post post){
+		Map<String, Object> map;
+		try {
+			Map<String, Object> hashMap = new HashMap<>();
+			List<Post> posts = this.postService.selectByComOrDemp(post);
+			hashMap.put("posts", posts);
+			map = this.success(hashMap);
+		} catch (Exception e) {
+			logger.error("权限模块根据部门或公司查询岗位" + e.getMessage());
+			throw new RuntimeException("操作资源异常");		
+		}
+		return map;
+	}
 	
 	/**
 	 * 	根据id删除岗位
