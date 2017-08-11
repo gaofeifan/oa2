@@ -57,6 +57,21 @@
 	</where>	
 	ORDER BY p.id
   </select>
+ <select id="selectByComOrDemp" resultMap="BaseResultMap" parameterType="com.pj.system.pojo.Post">
+  SELECT id, name FROM t_post
+	<where>
+		isdelete = 0
+		<if test="companyId != null and dempId == null">
+			AND company_id = #{companyId} 
+			and demp_id is null
+		</if>
+		<if test="companyId != null and dempId != null">
+			AND company_id = #{companyId} 
+			and demp_id = #{dempId}
+		</if>
+	</where>	
+	ORDER BY id
+  </select>
   
   <select id="SelectByUserid" resultMap="BaseResultMap" >
 	select t_post.id,t_post.name,t_post.demp_id,t_post.company_id,COUNT(auth_user.postid) as choice from t_post
