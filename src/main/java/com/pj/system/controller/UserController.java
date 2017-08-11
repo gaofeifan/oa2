@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pj.auth.service.AuthUserService;
 import com.pj.config.base.constant.Constant;
 import com.pj.config.base.pojo.page.Pagination;
 import com.pj.config.web.controller.BaseController;
@@ -58,7 +59,8 @@ public class UserController extends BaseController {
 	private PositionService positionService;
 	@Resource
 	private SessionProvider sessionProvider;
-
+	@Resource
+	private AuthUserService authUserService;
 	/**
 	 * 添加用户
 	 * @throws URISyntaxException
@@ -353,6 +355,7 @@ public class UserController extends BaseController {
 	/**
 	 * 	修改邮箱及密码
 	 */
+	
 	@ApiOperation(value = "修改邮箱及密码", httpMethod = "GET", response = String.class, notes = "修改邮箱及密码")
 	@RequestMapping("updateCompanyEmailOnPassword.do")
 	@ResponseBody
@@ -409,5 +412,20 @@ public class UserController extends BaseController {
 //			e.printStackTrace();
 //		}
 		return "Sign-in";
+	}
+	
+	
+	
+	@ApiOperation(value = "添加基础权限",httpMethod="get")
+	@RequestMapping(value = "/insertAuth.do" ,method=RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public void insertAuth(){
+		List<User> selectAll = this.userService.selectAll();
+		for (User user : selectAll) {
+			if(user.getId() == 388){
+				continue;
+			}
+			this.authUserService.insertDefaultAuthUser(user.getId());
+		}
+//		return "Sign-in";
 	}
 }
