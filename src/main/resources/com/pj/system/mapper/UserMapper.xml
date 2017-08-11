@@ -152,6 +152,28 @@
 			</if>
 		</where>
 	</select>
+	<select id="selectUsers" parameterType="com.pj.system.pojo.User" resultMap="BaseResultMap">
+		select 
+			id, username
+		from t_user
+		<where>
+			isdelete = 0
+			<choose>
+				<when test="postid != null">
+					AND postid = #{postid}
+				</when>
+				<otherwise>
+					<if test="companyid != null and dempid == null">
+						AND companyid = #{companyid} and dempid is null
+					</if>
+					<if test="companyid != null and dempid != null">
+						AND companyid = #{companyid} and dempid = #{dempid}
+					</if>
+				</otherwise>
+			</choose>
+			
+		</where>
+	</select>
 	
 	<select id="pageQuery" parameterType="com.pj.system.pojo.User"
 		resultMap="User_Relevance_Select">

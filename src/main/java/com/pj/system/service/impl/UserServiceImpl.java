@@ -580,5 +580,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("newPassword", newPassword);
 		return HttpClienTool.doGet(ssoUpdateBatchUpdate, map);
 	}
+
+	@Override
+	public List<User> selectUsers(User user) {
+		return userMapper.selectUsers(user);
+	}
 	
 }

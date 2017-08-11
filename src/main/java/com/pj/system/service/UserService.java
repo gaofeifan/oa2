@@ -143,4 +143,11 @@ public interface UserService extends BaseService<User, Integer> {
 	 */
 	String resetPasswords(String emails, String newPassword);
 
+	/**
+	 * 查询用户通过公司id部门id岗位id
+	 * @param user
+	 * @return
+	 */
+	List<User> selectUsers(User user);
+
 }

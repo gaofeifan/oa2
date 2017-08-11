@@ -294,19 +294,25 @@ public class UserController extends BaseController {
 			return this.errorToJsonp("获取单号异常  ："+e.getMessage());
 		}
 	}
-	@ApiOperation(value = "查询用户通过公司id岗位id", httpMethod = "GET", response = String.class, notes = "查询用户通过公司id岗位id")
+	@ApiOperation(value = "查询用户通过公司id部门id岗位id", httpMethod = "GET", response = String.class, notes = "查询用户通过公司id部门id岗位id")
 	@RequestMapping("/selectUserByCompanyIdAndPostId.do")
 	@ResponseBody
-	public MappingJacksonValue selectUserByCompanyIdAndPostId(@ApiParam("公司id") @RequestParam("companyId") Integer companyId,
-															  @ApiParam(name="岗位id",required=false) @RequestParam(value="postId",required=false) Integer postId){
+	public MappingJacksonValue selectUserByCompanyIdAndPostId(
+			@ApiParam(value = "公司id", required=false) @RequestParam(value = "companyId", required=false) Integer companyId,
+			@ApiParam(value = "部门id", required=false) @RequestParam(value = "dempId", required=false) Integer dempId,
+			@ApiParam(value = "岗位id", required=false) @RequestParam(value="postId", required=false) Integer postId){
 		try {
-			User record = new User();
-			record.setCompanyid(companyId);
+			User user = new User();
+			user.setCompanyid(companyId);
 			if(postId != null){
-				record.setPostid(postId);
+				user.setPostid(postId);
 			}
-			record.setIsdelete(0);
-			return this.successJsonp(this.userService.select(record));
+			if(dempId != null){
+				user.setDempid(dempId);
+			}
+			user.setIsdelete(0);
+			List<User> users = userService.selectUsers(user);
+			return this.successJsonp(users.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.errorToJsonp("查询异常 :"+e.getMessage());
