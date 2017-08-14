@@ -314,7 +314,7 @@ public class UserController extends BaseController {
 			}
 			user.setIsdelete(0);
 			List<User> users = userService.selectUsers(user);
-			return this.successJsonp(users.size());
+			return this.successJsonp(users);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.errorToJsonp("查询异常 :"+e.getMessage());
