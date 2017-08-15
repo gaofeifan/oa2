@@ -219,7 +219,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			if(salary.getId() == null){
 				 this.salaryService.insertSelective(salary);
 			}else{
-				this.salaryService.updateByPrimaryKeySelective(salary);
+				this.salaryService.updateByPrimaryKeyNoEncryption(salary);
 			}
 		}
 		/**
@@ -430,7 +430,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	@Override
 	public User selectUserDetail(Integer id) {
 		User user = this.selectById(id);
-		List<Salary> salary = this.salaryService.selectSalaryByUserId(user.getId());
+		List<Salary> salary = this.salaryService.selectUnencryptedSalaryByUserId(user.getId());
 		if(salary.size() == 0 ){
 			salary = GetJsonFileUtils.getSalary();
 		}

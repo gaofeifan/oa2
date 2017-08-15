@@ -111,5 +111,24 @@ public class SalaryServiceImpl extends AbstractBaseServiceImpl<Salary, Integer> 
 		return salarys;
 	}
 
+	/**
+	 * 	查询未加密薪资根据用户id
+	 */
+	@Override
+	public List<Salary> selectUnencryptedSalaryByUserId(Integer id) {
+		Example example = new Example(Salary.class);
+		example.createCriteria().andCondition("user_id"+" = ", id);
+		return selectByExample(example );
+	}
+
+	/**
+	 * 	更新用户薪资不进行加密
+	 */
+	@Override
+	public void updateByPrimaryKeyNoEncryption(Salary salary) {
+		this.salaryMapper.updateByPrimaryKeySelective(salary);
+	}
+
+	
 
 }
