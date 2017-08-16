@@ -3,7 +3,7 @@ package com.pj.weChat.pojo;
 
 
 
-public class useValue {
+public class UseValue {
 
 	public final static String AppId ="wx17f788165832cdc9";
 	public final static String AppSecret ="cdb977a39b0d58c8a0ba5a5e9fab211b";

@@ -1,4 +1,4 @@
-package com.pj.config.base.timer;
+package com.pj.config.web.timer;
 
 import org.springframework.stereotype.Component;
 

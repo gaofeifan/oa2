@@ -120,7 +120,7 @@
 	
 	<sql id="Base_Column">
 		u.id,u.username,u.sex,u.filenumber,u.hiredate,u.phone,u.company_email,u.i_email,u.dempid
-		,u.positionid,u.postid,demp.companyid companyid,u.pid,u.nation,u.work_address,u.identityproof,u.identityproof_address,u.residential_address
+		,u.positionid,u.postid,u.companyid companyid,u.pid,u.nation,u.work_address,u.identityproof,u.identityproof_address,u.residential_address
 		,u.is_ding_talk,u.is_status,u.contract_type,u.contract_period,u.leavedate,u.probation,u.regulardate,u.apply_regular_date,u.contract_start_time
 		,u.contract_stop_time,u.contacts,u.marital_status,u.child_status,u.education,u.school,u.is_fulltime,u.is_new_ginseng,u.is_social_security_cards
 		,u.is_accumulation_fund,u.alnature,u.social_security_cardinal_number,u.accumulation_fund_cardinal_number

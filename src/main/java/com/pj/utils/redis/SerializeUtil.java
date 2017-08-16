@@ -69,7 +69,8 @@ public class SerializeUtil {
 	     * @return
 	     * @throws Exception
 	     */
-	    public static byte[] serializeList(List list) throws Exception {
+	    @SuppressWarnings("rawtypes")
+		public static byte[] serializeList(List list) throws Exception {
 	        ObjectOutputStream oos = null;
 	        ByteArrayOutputStream baos = null;
 	        try {
@@ -88,7 +89,8 @@ public class SerializeUtil {
 	        }
 	    }
 
-	    public static List unserializeList(byte[] bytes) throws Exception {
+	    @SuppressWarnings({ "rawtypes", "unchecked" })
+		public static List unserializeList(byte[] bytes) throws Exception {
 	        List list = new ArrayList();
 	        if (bytes == null) {
 	            return null;

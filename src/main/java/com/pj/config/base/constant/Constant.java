@@ -43,4 +43,9 @@ public interface Constant {
 	 * 	消息通知人员
 	 */
 	public static final Integer messageCenterMenuId = 46 ;
+	
+	/**
+	 * 	微信模板     流程待审批提醒
+	 */
+	public static final String WECHAT_TEMPLATE_APPROVAL_PENDING = "plvy7LqZ-nZbBMtKMTa8e2W_6DC-FTDGrTR0ylWh2lw";
 }

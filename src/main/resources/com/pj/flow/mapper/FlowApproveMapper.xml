@@ -1,58 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pj.flow.mapper.FlowApproveMapper" >
-  <resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowApprove" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="recordid" property="recordid" jdbcType="INTEGER" />
-    <result column="userid" property="userid" jdbcType="INTEGER" />
-    <result column="positionid" property="positionid" jdbcType="INTEGER" />
-    <result column="handledate" property="handledate" jdbcType="TIMESTAMP" />
-    <result column="handleidea" property="handleidea" jdbcType="VARCHAR" />
-    <result column="checkstatus" property="checkstatus" jdbcType="INTEGER" />
-    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="is_approve" property="isApprove" jdbcType="INTEGER" />
-    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
-    <result column="is_messaging" property="isMessaging" jdbcType="INTEGER" />
-    <result column="approveName" property="approveName" jdbcType="VARCHAR" />
-    <result column="postName" property="postName" jdbcType="VARCHAR" />
-    <result column="positionName" property="positionName" jdbcType="VARCHAR" />
-    <result column="approveDateStr" property="approveDateStr" jdbcType="VARCHAR" />
-  </resultMap>
-  
-  <select id="selectByApplyIdAndType" resultMap="BaseResultMap">
-  	select fa.*, pt.name as positionName,u.username as approveName ,
-  		DATE_FORMAT(fa.handledate,"%Y-%m-%d") AS approveDateStr,p.name postName
-  	from flow_approve fa 
-  	left join t_user u on fa.userid = u.id
-  	left join t_position pt on fa.positionid = pt.id
-  	left JOin t_post p on u.postid = p.id
-  	where fa.apply_id in (select fu.id from flow_user_application fu 
-  		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
-  	ORDER BY fa.id 
-  </select>
-  <select id="selectListByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-  	select * from flow_approve
-  	where apply_id = #{applyId}
-  	order by id asc
-  </select>
-  
-  <select id="selectByApprove" resultType="java.lang.Integer" >
-  	 select COUNT(1) from flow_user_application 
-	inner join flow_approve on flow_user_application.id=flow_approve.apply_id AND flow_approve.id in (select  MAX(id) from flow_approve  GROUP BY apply_id)
-	where user_id=#{userid} and checkstatus=#{checkstatus} and apply_time>= date_sub(curdate(),interval 1 month) 
-  </select>
-  <select id="selectByUserid" resultType="java.lang.Integer" >
-  	select COUNT(1) from flow_approve where userid=#{userid}  AND is_approve=0
-  </select>
+<mapper namespace="com.pj.flow.mapper.FlowApproveMapper">
+	<resultMap id="BaseResultMap" type="com.pj.flow.pojo.FlowApprove">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="recordid" property="recordid" jdbcType="INTEGER" />
+		<result column="userid" property="userid" jdbcType="INTEGER" />
+		<result column="positionid" property="positionid" jdbcType="INTEGER" />
+		<result column="handledate" property="handledate" jdbcType="TIMESTAMP" />
+		<result column="handleidea" property="handleidea" jdbcType="VARCHAR" />
+		<result column="checkstatus" property="checkstatus" jdbcType="INTEGER" />
+		<result column="apply_id" property="applyId" jdbcType="INTEGER" />
+		<result column="is_approve" property="isApprove" jdbcType="INTEGER" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="is_messaging" property="isMessaging" jdbcType="INTEGER" />
+		<result column="approveName" property="approveName" jdbcType="VARCHAR" />
+		<result column="postName" property="postName" jdbcType="VARCHAR" />
+		<result column="positionName" property="positionName" jdbcType="VARCHAR" />
+		<result column="approveDateStr" property="approveDateStr"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column">
+		id,recordid,userid,positionid,handledate,handleidea,checkstatus,apply_id,is_approve,start_time,is_messaging
+	</sql>
+	<select id="selectByApplyIdAndType" resultMap="BaseResultMap">
+		select fa.*, pt.name as positionName,u.username as approveName ,
+		DATE_FORMAT(fa.handledate,"%Y-%m-%d") AS approveDateStr,p.name
+		postName
+		from flow_approve fa
+		left join t_user u on fa.userid = u.id
+		left join t_position pt on fa.positionid = pt.id
+		left JOin t_post p on u.postid = p.id
+		where fa.apply_id in (select fu.id from flow_user_application fu
+		where fu.form_id = #{applyId} and fu.apply_type = #{applyType})
+		ORDER BY fa.id
+	</select>
+	<select id="selectListByApplyId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from flow_approve
+		where apply_id = #{applyId}
+		order by id asc
+	</select>
 
-<select id="selectNextApproval"  resultMap="BaseResultMap">
-	SELECT * FROM flow_approve WHERE apply_id = #{applyId} AND id > #{approveId} LIMIT 0,1
-</select>
+	<select id="selectByApprove" resultType="java.lang.Integer">
+		select COUNT(1) from flow_user_application
+		inner join flow_approve on flow_user_application.id=flow_approve.apply_id
+		AND flow_approve.id in (select MAX(id) from flow_approve GROUP BY
+		apply_id)
+		where user_id=#{userid} and checkstatus=#{checkstatus} and apply_time>=
+		date_sub(curdate(),interval 1 month)
+	</select>
+	<select id="selectByUserid" resultType="java.lang.Integer">
+		select COUNT(1) from flow_approve where userid=#{userid} AND
+		is_approve=0
+	</select>
 
-<select id="selectNoApprovalAll" resultMap="BaseResultMap">
-	SELECT app.* FROM flow_approve app INNER JOIN (
+	<select id="selectNextApproval" resultMap="BaseResultMap">
+		SELECT * FROM flow_approve WHERE apply_id = #{applyId} AND id > #{approveId}
+		LIMIT 0,1
+	</select>
+	<select id="selectCanApproveUserByStartTime" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column" />
+		FROM
+			flow_approve
+		where 
+			is_approve = 0 AND  <![CDATA[ start_time <= #{startTime}]]>
+	</select>
 
-select MAX(id) id FROM flow_approve WHERE checkstatus = 0 GROUP BY apply_id 
-) appGroup ON app.id in( appGroup.id) 
-</select>
+	<select id="selectNoApprovalAll" resultMap="BaseResultMap">
+		SELECT app.* FROM flow_approve app INNER JOIN (
+
+		select MAX(id) id FROM flow_approve WHERE checkstatus = 0 GROUP BY apply_id
+		) appGroup ON app.id in( appGroup.id)
+	</select>
 </mapper>

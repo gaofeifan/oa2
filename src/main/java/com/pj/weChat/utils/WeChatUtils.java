@@ -1,4 +1,4 @@
-package com.pj.utils;
+package com.pj.weChat.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

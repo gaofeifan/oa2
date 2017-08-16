@@ -150,4 +150,13 @@ public interface UserService extends BaseService<User, Integer> {
 	 */
 	List<User> selectUsers(User user);
 
+	/**
+	 * 	更新用户openid
+	 *	@author 	GFF
+	 *	@date		2017年8月15日上午11:50:45	
+	 * 	@param email
+	 * @param string 
+	 */
+	void updateUserOpenIdByEmail(String email, String openId);
+
 }

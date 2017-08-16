@@ -1,6 +1,7 @@
 package com.pj.auth.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,7 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			approve = new FlowApprove();
 			if(i == 0){
 				approve.setIsApprove(0);
+				approve.setStartTime(new Date());
 			}
 			approve.setApplyId(applyId);
 			approve.setUserid(approvers.get(i).getId());

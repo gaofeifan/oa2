@@ -10,8 +10,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
-import com.pj.utils.WeChatUtils;
 import com.pj.weChat.pojo.AccessToken;
+import com.pj.weChat.utils.WeChatUtils;
 
 /**
  *	@author		GFF

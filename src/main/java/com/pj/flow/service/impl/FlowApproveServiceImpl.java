@@ -37,6 +37,7 @@ import com.pj.system.pojo.User;
 import com.pj.system.service.DempService;
 import com.pj.system.service.PositionService;
 import com.pj.system.service.UserService;
+import com.pj.weChat.utils.WeChatTemplateUtils;
 
 /**
  *	@author		GFF
@@ -75,6 +76,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	
 	@Resource
 	private UserService userService;
+
+	@Resource
+	private WeChatTemplateUtils weChatTemplateUtils;
 	
 	@Resource
 	private FlowRecruitTodoService flowRecruitTodoService;
@@ -196,7 +200,9 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 					FlowApprove flowApprove = flowApproveMapper.selectNextApproval(innerApprove.getId(),innerApprove.getApplyId());
 					if(flowApprove != null){
 						flowApprove.setIsApprove(0);
+						flowApprove.setStartTime(new Date());
 						this.flowApproveMapper.updateByPrimaryKeySelective(flowApprove);
+						weChatTemplateUtils.approvalPending(flowUserApplication.getApplyType(), flowUserApplication.getFormId(), flowApprove.getUserid());
 					}
 				}
 			}
@@ -351,5 +357,10 @@ public class FlowApproveServiceImpl extends AbstractBaseServiceImpl<FlowApprove,
 	@Override
 	public List<FlowApprove> selectNoApprovalAll() {
 		return this.flowApproveMapper.selectNoApprovalAll();
+	}
+
+	@Override
+	public List<FlowApprove> selectCanApproveUserByStartTime(Date date) {
+		return this.flowApproveMapper.selectCanApproveUserByStartTime(date);
 	}
 }

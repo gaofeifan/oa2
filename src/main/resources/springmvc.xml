@@ -19,16 +19,10 @@
 	<!-- 定时器开关 -->
 	<task:annotation-driven />
 	<!-- 拦截器 -->
-<!-- 	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.pj.config.web.interceptor.LoginInterceptor">
-				<property name="outsideOfficeHoursPage">
-					<value>http://10.0.0.18:8083/www/Sign-in.html</value>
-				</property>
-			</bean>
-		</mvc:interceptor>
-	</mvc:interceptors> -->
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**" /> <bean 
+		class="com.pj.config.web.interceptor.LoginInterceptor"> <property name="outsideOfficeHoursPage"> 
+		<value>http://10.0.0.18:8083/www/Sign-in.html</value> </property> </bean> 
+		</mvc:interceptor> </mvc:interceptors> -->
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -93,10 +87,10 @@
 		</property>
 	</bean>
 
-	<bean id="messageTimer" class="com.pj.config.base.timer.MessageTimer" />
+	<bean id="pushNotificationWeChatTimer" class="com.pj.config.web.timer.wechat.PushNotificationWeChatTimer" />
 
 	<!-- 每天上午十点触发 -->
-	<!-- <task:scheduled-tasks> <task:scheduled ref="messageTimer" method="messageDetails" 
-		cron=" 0 0 10 * * ?"/> <task:scheduled ref="messageTimer" method="approveMessageTime" 
-		cron="0 * 1 * * *"/> </task:scheduled-tasks> -->
+	<task:scheduled-tasks>
+		<task:scheduled ref="pushNotificationWeChatTimer" method="pushTheMessageToTheApprover" cron=" 0 0 10 * * ?" />
+	</task:scheduled-tasks>
 </beans>

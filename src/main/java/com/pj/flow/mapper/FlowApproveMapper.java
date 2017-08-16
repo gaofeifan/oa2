@@ -1,5 +1,6 @@
 package com.pj.flow.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -44,4 +45,13 @@ public interface FlowApproveMapper extends MyMapper<FlowApprove> {
 	 * 	@return
 	 */
 	List<FlowApprove> selectNoApprovalAll();
+
+	/**
+	 * 	查询可以审批的人员通过开始时间(微信消息推送使用)
+	 *	@author 	GFF
+	 *	@date		2017年8月16日上午11:10:46	
+	 * 	@param date
+	 * 	@return
+	 */
+	List<FlowApprove> selectCanApproveUserByStartTime(@Param(value = "startTime") Date startTime);
 }

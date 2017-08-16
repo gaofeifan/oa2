@@ -89,10 +89,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private AuthUserService authUserService;
 	//	@Resource
 //	private ManageProperties manageProperties;
-	private static String  ssoCreateUrl = "http://10.0.0.18:8085/sso/userSync/add";
-	private static String  ssoUpdateUrl = "http://10.0.0.18:8085/sso/userSync/update";
-	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8085/sso/accountManage/saveManage";
-	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8085/sso/accountManage/batchUpdate";
+	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
+	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
+	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8082/sso/accountManage/batchUpdate";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;
@@ -584,6 +584,19 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	@Override
 	public List<User> selectUsers(User user) {
 		return userMapper.selectUsers(user);
+	}
+
+	/**
+	 * 	更新用户openid
+	 */
+	@Override
+	public void updateUserOpenIdByEmail(String email, String openId) {
+		User user = this.selectByEamil(email);
+		if(user == null){
+			throw new RuntimeException("没有查询到当前登录用户");
+		}
+		user.setOpenid(openId);
+		super.updateByPrimaryKeySelective(user);
 	}
 	
 }
