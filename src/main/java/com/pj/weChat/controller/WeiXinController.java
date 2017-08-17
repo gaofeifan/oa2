@@ -26,6 +26,7 @@ import com.pj.weChat.utils.WeChatTemplateUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RequestMapping("/weiXin")
 @Controller
@@ -46,7 +47,7 @@ public class WeiXinController extends BaseController {
 	@ApiOperation(value="同步微信账号" ,httpMethod="GET")
 	@RequestMapping(value = "/authorization",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	public void getOAuthAccessToken(HttpServletRequest request , HttpServletResponse response , String email){
-	    try {
+		try {
 			request.setCharacterEncoding("utf-8"); 
 			String code = request.getParameter("code");
 			log.info("code:"+code);
@@ -57,7 +58,7 @@ public class WeiXinController extends BaseController {
 			throw new RuntimeException("绑定微信账号异常:"+e.getMessage());
 		}
     	try {
-			response.sendRedirect("http://5e722201.4kb.cn/index.html");
+			response.sendRedirect("http://211.144.1.50:82/index.html");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,11 +108,10 @@ public class WeiXinController extends BaseController {
 	@ApiOperation(value="查询是否关联" ,httpMethod="GET")
 	@RequestMapping(value = "/selectIsRelevance.do",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public Object selectIsRelevance(){
+	public Object selectIsRelevance( @ApiParam("用户名称") @RequestParam("email") String email){
 		WeChatCode wc = new WeChatCode();;
 		try {
-			String email = this.getSession();
-			if(StringUtils.isNoneBlank(email)){
+			if(StringUtils.isBlank(email)){
 				return this.errorToJsonp("请登录后进行操作");
 			}	
 			User user = this.userService.selectByEamil(email);
@@ -119,12 +119,12 @@ public class WeiXinController extends BaseController {
 			if(StringUtils.isNoneBlank(user.getOpenid())){
 				wc.setIsRelevance(true);
 			}else{
-				String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx17f788165832cdc9&redirect_uri=http%3A%2F%2Fpjhighurl3.tunnel.qydev.com%2Foa%2FweiXin%2Fauthorization?email=" + email + "&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect";
+				String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx17f788165832cdc9&redirect_uri=http://wx.pj-l.com%2Foa%2FweiXin%2Fauthorization?email=" + email + "&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect";
 				wc.setIsRelevance(false);
 				wc.setUrl(url);;
 			}
 		} catch (Exception e) {
-			this.errorToJsonp(e.getMessage());
+			return this.errorToJsonp(e.getMessage());
 		}
 		return successJsonp(wc);
 	}

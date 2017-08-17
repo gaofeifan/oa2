@@ -77,7 +77,7 @@ public class ApprovalFormAppController extends BaseController {
 	public Object selectEntryDetailById(@ApiParam("入职表单id") @RequestParam("entryId") Integer entryId){
 		try {
 			String email = //"wangxuehui@pj-l.com";
-					this.getSession();
+ 					this.getSession();
 			User user = userService.selectByEamil(email);
 			final int userId = user.getId();
 			Map<String, Object> result = new HashMap<String, Object>();
@@ -92,7 +92,7 @@ public class ApprovalFormAppController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("入职申请详情");
+			return this.errorToJsonp(e.getMessage());
 		}
 	}
 	
@@ -121,7 +121,7 @@ public class ApprovalFormAppController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("异常" + e.getMessage());
-			throw new RuntimeException("申请单详情" + e.getMessage());
+			return this.errorToJsonp(e.getMessage());
 		}
 	}
 	

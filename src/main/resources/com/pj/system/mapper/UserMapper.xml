@@ -125,7 +125,7 @@
 		,u.contract_stop_time,u.contacts,u.marital_status,u.child_status,u.education,u.school,u.is_fulltime,u.is_new_ginseng,u.is_social_security_cards
 		,u.is_accumulation_fund,u.alnature,u.social_security_cardinal_number,u.accumulation_fund_cardinal_number
 		,u.social_security_payment_address,u.deposit_bank,u.bankcard,position.name positionname,demp.name dempname,company.name companyname,post.name postname,pUser.username pUsername
-		,u.is_department_head,u.is_company_boss,u.sso_id,u.isdelete
+		,u.is_department_head,u.is_company_boss,u.sso_id,u.isdelete,u.open_id openid
 	</sql>
 	
 	

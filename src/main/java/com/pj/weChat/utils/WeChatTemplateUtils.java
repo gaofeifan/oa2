@@ -45,9 +45,10 @@ public class WeChatTemplateUtils {
 	private static final Logger logger = LoggerFactory.getLogger(WeChatTemplateUtils.class);
 	/**
 	 * 发送模板消息 appId 公众账号的唯一标识 appSecret 公众账号的密钥 openId 用户标识
+	 * @param wxUrl 
 	 */
 	public void send_template_message(String access_token, Integer userId, String templateMessage_id,
-			Map<String, TemplateData> m) {
+			Map<String, TemplateData> m, String wxUrl) {
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + access_token;
 		User user = userService.selectByPrimaryKey(userId);
 		if(StringUtils.isBlank(user.getOpenid())){
@@ -55,7 +56,11 @@ public class WeChatTemplateUtils {
 			return;
 		}
 		WxTemplate temp = new WxTemplate();
-		temp.setUrl("http://weixin.qq.com/download");
+		if(StringUtils.isNoneBlank(wxUrl)){
+			temp.setUrl(wxUrl);
+		}else{
+			temp.setUrl("http://weixin.qq.com/download");
+		}
 		temp.setTouser(user.getOpenid());
 		temp.setTopcolor("#000000");
 		temp.setTemplate_id(templateMessage_id);
@@ -79,6 +84,7 @@ public class WeChatTemplateUtils {
 	 * @date 2017年8月15日下午3:38:32
 	 */
 	public void approvalPending(String type, Integer formId, Integer userId) {
+		String wxUrl = "http://211.144.1.50:82/approveDetail.html?type=TYPE&applyUserid=APPLYUSERID&formId=FORMID&checkstatus=0&applyType=FORMID";
 		String accesstoken = jedisTool.getAccesstoken();
 		TemplateData first = new TemplateData();
 		first.setColor("#173177");
@@ -106,6 +112,10 @@ public class WeChatTemplateUtils {
 			m.put("keyword3", keyword3);
 			keyword4.setValue(ApplyType.ENTRY.getApplyName());
 			m.put("keyword4", keyword4);
+			wxUrl = wxUrl.replaceAll("TYPE", "1")
+				 .replaceAll("APPLYUSERID", flowEntry.getApplyId()+"")
+				 .replaceAll("FORMID", flowEntry.getId()+"")
+				 .replaceAll("applyType", ApplyType.ENTRY.getApplyType());
 		} else if (type.equals(ApplyType.RECRUIT.getApplyType())) {
 			FlowRecruit flowRecruit = this.flowRecruitService.selectById(formId);
 			keyword2.setValue(flowRecruit.getUsername());
@@ -114,8 +124,12 @@ public class WeChatTemplateUtils {
 			m.put("keyword3", keyword3);
 			keyword4.setValue(ApplyType.RECRUIT.getApplyName());
 			m.put("keyword4", keyword4);
+			wxUrl = wxUrl.replaceAll("TYPE", "6")
+			     .replaceAll("APPLYUSERID", flowRecruit.getApplyId()+"")
+			     .replaceAll("FORMID", flowRecruit.getId()+"")
+			     .replaceAll("applyType", ApplyType.RECRUIT.getApplyType());
 		}
-		this.send_template_message(accesstoken, userId, Constant.WECHAT_TEMPLATE_APPROVAL_PENDING, m);
+		this.send_template_message(accesstoken, userId, Constant.WECHAT_TEMPLATE_APPROVAL_PENDING, m,wxUrl);
 
 	}
 }

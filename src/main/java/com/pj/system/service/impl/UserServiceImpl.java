@@ -89,10 +89,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private AuthUserService authUserService;
 	//	@Resource
 //	private ManageProperties manageProperties;
-	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
-	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
-	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
-	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8082/sso/accountManage/batchUpdate";
+	private static String  ssoCreateUrl = "http://10.0.0.18:8085/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://10.0.0.18:8085/sso/userSync/update";
+	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8085/sso/accountManage/saveManage";
+	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8085/sso/accountManage/batchUpdate";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;

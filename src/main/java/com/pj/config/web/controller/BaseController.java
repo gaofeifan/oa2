@@ -101,9 +101,9 @@ public class BaseController extends AdvanceControllerSupport{
 	 * 	@return
 	 */
 	public String getSession(){
-		String ua  = buildPipelineContent().getRequest().getHeader("user-agent").toLowerCase();
+//		String ua  = buildPipelineContent().getRequest().getHeader("user-agent").toLowerCase();
 		String key = buildPipelineContent().getRequest().getParameter("key");
-		if(StringUtils.isNotBlank(key) && ua.indexOf("micromessenger") > 0){
+		if(StringUtils.isNotBlank(key)){
 			String emailKey = key.split(":")[0];
 			return sessionProvider.getAttibute(emailKey);
 		}
