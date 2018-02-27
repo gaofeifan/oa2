@@ -8,7 +8,7 @@ package com.pj.config.base.constant;
  * @since 1.8
  */
 public enum NotificationType {
-	INITIATE(1, "发起通知"), 
+	INITIATE(1, "发起通知"),
 	APPROVAL(2, "审批通知");
 
 	private int value;

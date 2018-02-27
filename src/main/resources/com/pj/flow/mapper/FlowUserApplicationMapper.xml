@@ -20,66 +20,68 @@
 		<result column="approveId" property="approveId" jdbcType="INTEGER" />
 		<result column="applyState" property="applyState" jdbcType="INTEGER" />
 		<result column="applyResult" property="applyResult" jdbcType="INTEGER" />
+		<result column="endApproval" property="endApproval" jdbcType="INTEGER" />
+		<result column="endCheckstatus" property="endCheckstatus" jdbcType="INTEGER" />
 	</resultMap>
 
 	<select id="searchMyApproves" resultMap="BaseResultMap">
 		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
 		a.id as approveId from flow_user_application ua
-		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
-		
-			<if test="checkstatus != null and checkstatus == 0">
-				and a.checkstatus = 0 and a.is_approve = 0
-			</if>
-			<if test="checkstatus != null and checkstatus != 0">
-				and a.checkstatus != 0
-			</if>
-		
+		inner join flow_approve
+		a on ua.id = a.apply_id and a.userid = #{userid}
+
+		<if test="checkstatus != null and checkstatus == 0">
+			and a.checkstatus = 0 and a.is_approve = 0
+		</if>
+		<if test="checkstatus != null and checkstatus != 0">
+			and a.checkstatus != 0
+		</if>
+
 		ORDER BY ua.apply_time DESC
 	</select>
+	<!-- 查询审批数据 并返回申请的最后的审批状态用于移动端状态的修改 -->
 	<select id="searchMyApprovesApp" resultMap="BaseResultMap">
 		select ua.*, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
 		a.id as approveId,a.checkstatus checkstatus,
-		 concat(
-			"申请摘要：",
-			IFNULL(ua.apply_company_name, ''),
-			IFNULL("  ", ''),
-			IFNULL(ua.apply_demp_name, '')
-		) AS content
+		concat(
+		"申请摘要：",
+		IFNULL(ua.apply_company_name, ''),
+		IFNULL(" ", ''),
+		IFNULL(ua.apply_demp_name, '')
+		) AS content,
+		if((SELECT a2.checkstatus FROM flow_approve a2 where a.apply_id = a2.apply_id
+		ORDER BY a2.id DESC limit 0,1) = 1 AND a.checkstatus != 1,true,false )
+		endApproval,
+		(select a2.checkstatus FROM flow_approve a2 WHERE a.apply_id = a2.apply_id ORDER BY a2.id DESC LIMIT 0,1) endCheckstatus
 		from flow_user_application ua
-		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
-			<if test="checkstatus != null and checkstatus == 0">
-				and a.checkstatus = 0 and a.is_approve = 0
-			</if>
-			<if test="checkstatus != null and checkstatus != 0">
-				and a.checkstatus != 0
-			</if>
-			<if test="startDate != null">
-				AND <![CDATA[ ua.apply_time >= #{startDate} ]]>   
-			</if>
-			<if test="endDate != null">
-				AND <![CDATA[ ua.apply_time <= #{endDate}]]>   
-			</if>
-		
+		inner join flow_approve a on
+		ua.id = a.apply_id and a.userid = #{userid}
+		<if test="checkstatus != null and checkstatus == 0">
+			and a.checkstatus = 0 and a.is_approve = 0
+		</if>
+		<if test="checkstatus != null and checkstatus != 0">
+			and a.checkstatus != 0
+		</if>
+		<if test="startDate != null">
+			AND <![CDATA[ ua.apply_time >= #{startDate} ]]>
+		</if>
+		<if test="endDate != null">
+			AND <![CDATA[ ua.apply_time <= #{endDate}]]>
+		</if>
+
 		ORDER BY ua.apply_time DESC
 	</select>
-	<!-- <select id="searchMyEntryApproves" resultMap="BaseResultMap">
-		select ua.*,r.state as applyState, r.result as applyResult, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") AS applyDateStr,
-		a.id as approveId from flow_user_application ua
-		inner join flow_approve a on ua.id = a.apply_id and a.userid = #{userid}
-		
-			<if test="checkstatus != null and checkstatus == 0">
-				and a.checkstatus = 0 and a.is_approve = 0
-			</if>
-			<if test="checkstatus != null and checkstatus != 0">
-				and a.checkstatus != 0
-			</if>
-		
-		left join flow_entry r on r.id = ua.form_id
-		where apply_type = #{type}
-		ORDER BY ua.apply_time DESC
-	</select> -->
+	<!-- <select id="searchMyEntryApproves" resultMap="BaseResultMap"> select 
+		ua.*,r.state as applyState, r.result as applyResult, DATE_FORMAT(ua.apply_time,"%Y-%m-%d") 
+		AS applyDateStr, a.id as approveId from flow_user_application ua inner join 
+		flow_approve a on ua.id = a.apply_id and a.userid = #{userid} <if test="checkstatus 
+		!= null and checkstatus == 0"> and a.checkstatus = 0 and a.is_approve = 0 
+		</if> <if test="checkstatus != null and checkstatus != 0"> and a.checkstatus 
+		!= 0 </if> left join flow_entry r on r.id = ua.form_id where apply_type = 
+		#{type} ORDER BY ua.apply_time DESC </select> -->
 	<select id="selectByApplyIdAndType" resultMap="BaseResultMap">
-		select * from flow_user_application 
+		select * from
+		flow_user_application
 		where form_id = #{formId} and apply_type = #{applyType}
 	</select>
 </mapper>

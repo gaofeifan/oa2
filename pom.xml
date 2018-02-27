@@ -472,6 +472,9 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<redis.pass>pj@redis_oa</redis.pass>
 				<redis.db.number>0</redis.db.number>
 			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<!-- 验收环境 -->
 		<profile>
@@ -492,7 +495,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<ftp.password>pj!@#123oa</ftp.password>
 				<ftp.port>2221</ftp.port>
 			</properties>
-			
 		</profile>
 
 		<!-- 测试环境 -->
@@ -514,9 +516,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<ftp.password>pj!@#123oa</ftp.password>
 				<ftp.port>2221</ftp.port>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
+			
 		</profile>
 	</profiles>
 

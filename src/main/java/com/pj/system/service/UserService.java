@@ -39,10 +39,12 @@ public interface UserService extends BaseService<User, Integer> {
 	 * 	@param companyid
 	 * 	@param pageSize
 	 * 	@param terrace
+	 * @param filenumber 
+	 * @param email 
 	 * 	@return
 	 */
 	Pagination selectByQuery(Integer pageNo, String username, Integer isstatus, Integer dempid,
-			Integer companyid, Integer pageSize, String terrace);
+			Integer companyid, Integer pageSize, String terrace, String filenumber, String email);
 
 
 	/**
@@ -158,5 +160,15 @@ public interface UserService extends BaseService<User, Integer> {
 	 * @param string 
 	 */
 	void updateUserOpenIdByEmail(String email, String openId);
+
+	/**
+	 *  根据岗位查询用户
+	 *	@author 	GFF
+	 *	@date		2017年9月12日上午11:28:18	
+	 * 	@param postIds
+	 * 	@return
+	 */
+	List<User> selectUserByPostId(String postIds);
+
 
 }

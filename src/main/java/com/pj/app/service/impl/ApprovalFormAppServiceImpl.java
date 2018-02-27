@@ -34,6 +34,9 @@ public class ApprovalFormAppServiceImpl implements ApprovalFormAppService {
 	@Resource
 	private UserService userService;
 	
+	/**
+	 * 	查询审批信息
+	 */
 	@Override
 	public List<FlowUserApplication> selectApprovalformsByTypeANdEmail(String type, String email) {
 		User user = userService.selectByEamil(email);
@@ -48,10 +51,11 @@ public class ApprovalFormAppServiceImpl implements ApprovalFormAppService {
 		Date startDate = DateUtils.convert(month, DateUtils.DATE_FORMAT);
 		List<FlowUserApplication> approves = this.flowUserApplicationMapper.searchMyApprovesApp(user.getId(), ApprovalResults.UNTREATED.getValue(),startDate,endDate);
 		approves = approves.stream().filter(approve -> approve.getApplyType().equals(type)).collect(Collectors.toList());
-		
 		List<FlowUserApplication> apps = this.flowUserApplicationMapper.searchMyApprovesApp(user.getId(),ApprovalResults.NO_AGREE.getValue(),startDate,endDate);
 		apps = apps.stream().filter(approve -> approve.getApplyType().equals(type)).collect(Collectors.toList());
 		approves.addAll(apps);
+		approves.stream().filter(app -> app.getEndApproval() == ApprovalResults.NO_AGREE.getValue()).forEach(app -> app.setCheckstatus(ApprovalResults.NO_AGREE.getValue()));
+		
 		return approves;
 	}
 

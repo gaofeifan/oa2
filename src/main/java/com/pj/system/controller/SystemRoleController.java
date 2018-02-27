@@ -2,9 +2,7 @@ package com.pj.system.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,15 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.pj.config.web.controller.BaseController;
 import com.pj.system.pojo.SystemRole;
 import com.pj.system.service.SystemRoleService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 /**
  *	@author		GFF
  *	@date		2016年12月21日下午4:01:55
@@ -67,6 +62,7 @@ public class SystemRoleController extends BaseController {
 		}
 		return map;
 	}
+	
 	@ApiOperation(value="删除数据" ,httpMethod="GET")
 	@RequestMapping(value = "/deleteSystemRoleById.do",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	@ResponseBody

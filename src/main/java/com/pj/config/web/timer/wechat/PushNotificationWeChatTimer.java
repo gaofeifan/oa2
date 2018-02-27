@@ -15,6 +15,7 @@ import com.pj.utils.DateUtils;
 import com.pj.weChat.utils.WeChatTemplateUtils;
 
 /**
+ * 	微信模板消息推送 每天上午10点更新
  *	@author		GFF
  *	@date		2017年8月16日上午10:53:24
  *	@version	1.0.0

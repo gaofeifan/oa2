@@ -58,7 +58,7 @@ public class WeiXinController extends BaseController {
 			throw new RuntimeException("绑定微信账号异常:"+e.getMessage());
 		}
     	try {
-			response.sendRedirect("http://211.144.1.50:82/index.html");
+			response.sendRedirect("http://mobile.pj-l.com/index.html");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +121,7 @@ public class WeiXinController extends BaseController {
 			}else{
 				String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx17f788165832cdc9&redirect_uri=http://wx.pj-l.com%2Foa%2FweiXin%2Fauthorization?email=" + email + "&response_type=code&scope=snsapi_userinfo&state=state#wechat_redirect";
 				wc.setIsRelevance(false);
-				wc.setUrl(url);;
+				wc.setUrl(url);
 			}
 		} catch (Exception e) {
 			return this.errorToJsonp(e.getMessage());
@@ -132,7 +132,22 @@ public class WeiXinController extends BaseController {
 	@RequestMapping(value = "/testTemplate.do",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public void testTemplate(){
-		weChatTemplateUtils.approvalPending("entry", 427, 3);
+		weChatTemplateUtils.approvalPending("recruit", 752, 370);
 	}
-	
+
+	@ApiOperation(value="解除微信绑定" ,httpMethod="GET")
+	@RequestMapping(value = "/removeBindingWeChat.do",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public Object removeBindingWeChat(){
+		try {
+			String email = this.getSession();
+			User user = this.userService.selectByEamil(email);
+			user.setOpenid(null);
+			this.userService.updateByPrimaryKey(user);
+		} catch (Exception e) {
+			return this.errorToJsonp(e.getMessage());
+		}
+		return this.successJsonp("解除成功");
+		
+	}
 }

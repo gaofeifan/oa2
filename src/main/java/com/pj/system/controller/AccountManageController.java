@@ -86,7 +86,7 @@ public class AccountManageController  extends BaseController{
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		Map<String, Object> map2 = new HashMap<String, Object>();
-		Pagination list = userService.selectByQuery(pageNo, username, null, dempid, companyid, null, null);
+		Pagination list = userService.selectByQuery(pageNo, username, null, dempid, companyid, null, null,null,null);
 		if(list !=null){
 			map.put("userpage",list);
 			map2 = this.success(map);

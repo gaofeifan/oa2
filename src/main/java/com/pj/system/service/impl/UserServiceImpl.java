@@ -89,10 +89,14 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	private AuthUserService authUserService;
 	//	@Resource
 //	private ManageProperties manageProperties;
-	private static String  ssoCreateUrl = "http://10.0.0.18:8085/sso/userSync/add";
-	private static String  ssoUpdateUrl = "http://10.0.0.18:8085/sso/userSync/update";
-	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8085/sso/accountManage/saveManage";
-	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8085/sso/accountManage/batchUpdate";
+//	private static String  ssoCreateUrl = "http://10.0.0.18:8082/sso/userSync/add";
+//	private static String  ssoUpdateUrl = "http://10.0.0.18:8082/sso/userSync/update";
+//	private static String  ssoUpdateEmailOrPasswordUrl = "http://10.0.0.18:8082/sso/accountManage/saveManage";
+//	private static String  ssoUpdateBatchUpdate = "http://10.0.0.18:8082/sso/accountManage/batchUpdate";
+	private static String  ssoCreateUrl = "http://139.129.236.180:8081/sso/userSync/add";
+	private static String  ssoUpdateUrl = "http://139.129.236.180:8081/userSync/update";
+	private static String  ssoUpdateEmailOrPasswordUrl = "http://139.129.236.180:8081/sso/accountManage/saveManage";
+	private static String  ssoUpdateBatchUpdate = "http://139.129.236.180:8081/sso/accountManage/batchUpdate";
 											
 	@Resource 
 	private FamilyMemberService familyMemberService;
@@ -144,6 +148,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			/**
 			 * 	工作经历
 			 */
+			
 			String workExperienceJson = t.getWorkExperienceJson();
 			JSONArray workExperienceArray = JSONArray.fromString(workExperienceJson);
 			List<WorkExperience> workExperienceList = JSONArray.toList(workExperienceArray, WorkExperience.class);
@@ -151,8 +156,10 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 			for (WorkExperience workExperience : workExperienceList) {
 				this.workExperienceService.insertSelective(workExperience);
 			}
-			authUserService.insertDefaultAuthUser(t.getId());
+			authUserService.insertDefaultAuthUser
+			(t.getId());
 			/**
+			 * 
 			 * 	更新申请单状态
 			 */
 			this.updateApplyState(t.getEntryId());
@@ -161,6 +168,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		throw new RuntimeException("该企业邮箱已经存在");
 		
 	}
+	
 
 	private void updateApplyState(Integer entryId) {
 		if(entryId == null){
@@ -231,6 +239,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		for (FamilyMember familyMember : list) {
 			familyMember.setUserId(user.getId());
 			if(familyMember.getId() == null){
+				
 				this.familyMemberService.insertSelective(familyMember);
 			}else{
 				this.familyMemberService.updateByPrimaryKeySelective(familyMember);
@@ -251,6 +260,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 				this.educationService.updateByPrimaryKeySelective(education);
 			}
 		}
+		
 		
 		/**
 		 * 	工作经历
@@ -323,16 +333,23 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 	/**
 	 * 	分页查询
 	 */
-	@Override
+
 	public Pagination selectByQuery(Integer pageNo, String username, Integer isstatus, Integer dempid,
-			Integer companyid, Integer systemRoleid, String terrace) {
+			Integer companyid, Integer systemRoleid, String terrace,String filenumber, String email) {
 		User user = new User();
 		if (StringUtils.isNotBlank(username)) {
 			user.setUsername(username.trim() + "%");
 		}
+		if (StringUtils.isNotBlank(filenumber)) {
+			user.setFilenumber(filenumber.trim() + "%");
+		}
+		if (StringUtils.isNotBlank(email)) {
+			user.setCompanyEmail(email.trim() + "%");
+		}
 		if (isstatus != null) {
 			user.setIsStatus(isstatus);
 		}
+		
 		if (dempid != null) {
 			user.setDempid(dempid);
 		}
@@ -408,11 +425,11 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		map.put("id", user.getSsoId());
 		map.put("openid", user.getOpenid());
 		return HttpClienTool.doGet(ssoUpdateUrl, map);
-		
 	}
 	
 	/**
 	 * 	根据用户名称查询
+	 * 
 	 */
 	@Override
 	public List<User> selectUserByUsername(String username) {
@@ -483,6 +500,7 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		Example example = new Example(User.class);
 		example.createCriteria().andCondition(" hiredate >= " , startDate).andCondition(" hiredate <= ", endDate);
 		example.orderBy(" hiredate ").desc();
+		
 		List<User> list = this.userMapper.selectByExample(example );
 		String fileName = DateUtils.getInTimeYearORmonthORday(date, Calendar.YEAR)+"";
 		Integer month = DateUtils.getInTimeYearORmonthORday(date, Calendar.MONTH)+1;
@@ -598,5 +616,20 @@ public class UserServiceImpl extends AbstractBaseServiceImpl<User, Integer> impl
 		user.setOpenid(openId);
 		super.updateByPrimaryKeySelective(user);
 	}
+	
+	/**
+	 * 	根据岗位查询用户
+	 */
+	@Override
+	public List<User> selectUserByPostId(String postIds) {
+		String[] postid = postIds.split(",");
+		Integer [] posts = new Integer[postid.length];
+		for (int i = 0; i < postid.length; i++) {
+			posts[i] = Integer.decode(postid[i]);
+		}
+		return this.userMapper.selectUserByPostId(posts);
+	}
+	
+	
 	
 }

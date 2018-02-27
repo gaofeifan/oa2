@@ -60,7 +60,7 @@ public class ApprovalFormAppController extends BaseController {
 	public Object selectApprovalformsByTypeANdEmail(@ApiParam("类型   entry(入职) recruit(招聘)") @RequestParam("type") String type){
 		List<FlowUserApplication> list;
 		try {
-			String email =  //"wangxuehui@pj-l.com";
+			String email = //"yexu@pj-l.com";
 					this.getSession();
 			if(StringUtils.isBlank(email)){
 				return this.errorToJsonp("查询邮箱为空  请检查是否登录");
@@ -101,7 +101,7 @@ public class ApprovalFormAppController extends BaseController {
 	@ResponseBody
 	public Object selectRecruitDetailById(@ApiParam("招聘表单id") @RequestParam("recruitId") Integer recruitId){
 		try {
-			String email = //"wangxuehui@pj-l.com";
+			String email = //"xuliping@pj-l.com";
 					this.getSession();
 			User user = this.userService.selectByEamil(email);
 			final int userId = user.getId();
@@ -124,7 +124,5 @@ public class ApprovalFormAppController extends BaseController {
 			return this.errorToJsonp(e.getMessage());
 		}
 	}
-	
-	
 }
 

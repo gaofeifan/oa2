@@ -2,11 +2,13 @@ package com.pj.system.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+
+
+
 
 import com.pj.config.base.mapper.MyMapper;
 import com.pj.system.pojo.User;
-
+import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends MyMapper<User> {
 
 	/**
@@ -75,4 +77,15 @@ public interface UserMapper extends MyMapper<User> {
 	 * @return
 	 */
 	List<User> selectUsers(User user);
+
+	/**
+	 * 	根据岗位查询用户
+	 *	@author 	GFF
+	 *	@date		2017年9月12日上午11:31:10	
+	 * 	@param strings
+	 * 	@return
+	 */
+	List<User> selectUserByPostId(Integer[] postIds);
 }
+
+

@@ -44,8 +44,14 @@ public class WeChatTemplateUtils {
 	// 日志对象
 	private static final Logger logger = LoggerFactory.getLogger(WeChatTemplateUtils.class);
 	/**
-	 * 发送模板消息 appId 公众账号的唯一标识 appSecret 公众账号的密钥 openId 用户标识
-	 * @param wxUrl 
+	 *  发送模板消息
+	 *	@author 	GFF
+	 *	@date		2017年8月15日下午2:39:09	
+	 * 	@param access_token     	通过微信查询到的access_token
+	 * 	@param userId				用户id(用户查询该用户微信openid)
+	 * 	@param templateMessage_id   模板id
+	 * 	@param m					内容
+	 * 	@param wxUrl				查询详情的页面
 	 */
 	public void send_template_message(String access_token, Integer userId, String templateMessage_id,
 			Map<String, TemplateData> m, String wxUrl) {
@@ -79,12 +85,11 @@ public class WeChatTemplateUtils {
 
 	/**
 	 * 流程待审批提醒
-	 * 
 	 * @author GFF
 	 * @date 2017年8月15日下午3:38:32
 	 */
 	public void approvalPending(String type, Integer formId, Integer userId) {
-		String wxUrl = "http://211.144.1.50:82/approveDetail.html?type=TYPE&applyUserid=APPLYUSERID&formId=FORMID&checkstatus=0&applyType=FORMID";
+		String wxUrl = "http://mobile.pj-l.com/approveDetail.html?type=TYPE&applyUserid=APPLYUSERID&formId=FORMID&checkstatus=0&applyType=FORMID";
 		String accesstoken = jedisTool.getAccesstoken();
 		TemplateData first = new TemplateData();
 		first.setColor("#173177");
@@ -106,7 +111,7 @@ public class WeChatTemplateUtils {
 		keyword4.setColor("#173177");
 		if (type.equals(ApplyType.ENTRY.getApplyType())) {
 			FlowEntry flowEntry = this.flowEntryService.selectById(formId);
-			keyword2.setValue(flowEntry.getName());
+			keyword2.setValue(flowEntry.getUsername());
 			m.put("keyword2", keyword2);
 			keyword3.setValue(DateUtils.convert(flowEntry.getApplyDate()));
 			m.put("keyword3", keyword3);

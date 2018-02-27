@@ -24,6 +24,7 @@
         end hasChilds
         from auth_menu
 		where 1=1
+		
 		<if test="id != null">
 			AND id= #{id}
 		</if>

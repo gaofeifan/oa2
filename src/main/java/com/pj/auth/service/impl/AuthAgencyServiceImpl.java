@@ -19,6 +19,8 @@ import com.pj.config.base.mapper.MyMapper;
 import com.pj.config.base.service.AbstractBaseServiceImpl;
 import com.pj.flow.mapper.FlowApproveMapper;
 import com.pj.flow.pojo.FlowApprove;
+import com.pj.flow.pojo.FlowUserApplication;
+import com.pj.flow.service.FlowUserApplicationService;
 import com.pj.system.mapper.CompanyMapper;
 import com.pj.system.mapper.DempMapper;
 import com.pj.system.mapper.UserMapper;
@@ -26,6 +28,7 @@ import com.pj.system.pojo.Company;
 import com.pj.system.pojo.Demp;
 import com.pj.system.pojo.Position;
 import com.pj.system.pojo.User;
+import com.pj.weChat.utils.WeChatTemplateUtils;
 
 /**
  * @author GFF
@@ -48,7 +51,10 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 	private DempMapper dempMapper;
 	@Autowired
 	private FlowApproveMapper flowApproveMapper;
-	
+	@Autowired
+	private WeChatTemplateUtils weChatTemplateUtils;
+	@Autowired
+	private FlowUserApplicationService flowUserApplicationService;
 	private List<User> approvers = new ArrayList<User>();
 
 	@Override
@@ -86,6 +92,8 @@ public class AuthAgencyServiceImpl extends AbstractBaseServiceImpl<AuthAgency, I
 			if(i == 0){
 				approve.setIsApprove(0);
 				approve.setStartTime(new Date());
+				FlowUserApplication application = this.flowUserApplicationService.selectByPrimaryKey(applyId);
+				weChatTemplateUtils.approvalPending(application.getApplyType(), application.getFormId(), approvers.get(i).getId());
 			}
 			approve.setApplyId(applyId);
 			approve.setUserid(approvers.get(i).getId());

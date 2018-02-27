@@ -49,6 +49,13 @@ public class FlowUserApplication {
 	private Integer applyResult;
 	@Transient
 	private Integer applyState;
+	@Transient
+	private Integer endCheckstatus;
+	/**
+	 * 	最后的审批意见移动端使用
+	 */
+	@Transient
+	private Integer endApproval;
 	
 	@Transient
 	private String content;
@@ -173,5 +180,19 @@ public class FlowUserApplication {
 		this.checkstatus = checkstatus;
 	}
 
-	
+	public Integer getEndApproval() {
+		return endApproval;
+	}
+
+	public void setEndApproval(Integer endApproval) {
+		this.endApproval = endApproval;
+	}
+
+	public Integer getEndCheckstatus() {
+		return endCheckstatus;
+	}
+
+	public void setEndCheckstatus(Integer endCheckstatus) {
+		this.endCheckstatus = endCheckstatus;
+	}
 }

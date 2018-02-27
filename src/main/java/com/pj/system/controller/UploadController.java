@@ -109,7 +109,7 @@ public class UploadController extends BaseController {
         	 FtpUtils.downloadFile(path, fileName,new BufferedOutputStream( response.getOutputStream()) , manageProperties.ftpProperties);
         	 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         	 response.setContentType("application/x-msdownload;");  
-			response.setHeader("Content-disposition", "attachment; filename="  
+			 response.setHeader("Content-disposition", "attachment; filename="  
 			         + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
 			response.setHeader("Content-Length", String.valueOf(path));  
 		} catch (IOException e) {

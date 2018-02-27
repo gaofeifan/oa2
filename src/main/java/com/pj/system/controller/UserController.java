@@ -195,6 +195,8 @@ public class UserController extends BaseController {
 			@ApiParam("查询页码") @RequestParam(value = "pageNo", required = false) Integer pageNo, Model model,
 			@ApiParam("系统角色id") @RequestParam(value = "systemRoleid", required = false) Integer systemRoleid,
 			@ApiParam("页数") @RequestParam(value = "pagesi", required = false) Integer pagesi,
+			@ApiParam("员工编号") @RequestParam(value = "filenumber", required = false) String filenumber,
+			@ApiParam("email") @RequestParam(value = "email", required = false) String email,
 			@ApiParam("系统编号") @RequestParam(value = "terrace", required = false) String terrace) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> result;
@@ -203,7 +205,7 @@ public class UserController extends BaseController {
 			// 查询所有部门
 //			List<Demp> demps = this.dempService.selectNotDeleteALL();0
 			Pagination pagination = this.userService.selectByQuery(pageNo, username, isstatus, dempid,
-					companyid, systemRoleid, terrace);
+					companyid, systemRoleid, terrace,filenumber,email);
 			map.put("pagination", pagination);
 			map.put("username", username);
 			map.put("isstatus", isstatus);
@@ -434,4 +436,17 @@ public class UserController extends BaseController {
 		}
 //		return "Sign-in";
 	}
+	
+	@ApiOperation(value = "根据岗位查询用户", httpMethod = "get")
+	@RequestMapping(value = "/selectUserByPostId.do", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public Object selectUserByPostId(@ApiParam("岗位") @RequestParam("postIds") String postIds) {
+		try {
+			List<User> users = this.userService.selectUserByPostId(postIds);
+			return this.success(users);
+		} catch (Exception e) {
+			return this.errorToJsonp(e.getMessage());
+		}
+	}
 }
+

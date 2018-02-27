@@ -188,9 +188,8 @@ public class PostServiceImpl extends AbstractBaseServiceImpl<Post, Integer> impl
 
 	@Override
 	public void updatePost(Post post) {
-		
 		post.setSignNum(getSignNum(post));
-		super.updateByPrimaryKeySelective(post);
+		super.updateByPrimaryKey(post);
 		
 	}
 	private String getSignNum(Post post) {

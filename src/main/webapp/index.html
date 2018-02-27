@@ -4,20 +4,36 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+<script src="../js/jquery.form.js" type="text/javascript"></script>
 <body>
+	<form action="">
+		<input type="checkbox" name="postIds" value="1" onclick="isCheck()">岗位1</br>
+		<input type="checkbox" name="postIds" value="1" onclick="isCheck()">岗位2</br>
+		<input type="checkbox" name="postIds" value="3" onclick="isCheck()">岗位3</br>
+		<input type="checkbox" name="postIds" value="4" onclick="isCheck()">岗位4</br>
+		<input type="checkbox" name="postIds" value="5" onclick="isCheck()">岗位5</br>
+		<input type="checkbox" name="postIds" value="6" onclick="isCheck()">岗位6</br>
+		<input type="checkbox" name="postIds" value="7" onclick="isCheck()">岗位7</br>
+		<input type="checkbox" name="postIds" value="8" onclick="isCheck()">岗位8</br>
+		<input type="submit">
+	</form>
 	<script type="text/javascript">
-	var values=new Array();
-	var number = 1;
-	values[0] = "部门0";
-	values[1] = "部门1";
-	values[2] = "部门2";
-	values[3] = "部门3";
-	for(var i=0;i<values.length;i++){
-		if(values[i].value == "部门1"){
-			return values[i].value
+		function isCheck() {
+			var options = {
+				url : "http://localhost:8083/auth/selectUserByPostId.do",
+				type : "get",
+				dataType : "json",
+				success : function(data) {
+
+				}
+			}
+			$("#jvForm").ajaxSubmit(options); // jquery.form.js提价
 		}
-	}
-	
 	</script>
+	<form id="jvForm" action="http://192.168.4.203:8081/file/uploadPic.do" method="post" enctype="multipart/form-data">
+		<input type="file" name="files"></input><br/>
+		 <input type="submit" value="上传文件"></input><br/>
+	</form>
 </body>
 </html>
